@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 497.97 497.97">
+    <defs>
+        <style>
+            .cls-1{fill:url(#linear-gradient);}.cls-2{fill:url(#linear-gradient-2);}.cls-3{fill:url(#linear-gradient-3);}
+        </style>
+        <linearGradient id="linear-gradient" x1="421" y1="546.34" x2="421" y2="48.37" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#c1eaff"/>
+            <stop offset="1" stop-color="#dcfaff"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-2" x1="421" y1="491.26" x2="421" y2="103.99" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#4fb6e8"/>
+            <stop offset="1" stop-color="#70d3ff"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-3" x1="427.45" y1="158.91" x2="427.45" y2="436.34"
+                        gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#4e8ee5"/>
+            <stop offset="1" stop-color="#2874c7"/>
+        </linearGradient>
+    </defs>
+    <title>Quotient Icon</title>
+    <path class="cls-1"
+          d="M421,105.44c105.82,0,191.91,86.09,191.91,191.91S526.82,489.27,421,489.27,229.09,403.18,229.09,297.36,315.18,105.44,421,105.44m0-57.07c-137.51,0-249,111.47-249,249s111.47,249,249,249,249-111.47,249-249-111.47-249-249-249Z"
+          transform="translate(-172.02 -48.37)"/>
+    <path class="cls-2"
+          d="M421,161.85c74.94,0,135.92,60.91,135.92,135.77S495.94,433.4,421,433.4,285.08,372.49,285.08,297.62s61-135.77,135.92-135.77M421,104c-107.06,0-193.84,86.69-193.84,193.63S313.95,491.26,421,491.26s193.84-86.69,193.84-193.63S528.05,104,421,104Z"
+          transform="translate(-172.02 -48.37)"/>
+    <path class="cls-3"
+          d="M544.26,380.28a27.91,27.91,0,0,0-19.16,7.61,137.89,137.89,0,1,0-3.18,3.54,28,28,0,1,0,22.33-11.14Zm-87.17-20.35A39,39,0,0,0,486,347.15a81.65,81.65,0,1,1,7-10.62,39.17,39.17,0,1,0-35.84,23.4Z"
+          transform="translate(-172.02 -48.37)"/>
+</svg>
