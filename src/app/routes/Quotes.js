@@ -22,7 +22,7 @@ export default class Quotes extends Component {
                            <div className="col-md-4 col-sm-6 px-1">
                               <div className="form-group">
                                  <select className="form-control" id="author" name="author">
-                                    <option value selected="selected">Current &amp; Archived</option>
+                                    <option value="CurrentAndArchived" defaultValue>Current &amp; Archived</option>
                                     <optgroup label="---------------------------">
                                        <option value="Current">Current</option>
                                        <option value="Archived">Archived</option>
@@ -34,7 +34,7 @@ export default class Quotes extends Component {
                            <div className="col-md-4 col-sm-6 px-1">
                               <div className="form-group">
                                  <select className="form-control" id="filter_from" name="filter_from">
-                                    <option value selected="selected">All Team Members</option>
+                                    <option value="AllTeamMembers" defaultValue>All Team Members</option>
                                     <optgroup label="---------------------------">
                                        <option value={52036}>A Devom</option>
                                     </optgroup>
@@ -44,7 +44,7 @@ export default class Quotes extends Component {
                            <div className="col-md-4 col-sm-12 px-1">
                               <div className="form-group">
                                  <select className="form-control" id="status" name="status">
-                                    <option value selected="selected">Any Status</option>
+                                    <option value="AnyStatus" defaultValue>Any Status</option>
                                     <optgroup label="---------------------------">
                                        <option value="Sent">Awaiting Acceptance</option>
                                        <option value="Accepted">Accepted</option>
@@ -61,7 +61,10 @@ export default class Quotes extends Component {
 
                      <div className="col-md-6">
                         <div className="row mb-2">
-                           <button className="btn btn-success ml-auto">New Quote</button>
+                           <button className="btn btn-success ml-auto" onClick={() => this.props.history.push({
+                              pathname: '/app/quote/get',
+                              state: { from: this.props.location.pathname }
+                           })}>New Quote</button>
                         </div>
                      </div>
                   </div>

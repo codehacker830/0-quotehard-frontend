@@ -13,6 +13,7 @@ export default class AppRoot extends Component {
       let isWhite = false;
       if (
          location.pathname === "/app"
+         || location.pathname === "/app/quote/get"
          || location.pathname === "/app/content/template/get"
          || location.pathname === "/app/content/item-text/create-new"
          || location.pathname === "/app/content/item-price/create-new"
@@ -23,6 +24,7 @@ export default class AppRoot extends Component {
             <Switch>
                <Route exact path="/app" component={asyncComponent(() => import("./routes/Dashboard"))} />
                <Route exact path="/app/quotes" component={asyncComponent(() => import("./routes/Quotes"))} />
+               <Route exact path="/app/quote/get" component={asyncComponent(() => import("./routes/GetQuote"))} />
                <Route exact path="/app/c/contacts" component={asyncComponent(() => import("./routes/Contacts"))} />
                <Route path="/app/content" component={asyncComponent(() => import("./routes/Templates"))} />
             </Switch>

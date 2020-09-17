@@ -23,7 +23,7 @@ export default class Contacts extends Component {
                            <div className="col-sm-6 px-1">
                               <div className="form-group">
                                  <select className="form-control" id="author" name="author">
-                                    <option value selected="selected">People &amp; Companies</option>
+                                    <option value="PeopleAndCompanies" defaultValue>People &amp; Companies</option>
                                     <optgroup label="---------------------------">
                                        <option value="People">People</option>
                                        <option value="Companies">Companies</option>
@@ -34,7 +34,7 @@ export default class Contacts extends Component {
                            <div className="col-sm-6 px-1">
                               <div className="form-group">
                                  <select className="form-control" id="filter_from" name="filter_from">
-                                    <option value="Current" selected="selected">Current</option>
+                                    <option value="Current" defaultValue>Current</option>
                                     <option value="Archived">Archived</option>
                                  </select>
                               </div>

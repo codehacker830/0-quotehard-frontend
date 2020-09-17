@@ -27,7 +27,8 @@ class Header extends Component {
       console.log(" isOpen ", isOpen);
       let hidden = false;
       if (
-         location.pathname === "/app/content/template/get"
+         location.pathname === "/app/quote/get"
+         || location.pathname === "/app/content/template/get"
          || location.pathname === "/app/content/item-price/create-new"
          || location.pathname === "/app/content/item-text/create-new"
       ) hidden = true;

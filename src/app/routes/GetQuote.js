@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import NavCrump from '../../../components/NavCrump';
-import PriceItemForm from '../../../components/PriceItemForm';
-import TextItemForm from '../../../components/TextItemForm';
+import NavCrump from '../../components/NavCrump';
+import PriceItemForm from '../../components/PriceItemForm';
+import QuoteContact from '../../components/QuoteContact';
+import TextItemForm from '../../components/TextItemForm';
 
-export default class GetTemplate extends Component {
+export default class GetQuote extends Component {
    constructor(orops) {
       super();
       this.state = {
@@ -23,21 +24,45 @@ export default class GetTemplate extends Component {
       console.log(this.state.fileArray)
    }
    render() {
+      console.log(" this props => ", this.props)
+      const { location } = this.props;
+      const { state } = location;
+      let HeadLinkText = 'Dashboard';
+      if (state && state.from === "/app/quotes") HeadLinkText = 'Quotes';
       return (
          <React.Fragment>
-            <NavCrump linkTo="/app/content/templates">
-               Templates
+            <NavCrump linkTo={`${state && state.from ? state.from : "/app"}`}>
+               {HeadLinkText}
             </NavCrump>
             <div className="content bg-custom">
                <div className="mt-6 mb-5">
-                  {/* Template Setting */}
                   <div className="row">
+                     {/* Email list */}
                      <div className="col-sm-6">
-
+                        <div className="d-flex">
+                           <div className="p-1 font-w700">
+                              To
+                           </div>
+                           <div className="p-1 w-100">
+                              <div className="row no-gutters">
+                                 <QuoteContact
+                                    name={`Jack Wang`}
+                                    companyName={`HK`}
+                                    email={`test@email.com`}
+                                 />
+                              </div>
+                              <div className="row no-gutters">
+                                 <input type="text" id="emailTo" className="form-control rounded-0 maxWidth-550" />
+                                 <label for="emailTo" class="text-gray fa-xs">Start with a name or email</label>
+                                 {/* <label for="emailTo" class="text-gray fa-xs">Add another… start with a name or email</label> */}
+                              </div>
+                           </div>
+                        </div>
                      </div>
+                     {/* Quote Setting */}
                      <div className="col-sm-6">
                         <div className="pl-4 py-2" style={{ borderLeft: "4px solid #eee" }}>
-                           <h3>Template Settings</h3>
+                           <h3>Quote Settings</h3>
                            <button type="button" className="btn btn-outline-dark">Show All...</button>
                         </div>
                      </div>

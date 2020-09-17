@@ -31,7 +31,10 @@ export default class Dashboard extends Component {
             <div className="row py-3">
                <div className="col-md-6">
                   <div className="form-group">
-                     <button className="btn btn-success">New Quote</button>
+                     <button className="btn btn-success" onClick={() => this.props.history.push({
+                        pathname: "/app/quote/get",
+                        state: { from: this.props.location.pathname }
+                     })}>New Quote</button>
                   </div>
                </div>
                <div className="col-md-6">
