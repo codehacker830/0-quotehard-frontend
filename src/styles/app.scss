@@ -103,9 +103,65 @@ a.nav-link.active {
 .width-115 {
    width: 115px;
 }
+.maxWidth-300 {
+   max-width: 300px !important;
+}
 .maxWidth-550 {
    max-width: 550px !important;
 }
+.maxWidth-800 {
+   max-width: 800px !important;
+}
 .border-thick {
    border-width: 4px;
+}
+
+.settings-title {
+   margin-top: 37.5px;
+   margin-bottom: 15px;
+   padding-left: 10px;
+   font-size: 130%;
+   font-weight: 700;
+}
+.set-option {
+   color: #333;
+   display: table;
+   width: 100%;
+   padding: 10px;
+   font-size: 100%;
+   border-bottom: 1px solid #e7e7e7;
+   border-top: 1px solid #e7e7e7;
+   margin-top: -1px;
+   background: #fff;
+   img {
+      width: 16px;
+      margin-right: 6px;
+   }
+}
+.set-option:active,
+.set-option:hover {
+   background: #fbfbfb;
+   color: black;
+   font-weight: 600;
+}
+
+.label {
+   padding: 2px 8px;
+   background-color: #bfbfbf;
+   font-size: 11px;
+   font-weight: 600;
+   color: #fff;
+   text-transform: uppercase;
+   border-radius: 2px;
+}
+.label.label-on {
+   background-color: #1bb02d;
+}
+.label.label-off {
+   background-color: #bfbfbf;
+}
+.label.label-outline {
+   border: 1px solid #1bb02d;
+   color: #1bb02d;
+   background: none;
 }

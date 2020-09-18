@@ -31,6 +31,7 @@ class Header extends Component {
          || location.pathname === "/app/content/template/get"
          || location.pathname === "/app/content/item-price/create-new"
          || location.pathname === "/app/content/item-text/create-new"
+         || location.pathname === "/app/c/contacts/edit/new-person"
       ) hidden = true;
       return (
          <header id="page-header" className={`bg-dark ${hidden ? "d-none" : ""}`}>
@@ -85,10 +86,10 @@ class Header extends Component {
                               Settings
                               <i className="fa fa-fw fa-cog text-black-50 ml-1" />
                            </Link>
-                           <Link className="dropdown-item d-flex justify-content-between align-items-center" to="/support">
+                           <a className="dropdown-item d-flex justify-content-between align-items-center" href="https://www.quotientapp.com/support">
                               Help & Support
                               <i className="fa fa-fw fa-hand-holding-heart text-black-50 ml-1" />
-                           </Link>
+                           </a>
                            <div role="separator" className="dropdown-divider" />
                            <button className="dropdown-item d-flex justify-content-between align-items-center" onClick={() => history.push('/')}>
                               Sign Out

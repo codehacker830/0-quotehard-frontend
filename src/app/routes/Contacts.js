@@ -43,7 +43,7 @@ export default class Contacts extends Component {
                      </div>
                      <div className="col-md-6">
                         <div className="row mb-2">
-                           <button className="btn btn-success ml-auto">New Quote</button>
+                           <Link to="/app/c/contacts/edit/new-person" className="btn btn-success ml-auto">New Contact</Link>
                         </div>
                      </div>
                   </div>
@@ -60,7 +60,7 @@ export default class Contacts extends Component {
                            <td>
                               <div className="d-flex">
                                  <img className="avatar-32 mr-2"
-                                    src="https://secure.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?r=g&s=64&d=https%3A%2F%2Fasset.quotientapp.com%2Fimage%2Fcontact%2Fcompany1.png"
+                                    src="/assets/media/avatars/company1.png"
                                     alt="Allover" />
                                  <div className="u-ellipsis">
                                     <Link to="/app/c/contacts/view/4128663">Allover</Link>
@@ -73,10 +73,10 @@ export default class Contacts extends Component {
                            <td>
                               <div className="d-flex">
                                  <img className="avatar-32 mr-2"
-                                    src="https://secure.gravatar.com/avatar/5b790291599408b1b231ae1cf4c7a07a?r=g&s=64&d=https%3A%2F%2Fasset.quotientapp.com%2Fimage%2Fcontact%2Fperson1.png"
+                                    src="/assets/media/avatars/person1.png"
                                     alt="Danil Zolouthin" />
                                  <div className="u-ellipsis">
-                                    <Link to="/app/c/contacts/view/4143284">Danil Zolouthin</Link>
+                                    <Link to="/app/c/contacts/view/4143284">Danil Zolo</Link>
                                     <br />
                                     <small className="text-gray font-size-sm">DanilCompany</small>
                                  </div>
@@ -87,7 +87,7 @@ export default class Contacts extends Component {
                   </table>
 
                   <div className="p-4">
-                     <span>Total 4</span>
+                     <span>Total 2</span>
                   </div>
                </div>
             </div>
