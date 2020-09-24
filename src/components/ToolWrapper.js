@@ -46,7 +46,7 @@ export default class ToolWrapper extends Component {
             <input type="file"
                ref={this.hiddenFileInput}
                onChange={this.uploadMultipleFiles}
-               style={{ display: 'none' }}
+               className="d-none"
                multiple
             />
             <button className="btn btn-light mr-1"

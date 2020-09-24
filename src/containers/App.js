@@ -48,7 +48,7 @@ class App extends Component {
          if (token === null) {
             return (<Redirect to={'/sign-in'} />);
          } else if (initURL === '' || initURL === '/' || initURL === '/sign-in') {
-            return (<Redirect to={'/app/sample-page'} />);
+            return (<Redirect to={'/app'} />);
          } else {
             return (<Redirect to={initURL} />);
          }
@@ -59,9 +59,10 @@ class App extends Component {
                <Switch>
                   {/* <RestrictedRoute path={`${match.url}/app`} token={token} component={MainApp}/> */}
                   <Route path='/app' component={asyncComponent(() => import("../app"))} />
-                  <Route path='/sign-in' component={asyncComponent(() => import("../containers/SignIn"))} />
-                  <Route path='/new-account' component={asyncComponent(() => import("../containers/SignUp"))} />
-                  <Route path='/forgot-pass' component={asyncComponent(() => import("../containers/ForgotPassword"))} />
+                  <Route path='/q/:token' component={asyncComponent(() => import("./QuoteView"))} />
+                  <Route path='/sign-in' component={asyncComponent(() => import("./SignIn"))} />
+                  <Route path='/new-account' component={asyncComponent(() => import("./SignUp"))} />
+                  <Route path='/forgot-pass' component={asyncComponent(() => import("./ForgotPassword"))} />
                   <Route component={asyncComponent(() => import('../components/Error404'))} />
                </Switch>
             </div>

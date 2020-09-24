@@ -83,11 +83,11 @@ export default class Dashboard extends Component {
                      <div>
                         <table className="quotient-table mb-4">
                            <tbody className="rowClick" data-tg-click="root_rowClick">
-                              <tr className="mod-white">
+                              <tr className="mod-white" onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
                                  <td>
                                     <span className="float-right ml-2">300.00</span>
                                     <div className="u-ellipsis">
-                                       <Link to="q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g">Test Quote</Link>
+                                       <span>Test Quote</span>
                                     </div>
                                     <span className="float-right">
                                        <small className="text-gray">
@@ -100,7 +100,7 @@ export default class Dashboard extends Component {
                                     </div>
                                  </td>
                               </tr>
-                              <tr className="mod-white">
+                              <tr className="mod-white" onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
                                  <td>
                                     <span className="float-right ml-2">200.00</span>
                                     <div className="u-ellipsis">
@@ -124,7 +124,7 @@ export default class Dashboard extends Component {
                      <div>
                         <table className="quotient-table mb-4">
                            <tbody className="rowClick" data-tg-click="root_rowClick">
-                              <tr className="mod-blue">
+                              <tr className="mod-blue" onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
                                  <td>
                                     <span className="float-right ml-2">300.00</span>
                                     <button className="btn btn-sm btn-outline-dark float-left m-1 mr-2" onClick={() => this.onClickArchive()}>Archive</button>
@@ -139,9 +139,7 @@ export default class Dashboard extends Component {
                                     </span>
                                     <div className="u-ellipsis">
                                        <small className="text-gray">
-                                          <span data-tg-control="{&quot;QuotesLastView&quot;:[1599451559]}">
-                                             <span className="text-danger mr-1">Viewed 1 hour ago</span>
-                                          </span>HK by A Devom #3</small>
+                                       <span className="text-danger mr-1">Viewed 1 hour ago</span>HK by A Devom #3</small>
                                     </div>
                                  </td>
                               </tr>

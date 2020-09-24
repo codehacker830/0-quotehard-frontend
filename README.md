@@ -1,17 +1,3 @@
-## Contact
-Dear Goby,
-
-This is Raffale C.
-It is a little cumbersome to keep in touch in freelancer chat as you know.<br />
-Could you invite me to your slack channel with my email - honestypassion0615@gmail.com.<br />
-My skype id is - live:honestypassion0615<br />
-FYI:  By T&P of freelancer platform, it might cause the account suspension to both of us.<br />
-So it shouldn't be mentioned in freelancer chat.<br />
-Hope you pay attention to this.<br />
-
-Regards,
-Raffale Cantatore
-
 ## Quotient
 http://40.88.10.190
 

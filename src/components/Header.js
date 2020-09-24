@@ -25,16 +25,18 @@ class Header extends Component {
       const { isOpen } = this.state;
       const { history, location } = this.props;
       console.log(" isOpen ", isOpen);
-      let hidden = false;
+      let show = false;
       if (
-         location.pathname === "/app/quote/get"
-         || location.pathname === "/app/content/template/get"
-         || location.pathname === "/app/content/item-price/create-new"
-         || location.pathname === "/app/content/item-text/create-new"
-         || location.pathname === "/app/c/contacts/edit/new-person"
-      ) hidden = true;
+         location.pathname === "/app"
+         || location.pathname === "/app/quotes"
+         || location.pathname === "/app/c/contacts"
+         || location.pathname === "/app/content/templates"
+         || location.pathname === "/app/content/item-price/browse"
+         || location.pathname === "/app/content/item-text/browse"
+         || location.pathname === "/app/settings"
+      ) show = true;
       return (
-         <header id="page-header" className={`bg-dark ${hidden ? "d-none" : ""}`}>
+         <header id="page-header" className={`bg-dark ${show ? "" : "d-none"}`}>
             {/* Header Content */}
             <div className="container content-header">
                {/* Left Section */}

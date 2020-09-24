@@ -23,11 +23,11 @@ export default class Contacts extends Component {
                            <div className="col-sm-6 px-1">
                               <div className="form-group">
                                  <select className="form-control" id="author" name="author">
+                                    <optgroup label="---------------------------"></optgroup>
                                     <option value="PeopleAndCompanies" defaultValue>People &amp; Companies</option>
-                                    <optgroup label="---------------------------">
-                                       <option value="People">People</option>
-                                       <option value="Companies">Companies</option>
-                                    </optgroup>
+                                    <optgroup label="---------------------------"></optgroup>
+                                    <option value="People">People</option>
+                                    <option value="Companies">Companies</option>
                                  </select>
                               </div>
                            </div>
@@ -56,14 +56,14 @@ export default class Contacts extends Component {
                   </InlineHelp>
                   <table className="quotient-table">
                      <tbody className="rowClick">
-                        <tr onClick={() => history.push(`/app/c/contacts/view/4128663`)}>
+                        <tr onClick={() => history.push(`/app/c/contacts/view/2222`)}>
                            <td>
                               <div className="d-flex">
-                                 <img className="avatar-32 mr-2"
+                                 <img className="avatar-36 mr-2 my-auto"
                                     src="/assets/media/avatars/company1.png"
-                                    alt="Allover" />
+                                    alt="..." />
                                  <div className="u-ellipsis">
-                                    <Link to="/app/c/contacts/view/4128663">Allover</Link>
+                                    <Link to="/app/c/contacts/view/4128663">ITGLOBAL</Link>
                                     <br />
                                  </div>
                               </div>
@@ -72,13 +72,13 @@ export default class Contacts extends Component {
                         <tr onClick={() => history.push(`/app/c/contacts/view/4143284`)}>
                            <td>
                               <div className="d-flex">
-                                 <img className="avatar-32 mr-2"
+                                 <img className="avatar-36 mr-2 my-auto"
                                     src="/assets/media/avatars/person1.png"
-                                    alt="Danil Zolouthin" />
+                                    alt="..." />
                                  <div className="u-ellipsis">
-                                    <Link to="/app/c/contacts/view/4143284">Danil Zolo</Link>
+                                    <Link to="/app/c/contacts/view/4143284">Raffale Cantatore</Link>
                                     <br />
-                                    <small className="text-gray font-size-sm">DanilCompany</small>
+                                    <small className="text-gray font-size-sm">Raff_Company</small>
                                  </div>
                               </div>
                            </td>
