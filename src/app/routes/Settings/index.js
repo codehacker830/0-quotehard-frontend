@@ -18,7 +18,7 @@ export default class Settings extends Component {
 
                   <AddTeamMember />
                   
-                  {/* <AccountAndBilling /> */}
+                  <AccountAndBilling />
                   
                   {/* <AddOns /> */}
 

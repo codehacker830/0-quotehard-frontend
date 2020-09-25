@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NavCrump from '../../../components/NavCrump';
 import PriceItemForm from '../../../components/PriceItemForm';
+import TemplateSettings from '../../../components/TemplateSettings';
 import TextItemForm from '../../../components/TextItemForm';
 
 export default class GetTemplate extends Component {
@@ -37,8 +38,7 @@ export default class GetTemplate extends Component {
                      </div>
                      <div className="col-sm-6">
                         <div className="pl-4 py-2" style={{ borderLeft: "4px solid #eee" }}>
-                           <h3>Template Settings</h3>
-                           <button type="button" className="btn btn-outline-dark">Show All...</button>
+                           <TemplateSettings />
                         </div>
                      </div>
                   </div>

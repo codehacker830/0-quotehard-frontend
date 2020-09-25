@@ -110,6 +110,9 @@ a.nav-link.active {
 .width-115 {
    width: 115px;
 }
+.maxWidth-180 {
+   max-width: 180px !important;
+}
 .maxWidth-200 {
    max-width: 200px !important;
 }
@@ -178,7 +181,12 @@ a.nav-link.active {
    color: #1bb02d;
    background: none;
 }
-
+.label.label-black {
+   background-color: #333;
+}
+.label.label-success {
+   background-color: #1bb02d;
+}
 .quoteItems {
    margin-bottom: 45px;
    .item_code {

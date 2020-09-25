@@ -27,14 +27,16 @@ export const Profile = (props) => {
                </div>
 
                <div className="mb-5">
-                  <div className="row">
-                     <div className="form-group col-md-6 col-sm-12">
-                        <label htmlFor="example-text-input">First Name</label>
-                        <input type="text" className="form-control mr-3" placeholder="First Name" defaultValue />
-                     </div>
-                     <div className="form-group col-md-6 col-sm-12">
-                        <label htmlFor="example-text-input">Last Name</label>
-                        <input type="text" className="form-control" placeholder="Last Name" defaultValue />
+                  <div className="form-group">
+                     <div className="row">
+                        <div className="col-md-6 col-sm-12">
+                           <label htmlFor="example-text-input">First Name</label>
+                           <input type="text" className="form-control mr-3" placeholder="First Name" defaultValue />
+                        </div>
+                        <div className="col-md-6 col-sm-12">
+                           <label htmlFor="example-text-input">Last Name</label>
+                           <input type="text" className="form-control" placeholder="Last Name" defaultValue />
+                        </div>
                      </div>
                   </div>
                   <div className="form-group">
@@ -172,7 +174,7 @@ export const Profile = (props) => {
                <div className="mb-5">
                   <h3>Profile Photo</h3>
                   <div className="row no-gutters">
-                     <img className="avatar-36 mr-2" src={`/assets/media/avatars/person1.png`} />
+                     <img className="avatar-36 mr-2" src={`/assets/media/avatars/person1.png`} alt="..."/>
                      <button type="button" className="btn btn-alt-secondary mr-1">Change</button>
                      <button type="button" className="btn btn-alt-secondary">Remove</button>
                   </div>

@@ -101,7 +101,7 @@ export default class Quotes extends Component {
                               </div>
                            </td>
                         </tr>
-                        <tr className="mod-green" onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
+                        <tr className="mod-green" onClick={() => this.props.history.push("/app/quote/5222670")}>
                            <td>
                               <span className="float-right ml-2">1,350.00</span>
                               <div className="u-ellipsis">
