@@ -33,7 +33,12 @@ export const BillingOverview = (props) => {
                         <span className="label label-success">Not saved</span>
                      </div>
                      <div>
-                        <Link className="btn btn-alt-secondary mr-3" to="/app/settings/payment-details">Add Payment Details</Link>
+                        <Link className="btn btn-alt-secondary mr-3" to={{
+                           pathname: "/app/settings/payment-details",
+                           state: {
+                              from: "/app/settings/billing-overview"
+                           }
+                        }}>Add Payment Details</Link>
                         <span className="font-size-sm text-success"><i className="fa fa-lock mr-1"></i>SECURE</span>
                      </div>
                   </div>

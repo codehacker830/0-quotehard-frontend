@@ -54,11 +54,11 @@ export default class Dashboard extends Component {
                      {/* Draft Section */}
                      <table className="quotient-table mb-4">
                         <tbody className="rowClick" data-tg-click="root_rowClick">
-                           <tr className="mod-green">
+                           <tr className="mod-green" onClick={() => this.props.history.push(`app/quote/5222670`)}>
                               <td>
                                  <span className="float-right ml-2">1,350.00</span>
                                  <div className="u-ellipsis">
-                                    <Link to="app/quote/5222670">Please checkout your bill...(Title Of Quote)</Link>
+                                    <span>Please checkout your bill...(Title Of Quote)</span>
                                  </div>
                                  <span className="float-right">
                                     <small className="text-gray">
@@ -83,7 +83,7 @@ export default class Dashboard extends Component {
                      <div>
                         <table className="quotient-table mb-4">
                            <tbody className="rowClick" data-tg-click="root_rowClick">
-                              <tr className="mod-white" onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
+                              <tr className="mod-white" onClick={() => this.props.history.push(`/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g`)}>
                                  <td>
                                     <span className="float-right ml-2">300.00</span>
                                     <div className="u-ellipsis">
@@ -100,11 +100,11 @@ export default class Dashboard extends Component {
                                     </div>
                                  </td>
                               </tr>
-                              <tr className="mod-white" onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
+                              <tr className="mod-white" onClick={() => this.props.history.push(`/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g`)}>
                                  <td>
                                     <span className="float-right ml-2">200.00</span>
                                     <div className="u-ellipsis">
-                                       <Link to="q/GQWDSP0.YXD1HFESUwFpFhVFmd-GHtoQiqNpu8anUiU">Titile of Quote</Link>
+                                       <span>Titile of Quote</span>
                                     </div>
                                     <span className="float-right">
                                        <small className="text-gray">
@@ -127,9 +127,9 @@ export default class Dashboard extends Component {
                               <tr className="mod-blue" onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
                                  <td>
                                     <span className="float-right ml-2">300.00</span>
-                                    <button className="btn btn-sm btn-outline-dark float-left m-1 mr-2" onClick={() => this.onClickArchive()}>Archive</button>
+                                    <button className="btn btn-sm btn-alt-dark float-left m-1 mr-2" onClick={() => this.onClickArchive()}>Archive</button>
                                     <div className="u-ellipsis">
-                                       <a href="/q/O1VCV2MznD47FjGU.oIlCgqcAT-fxYhenFAFX9trWuI">can you checkout the service price today?</a>
+                                       <span>can you checkout the service price today?</span>
                                     </div>
                                     <span className="float-right">
                                        <small className="text-gray">
@@ -139,7 +139,7 @@ export default class Dashboard extends Component {
                                     </span>
                                     <div className="u-ellipsis">
                                        <small className="text-gray">
-                                       <span className="text-danger mr-1">Viewed 1 hour ago</span>HK by A Devom #3</small>
+                                          <span className="text-danger mr-1">Viewed 1 hour ago</span>HK by A Devom #3</small>
                                     </div>
                                  </td>
                               </tr>
@@ -238,7 +238,7 @@ export default class Dashboard extends Component {
             </div>
             <div className="row py-5 justify-content-center">
                <p className="text-center">
-                  <strong>Your trial ends in 11 </strong>
+                  <strong>Your trial ends in <span className="badge badge-primary">11</span></strong>
                   <br />
                   To carry on beyond your trial, please
                <Link to="/app/settings/payment-details"> add payment details</Link>

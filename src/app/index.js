@@ -57,6 +57,7 @@ export default class AppRoot extends Component {
                      <Route exact path="/app/settings/sales-category/:id" component={asyncComponent(() => import("./routes/Settings/SalesCategory"))} />
                      <Route exact path="/app/settings/sales-tax/:id" component={asyncComponent(() => import("./routes/Settings/SalesTax"))} />
 
+                     <Route exact path="/app/settings/payment-details" component={asyncComponent(() => import("./routes/Settings/PaymentDetails"))} />
                      
                   </Switch>
                </Route>

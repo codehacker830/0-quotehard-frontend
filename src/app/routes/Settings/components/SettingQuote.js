@@ -2,7 +2,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export const QuoteSetting = (props) => {
+export const SettingQuote = (props) => {
    return (
       <>
          <h3 className="settings-title">Quote Settings</h3>
@@ -14,4 +14,4 @@ export const QuoteSetting = (props) => {
    )
 }
 
-export default QuoteSetting
+export default SettingQuote

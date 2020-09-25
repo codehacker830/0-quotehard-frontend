@@ -4,7 +4,7 @@ import AccountAndBilling from './components/AccountAndBilling';
 import AddOns from './components/AddOns';
 import AddTeamMember from './components/AddTeamMember';
 import ConnectWithOtherApps from './components/ConnectWithOtherApps';
-import QuoteSetting from './components/QuoteSetting';
+import SettingQuote from './components/SettingQuote';
 
 export default class Settings extends Component {
    render() {
@@ -14,7 +14,7 @@ export default class Settings extends Component {
                <div className="col-md-6 col-sm-12">
                   <h1 className="pt-5 px-2 mb-5">CodeNetflix </h1>
                   
-                  <QuoteSetting />
+                  <SettingQuote />
 
                   <AddTeamMember />
                   

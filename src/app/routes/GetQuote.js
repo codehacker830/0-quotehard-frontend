@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import NavCrump from '../../components/NavCrump';
 import PriceItemForm from '../../components/PriceItemForm';
 import QuoteContact from '../../components/QuoteContact';
+import QuoteSettings from '../../components/QuoteSettings';
 import TextItemForm from '../../components/TextItemForm';
 
 export default class GetQuote extends Component {
@@ -62,8 +63,7 @@ export default class GetQuote extends Component {
                      {/* Quote Setting */}
                      <div className="col-sm-6">
                         <div className="pl-4 py-2" style={{ borderLeft: "4px solid #eee" }}>
-                           <h3>Quote Settings</h3>
-                           <button type="button" className="btn btn-outline-dark">Show All...</button>
+                           <QuoteSettings />
                         </div>
                      </div>
                   </div>
