@@ -5,6 +5,10 @@ import { connect } from 'react-redux';
 import { getUser, setInitUrl } from '../actions/Auth';
 import axios from '../util/Api';
 import asyncComponent from '../util/asyncComponent';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
+import ForgotPassword from './ForgotPassword';
+import Error404 from '../components/Error404';
 
 const RestrictedRoute = ({ component: Component, token, ...rest }) => {
    return (
@@ -55,13 +59,14 @@ class App extends Component {
          <React.Fragment>
             <div id="page-container" className="main-content-boxed">
                <Switch>
-                  {/* <RestrictedRoute path={`${match.url}/app`} token={token} component={MainApp}/> */}
-                  <Route path='/app' component={asyncComponent(() => import("../app"))} />
+                  <RestrictedRoute path='/app' token={token} component={asyncComponent(() => import("../app"))} />
+                  {/* <Route path='/app' component={asyncComponent(() => import("../app"))} /> */}
                   <Route path='/q/:token' component={asyncComponent(() => import("./PublicQuoteView"))} />
-                  <Route path='/sign-in' component={asyncComponent(() => import("./SignIn"))} />
-                  <Route path='/new-account' component={asyncComponent(() => import("./SignUp"))} />
-                  <Route path='/forgot-pass' component={asyncComponent(() => import("./ForgotPassword"))} />
-                  <Route component={asyncComponent(() => import('../components/Error404'))} />
+                  {/* <Route path='/sign-in' component={asyncComponent(() => import("./SignIn"))} /> */}
+                  <Route path='/sign-in' component={SignIn} />
+                  <Route path='/new-account' component={SignUp} />
+                  <Route path='/forgot-pass' component={ForgotPassword} />
+                  <Route component={Error404} />
                </Switch>
             </div>
          </React.Fragment>

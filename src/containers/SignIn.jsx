@@ -9,10 +9,15 @@ class SignIn extends Component {
       email: "",
       password: ""
    };
+   componentWillReceiveProps(nextProps) {
+      console.error(" ___ next props in SignIn page ___ ", nextProps);
+      if (nextProps.authUser) {
+         this.props.history.push('/app');
+      }
+   }
    render() {
       const { checked, email, password } = this.state;
       const { history } = this.props;
-      console.log("Login State = ", this.state);
       return (
          <main id="main-container">
             <div className="row no-gutters">

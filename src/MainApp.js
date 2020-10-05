@@ -26,7 +26,6 @@ const MainApp = () => {
             preventDuplicates={toastrDefaultConfig.preventDuplicates}
             position={toastrDefaultConfig.position}
             getState={(state) => {
-               console.error(" -- toastr state -->", state);
                return state.toastr
             }}
             transitionIn={toastrDefaultConfig.transitionIn}

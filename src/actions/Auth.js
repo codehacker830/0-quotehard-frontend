@@ -24,6 +24,7 @@ export const getUser = () => {
          console.log("get User res: ", data);
          if (data.user) {
             dispatch({ type: FETCH_SUCCESS });
+            dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
             dispatch({ type: USER_DATA, payload: data.user });
          } else {
             dispatch({ type: FETCH_ERROR, payload: data.error });
@@ -38,8 +39,8 @@ export const getUser = () => {
 export const userSignIn = ({ email, password }) => {
    return (dispatch) => {
       dispatch({ type: FETCH_START });
-      dispatch({ type: USER_TOKEN_SET, payload: null });
-      dispatch({ type: USER_DATA, payload: null });
+      // dispatch({ type: USER_TOKEN_SET, payload: null });
+      // dispatch({ type: USER_DATA, payload: null });
       axios.post('/user/login', {
          email: email,
          password: password,
