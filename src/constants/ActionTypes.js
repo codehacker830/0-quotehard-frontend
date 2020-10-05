@@ -15,3 +15,11 @@ export const SIGNOUT_USER_SUCCESS = 'signout_user_success';
 export const INIT_URL = 'init_url';
 export const USER_DATA = 'user_data';
 export const USER_TOKEN_SET = 'user_token_set';
+
+
+
+// Settings
+
+export const THEME_COLOR = 'theme_color';
+export const USER_SETTINGS = 'user_settings';
+export const QUOTE_DEFAULTS = 'quote_defaults';

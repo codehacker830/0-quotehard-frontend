@@ -23,8 +23,8 @@ export const alterTypeVariableStr = (str) => {
          return "Postal Address";
       case "physicalAddress":
          return "Physical Address";
-
       default:
          return str;
    }
 }
+

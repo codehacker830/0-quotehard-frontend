@@ -119,6 +119,9 @@ a.nav-link.active {
 .maxWidth-300 {
    max-width: 300px !important;
 }
+.maxWidth-400 {
+   max-width: 400px !important;
+}
 .maxWidth-550 {
    max-width: 550px !important;
 }
@@ -360,6 +363,37 @@ a.nav-link.active {
    background: #fff;
    margin-bottom: 40px;
 }
+.completer-ui {
+   -webkit-user-select: none;
+   user-select: none;
+   margin: 0;
+   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.15);
+   border: 1px solid rgba(0, 0, 0, 0.1);
+   background-color: #f5f5f5;
+   position: absolute;
+   z-index: 1100;
+   list-style: none;
+   text-align: left;
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   padding: 0;
+   min-width: 230px;
+   min-height: 20px;
+   width: 100%;
+   li {
+      color: #404040;
+      margin: 0;
+      padding: 8px 15px 8px 10px;
+      display: block;
+      cursor: pointer;
+      line-height: 17px;
+   }
+   li:hover,
+   li:active {
+      color: #fff !important;
+      background-color: #51a5e3;
+   }
+}
+
 @media (min-width: 480px) {
    .total-desc {
       width: 65% !important;

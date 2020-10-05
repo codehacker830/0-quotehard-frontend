@@ -1,47 +1,49 @@
+
+/* eslint-disable */
 export const personData = {
-   type: "person",
+   category: "person",
    firstName: "Adolfo",
    lastName: "Bianchi",
-   emailAddress: "qovjkkdy0x@temporary-mail.net",
+   email: "adolfo@email.com",
    companyName: "ITGLOBAL",
 
-   addressSetArray: [
+   phones: [
       {
-         type: "primaryPhone",
+         category: "primaryPhone",
          content: "0392 0618215"
       },
       // {
-      //    type: "workPhone",
+      //    category: "workPhone",
       //    content: "0342 0816518"
       // },
       // {
-      //    type: "mobile",
+      //    category: "mobile",
       //    content: "0344 5162513"
       // },
       // {
-      //    type: "homePhone",
+      //    category: "homePhone",
       //    content: "0344 5162513"
       // },
       // {
-      //    type: "website",
+      //    category: "website",
       //    content: "https://mysite.com"
       // },
       // {
-      //    type: "skype",
+      //    category: "skype",
       //    content: "live:myskype_id"
       // },
       // {
-      //    type: "twitter",
+      //    category: "twitter",
       //    content: "https://twitter.com"
       // },
       // {
-      //    type: "fax",
+      //    category: "fax",
       //    content: "39 516 2513"
       // },
    ],
-   addressDataArray: [
+   addresses: [
       {
-         type: "priamryAddress",
+         category: "priamryAddress",
          street: "Piazza Mercato 102",
          city: "Scoglitti",
          stateOrRegion: "Ragusa",
@@ -49,7 +51,7 @@ export const personData = {
          country: "Italy"
       },
       // {
-      //    type: "postalAddress",
+      //    category: "postalAddress",
       //    street: "Piazza Mercato 102",
       //    city: "Scoglitti",
       //    stateOrRegion: "Ragusa",
@@ -57,7 +59,7 @@ export const personData = {
       //    country: "Italy"
       // },
       // {
-      //    type: "physicalAddress",
+      //    category: "physicalAddress",
       //    street: "Via San Pietro Ad Aram 87",
       //    city: "Cadignano",
       //    stateOrRegion: "Modena",
@@ -68,23 +70,23 @@ export const personData = {
 };
 
 export const companyData = {
-   type: "company",
-   emailAddress: "support@itglobal.com",
+   category: "company",
+   email: "support@itglobal.com",
    companyName: "ITGLOBAL",
 
-   addressSetArray: [
+   phones: [
       {
-         type: "primaryPhone",
+         category: "primaryPhone",
          content: "0392 0618215"
       },
       // {
-      //    type: "workPhone",
+      //    category: "workPhone",
       //    content: "0342 0816518"
       // },
    ],
-   addressDataArray: [
+   addresses: [
       {
-         type: "primaryAddress",
+         category: "primaryAddress",
          street: "Piazza Mercato 102",
          city: "Scoglitti",
          stateOrRegion: "Ragusa",
@@ -92,7 +94,7 @@ export const companyData = {
          country: "Italy"
       },
       // {
-      //    type: "physicalAddress",
+      //    category: "physicalAddress",
       //    street: "Via San Pietro Ad Aram 87",
       //    city: "Cadignano",
       //    stateOrRegion: "Modena",
@@ -144,12 +146,22 @@ export const allActivities = [
 
 export const peopleContacts = [
    {
+      _id: "12345",
       name: "Raffale Cantatore",
-      company: "Raff Company"
+      email: "honestypassion0615@gmail.com",
+      company: "Raff Company",
    },
    {
+      _id: "13452",
       name: "Danil Zolo",
+      email: "danilo@gmail.com",
       company: "Danil Company"
+   },
+   {
+      _id: "248318",
+      name: "Radoje Cofallo",
+      email: "cofallo@gmail.com",
+      company: "AllOver"
    }
 ];
 
@@ -162,6 +174,6 @@ export const quotes = [
       time: "36 minutes ago",
       value: 300,
       token: "C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g",
-
    }
 ];
+
