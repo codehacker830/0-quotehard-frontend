@@ -16,6 +16,52 @@ export const setInitUrl = (url) => {
    };
 };
 
+export const getUser = () => {
+   return (dispatch) => {
+      dispatch({ type: FETCH_START });
+      axios.get('/user',
+      ).then(({ data }) => {
+         console.log("get User res: ", data);
+         if (data.user) {
+            dispatch({ type: FETCH_SUCCESS });
+            dispatch({ type: USER_DATA, payload: data.user });
+         } else {
+            dispatch({ type: FETCH_ERROR, payload: data.error });
+         }
+      }).catch(function (error) {
+         dispatch({ type: FETCH_ERROR, payload: error.message });
+         console.log("Error****:", error.message);
+      });
+   }
+};
+
+export const userSignIn = ({ email, password }) => {
+   return (dispatch) => {
+      dispatch({ type: FETCH_START });
+      dispatch({ type: USER_TOKEN_SET, payload: null });
+      dispatch({ type: USER_DATA, payload: null });
+      axios.post('/user/login', {
+         email: email,
+         password: password,
+      }
+      ).then(({ data }) => {
+         console.log("userSignIn: ", data);
+         if (data.user) {
+            localStorage.setItem("token", JSON.stringify(data.access_token));
+            axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
+            dispatch({ type: FETCH_SUCCESS });
+            dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
+            dispatch({ type: USER_DATA, payload: data.user });
+         } else {
+            dispatch({ type: FETCH_ERROR, payload: data.error });
+         }
+      }).catch(function (error) {
+         dispatch({ type: FETCH_ERROR, payload: error.message });
+         console.log("Error****:", error.message);
+      });
+   }
+};
+
 export const userSignUp = ({ name, email, password }) => {
    console.log(name, email, password);
    return (dispatch) => {
@@ -28,10 +74,10 @@ export const userSignUp = ({ name, email, password }) => {
       ).then(({ data }) => {
          console.log("data:", data);
          if (data.result) {
-            localStorage.setItem("token", JSON.stringify(data.token.access_token));
-            axios.defaults.headers.common['access-token'] = "Bearer " + data.token.access_token;
+            localStorage.setItem("token", JSON.stringify(data.access_token));
+            axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
             dispatch({ type: FETCH_SUCCESS });
-            dispatch({ type: USER_TOKEN_SET, payload: data.token.access_token });
+            dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
             dispatch({ type: USER_DATA, payload: data.user });
          } else {
             console.log("payload: data.error", data.error);
@@ -43,50 +89,6 @@ export const userSignUp = ({ name, email, password }) => {
       });
    }
 };
-
-export const userSignIn = ({ email, password }) => {
-   return (dispatch) => {
-      dispatch({ type: FETCH_START });
-      axios.post('auth/login', {
-         email: email,
-         password: password,
-      }
-      ).then(({ data }) => {
-         console.log("userSignIn: ", data);
-         if (data.result) {
-            localStorage.setItem("token", JSON.stringify(data.token.access_token));
-            axios.defaults.headers.common['access-token'] = "Bearer " + data.token.access_token;
-            dispatch({ type: FETCH_SUCCESS });
-            dispatch({ type: USER_TOKEN_SET, payload: data.token.access_token });
-         } else {
-            dispatch({ type: FETCH_ERROR, payload: data.error });
-         }
-      }).catch(function (error) {
-         dispatch({ type: FETCH_ERROR, payload: error.message });
-         console.log("Error****:", error.message);
-      });
-   }
-};
-
-export const getUser = () => {
-   return (dispatch) => {
-      dispatch({ type: FETCH_START });
-      axios.post('auth/me',
-      ).then(({ data }) => {
-         console.log("userSignIn: ", data);
-         if (data.result) {
-            dispatch({ type: FETCH_SUCCESS });
-            dispatch({ type: USER_DATA, payload: data.user });
-         } else {
-            dispatch({ type: FETCH_ERROR, payload: data.error });
-         }
-      }).catch(function (error) {
-         dispatch({ type: FETCH_ERROR, payload: error.message });
-         console.log("Error****:", error.message);
-      });
-   }
-};
-
 
 export const userSignOut = () => {
    return (dispatch) => {

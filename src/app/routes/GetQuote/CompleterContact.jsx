@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { peopleContacts } from '../../../constants/Dump';
+import axios from '../../../util/Api';
 
 export const CompleterContact = (props) => {
    const [list, setList] = useState([]);
    useEffect(() => {
       console.log("props.emailTo => ", props.emailTo);
-      // get search email list from api
-      setList(peopleContacts);
+      if (props.emailTo !== "") {
+         // get search email list from api
+         axios.post("/contacts/search-by-email",)
+         setList(peopleContacts);
+      }
    }, [props.emailTo]);
    if (props.emailTo === "") return null;
    else return (

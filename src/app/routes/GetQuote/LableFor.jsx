@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const EmailToLabel = (props) => {
+export const LableFor = (props) => {
    return (
       <>
          {
@@ -12,4 +12,4 @@ export const EmailToLabel = (props) => {
    )
 }
 
-export default EmailToLabel
+export default LableFor

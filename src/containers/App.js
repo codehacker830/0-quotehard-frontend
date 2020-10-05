@@ -26,7 +26,6 @@ const RestrictedRoute = ({ component: Component, token, ...rest }) => {
 
 class App extends Component {
    componentWillMount() {
-      window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
       if (this.props.initURL === '') {
          this.props.setInitUrl(this.props.history.location.pathname);
       }
@@ -38,8 +37,7 @@ class App extends Component {
          axios.defaults.headers.common['Authorization'] = "Bearer " + nextProps.token;
       }
       if (nextProps.token && !nextProps.authUser) {
-         this.props.getUser()
-
+         this.props.getUser();
       }
    }
    render() {
@@ -75,4 +73,5 @@ const mapStateToProps = ({ auth }) => {
    const { authUser, token, initURL } = auth;
    return { token, authUser, initURL }
 };
-export default connect(mapStateToProps, { setInitUrl, getUser })(App);
+const mapDispatchToProps = { setInitUrl, getUser };
+export default connect(mapStateToProps, mapDispatchToProps)(App);

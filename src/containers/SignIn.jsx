@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { userSignIn } from "../actions/Auth";
 
-export default class SignIn extends Component {
+class SignIn extends Component {
    state = {
       checked: true,
       email: "",
@@ -57,7 +59,10 @@ export default class SignIn extends Component {
                                  <input type="checkbox" className="custom-control-input" id="remember-me-checkbox" name="remember-me-checkbox" checked={checked} onChange={() => this.setState({ checked: !checked })} />
                                  <label className="custom-control-label" htmlFor="remember-me-checkbox">Remember me</label>
                               </div>
-                              <button className="btn btn-block btn-hero-lg btn-hero-primary" onClick={() => history.push('/app')}>
+                              <button className="btn btn-block btn-hero-lg btn-hero-primary" onClick={(ev) => {
+                                 ev.preventDefault();
+                                 this.props.userSignIn({ email: this.state.email, password: this.state.password });
+                              }}>
                                  <i className="fa fa-fw fa-sign-in-alt mr-1" /> Sign In
                               </button>
                               <p className="mt-3 mb-0 d-lg-flex justify-content-lg-between">
@@ -86,3 +91,10 @@ export default class SignIn extends Component {
       );
    }
 }
+
+const mapStateToProps = ({ auth, commonData }) => {
+   const { authUser } = auth;
+   return { authUser };
+}
+const mapDispatchToProps = { userSignIn };
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

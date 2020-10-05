@@ -7,7 +7,7 @@ import TextItemForm from '../../../components/TextItemForm';
 import { toastr } from 'react-redux-toastr';
 import { toastrWarningConfig, toastrSuccessConfig, toastrErrorConfig, toastrInfoConfig } from '../../../util/toastrConfig';
 import CompleterContact from './CompleterContact';
-import EmailToLabel from './EmailToLabel';
+import LableFor from './LableFor';
 
 export default class GetQuote extends Component {
    constructor(orops) {
@@ -75,14 +75,16 @@ export default class GetQuote extends Component {
                                     className="form-control rounded-0"
                                     value={this.state.emailTo}
                                     onChange={(ev) => this.setState({ emailTo: ev.target.value })} />
-                                 <CompleterContact emailTo={this.state.emailTo} addContact={(contact) => {
-                                    if (this.state.toContactList.find((it) => it._id === contact._id)) this.setState({ emailTo: "" });
-                                    else this.setState({
-                                       toContactList: [...this.state.toContactList, contact],
-                                       emailTo: ""
-                                    });
-                                 }} />
-                                 <EmailToLabel toContactList={this.state.toContactList} />
+                                 <CompleterContact
+                                    emailTo={this.state.emailTo}
+                                    addContact={(contact) => {
+                                       if (this.state.toContactList.find((it) => it._id === contact._id)) this.setState({ emailTo: "" });
+                                       else this.setState({
+                                          toContactList: [...this.state.toContactList, contact],
+                                          emailTo: ""
+                                       });
+                                    }} />
+                                 <LableFor toContactList={this.state.toContactList} />
                               </div>
                            </div>
                         </div>
