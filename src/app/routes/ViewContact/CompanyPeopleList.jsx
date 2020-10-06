@@ -1,19 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, withRouter } from 'react-router-dom';
 import { peopleContacts } from "../../../constants/Dump";
 
 const CompanyPeopleList = (props) => {
-   let from = "/app/c/contacts";
    let companyName = "";
-   const [peopleContactList, setPeopleContactArray] = React.useState([]);
-
+   const [peopleContactList, setPeopleContactArray] = useState([]);
+   const [from, setFrom] = useState("/app/c/contacts");
+   const [company, setCompany] = useState("");
    React.useEffect(() => {
       console.log("Company Props =>", props);
 
       // get poeple contact list with company contact _id
-      from = props.location.pathname;
-      companyName = props.contact.companyName;
-      console.log("from", from);
+      const from = props.location.pathname;
+      const company = props.contact.companyName;
+      setFrom(from);
+      setCompany(company);
       setPeopleContactArray(peopleContacts);
    }, [props]);
 
@@ -45,7 +46,7 @@ const CompanyPeopleList = (props) => {
                pathname: `/app/c/contacts/create/person`,
                state: {
                   from: `${from}`,
-                  company: `${companyName}`
+                  company: `${company}`
                }
             }}>Add Person</Link>
       </>

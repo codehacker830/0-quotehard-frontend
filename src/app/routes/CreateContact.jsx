@@ -1,68 +1,108 @@
 import { isNumber } from 'highcharts';
 import React, { Component } from 'react';
+import { toastr } from 'react-redux-toastr';
 import { Link } from 'react-router-dom';
 import NavCrump from '../../components/NavCrump';
 import {
    companyData
 } from "../../constants/Dump";
+import axios from '../../util/Api';
+import { toastrWarningConfig } from '../../util/toastrConfig';
+import AddressForm from '../../components/Contact/AddressForm';
+import AddAddressBtn from '../../components/Contact/AddAddressBtn';
+import AddPhoneBtn from '../../components/Contact/AddPhoneBtn';
 
 export default class CreateContact extends Component {
-   state = {
-      category: "person",
-      firstName: "",
-      lastName: "",
-      email: "",
-      companyName: "",
+   constructor(props) {
+      super(props);
+      this.goTo = "/app/c/contacts";
 
-      addressSetArray: [],
-      addressDataArray: [],
-   };
+      this.state = {
+         category: "person",
+         firstName: "",
+         lastName: "",
+         email: "",
+         companyName: "",
+
+         phones: [],
+         addresses: [],
+      };
+   }
 
    componentDidMount() {
       const { location, match } = this.props;
-      if (match.params.category === "person") this.setState({ category: "person" });
-      else if (match.params.category === "company") this.setState({ category: "company" });
-      else this.props.history.push('/app/c/contacts');
 
-      if (location.state && location.state.company) {
-         this.setState({ companyName: location.state.company });
-      }
+      if (match.params.category === "person" || match.params.category === "company") this.setState({ category: match.params.category });
+      else {
+         this.props.history.push('/app/c/contacts');
+         return;
+      };
+      if (location.state && location.state.company) this.setState({ companyName: location.state.company });
+      if (location.state && location.state.from) this.goTo = location.state.from;
    }
 
    handleAddressForm = (ev, index) => {
       console.log(" handleAddressForm index ===>", index);
-      let newAddressDataArray = [...this.state.addressDataArray];
-      if (ev.target.name === "category") newAddressDataArray[index].category = ev.target.value;
-      else if (ev.target.name === "street") newAddressDataArray[index].street = ev.target.value;
-      else if (ev.target.name === "city") newAddressDataArray[index].city = ev.target.value;
-      else if (ev.target.name === "stateOrRegion") newAddressDataArray[index].stateOrRegion = ev.target.value;
-      else if (ev.target.name === "postCode") newAddressDataArray[index].postCode = ev.target.value;
-      else if (ev.target.name === "country") newAddressDataArray[index].country = ev.target.value;
+      let newAddresses = [...this.state.addresses];
+      if (ev.target.name === "category") newAddresses[index].category = ev.target.value;
+      else if (ev.target.name === "street") newAddresses[index].street = ev.target.value;
+      else if (ev.target.name === "city") newAddresses[index].city = ev.target.value;
+      else if (ev.target.name === "stateOrRegion") newAddresses[index].stateOrRegion = ev.target.value;
+      else if (ev.target.name === "postCode") newAddresses[index].postCode = ev.target.value;
+      else if (ev.target.name === "country") newAddresses[index].country = ev.target.value;
 
-
-      console.error(" newAddressDataArray ===>", newAddressDataArray);
-      this.setState({ addressDataArray: newAddressDataArray });
+      this.setState({ addresses: newAddresses });
    }
 
-   onClickCreateContact = () => {
+   onHandleSubmit = () => {
       // API request to create contact
-      this.props.history.push("/app");
-   }
+      const {
+         category,
+         firstName,
+         lastName,
+         companyName,
+         email,
+         phones,
+         addresses
+      } = this.state;
+      const data = { category, firstName, lastName, companyName, email, phones, addresses };
+      console.log("request payload =", data);
+      if (category === "person" && (firstName === "" || email === "")) {
+         toastr.warning('Validation Warning', 'First Name is required.', toastrWarningConfig);
+         return;
+      }
+      if (category === "company" && companyName === "" && email === "") {
+         toastr.warning('Validation Warning', 'You need to enter a company name or email.', toastrWarningConfig);
+         return;
+      }
+      // this.setState({ isLoading: true });
+      // axios.post("/contacts", data).then((res) => {
+      //    console.log("create contact api resopnse = >", res);
+      //    this.setState({
+      //       isLoading: false,
+      //       // category: "",
+      //       // firstName: "",
+      //       // lastName: "",
+      //       // companyName: "",
+      //       // email: "",
+      //       // phones: "",
+      //       // addresse: ""
+      //    });
 
-   onClickUpdateContact = () => {
-      // API request to update contact
-      this.props.history.push("/app");
+      //    // this.props.history.push(this.goTo);
+
+      // }).catch(err => {
+      //    console.error("create contact api error ==>", err);
+
+      // });
    }
 
    render() {
-      console.log("Get contact props => ", this.props);
       const { location } = this.props;
-      console.log(" location =", location);
-      console.log(" this.state =", this.state);
       return (
          <React.Fragment>
-            <NavCrump linkTo="/app/c/contacts">
-               Contact
+            <NavCrump linkTo={this.goTo}>
+               Previous
             </NavCrump>
             <div className="content">
                <div className="block block-rounded">
@@ -125,7 +165,6 @@ export default class CreateContact extends Component {
                               </div>
                            )
                         }
-
                         {
                            this.state.category === "company" &&
                            (
@@ -160,7 +199,7 @@ export default class CreateContact extends Component {
 
                         {/* Address Set From */}
                         {
-                           this.state.addressSetArray.map((item, index) => {
+                           this.state.phones.map((item, index) => {
                               return (
                                  <div className="form-group" key={index}>
                                     <div className="d-flex mb-1">
@@ -169,10 +208,11 @@ export default class CreateContact extends Component {
                                              className="form-control"
                                              id="phone" name="phone"
                                              value={item.category}
+                                             defaultValue={`primaryPhone`}
                                              onChange={(ev) => {
-                                                let newPhoneDataArray = [...this.state.addressSetArray];
+                                                let newPhoneDataArray = [...this.state.phones];
                                                 newPhoneDataArray[index].category = ev.target.value;
-                                                this.setState({ addressSetArray: newPhoneDataArray });
+                                                this.setState({ phones: newPhoneDataArray });
                                              }}
                                           >
                                              <optgroup label="Phone">
@@ -192,7 +232,7 @@ export default class CreateContact extends Component {
                                           </select>
                                        </div>
                                        <div className="w-50">
-                                          <button type="button" className="btn close" onClick={() => this.setState({ addressSetArray: this.state.addressSetArray.filter((item, itemIndex) => itemIndex !== index) })}>
+                                          <button type="button" className="btn close" onClick={() => this.setState({ phones: this.state.phones.filter((item, itemIndex) => itemIndex !== index) })}>
                                              <span>×</span>
                                           </button>
                                        </div>
@@ -204,9 +244,9 @@ export default class CreateContact extends Component {
                                        placeholder=""
                                        value={item.content}
                                        onChange={(ev) => {
-                                          let newPhoneDataArray = [...this.state.addressSetArray];
+                                          let newPhoneDataArray = [...this.state.phones];
                                           newPhoneDataArray[index].content = ev.target.value;
-                                          this.setState({ addressSetArray: newPhoneDataArray });
+                                          this.setState({ phones: newPhoneDataArray });
                                        }}
                                     />
                                  </div>
@@ -216,98 +256,35 @@ export default class CreateContact extends Component {
 
 
                         {/* Add Phone Button */}
-                        <div className="form-group">
-                           <button
-                              type="button"
-                              className="btn btn-outline-dark"
-                              onClick={() => this.setState({ addressSetArray: [...this.state.addressSetArray, { type: "primaryPhone" }] })}
-                           >
-                              <i className="fa fa-plus"></i> Add Phone</button>
-                        </div>
+                        <AddPhoneBtn
+                           handleClick={() => this.setState({ phones: [...this.state.phones, { category: "primaryPhone" }] })}
+                        />
 
                         {/* Address Form */}
                         {
-                           this.state.addressDataArray.map((item, index) => {
+                           this.state.addresses.map((item, index) => {
                               return (
-                                 <div className="form-group" key={index}>
-                                    <div className="d-flex mb-1">
-                                       <div className="w-50">
-                                          <select
-                                             className="form-control"
-                                             id="addressType" name="category"
-                                             value={item.category}
-                                             onChange={(ev) => this.handleAddressForm(ev, index)}
-                                          >
-                                             <option value="primaryAddress">Primary Address</option>
-                                             <option value="postalAddress">Postal Address</option>
-                                             <option value="physicalAddress">Physical Addresses</option>
-                                          </select>
-                                       </div>
-                                       <div className="w-50">
-                                          <button
-                                             type="button"
-                                             className="btn close"
-                                             onClick={() => {
-                                                this.setState({ addressDataArray: this.state.addressDataArray.filter((item, itemIndex) => itemIndex !== index) });
-                                             }}>
-                                             <span>×</span>
-                                          </button>
-                                       </div>
-                                    </div>
-                                    <input
-                                       type="text"
-                                       className="form-control mb-1"
-                                       id="street" name="street"
-                                       placeholder="Street"
-                                       value={item.street}
-                                       onChange={(ev) => this.handleAddressForm(ev, index)} />
-                                    <input
-                                       type="text"
-                                       className="form-control mb-1"
-                                       id="city" name="city"
-                                       placeholder="City"
-                                       value={item.city}
-                                       onChange={(ev) => this.handleAddressForm(ev, index)} />
-                                    <div className="d-flex mb-1">
-                                       <input
-                                          type="text"
-                                          className="form-control mr-1"
-                                          id="state-region" name="stateOrRegion"
-                                          placeholder="State / Region"
-                                          value={item.stateOrRegion}
-                                          onChange={(ev) => this.handleAddressForm(ev, index)} />
-                                       <input
-                                          type="text"
-                                          className="form-control"
-                                          id="zip-post-code" name="postCode"
-                                          placeholder="Zip / Post Code"
-                                          value={item.postCode}
-                                          onChange={(ev) => this.handleAddressForm(ev, index)} />
-                                    </div>
-                                    <input
-                                       type="text"
-                                       className="form-control mb-1"
-                                       id="country" name="country"
-                                       placeholder="Country"
-                                       value={item.country}
-                                       onChange={(ev) => this.handleAddressForm(ev, index)} />
-                                 </div>
+                                 <AddressForm
+                                    key={index}
+                                    index={index}
+                                    item={item}
+                                    handleAddressForm={(ev, index) => this.handleAddressForm(ev, index)}
+                                    removeAddress={() => {
+                                       this.setState({ addresses: this.state.addresses.filter((item, itemIndex) => itemIndex !== index) });
+                                    }}
+                                 />
                               );
                            })
                         }
 
                         {/* Add Address Button */}
-                        <div className="form-group">
-                           <button
-                              type="button"
-                              className="btn btn-outline-dark"
-                              onClick={() => this.setState({ addressDataArray: [...this.state.addressDataArray, { type: "primayAddress" }] })}>
-                              <i className="fa fa-plus"></i> Add Address</button>
-                        </div>
+                        <AddAddressBtn
+                           handleClick={() => this.setState({ addresses: [...this.state.addresses, { category: "primaryAddress" }] })}
+                        />
 
                         <div className="form-group py-3">
-                           <button className="btn btn-lg btn-rounded btn-hero-primary mr-2">Create</button>
-                           <Link className="btn btn-lg btn-rounded btn-hero-secondary" to="/app/c/contacts">Cancel</Link>
+                           <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={this.onHandleSubmit}>Create</button>
+                           <Link className="btn btn-lg btn-rounded btn-hero-secondary" to={this.goTo}>Cancel</Link>
                         </div>
                      </div>
                   </div>

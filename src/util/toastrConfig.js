@@ -34,7 +34,7 @@ export const toastrSuccessConfig = {
 };
 
 export const toastrWarningConfig = {
-   timeOut: 10000,
+   timeOut: 5000,
    newestOnTop: true,
    preventDuplicates: false,
    position: 'top-right',
@@ -45,7 +45,7 @@ export const toastrWarningConfig = {
 };
 
 export const toastrErrorConfig = {
-   timeOut: 10000,
+   timeOut: 5000,
    newestOnTop: true,
    preventDuplicates: false,
    position: 'bottom-right',

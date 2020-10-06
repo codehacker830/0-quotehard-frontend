@@ -1,86 +1,111 @@
 import { isNumber } from 'highcharts';
 import React, { Component } from 'react';
+import { toastr } from 'react-redux-toastr';
 import { Link } from 'react-router-dom';
+import AddAddressBtn from '../../components/Contact/AddAddressBtn';
+import AddPhoneBtn from '../../components/Contact/AddPhoneBtn';
 import NavCrump from '../../components/NavCrump';
 import {
    companyData
 } from "../../constants/Dump";
+import axios from '../../util/Api';
+import { toastrSuccessConfig } from '../../util/toastrConfig';
 
 export default class EditContact extends Component {
-   state = {
-      mode: "",
+   constructor(props) {
+      super(props);
+      this.goTo = "/app/c/contacts";
+      this.state = {
+         category: "",
+         firstName: "",
+         lastName: "",
+         email: "",
+         companyName: "",
 
-      category: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      companyName: "",
-
-      addressSetArray: [],
-      addressDataArray: [],
-   };
+         phones: [],
+         addresses: [],
+      };
+   }
 
    componentDidMount() {
       const { location, match } = this.props;
-      console.error("typeof match.params.id ==", typeof match.params.id);
-      const parseNumber = parseInt(match.params.id);
-      console.error("match.params.id match.params.id ==", parseNumber);
-      if (isNumber(parseNumber)) {
-         // get the api result with `match.params.id`
-         const res = companyData;
-         this.setState({
-            mode: "update",
+      if (location.state && location.state.from) this.goTo = location.state.from;
+      const contactId = match.params.id;
+      console.error("match.params.id ==", contactId);
+      if (!contactId) {
+         this.props.push(this.goTo);
+         return;
+      }
 
-            category: res.category,
-            firstName: res.firstName,
-            lastName: res.lastName,
-            email: res.email,
-            companyName: res.companyName,
-            addressSetArray: res.addressSetArray,
-            addressDataArray: res.addressDataArray
+      axios.get(`/contacts/id/${contactId}`).then(({ data }) => {
+         console.log("get contact api res =>", data);
+         this.setState({
+            category: data.contact.category,
+            firstName: data.contact.firstName,
+            lastName: data.contact.lastName,
+            email: data.contact.email,
+            companyName: data.contact.companyName,
+            phones: data.contact.phones,
+            addresses: data.contact.addresses
          });
 
-      } else {
-         this.setState({ mode: "create" });
-         if (match.params.id === "new-person") this.setState({ category: "person" });
-         else if (match.params.id === "new-company") this.setState({ category: "company" });
-
-         if (location.state && location.state.company) {
-            this.setState({ companyName: location.state.company });
-         }
-      }
+      }).catch((err) => {
+         console.error("get contact api error ==>", err)
+      })
    }
 
    handleAddressForm = (ev, index) => {
       console.log(" handleAddressForm index ===>", index);
-      let newAddressDataArray = [...this.state.addressDataArray];
-      if (ev.target.name === "category") newAddressDataArray[index].category = ev.target.value;
-      else if (ev.target.name === "street") newAddressDataArray[index].street = ev.target.value;
-      else if (ev.target.name === "city") newAddressDataArray[index].city = ev.target.value;
-      else if (ev.target.name === "stateOrRegion") newAddressDataArray[index].stateOrRegion = ev.target.value;
-      else if (ev.target.name === "postCode") newAddressDataArray[index].postCode = ev.target.value;
-      else if (ev.target.name === "country") newAddressDataArray[index].country = ev.target.value;
+      let newAddresses = [...this.state.addresses];
+      if (ev.target.name === "category") newAddresses[index].category = ev.target.value;
+      else if (ev.target.name === "street") newAddresses[index].street = ev.target.value;
+      else if (ev.target.name === "city") newAddresses[index].city = ev.target.value;
+      else if (ev.target.name === "stateOrRegion") newAddresses[index].stateOrRegion = ev.target.value;
+      else if (ev.target.name === "postCode") newAddresses[index].postCode = ev.target.value;
+      else if (ev.target.name === "country") newAddresses[index].country = ev.target.value;
 
-
-      console.error(" newAddressDataArray ===>", newAddressDataArray);
-      this.setState({ addressDataArray: newAddressDataArray });
+      console.error(" newAddresses ===>", newAddresses);
+      this.setState({ addresses: newAddresses });
    }
 
-   onClickCreateContact = () => {
+   onHandleSubmit = () => {
       // API request to create contact
-      this.props.history.push("/app");
-   }
-
-   onClickUpdateContact = () => {
-      // API request to update contact
-      this.props.history.push("/app");
+      const {
+         category,
+         firstName,
+         lastName,
+         companyName,
+         email,
+         phones,
+         addresses
+      } = this.state;
+      const data = { category, firstName, lastName, companyName, email, phones, addresses };
+      console.log("edit contact request payload =", data);
+      if (category === "person" && (firstName === "" || email === "")) {
+         toastr.warning('Warning !', 'First Name is required.', toastrWarningConfig);
+         return;
+      }
+      if (category === "company" && companyName === "" && email === "") {
+         toastr.warning('Warning !', 'You need to enter a company name or email.', toastrWarningConfig);
+         return;
+      }
+      const { match } = this.props;
+      const contactId = match.params.id;
+      if (!contactId) {
+         toastr.warning('Warning !', "Contact can't be catched.", toastrWarningConfig);
+         return;
+      }
+      axios.put(`/contacts/${contactId}`, data).then((res) => {
+         console.log("api resopnse = >", res);
+         toastr.success('Success !', "Contact was updated successfully.", toastrSuccessConfig);
+         // this.props.history.push(this.goTo);
+      }).catch(err => {
+         console.error("err => ", err);
+      });
    }
 
    render() {
-      console.log("Get contact props => ", this.props);
-      const { location } = this.props;
-      console.log(" location =", location);
-      console.log(" this.state =", this.state);
+      console.log("this.state =", this.state)
       return (
          <React.Fragment>
             <NavCrump linkTo="/app/c/contacts">
@@ -182,7 +207,7 @@ export default class EditContact extends Component {
 
                         {/* Address Set From */}
                         {
-                           this.state.addressSetArray.map((item, index) => {
+                           this.state.phones.map((item, index) => {
                               return (
                                  <div className="form-group" key={index}>
                                     <div className="d-flex mb-1">
@@ -192,9 +217,9 @@ export default class EditContact extends Component {
                                              id="phone" name="phone"
                                              value={item.category}
                                              onChange={(ev) => {
-                                                let newPhoneDataArray = [...this.state.addressSetArray];
+                                                let newPhoneDataArray = [...this.state.phones];
                                                 newPhoneDataArray[index].category = ev.target.value;
-                                                this.setState({ addressSetArray: newPhoneDataArray });
+                                                this.setState({ phones: newPhoneDataArray });
                                              }}
                                           >
                                              <optgroup label="Phone">
@@ -214,7 +239,7 @@ export default class EditContact extends Component {
                                           </select>
                                        </div>
                                        <div className="w-50">
-                                          <button type="button" className="btn close" onClick={() => this.setState({ addressSetArray: this.state.addressSetArray.filter((item, itemIndex) => itemIndex !== index) })}>
+                                          <button type="button" className="btn close" onClick={() => this.setState({ phones: this.state.phones.filter((item, itemIndex) => itemIndex !== index) })}>
                                              <span>×</span>
                                           </button>
                                        </div>
@@ -226,9 +251,9 @@ export default class EditContact extends Component {
                                        placeholder=""
                                        value={item.content}
                                        onChange={(ev) => {
-                                          let newPhoneDataArray = [...this.state.addressSetArray];
+                                          let newPhoneDataArray = [...this.state.phones];
                                           newPhoneDataArray[index].content = ev.target.value;
-                                          this.setState({ addressSetArray: newPhoneDataArray });
+                                          this.setState({ phones: newPhoneDataArray });
                                        }}
                                     />
                                  </div>
@@ -238,18 +263,13 @@ export default class EditContact extends Component {
 
 
                         {/* Add Phone Button */}
-                        <div className="form-group">
-                           <button
-                              type="button"
-                              className="btn btn-outline-dark"
-                              onClick={() => this.setState({ addressSetArray: [...this.state.addressSetArray, { type: "primaryPhone" }] })}
-                           >
-                              <i className="fa fa-plus"></i> Add Phone</button>
-                        </div>
+                        <AddPhoneBtn
+                           handleClick={() => this.setState({ phones: [...this.state.phones, { category: "primaryPhone" }] })}
+                        />
 
                         {/* Address Form */}
                         {
-                           this.state.addressDataArray.map((item, index) => {
+                           this.state.addresses.map((item, index) => {
                               return (
                                  <div className="form-group" key={index}>
                                     <div className="d-flex mb-1">
@@ -270,7 +290,7 @@ export default class EditContact extends Component {
                                              type="button"
                                              className="btn close"
                                              onClick={() => {
-                                                this.setState({ addressDataArray: this.state.addressDataArray.filter((item, itemIndex) => itemIndex !== index) });
+                                                this.setState({ addresses: this.state.addresses.filter((item, itemIndex) => itemIndex !== index) });
                                              }}>
                                              <span>×</span>
                                           </button>
@@ -319,16 +339,12 @@ export default class EditContact extends Component {
                         }
 
                         {/* Add Address Button */}
-                        <div className="form-group">
-                           <button
-                              type="button"
-                              className="btn btn-outline-dark"
-                              onClick={() => this.setState({ addressDataArray: [...this.state.addressDataArray, { type: "primayAddress" }] })}>
-                              <i className="fa fa-plus"></i> Add Address</button>
-                        </div>
+                        <AddAddressBtn
+                           handleClick={() => this.setState({ addresses: [...this.state.addresses, { category: "primaryAddress" }] })}
+                        />
 
                         <div className="form-group py-3">
-                           <button className="btn btn-lg btn-rounded btn-hero-primary mr-2">Create</button>
+                           <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={this.onHandleSubmit}>Update</button>
                            <Link className="btn btn-lg btn-rounded btn-hero-secondary" to="/app/c/contacts">Cancel</Link>
                         </div>
                      </div>
