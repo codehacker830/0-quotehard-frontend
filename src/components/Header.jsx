@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { NavLink, Link, withRouter } from 'react-router-dom';
+import { userSignOut } from '../actions/Auth';
 
 class Header extends Component {
    constructor(props) {
@@ -24,7 +26,8 @@ class Header extends Component {
    render() {
       const { isOpen } = this.state;
       const { history, location } = this.props;
-      console.log(" isOpen ", isOpen);
+      const { authUser } = this.props;
+      console.log("~~ authUser ~~", authUser);
       let show = false;
       if (
          location.pathname === "/app"
@@ -69,18 +72,18 @@ class Header extends Component {
                <div className="d-flex align-items-center">
                   <div className="dropdown d-inline-block" ref={this.toggleContainer}>
                      <button type="button" className="btn btn-dark dropdown-toggle" onClick={() => this.setState({ isOpen: !isOpen })}>
-                        <img className="img-avatar img-avatar32 img-avatar-thumb" src={`/assets/media/avatars/avatar1.jpg`} alt="avatar" />
-                        <span className="d-none d-sm-inline ml-1">Jessica</span>
+                        <img className="img-avatar img-avatar32 img-avatar-thumb" src={authUser && `${authUser.image}`} alt="avatar" />
+                        <span className="d-none d-sm-inline ml-1">{authUser && `${authUser.companyName}`}</span>
                      </button>
                      {/* Toggle Dropdown */}
                      <div className={`dropdown-menu dropdown-menu-right dropdown-menu-lg p-0 ${isOpen ? "show" : ""}`}>
                         <div className="rounded-top font-w600 text-white text-center bg-image"
-                           style={{ backgroundImage: 'url("/assets/media/photos/photo13.jpg")' }}>
+                           style={{ backgroundImage: 'url("/assets/media/photos/bg-blue.jpg")' }}>
                            <div className="p-3">
-                              <img className="img-avatar img-avatar-thumb" src="/assets/media/avatars/avatar1.jpg" alt="useravatar" />
+                              <img className="img-avatar img-avatar-thumb" src={authUser && `${authUser.image}`} alt="useravatar" />
                            </div>
                            <div className="p-3 bg-black-75">
-                              <span className="text-white font-w600">Jessica Taylor</span>
+                              <span className="text-white font-w600">{authUser && `${authUser.firstName} ${authUser.lastName}`}</span>
                            </div>
                         </div>
                         <div className="p-2">
@@ -93,7 +96,7 @@ class Header extends Component {
                               <i className="fa fa-fw fa-hand-holding-heart text-black-50 ml-1" />
                            </a>
                            <div role="separator" className="dropdown-divider" />
-                           <button className="dropdown-item d-flex justify-content-between align-items-center" onClick={() => history.push('/')}>
+                           <button className="dropdown-item d-flex justify-content-between align-items-center" onClick={this.props.userSignOut}>
                               Sign Out
                               <i className="fa fa-fw fa-sign-out-alt text-danger ml-1" />
                            </button>
@@ -139,4 +142,9 @@ class Header extends Component {
    }
 }
 
-export default withRouter(Header);
+const mapStateToProps = ({ auth }) => {
+   const { authUser } = auth;
+   return { authUser }
+};
+const mapDispatchToProps = { userSignOut };
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

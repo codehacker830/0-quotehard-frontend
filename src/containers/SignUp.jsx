@@ -1,15 +1,41 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { userSignUp } from '../actions/Auth';
 
-export default class SignUp extends Component {
+class SignUp extends Component {
    state = {
       firstName: "",
       lastName: "",
       email: "",
       password: "",
       companyName: "",
-      location: 232
+      location: ""
    };
+   onHandleSubmit = (ev) => {
+      ev.preventDefault();
+      const {
+         firstName,
+         lastName,
+         email,
+         password,
+         companyName,
+         location
+      } = this.state;
+      if (
+         firstName === ""
+         || lastName === ""
+         || email === ""
+         || password === ""
+         || companyName === ""
+         || location === ""
+      ) alert("Please fill up all fields.")
+      else  this.props.userSignUp({ ...this.state });
+   }
+   componentWillReceiveProps(nextProps) {
+      console.error(" next props : ", nextProps);
+      if (nextProps.authUser) this.props.history.push('/app');
+   }
    render() {
       console.log(" Sing Up state = ", this.state);
       const {
@@ -68,7 +94,7 @@ export default class SignUp extends Component {
                                  <input type="text" className="form-control" placeholder="Name of Company or Organisation" value={companyName} onChange={(ev) => this.setState({ companyName: ev.target.value })} />
                               </div>
                               <div className="form-group">
-                                 <select className="custom-select form-control" defaultValue={232} value={ location } onChange={(ev) => this.setState({ location: ev.target.value })}>
+                                 <select className="custom-select form-control" defaultValue={232} value={location} onChange={(ev) => this.setState({ location: ev.target.value })}>
                                     <optgroup label="––––––––––––––––––––––– " />
                                     <option value={14}>Australia</option>
                                     <option value={39}>Canada</option>
@@ -350,7 +376,7 @@ export default class SignUp extends Component {
                               </div>
                            </div>
                            <div className="form-group">
-                              <button type="submit" className="btn btn-block btn-hero-lg btn-hero-primary" onClick={() => { history.push("/app") }}>
+                              <button type="submit" className="btn btn-block btn-hero-lg btn-hero-primary" onClick={this.onHandleSubmit}>
                                  <i className="fa fa-fw fa-plus mr-1" /> Create Account
                                        </button>
                               <p className="mt-4 mb-0 d-lg-flex justify-content-center">
@@ -372,3 +398,11 @@ export default class SignUp extends Component {
       );
    }
 }
+
+const mapStateToProps = ({ auth, commonData }) => {
+   const { authUser } = auth;
+   const { status, loading, error, message } = commonData;
+   return { authUser, status, loading, error, message }
+};
+const mapDispatchToProps = { userSignUp };
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

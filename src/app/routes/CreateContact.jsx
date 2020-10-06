@@ -6,11 +6,9 @@ import {
    companyData
 } from "../../constants/Dump";
 
-export default class EditContact extends Component {
+export default class CreateContact extends Component {
    state = {
-      mode: "",
-
-      category: "",
+      category: "person",
       firstName: "",
       lastName: "",
       email: "",
@@ -22,32 +20,12 @@ export default class EditContact extends Component {
 
    componentDidMount() {
       const { location, match } = this.props;
-      console.error("typeof match.params.id ==", typeof match.params.id);
-      const parseNumber = parseInt(match.params.id);
-      console.error("match.params.id match.params.id ==", parseNumber);
-      if (isNumber(parseNumber)) {
-         // get the api result with `match.params.id`
-         const res = companyData;
-         this.setState({
-            mode: "update",
+      if (match.params.category === "person") this.setState({ category: "person" });
+      else if (match.params.category === "company") this.setState({ category: "company" });
+      else this.props.history.push('/app/c/contacts');
 
-            category: res.category,
-            firstName: res.firstName,
-            lastName: res.lastName,
-            email: res.email,
-            companyName: res.companyName,
-            addressSetArray: res.addressSetArray,
-            addressDataArray: res.addressDataArray
-         });
-
-      } else {
-         this.setState({ mode: "create" });
-         if (match.params.id === "new-person") this.setState({ category: "person" });
-         else if (match.params.id === "new-company") this.setState({ category: "company" });
-
-         if (location.state && location.state.company) {
-            this.setState({ companyName: location.state.company });
-         }
+      if (location.state && location.state.company) {
+         this.setState({ companyName: location.state.company });
       }
    }
 
@@ -84,7 +62,7 @@ export default class EditContact extends Component {
       return (
          <React.Fragment>
             <NavCrump linkTo="/app/c/contacts">
-               Contacts
+               Contact
             </NavCrump>
             <div className="content">
                <div className="block block-rounded">
@@ -110,7 +88,7 @@ export default class EditContact extends Component {
                                        <div className="col-md-6 col-sm-12">
                                           <div className="d-flex">
                                              <label htmlFor="lastName">Last Name</label>
-                                             {this.state.mode === "create" && <Link className="ml-auto" to="/app/c/contacts/edit/new-company">Switch to Company</Link>}
+                                             <Link className="ml-auto" to="/app/c/contacts/create/company">Switch to Company</Link>
                                           </div>
                                           <input
                                              type="text"
@@ -155,7 +133,7 @@ export default class EditContact extends Component {
                                  <div className="form-group">
                                     <div className="d-flex">
                                        <label htmlFor="companyName">Company</label>
-                                       {this.state.mode === "create" && <Link className="ml-auto" to="/app/c/contacts/edit/new-person">Switch to person</Link>}
+                                       <Link className="ml-auto" to="/app/c/contacts/create/person">Switch to person</Link>
                                     </div>
                                     <input
                                        type="text"

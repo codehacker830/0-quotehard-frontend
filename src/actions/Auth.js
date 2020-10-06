@@ -63,18 +63,21 @@ export const userSignIn = ({ email, password }) => {
    }
 };
 
-export const userSignUp = ({ name, email, password }) => {
-   console.log(name, email, password);
+export const userSignUp = ({ firstName, lastName, email, password, companyName, location }) => {
+   console.log(firstName, lastName, email, password, location);
    return (dispatch) => {
       dispatch({ type: FETCH_START });
-      axios.post('auth/register', {
-         email: email,
-         password: password,
-         name: name
+      axios.post('/user', {
+         firstName,
+         lastName,
+         email,
+         password,
+         companyName,
+         location
       }
       ).then(({ data }) => {
          console.log("data:", data);
-         if (data.result) {
+         if (data.user) {
             localStorage.setItem("token", JSON.stringify(data.access_token));
             axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
             dispatch({ type: FETCH_SUCCESS });
@@ -94,10 +97,9 @@ export const userSignUp = ({ name, email, password }) => {
 export const userSignOut = () => {
    return (dispatch) => {
       dispatch({ type: FETCH_START });
-      axios.post('auth/logout',
+      axios.get('/user/logout',
       ).then(({ data }) => {
-         if (data.result) {
-            dispatch({ type: FETCH_SUCCESS });
+         if (data.status === "success") {
             localStorage.removeItem("token");
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: SIGNOUT_USER_SUCCESS });

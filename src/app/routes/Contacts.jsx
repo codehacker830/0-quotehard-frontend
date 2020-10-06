@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import InlineHelp from '../../components/InlineHelp';
+import axios from '../../util/Api';
 
 export default class Contacts extends Component {
+   state = {
+      isLoading: true,
+   };
+
+   componentDidMount() {
+      axios.get('/contacts').then(({ data }) => {
+         console.error("data =", data);
+         this.setState({ isLoading: false });
+      });
+   }
    render() {
       const { history } = this.props;
       return (
@@ -42,8 +53,8 @@ export default class Contacts extends Component {
                         </div>
                      </div>
                      <div className="col-md-6">
-                        <div className="row mb-2">
-                           <Link to="/app/c/contacts/edit/new-person" className="btn btn-success ml-auto">New Contact</Link>
+                        <div className="row no-gutters mb-2 px-1">
+                           <Link to="/app/c/contacts/create/person" className="btn btn-success ml-auto">New Contact</Link>
                         </div>
                      </div>
                   </div>

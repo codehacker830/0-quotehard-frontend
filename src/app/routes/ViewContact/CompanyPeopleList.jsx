@@ -1,15 +1,19 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { peopleContacts } from "../../../constants/Dump";
 
-export const CompanyPeopleList = (props) => {
-
+const CompanyPeopleList = (props) => {
+   let from = "/app/c/contacts";
+   let companyName = "";
    const [peopleContactList, setPeopleContactArray] = React.useState([]);
 
    React.useEffect(() => {
-      console.log("Company Props =>", props.contact);
+      console.log("Company Props =>", props);
+
       // get poeple contact list with company contact _id
-       
+      from = props.location.pathname;
+      companyName = props.contact.companyName;
+      console.log("from", from);
       setPeopleContactArray(peopleContacts);
    }, [props]);
 
@@ -38,11 +42,14 @@ export const CompanyPeopleList = (props) => {
          }
          <Link className="btn btn-outline-dark font-size-sm mt-4"
             to={{
-               pathname: `/app/c/contacts/edit/new-person`,
-               state: { company: "companyName" }
+               pathname: `/app/c/contacts/create/person`,
+               state: {
+                  from: `${from}`,
+                  company: `${companyName}`
+               }
             }}>Add Person</Link>
       </>
    )
 }
 
-export default CompanyPeopleList
+export default withRouter(CompanyPeopleList);

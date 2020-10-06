@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import NavCrump from '../../../components/NavCrump';
 import { personData, companyData, recentActivities } from "../../../constants/Dump";
-import { alterTypeVariableStr } from '../../../util';
 import AddressesShow from './AddressesShow';
 import AvatarImg from './AvatarImg';
 import CompanyPeopleList from './CompanyPeopleList';

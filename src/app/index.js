@@ -14,7 +14,9 @@ export default class AppRoot extends Component {
       if (
          location.pathname === "/app/quotes"
          || location.pathname === "/app/c/contacts"
+         || location.pathname.includes("/app/c/contacts/create/")
          || location.pathname.includes("/app/c/contacts/view/")
+         || location.pathname.includes("/app/c/contacts/edit/")
          || location.pathname === "/app/content/templates"
          || location.pathname === "/app/content/item-price/browse"
          || location.pathname === "/app/content/item-text/browse"
@@ -32,6 +34,7 @@ export default class AppRoot extends Component {
                <Route exact path="/app/quote/:id" component={asyncComponent(() => import("./routes/GetQuote"))} />
 
                <Route exact path="/app/c/contacts" component={asyncComponent(() => import("./routes/Contacts"))} />
+               <Route exact path="/app/c/contacts/create/:category" component={asyncComponent(() => import("./routes/CreateContact"))} />
                <Route exact path="/app/c/contacts/edit/:id" component={asyncComponent(() => import("./routes/EditContact"))} />
                <Route exact path="/app/c/contacts/view/:id" component={asyncComponent(() => import("./routes/ViewContact"))} />
 

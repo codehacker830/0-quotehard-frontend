@@ -10,7 +10,7 @@ export default class Quotes extends Component {
             <div className="block block-rounded">
                <div className="block-content">
                   <div className="row p-3">
-                     <div className="col-md-6">
+                     <div className="col-md-7 col-sm-12">
                         <div className="form-group px-1">
                            <div className="input-group">
                               <input type="email" className="form-control" placeholder="Search by Quote Title, Number or Contact..." />
@@ -60,8 +60,8 @@ export default class Quotes extends Component {
                         </div>
                      </div>
 
-                     <div className="col-md-6">
-                        <div className="row mb-2">
+                     <div className="col-md-5 col-sm-12">
+                        <div className="row no-gutters mb-2 px-1">
                            <button className="btn btn-success ml-auto" onClick={() => this.props.history.push({
                               pathname: '/app/quote/get',
                               state: { from: this.props.location.pathname }
