@@ -7,10 +7,11 @@ import {
    companyData
 } from "../../constants/Dump";
 import axios from '../../util/Api';
-import { toastrWarningConfig } from '../../util/toastrConfig';
+import { toastrErrorConfig, toastrSuccessConfig, toastrWarningConfig } from '../../util/toastrConfig';
 import AddressForm from '../../components/Contact/AddressForm';
 import AddAddressBtn from '../../components/Contact/AddAddressBtn';
 import AddPhoneBtn from '../../components/Contact/AddPhoneBtn';
+import CompleterCompany from '../../components/Contact/CompleterCompany';
 
 export default class CreateContact extends Component {
    constructor(props) {
@@ -18,27 +19,17 @@ export default class CreateContact extends Component {
       this.goTo = "/app/c/contacts";
 
       this.state = {
-         category: "person",
+         show: false,
+         companyId: "",
+
+         category: this.props.match.params.category,
          firstName: "",
          lastName: "",
          email: "",
          companyName: "",
-
          phones: [],
          addresses: [],
       };
-   }
-
-   componentDidMount() {
-      const { location, match } = this.props;
-
-      if (match.params.category === "person" || match.params.category === "company") this.setState({ category: match.params.category });
-      else {
-         this.props.history.push('/app/c/contacts');
-         return;
-      };
-      if (location.state && location.state.company) this.setState({ companyName: location.state.company });
-      if (location.state && location.state.from) this.goTo = location.state.from;
    }
 
    handleAddressForm = (ev, index) => {
@@ -61,44 +52,42 @@ export default class CreateContact extends Component {
          firstName,
          lastName,
          companyName,
+         companyId,
          email,
          phones,
          addresses
       } = this.state;
-      const data = { category, firstName, lastName, companyName, email, phones, addresses };
+      const data = { category, firstName, lastName, companyName, companyId, email, phones, addresses };
       console.log("request payload =", data);
       if (category === "person" && (firstName === "" || email === "")) {
-         toastr.warning('Validation Warning', 'First Name is required.', toastrWarningConfig);
+         toastr.warning('Warning', 'First Name is required.', toastrWarningConfig);
          return;
       }
       if (category === "company" && companyName === "" && email === "") {
-         toastr.warning('Validation Warning', 'You need to enter a company name or email.', toastrWarningConfig);
+         toastr.warning('Warning', 'You need to enter a company name or email.', toastrWarningConfig);
          return;
       }
-      // this.setState({ isLoading: true });
-      // axios.post("/contacts", data).then((res) => {
-      //    console.log("create contact api resopnse = >", res);
-      //    this.setState({
-      //       isLoading: false,
-      //       // category: "",
-      //       // firstName: "",
-      //       // lastName: "",
-      //       // companyName: "",
-      //       // email: "",
-      //       // phones: "",
-      //       // addresse: ""
-      //    });
+      axios.post("/contacts", data).then((res) => {
+         toastr.success("Succeeed", "New Contact was created successfully.", toastrSuccessConfig);
+         console.log("create contact api resopnse ==>", res);
+      }).catch(err => {
+         toastr.error("Error", "Break down during request.", toastrErrorConfig);
+         console.error("create contact api error ==>", err);
+      });
+   }
 
-      //    // this.props.history.push(this.goTo);
-
-      // }).catch(err => {
-      //    console.error("create contact api error ==>", err);
-
-      // });
+   componentDidMount() {
+      const { location, match } = this.props;
+      if (match.params.category !== "person" && !match.params.category !== "company") {
+         this.props.history.push('/app/c/contacts');
+         return;
+      };
+      if (location.state && location.state.company) this.setState({ companyName: location.state.company });
+      if (location.state && location.state.from) this.goTo = location.state.from;
    }
 
    render() {
-      const { location } = this.props;
+      console.log("this.state =>", this.state)
       return (
          <React.Fragment>
             <NavCrump linkTo={this.goTo}>
@@ -110,7 +99,7 @@ export default class CreateContact extends Component {
                      <div className="maxWidth-800 p-4">
                         {/* Full Name */}
                         {
-                           this.state.category === "person" &&
+                           this.props.match.params.category === "person" &&
                            (
                               <div>
                                  <div className="form-group">
@@ -152,7 +141,7 @@ export default class CreateContact extends Component {
                                        onChange={(ev) => this.setState({ email: ev.target.value })} />
                                  </div>
                                  {/* Company Name */}
-                                 <div className="form-group">
+                                 <div className="form-group" style={{ position: "relative" }}>
                                     <label htmlFor="companyName">Company Name</label>
                                     <input
                                        type="text"
@@ -160,13 +149,24 @@ export default class CreateContact extends Component {
                                        id="companyName" name="companyName"
                                        placeholder="New, or lookup existing..."
                                        value={this.state.companyName}
-                                       onChange={(ev) => this.setState({ companyName: ev.target.value })} />
+                                       onChange={(ev) => this.setState({ companyName: ev.target.value, show: true })} />
+                                    <CompleterCompany
+                                       companyName={this.state.companyName}
+                                       show={this.state.show}
+                                       setCompany={(contact) => {
+                                          this.setState({
+                                             companyName: contact.companyName,
+                                             companyId: contact._id,
+                                             show: false
+                                          });
+                                       }}
+                                    />
                                  </div>
                               </div>
                            )
                         }
                         {
-                           this.state.category === "company" &&
+                           this.props.match.params.category === "company" &&
                            (
                               <div>
                                  <div className="form-group">
@@ -199,7 +199,7 @@ export default class CreateContact extends Component {
 
                         {/* Address Set From */}
                         {
-                           this.state.phones.map((item, index) => {
+                           this.state.phones && this.state.phones.map((item, index) => {
                               return (
                                  <div className="form-group" key={index}>
                                     <div className="d-flex mb-1">

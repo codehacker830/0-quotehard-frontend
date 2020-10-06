@@ -1,8 +1,28 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import InlineHelp from '../../components/InlineHelp';
+import TotalLabelFor from '../../components/TotalLabelFor';
+import axios from '../../util/Api';
 
 export default class Quotes extends Component {
+   constructor(props) {
+      super(props);
+      this.state = {
+
+      };
+   }
+   componentDidMount() {
+      const { location } = this.props;
+      const filter = {
+         category: location.state ? location.state.category : "",
+         id: location.state ? location.state.id : ""
+      };
+      axios.post('/quotes/get', filter).then(({ data }) => {
+
+      }).then(err => {
+         console.error("error ====>", err);
+      })
+   }
    render() {
       console.error("Quotes prpos --", this.props);
       return (
@@ -156,9 +176,7 @@ export default class Quotes extends Component {
                         </tr>
                      </tbody>
                   </table>
-                  <div className="p-4">
-                     <span>Total 4</span>
-                  </div>
+                  <TotalLabelFor list={null} />
                </div>
             </div>
          </div>

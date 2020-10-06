@@ -1,17 +1,27 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import InlineHelp from '../../components/InlineHelp';
+import TotalLabelFor from '../../components/TotalLabelFor';
 import axios from '../../util/Api';
 
 export default class Contacts extends Component {
    state = {
       isLoading: true,
+      filterStatus: "current",
+      filterCategory: "peopleAndCompanies",
       contacts: []
    };
-
+   filterContacts = (contacts) => {
+      return contacts.filter((contact) => {
+         if (this.state.filterCategory === "people") return (contact.category === "person" && contact.status === this.state.filterStatus);
+         else if (this.state.filterCategory === "companies") return (contact.category === "company" && contact.status === this.state.filterStatus);
+         else return contact.status === this.state.filterStatus;
+      })
+   }
    componentDidMount() {
       axios.get('/contacts').then(({ data }) => {
          console.error("data =", data);
+         // const filteredContacts = this.filterContacts(data.contacts)
          this.setState({
             isLoading: false,
             contacts: data.contacts
@@ -20,6 +30,8 @@ export default class Contacts extends Component {
    }
    render() {
       const { history } = this.props;
+      const contactList = this.filterContacts(this.state.contacts);
+      console.log(" contactList =>", contactList)
       return (
          <div className="content">
             <div className="block block-rounded">
@@ -37,20 +49,27 @@ export default class Contacts extends Component {
                         <div className="row no-gutters">
                            <div className="col-sm-6 px-1">
                               <div className="form-group">
-                                 <select className="form-control" id="author" name="author">
+                                 <select className="form-control"
+                                    id="filter_category" name="filter_category"
+                                    value={this.state.filterCategory}
+                                    onChange={(ev) => this.setState({ filterCategory: ev.target.value })} >
                                     <optgroup label="---------------------------"></optgroup>
-                                    <option value="PeopleAndCompanies" defaultValue>People &amp; Companies</option>
+                                    <option value="peopleAndCompanies">People &amp; Companies</option>
                                     <optgroup label="---------------------------"></optgroup>
-                                    <option value="People">People</option>
-                                    <option value="Companies">Companies</option>
+                                    <option value="people">People</option>
+                                    <option value="companies">Companies</option>
                                  </select>
                               </div>
                            </div>
                            <div className="col-sm-6 px-1">
                               <div className="form-group">
-                                 <select className="form-control" id="filter_from" name="filter_from">
-                                    <option value="Current" defaultValue>Current</option>
-                                    <option value="Archived">Archived</option>
+                                 <select className="form-control"
+                                    id="filter_status" name="filter_status"
+                                    value={this.state.filterStatus}
+                                    onChange={(ev) => this.setState({ filterStatus: ev.target.value })}
+                                 >
+                                    <option value="current">Current</option>
+                                    <option value="archived">Archived</option>
                                  </select>
                               </div>
                            </div>
@@ -67,7 +86,7 @@ export default class Contacts extends Component {
             <div className="block block-rounded">
                <div className="block-content">
                   {
-                     !!this.state.contacts.length ||
+                     !!contactList.length ||
                      <InlineHelp>
                         People & Companies will be added here automatically when you create and send quotes.
                      </InlineHelp>
@@ -75,7 +94,7 @@ export default class Contacts extends Component {
                   <table className="quotient-table mt-3">
                      <tbody className="rowClick">
                         {
-                           this.state.contacts.map((contact, index) => {
+                           contactList.map((contact, index) => {
                               if (contact.category === "person") return (
                                  <tr onClick={() => history.push(`/app/c/contacts/view/${contact._id}`)} key={index}>
                                     <td>
@@ -111,10 +130,7 @@ export default class Contacts extends Component {
                         }
                      </tbody>
                   </table>
-
-                  <div className="p-4">
-                     <span>Total 2</span>
-                  </div>
+                  <TotalLabelFor list={contactList} />
                </div>
             </div>
          </div>

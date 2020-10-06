@@ -4,6 +4,7 @@ import { toastr } from 'react-redux-toastr';
 import { Link } from 'react-router-dom';
 import AddAddressBtn from '../../components/Contact/AddAddressBtn';
 import AddPhoneBtn from '../../components/Contact/AddPhoneBtn';
+import CompleterCompany from '../../components/Contact/CompleterCompany';
 import NavCrump from '../../components/NavCrump';
 import {
    companyData
@@ -16,6 +17,8 @@ export default class EditContact extends Component {
       super(props);
       this.goTo = "/app/c/contacts";
       this.state = {
+         show: false,
+         companyId: "",
          category: "",
          firstName: "",
          lastName: "",
@@ -25,33 +28,6 @@ export default class EditContact extends Component {
          phones: [],
          addresses: [],
       };
-   }
-
-   componentDidMount() {
-      const { location, match } = this.props;
-      if (location.state && location.state.from) this.goTo = location.state.from;
-      const contactId = match.params.id;
-      console.error("match.params.id ==", contactId);
-      if (!contactId) {
-         this.props.push(this.goTo);
-         return;
-      }
-
-      axios.get(`/contacts/id/${contactId}`).then(({ data }) => {
-         console.log("get contact api res =>", data);
-         this.setState({
-            category: data.contact.category,
-            firstName: data.contact.firstName,
-            lastName: data.contact.lastName,
-            email: data.contact.email,
-            companyName: data.contact.companyName,
-            phones: data.contact.phones,
-            addresses: data.contact.addresses
-         });
-
-      }).catch((err) => {
-         console.error("get contact api error ==>", err)
-      })
    }
 
    handleAddressForm = (ev, index) => {
@@ -75,11 +51,12 @@ export default class EditContact extends Component {
          firstName,
          lastName,
          companyName,
+         companyId,
          email,
          phones,
          addresses
       } = this.state;
-      const data = { category, firstName, lastName, companyName, email, phones, addresses };
+      const data = { category, firstName, lastName, companyName, companyId, email, phones, addresses };
       console.log("edit contact request payload =", data);
       if (category === "person" && (firstName === "" || email === "")) {
          toastr.warning('Warning !', 'First Name is required.', toastrWarningConfig);
@@ -102,6 +79,35 @@ export default class EditContact extends Component {
       }).catch(err => {
          console.error("err => ", err);
       });
+   }
+
+   componentDidMount() {
+      const { location, match } = this.props;
+      if (location.state && location.state.from) this.goTo = location.state.from;
+
+      console.error("match.params.id ==", match.params.id);
+      if (!match.params.id) {
+         this.props.push(this.goTo);
+         return;
+      }
+
+      axios.get(`/contacts/id/${match.params.id}`).then(({ data }) => {
+         console.log("get contact api res =>", data);
+         const { contact } = data;
+         this.setState({
+            category: contact.category,
+            firstName: contact.firstName,
+            lastName: contact.lastName,
+            email: contact.email,
+            companyId: contact.category === "person" ? (contact.company ? contact.company._id : "") : "",
+            companyName: contact.category === "person" ? (contact.company ? contact.company.companyName : "") : (contact.companyName ? contact.companyName : ""),
+            phones: contact.phones,
+            addresses: contact.addresses
+         });
+
+      }).catch((err) => {
+         console.error("get contact api error ==>", err)
+      })
    }
 
    render() {
@@ -159,7 +165,7 @@ export default class EditContact extends Component {
                                        onChange={(ev) => this.setState({ email: ev.target.value })} />
                                  </div>
                                  {/* Company Name */}
-                                 <div className="form-group">
+                                 <div className="form-group" style={{ position: "relative" }}>
                                     <label htmlFor="companyName">Company Name</label>
                                     <input
                                        type="text"
@@ -167,7 +173,18 @@ export default class EditContact extends Component {
                                        id="companyName" name="companyName"
                                        placeholder="New, or lookup existing..."
                                        value={this.state.companyName}
-                                       onChange={(ev) => this.setState({ companyName: ev.target.value })} />
+                                       onChange={(ev) => this.setState({ companyName: ev.target.value, show: true })} />
+                                    <CompleterCompany
+                                       companyName={this.state.companyName}
+                                       show={this.state.show}
+                                       setCompany={(contact) => {
+                                          this.setState({
+                                             companyName: contact.companyName,
+                                             companyId: contact._id,
+                                             show: false
+                                          });
+                                       }}
+                                    />
                                  </div>
                               </div>
                            )

@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import NavCrump from '../../../components/NavCrump';
 import { personData, companyData, recentActivities } from "../../../constants/Dump";
+import axios from '../../../util/Api';
 import AddressesShow from './AddressesShow';
 import AvatarImg from './AvatarImg';
 import CompanyPeopleList from './CompanyPeopleList';
@@ -11,17 +12,8 @@ import PersonCompany from './PersonCompany';
 import PhonesShow from './PhonesShow';
 
 export const ViewContact = (props) => {
-   const [showActivity, setShowActivity] = React.useState(false);
-
-   const [contact, setContact] = React.useState({});
-
-   const [type, setType] = React.useState("");
-   // const [firstName, setFirstName] = React.useState("");
-   // const [lastName, setLastName] = React.useState("");
-   // const [email, setEmail] = React.useState("");
-   // const [companyName, setCompanyName] = React.useState("");
-   // const [phones, setPhones] = React.useState([]);
-   // const [addresses, setAddresses] = React.useState([]);
+   const [showActivity, setShowActivity] = useState(false);
+   const [contact, setContact] = useState({});
 
    console.error("view contact props => ", props);
 
@@ -29,21 +21,17 @@ export const ViewContact = (props) => {
    React.useEffect(() => {
       const { match } = props;
 
-      // Get API response from id
-      let res = personData;
-      if (match.params.id === "2222") res = companyData;
+      const contactId = match.params.id;
 
-      console.error("API RESPNSE =>", res);
+      axios.get(`/contacts/id/${contactId}`).then(({ data }) => {
+         console.error("API RESPNSE =>", data);
 
-      setContact(res);
-      // setType(res.category);
-      // setFirstName(res.firstName);
-      // setLastName(res.lastName);
-      // setEmail(res.email);
-      // setCompanyName(res.companyName);
-      // setPhones(res.phones);
-      // setAddresses(res.addresses);
-   }, [props.match.id]);
+         setContact(data.contact);
+      }).catch((err) => {
+         console.error("get contact api error ==>", err)
+      })
+
+   }, [props.match]);
 
    return (
       <React.Fragment>
@@ -65,7 +53,8 @@ export const ViewContact = (props) => {
                                  <Link className="d-block" to={{
                                     pathname: "/app/quotes",
                                     state: {
-                                       companyId: "4128663"
+                                       category: contact.category,
+                                       id: contact._id
                                     }
                                  }}>View quotes</Link>
                               </div>
