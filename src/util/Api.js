@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-let base_url = process.env.NODE_ENV === "development" ? `http://localhost:5000/api/` : `localhost:5000/api/`;
+let base_url = process.env.NODE_ENV === "development" ? `http://localhost:5000/api/` : `http://app.quotehard.com:5000/api/`;
 console.error("______ process.env.NODE_ENV ____", process.env.NODE_ENV)
 
 let axios = Axios.create({
