@@ -27,7 +27,7 @@ class SignIn extends Component {
                      {/* Header */}
                      <div className="mb-3 text-center">
                         <Link to="/" className="d-flex justify-content-center">
-                           <img src="/assets/media/logo.svg" className="logo" alt="logo" />
+                           <img src="/logo-180.png" className="logo" alt="logo" />
                         </Link>
                         <span className="text-dark font-w700 font-size-h2">Sign in to Quotient</span>
                      </div>
