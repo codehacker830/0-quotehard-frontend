@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import NavCrump from '../../../components/NavCrump';
-import PriceItemForm from '../../../components/PriceItemForm';
-import QuoteToContactList from './QuoteToContactList';
+import QuoteToPeopleList from './QuoteToPeopleList';
 import QuoteSettings from '../../../components/QuoteSettings';
+import PriceItemForm from '../../../components/PriceItemForm';
 import TextItemForm from '../../../components/TextItemForm';
 import { toastr } from 'react-redux-toastr';
 import { toastrWarningConfig, toastrSuccessConfig, toastrErrorConfig, toastrInfoConfig } from '../../../util/toastrConfig';
 import CompleterContact from './CompleterContact';
 import LableFor from './LableFor';
+import axios from '../../../util/Api';
 
 export default class GetQuote extends Component {
    constructor(orops) {
@@ -18,7 +19,7 @@ export default class GetQuote extends Component {
          isDiscount: false,
          isSubscription: false,
          isCostPriceMargin: false,
-         toContactList: [],
+         toPeopleList: [],
          emailTo: ""
       }
    }
@@ -39,8 +40,18 @@ export default class GetQuote extends Component {
       toastr.warning('This is warning', 'warning message here', toastrWarningConfig);
       toastr.error('This is error', 'error message here', toastrErrorConfig);
    }
+   componentDidMount() {
+      if (this.props.match.params && this.props.match.params.id !== "get") {
+         // Get quote details with quote ID
+         axios.get(`/quotes/${this.props.match.params.id}`).then(({ data }) => {
+            console.log(" ress sss  =>", data);
+         }).catch(err => {
+            console.error("get quote detail api error =>", err)
+         });
+      }
+   }
    render() {
-      console.log(" this props => ", this.props)
+      console.log(" GetQute props => ", this.props)
       const { location } = this.props;
       const { state } = location;
       let HeadLinkText = 'Dashboard';
@@ -61,11 +72,11 @@ export default class GetQuote extends Component {
                            </div>
                            <div className="p-1 w-100 maxWidth-550">
                               <div className="row no-gutters">
-                                 <QuoteToContactList
-                                    toContactList={this.state.toContactList}
+                                 <QuoteToPeopleList
+                                    toPeopleList={this.state.toPeopleList}
                                     removeContact={(contact) => {
-                                       const newCL = this.state.toContactList.filter((it, index) => it._id !== contact._id);
-                                       this.setState({ toContactList: newCL });
+                                       const newCL = this.state.toPeopleList.filter((it, index) => it._id !== contact._id);
+                                       this.setState({ toPeopleList: newCL });
                                     }} />
                               </div>
                               <div className="row no-gutters" style={{ position: "relative" }}>
@@ -78,13 +89,13 @@ export default class GetQuote extends Component {
                                  <CompleterContact
                                     emailTo={this.state.emailTo}
                                     addContact={(contact) => {
-                                       if (this.state.toContactList.find((it) => it._id === contact._id)) this.setState({ emailTo: "" });
+                                       if (this.state.toPeopleList.find((it) => it._id === contact._id)) this.setState({ emailTo: "" });
                                        else this.setState({
-                                          toContactList: [...this.state.toContactList, contact],
+                                          toPeopleList: [...this.state.toPeopleList, contact],
                                           emailTo: ""
                                        });
                                     }} />
-                                 <LableFor toContactList={this.state.toContactList} />
+                                 <LableFor toPeopleList={this.state.toPeopleList} />
                               </div>
                            </div>
                         </div>
@@ -117,7 +128,7 @@ export default class GetQuote extends Component {
                   // onHandleChange={()}
 
                   />
-
+                   
                   <div className="row py-4">
                      <div className="col-12">
                         <button type="button" className="btn btn-alt-light">

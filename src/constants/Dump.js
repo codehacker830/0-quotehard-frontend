@@ -164,16 +164,3 @@ export const peopleContacts = [
       company: "AllOver"
    }
 ];
-
-export const quotes = [
-   {
-      status: "sent",
-      // status: "accepted",
-      // status: "draft",
-      title: "Test Quote",
-      time: "36 minutes ago",
-      value: 300,
-      token: "C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g",
-   }
-];
-

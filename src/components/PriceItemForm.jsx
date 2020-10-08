@@ -75,14 +75,14 @@ export default class PriceItemForm extends Component {
                <div className="col-sm-6">
                   <div className="row pb-1">
                      <div className="col-6 pr-0">
-                        <select className="custom-select rounded-0">
-                           <option value="0">Sales</option>
+                        <select className="custom-select rounded-0" defaultValue={"sales"}>
+                           <option value="sales">Sales</option>
                         </select>
                      </div>
                      <div className="col-6">
-                        <select className="custom-select rounded-0">
-                           <option value="0">10% tax</option>
+                        <select className="custom-select rounded-0" defaultValue={10}>
                            <option value="0">No tax</option>
+                           <option value="10">10% tax</option>
                         </select>
                      </div>
                   </div>

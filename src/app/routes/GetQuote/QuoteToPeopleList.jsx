@@ -1,10 +1,10 @@
 import React from 'react'
 
-export const QuoteToContactList = (props) => {
+export const QuotetoPeopleList = (props) => {
    return (
       <>
          {
-            props.toContactList.map((contact, index) => {
+            props.toPeopleList.map((contact, index) => {
                return (
                   <div className="alert alert-info w-100 border border-primary" key={index}>
                      <button type="button" className="btn close" onClick={() => props.removeContact(contact)}>
@@ -22,4 +22,4 @@ export const QuoteToContactList = (props) => {
    )
 }
 
-export default QuoteToContactList;
+export default QuotetoPeopleList;

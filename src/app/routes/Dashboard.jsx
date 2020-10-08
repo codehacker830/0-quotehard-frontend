@@ -4,6 +4,18 @@ import { PieChart } from 'react-minimal-pie-chart';
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 
+const quotes = [
+   {
+      // status: "draft",
+      status: "awaiting",
+      // status: "accepted",
+      title: "Test Quote",
+      time: "36 minutes ago",
+      value: 300,
+      token: "C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g",
+   }
+];
+
 export default class Dashboard extends Component {
    state = {
       search: ""
