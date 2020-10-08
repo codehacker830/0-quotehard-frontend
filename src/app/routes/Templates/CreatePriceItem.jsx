@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import NavCrump from '../../../components/NavCrump';
 import PriceItemForm from '../../../components/PriceItemForm';
-import ToolWrapper from '../../../components/ToolWrapper';
 
 export default class CreatePriceItem extends Component {
    constructor(orops) {

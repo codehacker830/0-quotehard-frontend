@@ -9,9 +9,9 @@ export default class QuoteSettings extends Component {
    }
    render() {
       return (
-         <>
-            <h3>Quotes Settings</h3>
-            <div className="py-2">
+         <React.Fragment>
+            <h3>Quote Settings</h3>
+            <div className="pb-2">
                <label htmlFor="_expiry_date_date" className="text-gray fa-xs text-uppercase">Valid Until</label>
                <div className="d-flex">
                   <div className="w-75 pr-2">
@@ -25,7 +25,7 @@ export default class QuoteSettings extends Component {
                </div>
             </div>
             <div className={`mb-3 ${this.state.show ? "" : "d-none"}`}>
-               <div className="py-2">
+               <div className="pb-2">
                   <label htmlFor="_sent_when_date" className="text-gray fa-xs text-uppercase">Date</label>
                   <div className="d-flex">
                      <div className="w-75 pr-2">
@@ -42,17 +42,17 @@ export default class QuoteSettings extends Component {
                   Leave empty to set automatically (when Sent)
                </p>
                </div>
-               <div className="py-2">
+               <div className="pb-2">
                   <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">FROM</label>
                   <select className="custom-select rounded-0">
                      <option value={21}>A Devom</option>
                   </select>
                </div>
-               <div className="py-2">
+               <div className="pb-2">
                   <label htmlFor="quote_discount_overall" className="text-gray fa-xs text-uppercase">DISCOUNT %</label>
                   <input type="text" id="quote_discount_overall" className="form-control rounded-0 maxWidth-180" />
                </div>
-               <div className="py-2">
+               <div className="pb-2">
                   <label htmlFor="quote_currency_id" className="text-gray fa-xs text-uppercase">CURRENCY</label>
                   <select className="custom-select rounded-0" defaultValue={156} id="quote_currency_id">
                      <optgroup label="––––––––––––––––––––––– " />
@@ -253,7 +253,7 @@ export default class QuoteSettings extends Component {
                      <option value={164}>Zimbabwe Dollar</option>
                   </select>
                </div>
-               <div className="py-2">
+               <div className="pb-2">
                   <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">AMOUNTS ARE</label>
                   <select className="custom-select rounded-0" defaultValue={`exclusive_excluding`}>
                      <option value="exclusive_including">Tax Exclusive (Inclusive Total)</option>
@@ -262,7 +262,7 @@ export default class QuoteSettings extends Component {
                      <option value="no tax">No Tax</option>
                   </select>
                </div>
-               <div className="py-2">
+               <div className="pb-2">
                   <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">PRICING DISPLAY LEVEL</label>
                   <p className="text-secondary fa-xs">Choose the level of pricing details to present to your customer.</p>
                   <div className="custom-control custom-radio custom-control-primary mb-1">
@@ -293,9 +293,7 @@ export default class QuoteSettings extends Component {
                </div>
             </div>
             <button type="button" className="btn btn-outline-dark" onClick={() => this.setState({ show: !this.state.show })}>{this.state.show ? "Hide" : "Show All..."}</button>
-
-         </>
-
+         </React.Fragment>
       );
    }
 }

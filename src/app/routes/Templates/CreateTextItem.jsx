@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import NavCrump from '../../../components/NavCrump';
 import TextItemForm from '../../../components/TextItemForm';
-import ToolWrapper from '../../../components/ToolWrapper';
 
 export default class CreateTextItem extends Component {
    fileObj = [];

@@ -120,12 +120,12 @@ export default class GetQuote extends Component {
                   <PriceItemForm
                      isPaperClipDisabled={false}
                      isSettingDisabled={false}
-                     isAddItemDisabled={true}
+                     isAddItemDisabled={false}
                      isOrderUpDisabled={true}
                      isOrderDownDisabled={true}
                      isRemoveDisabled={true}
 
-                  // onHandleChange={()}
+                     // onHandleChange={()}
 
                   />
                    

@@ -6,11 +6,11 @@ export const TemplateSettings = (props) => {
       <>
          <h3>Template Settings</h3>
          <div className={`mb-3 ${show ? "" : "d-none"}`}>
-            <div className="py-2">
+            <div className="pb-2">
                <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">DISCOUNT %</label>
                <input type="text" id="quantity" className="form-control rounded-0 maxWidth-180" />
             </div>
-            <div className="py-2">
+            <div className="pb-2">
                <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">CURRENCY</label>
                <select className="custom-select rounded-0">
                   <optgroup label="––––––––––––––––––––––– " />
@@ -212,7 +212,7 @@ export const TemplateSettings = (props) => {
                </select>
 
             </div>
-            <div className="py-2">
+            <div className="pb-2">
                <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">AMOUNTS ARE</label>
                <select className="custom-select rounded-0">
                   <option value="exclusive_including" selected="selected">Tax Exclusive (Inclusive Total)</option>
@@ -222,7 +222,7 @@ export const TemplateSettings = (props) => {
                   <option value={164}>Zimbabwe Dollar</option>
                </select>
             </div>
-            <div className="py-2">
+            <div className="pb-2">
                <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">PRICING DISPLAY LEVEL</label>
                <p className="text-secondary fa-xs">Choose the level of pricing details to present to your customer.</p>
                <div className="custom-control custom-radio custom-control-primary mb-1">
