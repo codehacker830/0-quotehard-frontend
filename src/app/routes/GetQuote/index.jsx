@@ -72,7 +72,7 @@ const quoteData = {
             ],
             itemCategory: "sales",
             tax: 10,
-            untilPrice: 10,
+            unitPrice: 10,
             quantity: 10,
             itemTotal: 100
          },
@@ -149,9 +149,9 @@ export default class GetQuote extends Component {
                   files: [],
                   itemCategory: "sales",
                   tax: 10,
-                  untilPrice: null,
-                  quantity: null,
-                  itemTotal: null
+                  unitPrice: 0,
+                  quantity: 0,
+                  itemTotal: 0
                },
             }
          ],

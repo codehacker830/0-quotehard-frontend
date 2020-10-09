@@ -17,20 +17,22 @@ const initSettings = {
 const initPriceItem = {
    category: "priceItem",
    priceItem: {
+      _id: "",
       itemCode: "",
       productHeading: "",
       longDescription: "",
       files: [],
       itemCategory: "sales",
       tax: 10,
-      untilPrice: null,
-      quantity: null,
-      itemTotal: null
+      unitPrice: 0,
+      quantity: 0,
+      itemTotal: 0
    },
 };
 const initTextItem = {
    category: "textItem",
    textItem: {
+      _id: "",
       textHeading: "here is text heading",
       longDescription: "description",
       files: []
@@ -152,7 +154,11 @@ export default class GetTemplate extends Component {
                   {/* Template Title */}
                   <div className="row">
                      <div className="col-12">
-                        <textarea className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2 my-4" rows={1} placeholder="Title of Template">
+                        <textarea className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2 my-4"
+                           rows={1} placeholder="Title of Template"
+                           value={this.state.title}
+                           onChange={(ev) => this.setState({ title: ev.target.value })}
+                        >
                         </textarea>
                      </div>
                   </div>
