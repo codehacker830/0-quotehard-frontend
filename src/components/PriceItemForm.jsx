@@ -193,27 +193,27 @@ export default class PriceItemForm extends Component {
                               width: "150px",
                               height: "155px"
                            }}>
-                           <button className="btn btn-light width-115 text-left mb-1">
+                           <button className="btn btn-light width-115 text-left mb-1" onClick={() => this.props.addItem(this.props.index, "subTotal")}>
                               <i className="fa fa-plus mr-2"></i>
                               <span className="font-w400 font-size-sm" htmlFor="optional">Subtotal</span>
                            </button>
-                           <button className="btn btn-light width-115 text-left mb-1">
+                           <button className="btn btn-light width-115 text-left mb-1" onClick={() => this.props.addItem(this.props.index, "priceItem")}>
                               <i className="fa fa-plus mr-2"></i>
                               <span className="font-w400 font-size-sm" htmlFor="optional">Price Item</span>
                            </button>
-                           <button className="btn btn-light width-115 text-left mb-1">
+                           <button className="btn btn-light width-115 text-left mb-1" onClick={() => this.props.addItem(this.props.index, "textItem")}>
                               <i className="fa fa-plus mr-2"></i>
                               <span className="font-w400 font-size-sm" htmlFor="optional">Text Item</span>
                            </button>
                         </div>
                      </div>
-                     <button className="btn btn-light mr-1" disabled={this.props.isOrderUpDisabled}>
+                     <button className="btn btn-light mr-1" disabled={this.props.isOrderUpDisabled} onClick={() => this.props.orderUpItem(this.props.index)}>
                         <i className="fa fa-long-arrow-alt-up"></i>
                      </button>
-                     <button className="btn btn-light mr-1" disabled={this.props.isOrderDownDisabled}>
+                     <button className="btn btn-light mr-1" disabled={this.props.isOrderDownDisabled} onClick={() => this.props.orderDownItem(this.props.index)}>
                         <i className="fa fa-long-arrow-alt-down"></i>
                      </button>
-                     <button className="btn btn-light" disabled={this.props.isRemoveDisabled}>
+                     <button className="btn btn-light" disabled={this.props.isRemoveDisabled} onClick={() => this.props.removeItem(this.props.index)}>
                         <i className="fa fa-trash-alt"></i>
                      </button>
                   </div>
@@ -315,8 +315,8 @@ export default class PriceItemForm extends Component {
                         <input type="text" id="quantity" className={`form-control rounded-0 ${this.state.isEditableQuantity ? "border-primary" : ""}`} />
                         <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">
                            <span className="text-primary">{this.state.isEditableQuantity ? "Editable " : ""}</span>
-                                 Quantity
-                              </label>
+                           Quantity
+                        </label>
                      </div>
                      <div className="col-4">
                         <input type="text" id="total" className="form-control rounded-0" />

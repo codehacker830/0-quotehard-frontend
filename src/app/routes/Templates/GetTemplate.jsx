@@ -2,15 +2,19 @@ import React, { Component } from 'react';
 import AddItemBtn from '../../../components/AddItemBtn';
 import NavCrump from '../../../components/NavCrump';
 import PriceItemForm from '../../../components/PriceItemForm';
+import SubTotal from '../../../components/SubTotal';
 import TemplateSettings from '../../../components/TemplateSettings';
 import TextItemForm from '../../../components/TextItemForm';
 
-const initNote = {
-   textHeading: "",
-   longDescription: "",
-   files: []
+const initSettings = {
+   discount: 0,
+   currency: "156",
+   taxMode: "no_tax",
+   priceDisplayLevel: "itemQuantityAndTotal",
+   displayItemCode: true,
 };
-const initItem = {
+
+const initPriceItem = {
    category: "priceItem",
    priceItem: {
       itemCode: "",
@@ -24,6 +28,17 @@ const initItem = {
       itemTotal: null
    },
 };
+const initTextItem = {
+   category: "textItem",
+   textItem: {
+      textHeading: "here is text heading",
+      longDescription: "description",
+      files: []
+   }
+}
+const initSubTotal = {
+   category: "subTotal",
+}
 export default class GetTemplate extends Component {
    constructor(orops) {
       super();
@@ -34,45 +49,14 @@ export default class GetTemplate extends Component {
          isSubscription: false,
          isCostPriceMargin: false,
 
-
          toPeopleList: [],
          title: "",
-         settings: {
-            discount: 0,
-            currency: "156",
-            taxMode: "no_tax",
-            priceDisplayLevel: "itemQuantityAndTotal",
-            displayItemCode: true,
-         },
+         settings: initSettings,
          items: [
-            {
-               category: "priceItem",
-               priceItem: {
-                  itemCode: "",
-                  productHeading: "",
-                  longDescription: "",
-                  files: [],
-                  itemCategory: "sales",
-                  tax: 10,
-                  untilPrice: null,
-                  quantity: null,
-                  itemTotal: null
-               },
-            },
-            {
-               category: "textItem",
-               textHeading: "here is text heading",
-               longDescription: "description",
-               files: []
-            }
+            initPriceItem,
+            initTextItem
          ],
-         notes: [
-            {
-               textHeading: "",
-               longDescription: "",
-               files: []
-            }
-         ]
+         notes: [initTextItem]
       }
    }
    removeImageItem = (url) => {
@@ -82,6 +66,64 @@ export default class GetTemplate extends Component {
    uploadFiles = (e) => {
       e.preventDefault()
       console.log(this.state.fileArray)
+   }
+
+   updateItem = (ind, item) => {
+      let newItems = { ...this.state.items };
+      newItems[ind] = item;
+      this.setState({ items: newItems });
+   }
+   addItem = (ind, category) => {
+      let newItems = [...this.state.items];
+      if (category === "priceItem") newItems.splice(ind + 1, 0, initPriceItem);
+      else if (category === "textItem") newItems.splice(ind + 1, 0, initTextItem);
+      else newItems.splice(ind + 1, 0, initSubTotal);
+      this.setState({ items: newItems });
+   }
+   orderUpItem = (ind) => {
+      let newItems = [...this.state.items];
+      newItems.splice(ind, 1);
+      newItems.splice(Math.max(ind - 1, 0), 0);
+      this.setState({ items: newItems });
+   }
+   orderDownItem = (ind) => {
+      let newItems = [...this.state.items];
+      const [dIt,] = newItems.splice(ind, 1);
+      newItems.splice(Math.min(ind + 1, this.state.items.length), 0);
+   }
+   removeItem = (ind) => {
+      let newItems = [...this.state.items];
+      if (newItems.length > 1) newItems.splice(ind, 1);
+      this.setState({ items: newItems });
+   }
+
+   updateNote = (ind, item) => {
+      let newNotes = { ...this.state.notes };
+      newNotes[ind] = item;
+      this.setState({ notes: newNotes });
+   }
+   addNote = (ind, category) => {
+      let newNotes = [...this.state.notes];
+      if (category === "priceItem") newNotes.splice(ind + 1, 0, initPriceItem);
+      else if (category === "textItem") newNotes.splice(ind + 1, 0, initTextItem);
+      else newNotes.splice(ind + 1, 0, initSubTotal);
+      this.setState({ notes: newNotes });
+   }
+   orderUpNote = (ind) => {
+      let newNotes = [...this.state.notes];
+      newNotes.splice(ind, 1);
+      newNotes.splice(Math.max(ind - 1, 0), 0);
+      this.setState({ notes: newNotes });
+   }
+   orderDownNote = (ind) => {
+      let newNotes = [...this.state.notes];
+      const [dIt,] = newNotes.splice(ind, 1);
+      newNotes.splice(Math.min(ind + 1, this.state.notes.length), 0);
+   }
+   removeNote = (ind) => {
+      let newNotes = [...this.state.notes];
+      if (newNotes.length > 1) newNotes.splice(ind, 1);
+      this.setState({ notes: newNotes });
    }
    render() {
       console.log(" state  ===", this.state)
@@ -123,38 +165,43 @@ export default class GetTemplate extends Component {
                            index={index}
                            isPaperClipDisabled={false}
                            isSettingDisabled={false}
-                           isAddItemDisabled={true}
-                           isOrderUpDisabled={true}
-                           isOrderDownDisabled={true}
-                           isRemoveDisabled={true}
+                           isAddItemDisabled={false}
+                           isOrderUpDisabled={false}
+                           isOrderDownDisabled={false}
+                           isRemoveDisabled={false}
                            {...item}
-                           updateItem={(ind, item) => {
-                              let newItems = { ...this.state.items };
-                              newItems[ind] = item;
-                              this.setState({ items: newItems });
-                           }}
+                           updateItem={this.updateItem}
+                           addItem={this.addItem}
+                           orderUpItem={this.orderUpItem}
+                           orderDownItem={this.orderDownItem}
+                           removeItem={this.removeItem}
                         />
-                        else return <TextItemForm
+                        else if (item.category === "textItem") return <TextItemForm
                            key={index}
                            index={index}
+                           isNote={false}
                            isPaperClipDisabled={false}
-                           isSettingDisabled={true}
-                           isAddItemDisabled={true}
-                           isOrderUpDisabled={true}
-                           isOrderDownDisabled={true}
-                           isRemoveDisabled={true}
+                           isSettingDisabled={false}
+                           isAddItemDisabled={false}
+                           isOrderUpDisabled={false}
+                           isOrderDownDisabled={false}
+                           isRemoveDisabled={false}
                            {...item}
-                           updateItem={(ind, item) => {
-                              let newItems = { ...this.state.items };
-                              newItems[ind] = item;
-                              this.setState({ items: newItems });
-                           }}
+                           updateItem={this.updateItem}
+                           addItem={this.addItem}
+                           orderUpItem={this.orderUpItem}
+                           orderDownItem={this.orderDownItem}
+                           removeItem={this.removeItem}
                         />
-
+                        else return <SubTotal
+                           key={index}
+                           index={index}
+                           removeItem={this.removeItem}
+                        />
                      })
                   }
 
-                  <AddItemBtn onClickAdd={() => this.setState({ items: [...this.state.items, initItem] })} />
+                  <AddItemBtn onClickAdd={() => this.setState({ items: [...this.state.items, initPriceItem] })} />
 
                   {/* Quote total */}
                   <div className="quote-edit-total-wrap">
@@ -222,21 +269,28 @@ export default class GetTemplate extends Component {
                   </div>
 
                   {
-                     this.state.notes.map((note, index) => {
+                     this.state.notes.map((item, index) => {
                         return <TextItemForm
                            key={index}
+                           index={index}
+                           isNote={true}
                            isPaperClipDisabled={false}
-                           isSettingDisabled={true}
-                           isAddItemDisabled={true}
-                           isOrderUpDisabled={true}
-                           isOrderDownDisabled={true}
-                           isRemoveDisabled={true}
+                           // isSettingDisabled={true}
+                           isAddItemDisabled={false}
+                           isOrderUpDisabled={false}
+                           isOrderDownDisabled={false}
+                           isRemoveDisabled={false}
+                           {...item}
+                           updateItem={this.updateNote}
+                           addItem={this.addNote}
+                           orderUpItem={this.orderUpNote}
+                           orderDownItem={this.orderDownNote}
+                           removeItem={this.removeNote}
                         />
                      })
                   }
 
-                  <AddItemBtn onClickAdd={() => this.setState({ notes: [...this.state.notes, initNote] })} />
-
+                  <AddItemBtn onClickAdd={() => this.setState({ notes: [...this.state.notes, initTextItem] })} />
 
                   {/* Footer action button group */}
                   <div className="row p-3">
