@@ -62,9 +62,9 @@ export default class PriceItemForm extends Component {
    }
 
    render() {
+      console.log(" priceitem pors ===", this.props);
       return (
          <React.Fragment>
-
             {/* ToolWrapper */}
             <div className="row pb-1">
                <div className="col-sm-12">

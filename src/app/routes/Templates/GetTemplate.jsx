@@ -1,9 +1,29 @@
 import React, { Component } from 'react';
+import AddItemBtn from '../../../components/AddItemBtn';
 import NavCrump from '../../../components/NavCrump';
 import PriceItemForm from '../../../components/PriceItemForm';
 import TemplateSettings from '../../../components/TemplateSettings';
 import TextItemForm from '../../../components/TextItemForm';
 
+const initNote = {
+   textHeading: "",
+   longDescription: "",
+   files: []
+};
+const initItem = {
+   category: "priceItem",
+   priceItem: {
+      itemCode: "",
+      productHeading: "",
+      longDescription: "",
+      files: [],
+      itemCategory: "sales",
+      tax: 10,
+      untilPrice: null,
+      quantity: null,
+      itemTotal: null
+   },
+};
 export default class GetTemplate extends Component {
    constructor(orops) {
       super();
@@ -18,16 +38,6 @@ export default class GetTemplate extends Component {
          toPeopleList: [],
          title: "",
          settings: {
-            validUntil: new Date(Date.now() + 1000 * 3600 * 24 * 50),  //valid for 50 days
-            sentAt: new Date(),
-            userFrom: {
-               _id: "",
-               firstName: "",
-               lastName: "",
-               email: "",
-               companyName: "",
-               location: "232"
-            },
             discount: 0,
             currency: "156",
             taxMode: "no_tax",
@@ -48,6 +58,12 @@ export default class GetTemplate extends Component {
                   quantity: null,
                   itemTotal: null
                },
+            },
+            {
+               category: "textItem",
+               textHeading: "here is text heading",
+               longDescription: "description",
+               files: []
             }
          ],
          notes: [
@@ -100,23 +116,45 @@ export default class GetTemplate extends Component {
                   </div>
 
                   {/* Controller button group */}
-                  <PriceItemForm
-                     isPaperClipDisabled={false}
-                     isSettingDisabled={false}
-                     isAddItemDisabled={true}
-                     isOrderUpDisabled={true}
-                     isOrderDownDisabled={true}
-                     isRemoveDisabled={true}
-                  />
+                  {
+                     this.state.items.map((item, index) => {
+                        if (item.category === "priceItem") return <PriceItemForm
+                           key={index}
+                           index={index}
+                           isPaperClipDisabled={false}
+                           isSettingDisabled={false}
+                           isAddItemDisabled={true}
+                           isOrderUpDisabled={true}
+                           isOrderDownDisabled={true}
+                           isRemoveDisabled={true}
+                           {...item}
+                           updateItem={(ind, item) => {
+                              let newItems = { ...this.state.items };
+                              newItems[ind] = item;
+                              this.setState({ items: newItems });
+                           }}
+                        />
+                        else return <TextItemForm
+                           key={index}
+                           index={index}
+                           isPaperClipDisabled={false}
+                           isSettingDisabled={true}
+                           isAddItemDisabled={true}
+                           isOrderUpDisabled={true}
+                           isOrderDownDisabled={true}
+                           isRemoveDisabled={true}
+                           {...item}
+                           updateItem={(ind, item) => {
+                              let newItems = { ...this.state.items };
+                              newItems[ind] = item;
+                              this.setState({ items: newItems });
+                           }}
+                        />
 
-                  <div className="row py-4">
-                     <div className="col-12">
-                        <button type="button" className="btn btn-alt-light">
-                           <i className="fa fa-plus mr-1"></i>
-                           Add Item
-                        </button>
-                     </div>
-                  </div>
+                     })
+                  }
+
+                  <AddItemBtn onClickAdd={() => this.setState({ items: [...this.state.items, initItem] })} />
 
                   {/* Quote total */}
                   <div className="quote-edit-total-wrap">
@@ -183,23 +221,22 @@ export default class GetTemplate extends Component {
                      </table>
                   </div>
 
-                  <TextItemForm
-                     isPaperClipDisabled={false}
-                     isSettingDisabled={true}
-                     isAddItemDisabled={true}
-                     isOrderUpDisabled={true}
-                     isOrderDownDisabled={true}
-                     isRemoveDisabled={true}
-                  />
+                  {
+                     this.state.notes.map((note, index) => {
+                        return <TextItemForm
+                           key={index}
+                           isPaperClipDisabled={false}
+                           isSettingDisabled={true}
+                           isAddItemDisabled={true}
+                           isOrderUpDisabled={true}
+                           isOrderDownDisabled={true}
+                           isRemoveDisabled={true}
+                        />
+                     })
+                  }
 
-                  <div className="row py-4">
-                     <div className="col-12">
-                        <button type="button" className="btn btn-alt-light mb-2">
-                           <i className="fa fa-plus mr-1"></i>
-                           Add Item
-                        </button>
-                     </div>
-                  </div>
+                  <AddItemBtn onClickAdd={() => this.setState({ notes: [...this.state.notes, initNote] })} />
+
 
                   {/* Footer action button group */}
                   <div className="row p-3">

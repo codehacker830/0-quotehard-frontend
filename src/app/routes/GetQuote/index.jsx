@@ -4,7 +4,6 @@ import QuoteToPeopleList from './QuoteToPeopleList';
 import QuoteSettings from '../../../components/QuoteSettings';
 import PriceItemForm from '../../../components/PriceItemForm';
 import TextItemForm from '../../../components/TextItemForm';
-import AddItem from './AddItem';
 import { toastr } from 'react-redux-toastr';
 import { toastrWarningConfig, toastrSuccessConfig, toastrErrorConfig, toastrInfoConfig } from '../../../util/toastrConfig';
 import CompleterContact from './CompleterContact';
@@ -289,7 +288,14 @@ export default class GetQuote extends Component {
                      isOrderDownDisabled={true}
                      isRemoveDisabled={true}
                   />
-                  <AddItem />
+                  <div className="row py-4">
+                     <div className="col-12">
+                        <button type="button" className="btn btn-alt-light">
+                           <i className="fa fa-plus mr-1"></i>
+                           Add Item
+                        </button>
+                     </div>
+                  </div>
 
                   {/* subtotal 1 */}
                   <table className="quoteTotal hasTerm table table-borderless">
