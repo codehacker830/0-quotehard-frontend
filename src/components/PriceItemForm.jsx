@@ -24,6 +24,9 @@ export default class PriceItemForm extends Component {
       this.hiddenFileInput = React.createRef();
       this.settingContainter = React.createRef();
       this.addItemOptionContainer = React.createRef();
+      this.optionalItemRef = React.createRef();
+      this.multipleChoiceRef = React.createRef();
+
    }
    removeImageItem = (url) => {
       const newFileArray = this.state.fileArray.filter(item => item !== url);
@@ -64,19 +67,34 @@ export default class PriceItemForm extends Component {
 
             {/* ToolWrapper */}
             <div className="row pb-1">
-               <div className="col-sm-12 d-flex">
-                  <div className="form-check form-check-inline float-left">
-                     <input type="checkbox"
-                        className="form-check-input"
-                        id="option-checkbox" name="option-checkbox"
-                        value={this.state.isOptionSelected}
-                        onClick={() => this.setState({ isOptionSelected: !this.state.isOptionSelected })}
-                     />
-                     <label className="form-check-label" htmlFor="option-checkbox">
-                        Option <span className="text-secondary">{this.state.isOptionSelected ? "Selected" : ""}</span>
-                     </label>
-                  </div>
-                  <div className="mx-auto d-flex">
+               <div className="col-sm-12">
+                  {
+                     this.state.isOptionalItem &&
+                     <div className="form-check form-check-inline toolWrapper">
+                        <input type="checkbox"
+                           className="form-check-input"
+                           name="option-checkbox"
+                           value={this.state.isOptionSelected}
+                           onClick={() => this.setState({ isOptionSelected: !this.state.isOptionSelected })}
+                        />
+                        <label className="form-check-label">
+                           Option {this.state.isOptionSelected ? "Selected" : ""}
+                        </label>
+                     </div>
+                  }
+                  {
+                     this.state.isMultipleChoice &&
+                     <div className="form-check toolWrapper">
+                        <input type="radio"
+                           className="form-check-input"
+                           name={`multipleChoiceGroup-1`}
+                           defaultValue="option1"
+                           defaultChecked
+                        />
+                        <label className="form-check-label">1 of 1 Selected</label>
+                     </div>
+                  }
+                  <div className="row no-gutters w-100 justify-content-center">
                      <input type="file"
                         ref={this.hiddenFileInput}
                         onChange={this.uploadMultipleFiles}
@@ -106,16 +124,24 @@ export default class PriceItemForm extends Component {
                            <div className="form-check pb-1">
                               <input className="form-check-input"
                                  type="checkbox"
+                                 ref={this.optionalItemRef}
                                  value={this.state.isOptionalItem}
-                                 onChange={() => this.setState({ isOptionalItem: !this.state.isOptionalItem })}
+                                 onClick={() => {
+                                    if (this.state.isMultipleChoice === true && this.state.isOptionalItem === false) this.multipleChoiceRef.current.click();
+                                    this.setState({ isOptionalItem: !this.state.isOptionalItem });
+                                 }}
                                  id="optional" name="optional" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="optional">Optional Item</label>
                            </div>
                            <div className="form-check pb-1">
                               <input className="form-check-input"
                                  type="checkbox"
+                                 ref={this.multipleChoiceRef}
                                  value={this.state.isMultipleChoice}
-                                 onChange={() => this.setState({ isMultipleChoice: !this.state.isMultipleChoice })}
+                                 onClick={() => {
+                                    if (this.state.isOptionalItem === true && this.state.isMultipleChoice === false) this.optionalItemRef.current.click();
+                                    this.setState({ isMultipleChoice: !this.state.isMultipleChoice });
+                                 }}
                                  id="multiple" name="multiple" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="multiple">Multiple Choice</label>
                            </div>
@@ -148,7 +174,7 @@ export default class PriceItemForm extends Component {
                               <input className="form-check-input"
                                  type="checkbox"
                                  value={this.state.isCostPriceMargin}
-                                 onChange={() => this.setState({ isCostPriceMargin: !this.props.isCostPriceMargin })}
+                                 onChange={() => this.setState({ isCostPriceMargin: !this.state.isCostPriceMargin })}
                                  id="cost-margin" name="cost-margin" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="cost-margin">Cost Price & Margin</label>
                            </div>

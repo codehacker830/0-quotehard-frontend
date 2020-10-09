@@ -147,19 +147,22 @@ export const allActivities = [
 export const peopleContacts = [
    {
       _id: "12345",
-      name: "Raffale Cantatore",
+      firstName: "Raffale",
+      lastName: "Cantatore",
       email: "honestypassion0615@gmail.com",
       company: "Raff Company",
    },
    {
       _id: "13452",
-      name: "Danil Zolo",
+      firstName: "Danil",
+      lastName: "Zolo",
       email: "danilo@gmail.com",
       company: "Danil Company"
    },
    {
       _id: "248318",
-      name: "Radoje Cofallo",
+      firstName: "Radoje",
+      lastName: "Cofallo",
       email: "cofallo@gmail.com",
       company: "AllOver"
    }

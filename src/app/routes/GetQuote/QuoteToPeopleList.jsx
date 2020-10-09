@@ -10,7 +10,7 @@ export const QuotetoPeopleList = (props) => {
                      <button type="button" className="btn close" onClick={() => props.removeContact(contact)}>
                         <span>×</span>
                      </button>
-                     <strong className="text-black my-1 mr-1">{contact.name}</strong>
+                     <strong className="text-black my-1 mr-1">{contact.firstName} {contact.lastName}</strong>
                      <span className="text-secondary">{contact.company}</span>
                      <p className="mb-0">{contact.email}</p>
                   </div>

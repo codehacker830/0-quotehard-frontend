@@ -13,6 +13,50 @@ export default class GetTemplate extends Component {
          isDiscount: false,
          isSubscription: false,
          isCostPriceMargin: false,
+
+
+         toPeopleList: [],
+         title: "",
+         settings: {
+            validUntil: new Date(Date.now() + 1000 * 3600 * 24 * 50),  //valid for 50 days
+            sentAt: new Date(),
+            userFrom: {
+               _id: "",
+               firstName: "",
+               lastName: "",
+               email: "",
+               companyName: "",
+               location: "232"
+            },
+            discount: 0,
+            currency: "156",
+            taxMode: "no_tax",
+            priceDisplayLevel: "itemQuantityAndTotal",
+            displayItemCode: true,
+         },
+         items: [
+            {
+               category: "priceItem",
+               priceItem: {
+                  itemCode: "",
+                  productHeading: "",
+                  longDescription: "",
+                  files: [],
+                  itemCategory: "sales",
+                  tax: 10,
+                  untilPrice: null,
+                  quantity: null,
+                  itemTotal: null
+               },
+            }
+         ],
+         notes: [
+            {
+               textHeading: "",
+               longDescription: "",
+               files: []
+            }
+         ]
       }
    }
    removeImageItem = (url) => {
@@ -24,6 +68,7 @@ export default class GetTemplate extends Component {
       console.log(this.state.fileArray)
    }
    render() {
+      console.log(" state  ===", this.state)
       return (
          <React.Fragment>
             <NavCrump linkTo="/app/content/templates">
@@ -38,7 +83,10 @@ export default class GetTemplate extends Component {
                      </div>
                      <div className="col-sm-6">
                         <div className="pl-4 py-2" style={{ borderLeft: "4px solid #eee" }}>
-                           <TemplateSettings />
+                           <TemplateSettings
+                              {...this.state.settings}
+                              updateSettings={(settings) => this.setState({ settings: settings })}
+                           />
                         </div>
                      </div>
                   </div>
@@ -59,9 +107,6 @@ export default class GetTemplate extends Component {
                      isOrderUpDisabled={true}
                      isOrderDownDisabled={true}
                      isRemoveDisabled={true}
-
-                  // onHandleChange={()}
-
                   />
 
                   <div className="row py-4">

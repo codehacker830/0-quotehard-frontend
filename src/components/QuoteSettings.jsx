@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 
 export default class QuoteSettings extends Component {
-   state = {
-      show: false
-   };
-   componentDidMount() {
-
+   constructor(props) {
+      super(props);
+      this.state = {
+         show: true,
+      };
    }
+
    render() {
+      console.log(" this props =>", this.props);
+      const settings = { ... this.props };
       return (
          <React.Fragment>
             <h3>Quote Settings</h3>
@@ -15,12 +18,22 @@ export default class QuoteSettings extends Component {
                <label htmlFor="_expiry_date_date" className="text-gray fa-xs text-uppercase">Valid Until</label>
                <div className="d-flex">
                   <div className="w-75 pr-2">
-                     <input type="text" id="_expiry_date_date" className="form-control mr-2 rounded-0" />
+                     <input type="text"
+                        id="_expiry_date_date"
+                        className="form-control mr-2 rounded-0"
+                        value={this.props.validDate}
+                        onChange={(ev) => this.props.updateValidDate(ev.target.value)}
+                     />
                      <label htmlFor="_expiry_date_date" className="text-info fa-xs">YYYY/MM/DD</label>
                   </div>
                   <div>
-                     <input type="text" id="_expiry_date_time" className="form-control rounded-0" />
-                     <label htmlFor="_expiry_date_time" className="text-info fa-xs">HH:MM</label>
+                     <input type="text"
+                        id="_expiry_date_time"
+                        className="form-control rounded-0"
+                        value={this.props.validTime}
+                        onChange={(ev) => this.props.updateValidTime(ev.target.value)}
+                     />
+                     <label htmlFor="_expiry_date_time" className="text-info fa-xs">HH:mm</label>
                   </div>
                </div>
             </div>
@@ -29,12 +42,21 @@ export default class QuoteSettings extends Component {
                   <label htmlFor="_sent_when_date" className="text-gray fa-xs text-uppercase">Date</label>
                   <div className="d-flex">
                      <div className="w-75 pr-2">
-                        <input type="text" id="_sent_when_date" className="form-control mr-2 rounded-0" />
+                        <input type="text"
+                           id="_sent_when_date"
+                           className="form-control mr-2 rounded-0"
+                           value={this.props.sentDate}
+                           onChange={(ev) => this.props.updateSentDate(ev.target.value)}
+                        />
                         <label htmlFor="_sent_when_date" className="text-info fa-xs">YYYY/MM/DD</label>
                      </div>
                      <div>
-                        <input type="text" id="_sent_when_time" className="form-control rounded-0" />
-                        <label htmlFor="_sent_when_time" className="text-info fa-xs">HH:MM</label>
+                        <input type="text"
+                           id="_sent_when_time"
+                           className="form-control rounded-0"
+                           value={this.props.sentTime}
+                           onChange={(ev) => this.props.updateSentTime(ev.target.value)} />
+                        <label htmlFor="_sent_when_time" className="text-info fa-xs">HH:mm</label>
                      </div>
                   </div>
                   <p className="fa-xs text-secondary">
@@ -44,17 +66,29 @@ export default class QuoteSettings extends Component {
                </div>
                <div className="pb-2">
                   <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">FROM</label>
-                  <select className="custom-select rounded-0">
-                     <option value={21}>A Devom</option>
+                  <select className="custom-select rounded-0"
+                     value={this.props.userFrom._id}
+                     onChange={(ev) => this.props.updateSettings({ ...settings, userFrom: { ...this.props.userFrom, _id: ev.target.value } })}>
+                     <option value={`5f7b39e8f1f85766fc60d8d4`}>A Devom</option>
+                     <option value={`5f7b39e8f1f85766fc60d8d3`}>John Doe</option>
                   </select>
                </div>
                <div className="pb-2">
                   <label htmlFor="quote_discount_overall" className="text-gray fa-xs text-uppercase">DISCOUNT %</label>
-                  <input type="text" id="quote_discount_overall" className="form-control rounded-0 maxWidth-180" />
+                  <input type="text"
+                     id="quote_discount_overall"
+                     className="form-control rounded-0 maxWidth-180"
+                     value={this.props.discount}
+                     onChange={(ev) => this.props.updateSettings({ ...settings, discount: ev.target.value })}
+                  />
                </div>
                <div className="pb-2">
                   <label htmlFor="quote_currency_id" className="text-gray fa-xs text-uppercase">CURRENCY</label>
-                  <select className="custom-select rounded-0" defaultValue={156} id="quote_currency_id">
+                  <select className="custom-select rounded-0"
+                     id="quote_currency_id"
+                     value={this.props.currency}
+                     onChange={(ev) => this.props.updateSettings({ ...settings, currency: ev.target.value })}
+                  >
                      <optgroup label="––––––––––––––––––––––– " />
                      <option value={8}>Australia Dollar</option>
                      <option value={27}>Canada Dollar</option>
@@ -255,40 +289,72 @@ export default class QuoteSettings extends Component {
                </div>
                <div className="pb-2">
                   <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">AMOUNTS ARE</label>
-                  <select className="custom-select rounded-0" defaultValue={`exclusive_excluding`}>
+                  <select className="custom-select rounded-0"
+                     value={this.props.taxMode}
+                     onChange={(ev) => this.props.updateSettings({ ...settings, taxMode: ev.target.value })}>
                      <option value="exclusive_including">Tax Exclusive (Inclusive Total)</option>
                      <option value="exclusive_excluding">Tax Exclusive</option>
                      <option value="inclusive">Tax Inclusive</option>
-                     <option value="no tax">No Tax</option>
+                     <option value="no_tax">No Tax</option>
                   </select>
                </div>
                <div className="pb-2">
                   <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">PRICING DISPLAY LEVEL</label>
                   <p className="text-secondary fa-xs">Choose the level of pricing details to present to your customer.</p>
                   <div className="custom-control custom-radio custom-control-primary mb-1">
-                     <input type="radio" className="custom-control-input" id="example-radio-custom1" name="example-radio-custom"
-                        defaultChecked />
-                     <label className="custom-control-label" htmlFor="example-radio-custom1">Item Quantity & Total</label>
+                     <input type="radio"
+                        className="custom-control-input"
+                        id="pricing-display-level1"
+                        name="pricing-display-level"
+                        value="itemQuantityAndTotal"
+                        checked={this.props.priceDisplayLevel === "itemQuantityAndTotal"}
+                        onChange={(ev) => this.props.updateSettings({ ...settings, priceDisplayLevel: ev.target.value })}
+                     />
+                     <label className="custom-control-label" htmlFor="pricing-display-level1">Item Quantity & Total</label>
                   </div>
                   <div className="custom-control custom-radio custom-control-primary mb-1">
-                     <input type="radio" className="custom-control-input" id="example-radio-custom2" name="example-radio-custom"
-                        defaultChecked />
-                     <label className="custom-control-label" htmlFor="example-radio-custom2">Item Quantity</label>
+                     <input type="radio"
+                        className="custom-control-input"
+                        id="price-display-level2"
+                        name="pricing-display-level"
+                        value="itemQuantity"
+                        checked={this.props.priceDisplayLevel === "itemQuantity"}
+                        onChange={(ev) => this.props.updateSettings({ ...settings, priceDisplayLevel: ev.target.value })}
+                     />
+                     <label className="custom-control-label" htmlFor="price-display-level2">Item Quantity</label>
                   </div>
                   <div className="custom-control custom-radio custom-control-primary mb-1">
-                     <input type="radio" className="custom-control-input" id="example-radio-custom3" name="example-radio-custom"
-                        defaultChecked />
-                     <label className="custom-control-label" htmlFor="example-radio-custom3">Item Total</label>
+                     <input type="radio"
+                        className="custom-control-input"
+                        id="pricing-display-level3"
+                        name="pricing-display-level"
+                        value="itemTotal"
+                        checked={this.props.priceDisplayLevel === "itemTotal"}
+                        onChange={(ev) => this.props.updateSettings({ ...settings, priceDisplayLevel: ev.target.value })}
+                     />
+                     <label className="custom-control-label" htmlFor="pricing-display-level3">Item Total</label>
                   </div>
                   <div className="custom-control custom-radio custom-control-primary mb-1">
-                     <input type="radio" className="custom-control-input" id="example-radio-custom4" name="example-radio-custom"
-                        defaultChecked />
-                     <label className="custom-control-label" htmlFor="example-radio-custom4">Hide All</label>
+                     <input type="radio"
+                        className="custom-control-input"
+                        id="pricing-display-level4"
+                        name="pricing-display-level"
+                        value="hideAll"
+                        checked={this.props.priceDisplayLevel === "hideAll"}
+                        onChange={(ev) => this.props.updateSettings({ ...settings, priceDisplayLevel: ev.target.value })}
+                     />
+                     <label className="custom-control-label" htmlFor="pricing-display-level4">Hide All</label>
                   </div>
                   <hr />
                   <div className="custom-control custom-checkbox custom-control-primary mb-1">
-                     <input type="checkbox" className="custom-control-input" id="example-checkbox-custom2" name="example-checkbox-custom2" />
-                     <label className="custom-control-label" htmlFor="example-checkbox-custom2">Display Item Code Always</label>
+                     <input type="checkbox"
+                        id="display-item-code"
+                        className="custom-control-input"
+                        name="display-item-code"
+                        checked={this.props.displayItemCode}
+                        onChange={(ev) => this.props.updateSettings({ ...settings, displayItemCode: !this.props.displayItemCode })}
+                     />
+                     <label className="custom-control-label" htmlFor="display-item-code">Display Item Code Always</label>
                   </div>
                </div>
             </div>

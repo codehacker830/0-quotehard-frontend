@@ -21,7 +21,7 @@ export const CompleterContact = (props) => {
                return (
                   <li key={index} className="border-top" onClick={() => props.addContact(contact)}>
                      <div className="u-ellipsis">
-                        {contact.name} <small><em>-</em> <strong> {contact.company}</strong></small>
+                        {contact.firstName} {contact.lastName} <small><em>-</em> <strong> {contact.company}</strong></small>
                      </div>
                      <div className="u-ellipsis"> <small><strong> {contact.email}</strong></small></div>
                   </li>

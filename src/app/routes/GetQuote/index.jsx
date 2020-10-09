@@ -4,11 +4,106 @@ import QuoteToPeopleList from './QuoteToPeopleList';
 import QuoteSettings from '../../../components/QuoteSettings';
 import PriceItemForm from '../../../components/PriceItemForm';
 import TextItemForm from '../../../components/TextItemForm';
+import AddItem from './AddItem';
 import { toastr } from 'react-redux-toastr';
 import { toastrWarningConfig, toastrSuccessConfig, toastrErrorConfig, toastrInfoConfig } from '../../../util/toastrConfig';
 import CompleterContact from './CompleterContact';
 import LableFor from './LableFor';
 import axios from '../../../util/Api';
+import {
+   parseDate,
+   parseTime,
+   isValidDateTimeFormat,
+   convertStrIntoDateObj
+} from '../../../util';
+
+const quoteData = {
+   createdBy: "thisisuseridwhocreatetshi",
+   toPeopleList: [
+      {
+         _id: "12345",
+         firstName: "Raffale",
+         lastName: "Cantatore",
+         email: "honestypassion0615@gmail.com",
+         company: "Raff Company",
+      },
+      {
+         _id: "13452",
+         firstName: "Danil",
+         lastName: "Zolo",
+         email: "danilo@gmail.com",
+         company: "Danil Company"
+      },
+      // {
+      //    _id: "248318",
+      //    firstName: "Radoje",
+      //    lastName: "Cofallo",
+      //    email: "cofallo@gmail.com",
+      //    company: "AllOver"
+      // }
+   ],
+   title: "this is Quote title",
+   settings: {
+      validUntil: new Date(Date.now() + 1000 * 3600 * 24 * 50),
+      sentAt: new Date(),
+      userFrom: {
+         _id: "5f7b39e8f1f85766fc60d8d3",
+         firstName: "A",
+         lastName: "Devom",
+         email: "honestypasion0615@gmail.com",
+         companyName: "AllOver",
+         location: "232"
+      },
+      discount: 50,
+      currency: "156",
+      taxMode: "no_tax",
+      priceDisplayLevel: "itemQuantityAndTotal",
+      displayItemCode: true
+   },
+   items: [
+      {
+         category: "priceItem",
+         priceItem: {
+            itemCode: "icode-1",
+            productHeading: "this is product heading",
+            longDescription: "long description",
+            files: [
+               "https://static.productionready.io/images/smiley-cyrus.jpg",
+               "https://static.productionready.io/images/smiley-cyrus.jpg"
+            ],
+            itemCategory: "sales",
+            tax: 10,
+            untilPrice: 10,
+            quantity: 10,
+            itemTotal: 100
+         },
+      },
+      {
+         category: "textItem",
+         textItem: {
+            textHeading: "here is text heading",
+            longDescription: "description",
+            files: [
+               "https://static.productionready.io/images/smiley-cyrus.jpg",
+               "https://static.productionready.io/images/smiley-cyrus.jpg"
+            ]
+         },
+      },
+      {
+         category: "subTotal",
+      }
+   ],
+   notes: [
+      {
+         textHeading: "here is text heading",
+         longDescription: "descriptioin",
+         files: [
+            "https://static.productionready.io/images/smiley-cyrus.jpg",
+            "https://static.productionready.io/images/smiley-cyrus.jpg"
+         ]
+      }
+   ]
+}
 
 export default class GetQuote extends Component {
    constructor(orops) {
@@ -19,8 +114,55 @@ export default class GetQuote extends Component {
          isDiscount: false,
          isSubscription: false,
          isCostPriceMargin: false,
+         emailTo: "",
+
+         validDate: "",
+         validTime: "",
+         sentDate: "",
+         sentTime: "",
+
          toPeopleList: [],
-         emailTo: ""
+         title: "",
+         settings: {
+            validUntil: new Date(Date.now() + 1000 * 3600 * 24 * 50),  //valid for 50 days
+            sentAt: new Date(),
+            userFrom: {
+               _id: "",
+               firstName: "",
+               lastName: "",
+               email: "",
+               companyName: "",
+               location: "232"
+            },
+            discount: 0,
+            currency: "156",
+            taxMode: "no_tax",
+            priceDisplayLevel: "itemQuantityAndTotal",
+            displayItemCode: true,
+         },
+         items: [
+            {
+               category: "priceItem",
+               priceItem: {
+                  itemCode: "",
+                  productHeading: "",
+                  longDescription: "",
+                  files: [],
+                  itemCategory: "sales",
+                  tax: 10,
+                  untilPrice: null,
+                  quantity: null,
+                  itemTotal: null
+               },
+            }
+         ],
+         notes: [
+            {
+               textHeading: "",
+               longDescription: "",
+               files: []
+            }
+         ]
       }
    }
    removeImageItem = (url) => {
@@ -41,17 +183,27 @@ export default class GetQuote extends Component {
       toastr.error('This is error', 'error message here', toastrErrorConfig);
    }
    componentDidMount() {
-      if (this.props.match.params && this.props.match.params.id !== "get") {
-         // Get quote details with quote ID
-         axios.get(`/quotes/${this.props.match.params.id}`).then(({ data }) => {
-            console.log(" ress sss  =>", data);
-         }).catch(err => {
-            console.error("get quote detail api error =>", err)
-         });
-      }
+      // if (this.props.match.params && this.props.match.params.id !== "get") {
+      //    // Get quote details with quote ID
+      //    axios.get(`/quotes/${this.props.match.params.id}`).then(({ data }) => {
+      //       console.log(" ress sss  =>", data);
+      //    }).catch(err => {
+      //       console.error("get quote detail api error =>", err)
+      //    });
+      // }
+      const { toPeopleList, title, settings, items, notes } = quoteData;
+      this.setState({
+         toPeopleList, title, settings, items, notes,
+
+         validDate: parseDate(settings.validUntil),
+         validTime: parseTime(settings.validUntil),
+         sentDate: parseDate(settings.sentAt),
+         sentTime: parseTime(settings.sentAt)
+      });
    }
    render() {
-      console.log(" GetQute props => ", this.props)
+      console.log(" GetQute state => ", this.state);
+      console.log(" GetQute props => ", this.props);
       const { location } = this.props;
       const { state } = location;
       let HeadLinkText = 'Dashboard';
@@ -103,7 +255,19 @@ export default class GetQuote extends Component {
                      {/* Quote Setting */}
                      <div className="col-sm-6">
                         <div className="pl-4 py-2" style={{ borderLeft: "4px solid #eee" }}>
-                           <QuoteSettings />
+                           <QuoteSettings
+                              {...this.state.settings}
+                              validDate={this.state.validDate}
+                              validTime={this.state.validTime}
+                              sentDate={this.state.sentDate}
+                              sentTime={this.state.sentTime}
+                              updateValidDate={(val) => this.setState({ validDate: val })}
+                              updateValidTime={(val) => this.setState({ validTime: val })}
+                              updateSentDate={(val) => this.setState({ sentDate: val })}
+                              updateSentTime={(val) => this.setState({ sentTime: val })}
+
+                              updateSettings={(settings) => this.setState({ settings: settings })}
+                           />
                         </div>
                      </div>
                   </div>
@@ -124,85 +288,72 @@ export default class GetQuote extends Component {
                      isOrderUpDisabled={true}
                      isOrderDownDisabled={true}
                      isRemoveDisabled={true}
-
-                     // onHandleChange={()}
-
                   />
-                   
-                  <div className="row py-4">
-                     <div className="col-12">
-                        <button type="button" className="btn btn-alt-light">
-                           <i className="fa fa-plus mr-1"></i>
-                           Add Item
-                        </button>
-                     </div>
-                  </div>
+                  <AddItem />
 
-                  <div className="quote-edit-total-wrap">
-                     {/* subtotal 1 */}
-                     <table className="quoteTotal hasTerm table table-borderless">
-                        <tbody>
-                           <tr className="options">
-                              <td className="total-desc">
-                                 <p className="quote-text-sm">Options selected</p>
-                                 <p className="quote-text-sm">Optional extras are excluded from this calculation</p>
-                              </td>
-                              <td className="total-price">
-                                 <p className="quote-text-sm">1 of 1</p>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td className="total-desc">Subtotal</td>
-                              <td className="total-price">100.00</td>
-                           </tr>
-                           <tr className="total">
-                              <td className="total-desc"><span className="quoteTotal-gDesc">Total including tax</span></td>
-                              <td className="total-price"><span className="quoteTotal-gTotal">$100.00</span>
-                                 <div className="quote-text-sm">per week</div>
-                                 <div className="quote-text-sm">(for 4 weeks)</div>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
+                  {/* subtotal 1 */}
+                  <table className="quoteTotal hasTerm table table-borderless">
+                     <tbody>
+                        <tr className="options">
+                           <td className="total-desc">
+                              <p className="quote-text-sm">Options selected</p>
+                              <p className="quote-text-sm">Optional extras are excluded from this calculation</p>
+                           </td>
+                           <td className="total-price">
+                              <p className="quote-text-sm">1 of 1</p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td className="total-desc">Subtotal</td>
+                           <td className="total-price">100.00</td>
+                        </tr>
+                        <tr className="total">
+                           <td className="total-desc"><span className="quoteTotal-gDesc">Total including tax</span></td>
+                           <td className="total-price"><span className="quoteTotal-gTotal">$100.00</span>
+                              <div className="quote-text-sm">per week</div>
+                              <div className="quote-text-sm">(for 4 weeks)</div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
 
-                     {/* subtotal 2 */}
-                     <table className="quoteTotal hasNoTerm table table-borderless">
-                        <tbody>
-                           <tr className="options">
-                              <td className="total-desc">
-                                 <p className="quote-text-sm"><span>Options selected</span></p>
-                                 <p className="quote-text-sm">Optional extras are excluded from this calculation</p>
-                              </td>
-                              <td className="total-price">
-                                 <p className="quote-text-sm">2 of 4</p>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td className="total-desc">Subtotal</td>
-                              <td className="total-price">900.00</td>
-                           </tr>
-                           <tr className="tProfit">
-                              <td className="total-desc">Total margin 20%</td>
-                              <td className="total-price">100.00</td>
-                           </tr>
-                           <tr>
-                              <td className="total-desc">Tax 10%</td>
-                              <td className="total-price">80.00</td>
-                           </tr>
-                           <tr className="total">
-                              <td className="total-desc"><span className="quoteTotal-gDesc">Total including tax</span></td>
-                              <td className="total-price"><span className="quoteTotal-gTotal">$980.00</span>
-                                 <p className="quote-text-sm">per week</p>
-                                 <p className="quote-text-sm">(for 4 weeks)</p>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                  </div>
+                  {/* subtotal 2 */}
+                  <table className="quoteTotal hasNoTerm table table-borderless">
+                     <tbody>
+                        <tr className="options">
+                           <td className="total-desc">
+                              <p className="quote-text-sm"><span>Options selected</span></p>
+                              <p className="quote-text-sm">Optional extras are excluded from this calculation</p>
+                           </td>
+                           <td className="total-price">
+                              <p className="quote-text-sm">2 of 4</p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td className="total-desc">Subtotal</td>
+                           <td className="total-price">900.00</td>
+                        </tr>
+                        <tr className="tProfit">
+                           <td className="total-desc">Total margin 20%</td>
+                           <td className="total-price">100.00</td>
+                        </tr>
+                        <tr>
+                           <td className="total-desc">Tax 10%</td>
+                           <td className="total-price">80.00</td>
+                        </tr>
+                        <tr className="total">
+                           <td className="total-desc"><span className="quoteTotal-gDesc">Total including tax</span></td>
+                           <td className="total-price"><span className="quoteTotal-gTotal">$980.00</span>
+                              <p className="quote-text-sm">per week</p>
+                              <p className="quote-text-sm">(for 4 weeks)</p>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
 
                   <TextItemForm
                      isPaperClipDisabled={false}
-                     isSettingDisabled={true}
+                     // isSettingDisabled={false}
                      isAddItemDisabled={true}
                      isOrderUpDisabled={true}
                      isOrderDownDisabled={true}

@@ -300,8 +300,8 @@ a.nav-link.active {
    padding-bottom: 30px;
 }
 .quoteTotal {
-   margin-top: 1rem !important;
-   margin-bottom: 0rem !important;
+   margin-top: 0rem !important;
+   margin-bottom: 1rem !important;
    tr:first-child td {
       padding-top: 15px;
    }
@@ -396,7 +396,14 @@ a.nav-link.active {
       background-color: #51a5e3;
    }
 }
-
+.toolWrapper {
+   position: absolute;
+}
+@media (max-width: 600px) {
+   .toolWrapper {
+      position: relative;
+   }
+}
 @media (min-width: 480px) {
    .total-desc {
       width: 65% !important;

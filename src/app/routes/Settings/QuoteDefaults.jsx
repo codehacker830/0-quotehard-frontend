@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import NavCrump from '../../../components/NavCrump'
 
 export const QuoteDefaults = (props) => {
+   const [taxMode, setTaxMode] = useState("exclusive_excluding");
    return (
       <React.Fragment>
          <NavCrump linkTo={`/app/settings`}>
@@ -236,11 +237,14 @@ export const QuoteDefaults = (props) => {
                </div>
                <div className="mb-2">
                   <label htmlFor="account_amounts_entered">Select</label>
-                  <select className="form-control maxWidth-300" id="account_amounts_entered" name="account_amounts_entered">
-                     <option value="exclusive_including" selected="selected">Tax Exclusive (Inclusive Total)</option>
+                  <select className="custom-select rounded-0"
+                     // defaultValue={`exclusive_excluding`}
+                     value={this.state.taxMode}
+                     onChange={(ev) => this.setState({ taxMode: ev.target.value })}>
+                     <option value="exclusive_including">Tax Exclusive (Inclusive Total)</option>
                      <option value="exclusive_excluding">Tax Exclusive</option>
                      <option value="inclusive">Tax Inclusive</option>
-                     <option value="no tax">No Tax</option>
+                     <option value="no_tax">No Tax</option>
                   </select>
                </div>
             </div>
