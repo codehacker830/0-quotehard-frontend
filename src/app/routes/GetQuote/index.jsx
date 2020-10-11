@@ -1,22 +1,35 @@
-import React, { Component } from 'react';
-import NavCrump from '../../../components/NavCrump';
-import QuoteToPeopleList from './QuoteToPeopleList';
-import QuoteSettings from '../../../components/QuoteSettings';
-import PriceItemForm from '../../../components/PriceItemForm';
-import TextItemForm from '../../../components/TextItemForm';
-import { toastr } from 'react-redux-toastr';
-import { toastrWarningConfig, toastrSuccessConfig, toastrErrorConfig, toastrInfoConfig } from '../../../util/toastrConfig';
-import CompleterContact from './CompleterContact';
-import LableFor from './LableFor';
-import axios from '../../../util/Api';
+import React, { Component } from "react";
+import NavCrump from "../../../components/NavCrump";
+import QuoteToPeopleList from "./QuoteToPeopleList";
+import QuoteSettings from "../../../components/QuoteSettings";
+import PriceItemForm from "../../../components/PriceItemForm";
+import TextItemForm from "../../../components/TextItemForm";
+import SubTotal from "../../../components/SubTotal";
+import { toastr } from "react-redux-toastr";
+import {
+   toastrWarningConfig,
+   toastrSuccessConfig,
+   toastrErrorConfig,
+   toastrInfoConfig,
+} from "../../../util/toastrConfig";
+import CompleterContact from "./CompleterContact";
+import LableFor from "./LableFor";
+import axios from "../../../util/Api";
 import {
    parseDate,
    parseTime,
    isValidDateTimeFormat,
-   convertStrIntoDateObj
-} from '../../../util';
+   convertStrIntoDateObj,
+} from "../../../util";
+import {
+   initQuoteSettings,
+   initPriceItem,
+   initTextItem,
+   initSubTotal,
+} from "../../../constants/InitState";
+import AddItemBtn from "../../../components/AddItemBtn";
 
-const quoteData = {
+const quoteDataApires = {
    createdBy: "thisisuseridwhocreatetshi",
    toPeopleList: [
       {
@@ -31,7 +44,7 @@ const quoteData = {
          firstName: "Danil",
          lastName: "Zolo",
          email: "danilo@gmail.com",
-         company: "Danil Company"
+         company: "Danil Company",
       },
       // {
       //    _id: "248318",
@@ -51,13 +64,13 @@ const quoteData = {
          lastName: "Devom",
          email: "honestypasion0615@gmail.com",
          companyName: "AllOver",
-         location: "232"
+         location: "232",
       },
       discount: 50,
       currency: "156",
       taxMode: "no_tax",
       priceDisplayLevel: "itemQuantityAndTotal",
-      displayItemCode: true
+      displayItemCode: true,
    },
    items: [
       {
@@ -68,13 +81,13 @@ const quoteData = {
             longDescription: "long description",
             files: [
                "https://static.productionready.io/images/smiley-cyrus.jpg",
-               "https://static.productionready.io/images/smiley-cyrus.jpg"
+               "https://static.productionready.io/images/smiley-cyrus.jpg",
             ],
             itemCategory: "sales",
             tax: 10,
             unitPrice: 10,
             quantity: 10,
-            itemTotal: 100
+            itemTotal: 100,
          },
       },
       {
@@ -84,13 +97,13 @@ const quoteData = {
             longDescription: "description",
             files: [
                "https://static.productionready.io/images/smiley-cyrus.jpg",
-               "https://static.productionready.io/images/smiley-cyrus.jpg"
-            ]
+               "https://static.productionready.io/images/smiley-cyrus.jpg",
+            ],
          },
       },
       {
          category: "subTotal",
-      }
+      },
    ],
    notes: [
       {
@@ -98,11 +111,11 @@ const quoteData = {
          longDescription: "descriptioin",
          files: [
             "https://static.productionready.io/images/smiley-cyrus.jpg",
-            "https://static.productionready.io/images/smiley-cyrus.jpg"
-         ]
-      }
-   ]
-}
+            "https://static.productionready.io/images/smiley-cyrus.jpg",
+         ],
+      },
+   ],
+};
 
 export default class GetQuote extends Component {
    constructor(orops) {
@@ -115,72 +128,47 @@ export default class GetQuote extends Component {
          isCostPriceMargin: false,
          emailTo: "",
 
-         validDate: "",
-         validTime: "",
-         sentDate: "",
-         sentTime: "",
+         validDate: parseDate(initQuoteSettings.validUntil),
+         validTime: parseTime(initQuoteSettings.validUntil),
+         sentDate: parseDate(initQuoteSettings.sentAt),
+         sentTime: parseTime(initQuoteSettings.sentAt),
 
          toPeopleList: [],
          title: "",
-         settings: {
-            validUntil: new Date(Date.now() + 1000 * 3600 * 24 * 50),  //valid for 50 days
-            sentAt: new Date(),
-            userFrom: {
-               _id: "",
-               firstName: "",
-               lastName: "",
-               email: "",
-               companyName: "",
-               location: "232"
-            },
-            discount: 0,
-            currency: "156",
-            taxMode: "no_tax",
-            priceDisplayLevel: "itemQuantityAndTotal",
-            displayItemCode: true,
-         },
+         settings: initQuoteSettings,
          items: [
             {
                category: "priceItem",
-               priceItem: {
-                  itemCode: "",
-                  productHeading: "",
-                  longDescription: "",
-                  files: [],
-                  itemCategory: "sales",
-                  tax: 10,
-                  unitPrice: 0,
-                  quantity: 0,
-                  itemTotal: 0
-               },
-            }
+               priceItem: initPriceItem,
+            },
          ],
-         notes: [
-            {
-               textHeading: "",
-               longDescription: "",
-               files: []
-            }
-         ]
-      }
+         notes: [initTextItem],
+      };
    }
    removeImageItem = (url) => {
-      const newFileArray = this.state.fileArray.filter(item => item !== url);
+      const newFileArray = this.state.fileArray.filter((item) => item !== url);
       this.setState({ fileArray: newFileArray });
-   }
+   };
    uploadFiles = (e) => {
-      e.preventDefault()
-      console.log(this.state.fileArray)
-   }
+      e.preventDefault();
+      console.log(this.state.fileArray);
+   };
    handleClickSaveNext = () => {
-      toastr.success('The is success', 'success message here', toastrSuccessConfig);
-
-   }
+      toastr.success(
+         "The is success",
+         "success message here",
+         toastrSuccessConfig
+      );
+   };
    handleClickSave = () => {
-      toastr.info('This is info', 'info message here', toastrInfoConfig);
-      toastr.warning('This is warning', 'warning message here', toastrWarningConfig);
-      toastr.error('This is error', 'error message here', toastrErrorConfig);
-   }
+      toastr.info("This is info", "info message here", toastrInfoConfig);
+      toastr.warning(
+         "This is warning",
+         "warning message here",
+         toastrWarningConfig
+      );
+      toastr.error("This is error", "error message here", toastrErrorConfig);
+   };
    componentDidMount() {
       // if (this.props.match.params && this.props.match.params.id !== "get") {
       //    // Get quote details with quote ID
@@ -190,23 +178,115 @@ export default class GetQuote extends Component {
       //       console.error("get quote detail api error =>", err)
       //    });
       // }
-      const { toPeopleList, title, settings, items, notes } = quoteData;
-      this.setState({
-         toPeopleList, title, settings, items, notes,
+      //  const { toPeopleList, title, settings, items, notes } = quoteDataApires;
+      //  this.setState({
+      //    toPeopleList,
+      //    title,
+      //    settings,
+      //    items,
+      //    notes,
+      //    validDate: parseDate(settings.validUntil),
+      //    validTime: parseTime(settings.validUntil),
+      //    sentDate: parseDate(settings.sentAt),
+      //    sentTime: parseTime(settings.sentAt),
+      //  });
+   }
+   removeImageItem = (url) => {
+      const newFileArray = this.state.fileArray.filter(item => item !== url);
+      this.setState({ fileArray: newFileArray });
+   }
+   uploadFiles = (e) => {
+      e.preventDefault()
+      console.log(this.state.fileArray)
+   }
 
-         validDate: parseDate(settings.validUntil),
-         validTime: parseTime(settings.validUntil),
-         sentDate: parseDate(settings.sentAt),
-         sentTime: parseTime(settings.sentAt)
+   updateItem = (ind, item) => {
+      let newItems = { ...this.state.items };
+      newItems[ind] = item;
+      this.setState({ items: newItems });
+   }
+   addItem = (ind, category) => {
+      let newItems = [...this.state.items];
+      if (category === "priceItem") newItems.splice(ind + 1, 0, {
+         category: category,
+         priceItem: initPriceItem,
       });
+      else if (category === "textItem") newItems.splice(ind + 1, 0, {
+         category: category,
+         priceItem: initTextItem,
+      });
+      else newItems.splice(ind + 1, 0, {
+         category: category,
+         subTotal: null
+      });
+      this.setState({ items: newItems });
+   }
+   orderUpItem = (ind) => {
+      let newItems = [...this.state.items];
+      newItems.splice(ind, 1);
+      newItems.splice(Math.max(ind - 1, 0), 0);
+      this.setState({ items: newItems });
+   }
+   orderDownItem = (ind) => {
+      let newItems = [...this.state.items];
+      const [dIt,] = newItems.splice(ind, 1);
+      newItems.splice(Math.min(ind + 1, this.state.items.length), 0);
+   }
+   removeItem = (ind) => {
+      let newItems = [...this.state.items];
+      if (newItems.length > 1) {
+         newItems.splice(ind, 1)
+         // this.setState({ items: newItems });
+      }
+      this.setState({ items: newItems });
+      // else this.setState({
+      //    items: [
+      //       {
+      //          category: "priceItem",
+      //          priceItem: initPriceItem,
+      //       },
+      //    ]
+      // });
+   }
+   updateNote = (ind, item) => {
+      let newNotes = { ...this.state.notes };
+      newNotes[ind] = item;
+      this.setState({ notes: newNotes });
+   }
+   addNote = (ind, category) => {
+      let newNotes = [...this.state.notes];
+      if (category === "priceItem") newNotes.splice(ind + 1, 0, initPriceItem);
+      else if (category === "textItem") newNotes.splice(ind + 1, 0, initTextItem);
+      else newNotes.splice(ind + 1, 0, initSubTotal);
+      this.setState({ notes: newNotes });
+   }
+   orderUpNote = (ind) => {
+      let newNotes = [...this.state.notes];
+      newNotes.splice(ind, 1);
+      newNotes.splice(Math.max(ind - 1, 0), 0);
+      this.setState({ notes: newNotes });
+   }
+   orderDownNote = (ind) => {
+      let newNotes = [...this.state.notes];
+      const [dIt,] = newNotes.splice(ind, 1);
+      newNotes.splice(Math.min(ind + 1, this.state.notes.length), 0);
+   }
+   removeNote = (ind) => {
+      let newNotes = [...this.state.notes];
+      if (newNotes.length > 1) {
+         newNotes.splice(ind, 1);
+         this.setState({ notes: newNotes });
+      }
+      else this.setState({ notes: [initTextItem] })
+
    }
    render() {
       console.log(" GetQute state => ", this.state);
       console.log(" GetQute props => ", this.props);
       const { location } = this.props;
       const { state } = location;
-      let HeadLinkText = 'Dashboard';
-      if (state && state.from === "/app/quotes") HeadLinkText = 'Quotes';
+      let HeadLinkText = "Dashboard";
+      if (state && state.from === "/app/quotes") HeadLinkText = "Quotes";
       return (
          <React.Fragment>
             <NavCrump linkTo={`${state && state.from ? state.from : "/app"}`}>
@@ -218,34 +298,51 @@ export default class GetQuote extends Component {
                      {/* Email list */}
                      <div className="col-sm-6">
                         <div className="d-flex">
-                           <div className="p-1 font-w700">
-                              To
-                           </div>
+                           <div className="p-1 font-w700">To</div>
                            <div className="p-1 w-100 maxWidth-550">
                               <div className="row no-gutters">
                                  <QuoteToPeopleList
                                     toPeopleList={this.state.toPeopleList}
                                     removeContact={(contact) => {
-                                       const newCL = this.state.toPeopleList.filter((it, index) => it._id !== contact._id);
+                                       const newCL = this.state.toPeopleList.filter(
+                                          (it, index) => it._id !== contact._id
+                                       );
                                        this.setState({ toPeopleList: newCL });
-                                    }} />
+                                    }}
+                                 />
                               </div>
-                              <div className="row no-gutters" style={{ position: "relative" }}>
+                              <div
+                                 className="row no-gutters"
+                                 style={{ position: "relative" }}
+                              >
                                  <input
                                     type="text"
                                     id="emailTo"
                                     className="form-control rounded-0"
                                     value={this.state.emailTo}
-                                    onChange={(ev) => this.setState({ emailTo: ev.target.value })} />
+                                    onChange={(ev) =>
+                                       this.setState({ emailTo: ev.target.value })
+                                    }
+                                 />
                                  <CompleterContact
                                     emailTo={this.state.emailTo}
                                     addContact={(contact) => {
-                                       if (this.state.toPeopleList.find((it) => it._id === contact._id)) this.setState({ emailTo: "" });
-                                       else this.setState({
-                                          toPeopleList: [...this.state.toPeopleList, contact],
-                                          emailTo: ""
-                                       });
-                                    }} />
+                                       if (
+                                          this.state.toPeopleList.find(
+                                             (it) => it._id === contact._id
+                                          )
+                                       )
+                                          this.setState({ emailTo: "" });
+                                       else
+                                          this.setState({
+                                             toPeopleList: [
+                                                ...this.state.toPeopleList,
+                                                contact,
+                                             ],
+                                             emailTo: "",
+                                          });
+                                    }}
+                                 />
                                  <LableFor toPeopleList={this.state.toPeopleList} />
                               </div>
                            </div>
@@ -253,7 +350,10 @@ export default class GetQuote extends Component {
                      </div>
                      {/* Quote Setting */}
                      <div className="col-sm-6">
-                        <div className="pl-4 py-2" style={{ borderLeft: "4px solid #eee" }}>
+                        <div
+                           className="pl-4 py-2"
+                           style={{ borderLeft: "4px solid #eee" }}
+                        >
                            <QuoteSettings
                               {...this.state.settings}
                               validDate={this.state.validDate}
@@ -264,8 +364,9 @@ export default class GetQuote extends Component {
                               updateValidTime={(val) => this.setState({ validTime: val })}
                               updateSentDate={(val) => this.setState({ sentDate: val })}
                               updateSentTime={(val) => this.setState({ sentTime: val })}
-
-                              updateSettings={(settings) => this.setState({ settings: settings })}
+                              updateSettings={(settings) =>
+                                 this.setState({ settings: settings })
+                              }
                            />
                         </div>
                      </div>
@@ -274,28 +375,60 @@ export default class GetQuote extends Component {
                   {/* Template Title */}
                   <div className="row">
                      <div className="col-12">
-                        <textarea className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2 my-4" rows={1} placeholder="Title of Quote">
-                        </textarea>
+                        <textarea
+                           className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2 my-4"
+                           rows={1}
+                           placeholder="Title of Quote"
+                        ></textarea>
                      </div>
                   </div>
 
                   {/* Controller button group */}
-                  <PriceItemForm
-                     isPaperClipDisabled={false}
-                     isSettingDisabled={false}
-                     isAddItemDisabled={false}
-                     isOrderUpDisabled={true}
-                     isOrderDownDisabled={true}
-                     isRemoveDisabled={true}
-                  />
-                  <div className="row py-4">
-                     <div className="col-12">
-                        <button type="button" className="btn btn-alt-light">
-                           <i className="fa fa-plus mr-1"></i>
-                           Add Item
-                        </button>
-                     </div>
-                  </div>
+
+                  {
+                     this.state.items.map((item, index) => {
+                        if (item.category === "priceItem") return <PriceItemForm
+                           key={index}
+                           index={index}
+                           isPaperClipDisabled={false}
+                           isSettingDisabled={false}
+                           isAddItemDisabled={false}
+                           isOrderUpDisabled={false}
+                           isOrderDownDisabled={false}
+                           isRemoveDisabled={false}
+                           {...item}
+                           updateItem={this.updateItem}
+                           addItem={this.addItem}
+                           orderUpItem={this.orderUpItem}
+                           orderDownItem={this.orderDownItem}
+                           removeItem={this.removeItem}
+                        />
+                        else if (item.category === "textItem") return <TextItemForm
+                           key={index}
+                           index={index}
+                           isNote={false}
+                           isPaperClipDisabled={false}
+                           isSettingDisabled={false}
+                           isAddItemDisabled={false}
+                           isOrderUpDisabled={false}
+                           isOrderDownDisabled={false}
+                           isRemoveDisabled={false}
+                           {...item}
+                           updateItem={this.updateItem}
+                           addItem={this.addItem}
+                           orderUpItem={this.orderUpItem}
+                           orderDownItem={this.orderDownItem}
+                           removeItem={this.removeItem}
+                        />
+                        else return <SubTotal
+                           key={index}
+                           index={index}
+                           removeItem={this.removeItem}
+                        />
+                     })
+                  }
+
+                  <AddItemBtn onClickAdd={() => this.setState({ items: [...this.state.items, initPriceItem] })} />
 
                   {/* subtotal 1 */}
                   <table className="quoteTotal hasTerm table table-borderless">
@@ -303,7 +436,9 @@ export default class GetQuote extends Component {
                         <tr className="options">
                            <td className="total-desc">
                               <p className="quote-text-sm">Options selected</p>
-                              <p className="quote-text-sm">Optional extras are excluded from this calculation</p>
+                              <p className="quote-text-sm">
+                                 Optional extras are excluded from this calculation
+                              </p>
                            </td>
                            <td className="total-price">
                               <p className="quote-text-sm">1 of 1</p>
@@ -314,8 +449,13 @@ export default class GetQuote extends Component {
                            <td className="total-price">100.00</td>
                         </tr>
                         <tr className="total">
-                           <td className="total-desc"><span className="quoteTotal-gDesc">Total including tax</span></td>
-                           <td className="total-price"><span className="quoteTotal-gTotal">$100.00</span>
+                           <td className="total-desc">
+                              <span className="quoteTotal-gDesc">
+                                 Total including tax
+                           </span>
+                           </td>
+                           <td className="total-price">
+                              <span className="quoteTotal-gTotal">$100.00</span>
                               <div className="quote-text-sm">per week</div>
                               <div className="quote-text-sm">(for 4 weeks)</div>
                            </td>
@@ -328,8 +468,12 @@ export default class GetQuote extends Component {
                      <tbody>
                         <tr className="options">
                            <td className="total-desc">
-                              <p className="quote-text-sm"><span>Options selected</span></p>
-                              <p className="quote-text-sm">Optional extras are excluded from this calculation</p>
+                              <p className="quote-text-sm">
+                                 <span>Options selected</span>
+                              </p>
+                              <p className="quote-text-sm">
+                                 Optional extras are excluded from this calculation
+                              </p>
                            </td>
                            <td className="total-price">
                               <p className="quote-text-sm">2 of 4</p>
@@ -348,8 +492,13 @@ export default class GetQuote extends Component {
                            <td className="total-price">80.00</td>
                         </tr>
                         <tr className="total">
-                           <td className="total-desc"><span className="quoteTotal-gDesc">Total including tax</span></td>
-                           <td className="total-price"><span className="quoteTotal-gTotal">$980.00</span>
+                           <td className="total-desc">
+                              <span className="quoteTotal-gDesc">
+                                 Total including tax
+                    </span>
+                           </td>
+                           <td className="total-price">
+                              <span className="quoteTotal-gTotal">$980.00</span>
                               <p className="quote-text-sm">per week</p>
                               <p className="quote-text-sm">(for 4 weeks)</p>
                            </td>
@@ -357,29 +506,52 @@ export default class GetQuote extends Component {
                      </tbody>
                   </table>
 
-                  <TextItemForm
-                     isPaperClipDisabled={false}
-                     // isSettingDisabled={false}
-                     isAddItemDisabled={true}
-                     isOrderUpDisabled={true}
-                     isOrderDownDisabled={true}
-                     isRemoveDisabled={true}
-                  />
+                  {
+                     this.state.notes.map((item, index) => {
+                        return <TextItemForm
+                           key={index}
+                           index={index}
+                           isNote={true}
+                           isPaperClipDisabled={false}
+                           // isSettingDisabled={true}
+                           isAddItemDisabled={false}
+                           isOrderUpDisabled={false}
+                           isOrderDownDisabled={false}
+                           isRemoveDisabled={false}
+                           {...item}
+                           updateItem={this.updateNote}
+                           addItem={this.addNote}
+                           orderUpItem={this.orderUpNote}
+                           orderDownItem={this.orderDownNote}
+                           removeItem={this.removeNote}
+                        />
+                     })
+                  }
 
-                  <div className="row py-4">
-                     <div className="col-12">
-                        <button type="button" className="btn btn-alt-light mb-2">
-                           <i className="fa fa-plus mr-1"></i>
-                           Add Item
-                        </button>
-                     </div>
-                  </div>
+                  <AddItemBtn onClickAdd={() => this.setState({ notes: [...this.state.notes, initTextItem] })} />
 
                   {/* Footer action button group */}
                   <div className="row p-3">
-                     <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.handleClickSaveNext}>Save, Next...</button>
-                     <button className="btn btn-lg btn-rounded btn-hero-secondary mr-1" onClick={this.handleClickSave}>Save</button>
-                     <button className="btn btn-lg btn-rounded btn-hero-secondary" onClick={() => this.props.history.push("/app/content/item-text/browse")}>Cancel</button>
+                     <button
+                        className="btn btn-lg btn-rounded btn-hero-primary mr-1"
+                        onClick={this.handleClickSaveNext}
+                     >
+                        Save, Next...
+                     </button>
+                     <button
+                        className="btn btn-lg btn-rounded btn-hero-secondary mr-1"
+                        onClick={this.handleClickSave}
+                     >
+                        Save
+                     </button>
+                     <button
+                        className="btn btn-lg btn-rounded btn-hero-secondary"
+                        onClick={() =>
+                           this.props.history.push("/app/content/item-text/browse")
+                        }
+                     >
+                        Cancel
+                     </button>
                   </div>
                </div>
             </div>

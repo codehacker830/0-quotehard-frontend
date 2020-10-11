@@ -5,42 +5,13 @@ import PriceItemForm from '../../../components/PriceItemForm';
 import SubTotal from '../../../components/SubTotal';
 import TemplateSettings from '../../../components/TemplateSettings';
 import TextItemForm from '../../../components/TextItemForm';
+import {
+   initTemplateSettings,
+   initPriceItem,
+   initTextItem,
+   initSubTotal,
+} from '../../../constants/InitState';
 
-const initSettings = {
-   discount: 0,
-   currency: "156",
-   taxMode: "no_tax",
-   priceDisplayLevel: "itemQuantityAndTotal",
-   displayItemCode: true,
-};
-
-const initPriceItem = {
-   category: "priceItem",
-   priceItem: {
-      _id: "",
-      itemCode: "",
-      productHeading: "",
-      longDescription: "",
-      files: [],
-      itemCategory: "sales",
-      tax: 10,
-      unitPrice: 0,
-      quantity: 0,
-      itemTotal: 0
-   },
-};
-const initTextItem = {
-   category: "textItem",
-   textItem: {
-      _id: "",
-      textHeading: "here is text heading",
-      longDescription: "description",
-      files: []
-   }
-}
-const initSubTotal = {
-   category: "subTotal",
-}
 export default class GetTemplate extends Component {
    constructor(orops) {
       super();
@@ -53,10 +24,12 @@ export default class GetTemplate extends Component {
 
          toPeopleList: [],
          title: "",
-         settings: initSettings,
+         settings: initTemplateSettings,
          items: [
-            initPriceItem,
-            initTextItem
+            {
+               category: "priceItem",
+               priceItem: initPriceItem,
+            }
          ],
          notes: [initTextItem]
       }
@@ -77,9 +50,18 @@ export default class GetTemplate extends Component {
    }
    addItem = (ind, category) => {
       let newItems = [...this.state.items];
-      if (category === "priceItem") newItems.splice(ind + 1, 0, initPriceItem);
-      else if (category === "textItem") newItems.splice(ind + 1, 0, initTextItem);
-      else newItems.splice(ind + 1, 0, initSubTotal);
+      if (category === "priceItem") newItems.splice(ind + 1, 0, {
+         category: category,
+         priceItem: initPriceItem,
+      });
+      else if (category === "textItem") newItems.splice(ind + 1, 0, {
+         category: category,
+         priceItem: initTextItem,
+      });
+      else newItems.splice(ind + 1, 0, {
+         category: category,
+         subTotal: null
+      });
       this.setState({ items: newItems });
    }
    orderUpItem = (ind) => {
