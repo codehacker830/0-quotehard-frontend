@@ -234,19 +234,28 @@ export default class GetQuote extends Component {
    }
    removeItem = (ind) => {
       let newItems = [...this.state.items];
-      if (newItems.length > 1) {
-         newItems.splice(ind, 1)
-         // this.setState({ items: newItems });
-      }
-      this.setState({ items: newItems });
-      // else this.setState({
-      //    items: [
-      //       {
-      //          category: "priceItem",
-      //          priceItem: initPriceItem,
-      //       },
-      //    ]
-      // });
+      if (newItems.length > 2) {
+         newItems.splice(ind, 1);
+         this.setState({ items: newItems });
+      } else if (newItems.length === 2) {
+         newItems.splice(ind, 1);
+         if (newItems[0].category === "subTotal") this.setState({
+            items: [
+               {
+                  category: "priceItem",
+                  priceItem: initPriceItem,
+               },
+            ]
+         });
+         else this.setState({ items: newItems });
+      } else this.setState({
+         items: [
+            {
+               category: "priceItem",
+               priceItem: initPriceItem,
+            },
+         ]
+      });
    }
    updateNote = (ind, item) => {
       let newNotes = { ...this.state.notes };
@@ -278,7 +287,6 @@ export default class GetQuote extends Component {
          this.setState({ notes: newNotes });
       }
       else this.setState({ notes: [initTextItem] })
-
    }
    render() {
       console.log(" GetQute state => ", this.state);

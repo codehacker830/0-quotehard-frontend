@@ -77,10 +77,29 @@ export default class GetTemplate extends Component {
    }
    removeItem = (ind) => {
       let newItems = [...this.state.items];
-      if (newItems.length > 1) newItems.splice(ind, 1);
-      this.setState({ items: newItems });
+      if (newItems.length > 2) {
+         newItems.splice(ind, 1);
+         this.setState({ items: newItems });
+      } else if (newItems.length === 2) {
+         newItems.splice(ind, 1);
+         if (newItems[0].category === "subTotal") this.setState({
+            items: [
+               {
+                  category: "priceItem",
+                  priceItem: initPriceItem,
+               },
+            ]
+         });
+         else this.setState({ items: newItems });
+      } else this.setState({
+         items: [
+            {
+               category: "priceItem",
+               priceItem: initPriceItem,
+            },
+         ]
+      });
    }
-
    updateNote = (ind, item) => {
       let newNotes = { ...this.state.notes };
       newNotes[ind] = item;
@@ -106,8 +125,11 @@ export default class GetTemplate extends Component {
    }
    removeNote = (ind) => {
       let newNotes = [...this.state.notes];
-      if (newNotes.length > 1) newNotes.splice(ind, 1);
-      this.setState({ notes: newNotes });
+      if (newNotes.length > 1) {
+         newNotes.splice(ind, 1);
+         this.setState({ notes: newNotes });
+      }
+      else this.setState({ notes: [initTextItem] })
    }
    render() {
       console.log(" state  ===", this.state)
