@@ -201,8 +201,10 @@ export default class GetQuote extends Component {
    }
 
    updateItem = (ind, item) => {
-      let newItems = { ...this.state.items };
+      // console.log("adfasdf ", ind, item);
+      let newItems = [...this.state.items];
       newItems[ind] = item;
+      console.log("adfasdf ", ind, newItems);
       this.setState({ items: newItems });
    }
    addItem = (ind, category) => {
@@ -427,7 +429,13 @@ export default class GetQuote extends Component {
                      })
                   }
 
-                  <AddItemBtn onClickAdd={() => this.setState({ items: [...this.state.items, initPriceItem] })} />
+                  <AddItemBtn onClickAdd={() => {
+                     const newItem = {
+                        category: "priceItem",
+                        priceItem: initPriceItem
+                     }
+                     this.setState({ items: [...this.state.items, newItem] })
+                  }} />
 
                   {/* subtotal 1 */}
                   <table className="quoteTotal hasTerm table table-borderless">

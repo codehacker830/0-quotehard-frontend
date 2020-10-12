@@ -30,13 +30,19 @@ export const initPriceItem = {
    isOptionSelected: false,
    isMultipleChoice: false,
    isEditableQuantity: false,
+
    isDiscount: false,
-   discount: null,
+   discount: 0,
+
    isSubscription: false,
-   per: "year",
-   for: null,
+   
+   per: 1,
+   every: "week",
+   for: 1,
+
    isCostPriceMargin: false,
-   costPrice: null,
+   costPrice: 0,
+   margin: 20,
 
    _id: "",
    itemCode: "",
@@ -48,7 +54,7 @@ export const initPriceItem = {
 
    unitPrice: 0,
    quantity: 0,
-   // itemTotal: 0,
+   itemTotal: 0,
 };
 export const initTextItem = {
    _id: "",

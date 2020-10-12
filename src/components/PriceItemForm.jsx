@@ -64,6 +64,9 @@ export default class PriceItemForm extends Component {
 
    render() {
       console.log(" priceitem props ===== ", this.props);
+      const itemTotal = this.props.priceItem.unitPrice * this.props.priceItem.quantity * (100 - this.props.priceItem.discount) / 100;
+      console.log(" itemTotal ===== ", itemTotal);
+
       return (
          <React.Fragment>
             {/* ToolWrapper */}
@@ -250,12 +253,24 @@ export default class PriceItemForm extends Component {
                <div className="col-sm-6">
                   <div className="row pb-1">
                      <div className="col-6 pr-0">
-                        <select className="custom-select rounded-0" defaultValue={"sales"}>
+                        <select className="custom-select rounded-0" value={this.props.priceItem.itemCategory} onChange={(ev) => {
+                           const newItem = {
+                              category: "priceItem",
+                              priceItem: { ... this.props.priceItem, itemCategory: ev.target.value }
+                           };
+                           this.props.updateItem(this.props.index, newItem);
+                        }}>
                            <option value="sales">Sales</option>
                         </select>
                      </div>
                      <div className="col-6">
-                        <select className="custom-select rounded-0" defaultValue={10}>
+                        <select className="custom-select rounded-0" value={this.props.priceItem.tax} onChange={(ev) => {
+                           const newItem = {
+                              category: "priceItem",
+                              priceItem: { ... this.props.priceItem, tax: ev.target.value }
+                           };
+                           this.props.updateItem(this.props.index, newItem);
+                        }}>
                            <option value="0">No tax</option>
                            <option value="10">10% tax</option>
                         </select>
@@ -267,10 +282,15 @@ export default class PriceItemForm extends Component {
                         <div className="bg-light-gray border p-1">
                            <div className="row">
                               <div className="col-4 pr-0">
-                                 <input className="form-control rounded-0"
-                                    value={this.props.discount}
+                                 <input
+                                    type="number"
+                                    className="form-control rounded-0"
+                                    value={this.props.priceItem.discount || ""}
                                     onChange={(ev) => {
-                                       const newItem =  
+                                       const newItem = {
+                                          category: "priceItem",
+                                          priceItem: { ... this.props.priceItem, discount: ev.target.value }
+                                       };
                                        this.props.updateItem(this.props.index, newItem);
                                     }}
                                  />
@@ -287,18 +307,40 @@ export default class PriceItemForm extends Component {
                         <div className="bg-light-gray border p-1">
                            <div className="d-flex">
                               <span className="text-secondary text-uppercase mx-2 my-auto">Per</span>
-                              <input className="form-control rounded-0 mr-1" />
-                              <select className="form-control rounded-0" value={this.props.per}>
+                              <input type="number"
+                                 className="form-control rounded-0 mr-1"
+                                 value={this.props.priceItem.per}
+                                 onChange={(ev) => {
+                                    const newItem = {
+                                       category: "priceItem",
+                                       priceItem: { ... this.props.priceItem, per: ev.target.value }
+                                    };
+                                    this.props.updateItem(this.props.index, newItem);
+                                 }}
+                              />
+                              <select className="form-control rounded-0" value={this.props.priceItem.every} onChange={(ev) => {
+                                 const newItem = {
+                                    category: "priceItem",
+                                    priceItem: { ... this.props.priceItem, every: ev.target.value }
+                                 };
+                                 this.props.updateItem(this.props.index, newItem);
+                              }}>
                                  <option value={`week`}>week</option>
                                  <option value={`month`}>month</option>
                                  <option value={`year`}>year</option>
                               </select>
                               <span className="text-secondary text-uppercase mx-2 my-auto">For</span>
-                              <input className="form-control rounded-0" placeholder="Optional"
-                                 value={this.props.for}
-                              // onChange={}
+                              <input type="number" className="form-control rounded-0" placeholder="Optional"
+                                 value={this.props.priceItem.for}
+                                 onChange={(ev) => {
+                                    const newItem = {
+                                       category: "priceItem",
+                                       priceItem: { ... this.props.priceItem, for: ev.target.value }
+                                    };
+                                    this.props.updateItem(this.props.index, newItem);
+                                 }}
                               />
-                              <span className="text-secondary text-uppercase mx-2 my-auto">MONTHS</span>
+                              <span className="text-secondary text-uppercase mx-2 my-auto">{this.props.priceItem.every}</span>
                            </div>
                         </div>
                      </div>
@@ -313,14 +355,22 @@ export default class PriceItemForm extends Component {
                                  <input className="form-control border border-success rounded-0 mr-1"
                                     type="number"
                                     placeholder="-- Cost Price --"
-                                    value={this.state.costPrice}
+                                    value={this.props.priceItem.costPrice}
                                     onChange={(ev) => {
-                                       if (ev.target.value === 0) this.setState({ costPrice: null })
-                                       else this.setState({ costPrice: ev.target.value });
+                                       const costPrice = ev.target.value;
+                                       const newItem = {
+                                          category: "priceItem",
+                                          priceItem: {
+                                             ... this.props.priceItem,
+                                             costPrice: costPrice,
+                                             unitPrice: costPrice / (100 - this.props.priceItem.margin) * 100
+                                          }
+                                       };
+                                       this.props.updateItem(this.props.index, newItem);
                                     }}
                                  />
                               </div>
-                              <span className="text-success mx-2 my-auto">{this.state.margin}% MARGIN</span>
+                              <span className="text-success mx-2 my-auto">{this.props.priceItem.margin}% MARGIN</span>
                            </div>
                         </div>
                      </div>
@@ -328,21 +378,63 @@ export default class PriceItemForm extends Component {
 
                   <div className="row">
                      <div className="col-4 pr-0">
-                        <input type="text" id="unit" className="form-control rounded-0"
-                           value={this.state.unitPrice}
-                           onChange={(ev => this.setState({ unitPrice: ev.target.value }))}
+                        <input
+                           type="number"
+                           id="unit" className="form-control rounded-0"
+                           value={this.props.priceItem.unitPrice}
+                           onChange={(ev) => {
+                              const unitPrice = ev.target.value;
+                              const newItem = {
+                                 category: "priceItem",
+                                 priceItem: {
+                                    ... this.props.priceItem,
+                                    unitPrice: unitPrice,
+                                    margin: unitPrice !== "0" ? (unitPrice - this.props.priceItem.costPrice) / unitPrice * 100 : 20,
+                                    itemTotal: unitPrice * this.props.priceItem.quantity * (100 - this.props.priceItem.discount) / 100
+                                 }
+                              };
+                              this.props.updateItem(this.props.index, newItem);
+                           }}
                         />
                         <label htmlFor="unit" className="text-gray fa-xs text-uppercase">Unit Price</label>
                      </div>
                      <div className="col-4 pr-0">
-                        <input type="text" id="quantity" className={`form-control rounded-0 ${this.state.isEditableQuantity ? "border-primary" : ""}`} />
+                        <input type="number" id="quantity" className={`form-control rounded-0 ${this.state.isEditableQuantity ? "border-primary" : ""}`}
+                           value={this.props.priceItem.quantity}
+                           onChange={(ev) => {
+                              const quantity = ev.target.value;
+                              const newItem = {
+                                 category: "priceItem",
+                                 priceItem: {
+                                    ...this.props.priceItem,
+                                    quantity: quantity,
+                                    itemTotal: this.props.priceItem.unitPrice * quantity * (100 - this.props.priceItem.discount) / 100
+                                 }
+                              };
+                              this.props.updateItem(this.props.index, newItem);
+                           }}
+                        />
                         <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">
                            <span className="text-primary">{this.state.isEditableQuantity ? "Editable " : ""}</span>
                            Quantity
                         </label>
                      </div>
                      <div className="col-4">
-                        <input type="text" id="total" className="form-control rounded-0" />
+                        <input type="number" id="total" className="form-control rounded-0"
+                           value={this.props.priceItem.itemTotal}
+                           onChange={(ev) => {
+                              const itemTotal = ev.target.value;
+                              const newItem = {
+                                 category: "priceItem",
+                                 priceItem: {
+                                    ... this.props.priceItem,
+                                    itemTotal: itemTotal,
+                                    unitPrice: this.props.priceItem.quantity !== "0" ? itemTotal / this.props.priceItem.quantity : this.props.priceItem.quantity
+                                 }
+                              };
+                              this.props.updateItem(this.props.index, newItem);
+                           }}
+                        />
                         <label htmlFor="total" className="text-gray fa-xs text-uppercase">Item Total</label>
                      </div>
                   </div>
