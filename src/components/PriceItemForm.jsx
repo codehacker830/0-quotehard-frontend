@@ -1,6 +1,5 @@
+
 import React, { Component } from 'react';
-import NavCrump from './NavCrump';
-// import ToolWrapper from './ToolWrapper';
 
 export default class PriceItemForm extends Component {
    fileObj = [];
@@ -12,7 +11,7 @@ export default class PriceItemForm extends Component {
          isAddItemListOpen: false,
 
          fileArray: [],
-         isOptionalItem: false,
+         isOptional: false,
          isOptionSelected: false,
 
          isMultipleChoice: false,
@@ -20,19 +19,21 @@ export default class PriceItemForm extends Component {
          isDiscount: false,
          isSubscription: false,
          isCostPriceMargin: false,
+         costPrice: 0,
+         margin: 20,
+
+         itemTotal: 0,  // it should be state
       }
       this.hiddenFileInput = React.createRef();
       this.settingContainter = React.createRef();
       this.addItemOptionContainer = React.createRef();
       this.optionalItemRef = React.createRef();
       this.multipleChoiceRef = React.createRef();
-
    }
    removeImageItem = (url) => {
       const newFileArray = this.state.fileArray.filter(item => item !== url);
       this.setState({ fileArray: newFileArray });
    }
-
    handleClickFileOpen = () => {
       this.hiddenFileInput.current.click();
    }
@@ -62,14 +63,14 @@ export default class PriceItemForm extends Component {
    }
 
    render() {
-      console.log(" priceitem pors ===", this.props);
+      console.log(" priceitem props ===== ", this.props);
       return (
          <React.Fragment>
             {/* ToolWrapper */}
             <div className="row pb-1">
                <div className="col-sm-12">
                   {
-                     this.state.isOptionalItem &&
+                     this.state.isOptional &&
                      <div className="form-check form-check-inline toolWrapper">
                         <input type="checkbox"
                            className="form-check-input"
@@ -125,10 +126,10 @@ export default class PriceItemForm extends Component {
                               <input className="form-check-input"
                                  type="checkbox"
                                  ref={this.optionalItemRef}
-                                 value={this.state.isOptionalItem}
+                                 value={this.state.isOptional}
                                  onClick={() => {
-                                    if (this.state.isMultipleChoice === true && this.state.isOptionalItem === false) this.multipleChoiceRef.current.click();
-                                    this.setState({ isOptionalItem: !this.state.isOptionalItem });
+                                    if (this.state.isMultipleChoice === true && this.state.isOptional === false) this.multipleChoiceRef.current.click();
+                                    this.setState({ isOptional: !this.state.isOptional });
                                  }}
                                  id="optional" name="optional" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="optional">Optional Item</label>
@@ -139,7 +140,7 @@ export default class PriceItemForm extends Component {
                                  ref={this.multipleChoiceRef}
                                  value={this.state.isMultipleChoice}
                                  onClick={() => {
-                                    if (this.state.isOptionalItem === true && this.state.isMultipleChoice === false) this.optionalItemRef.current.click();
+                                    if (this.state.isOptional === true && this.state.isMultipleChoice === false) this.optionalItemRef.current.click();
                                     this.setState({ isMultipleChoice: !this.state.isMultipleChoice });
                                  }}
                                  id="multiple" name="multiple" />
@@ -221,7 +222,6 @@ export default class PriceItemForm extends Component {
             </div>
             {/* End ToolWrapper */}
 
-
             {/* Textarea section */}
             <div className="row">
                <div className="col-sm-6 pr-0">
@@ -261,12 +261,19 @@ export default class PriceItemForm extends Component {
                         </select>
                      </div>
                   </div>
-                  <div className={`row pb-1 ${this.state.isDiscount ? "" : "d-none"}`}>
+                  {/* <div className={`row pb-1 ${this.state.isDiscount ? "" : "d-none"}`}> */}
+                  <div className={`row pb-1`}>
                      <div className="col-12">
                         <div className="bg-light-gray border p-1">
                            <div className="row">
                               <div className="col-4 pr-0">
-                                 <input className="form-control rounded-0" />
+                                 <input className="form-control rounded-0"
+                                    value={this.props.discount}
+                                    onChange={(ev) => {
+                                       const newItem =  
+                                       this.props.updateItem(this.props.index, newItem);
+                                    }}
+                                 />
                               </div>
                               <span className="text-secondary text-uppercase mx-2 my-auto">% DISCOUNT</span>
                            </div>
@@ -274,33 +281,46 @@ export default class PriceItemForm extends Component {
                      </div>
                   </div>
 
-                  <div className={`row pb-1 ${this.state.isSubscription ? "" : "d-none"}`}>
+                  {/* <div className={`row pb-1 ${this.state.isSubscription ? "" : "d-none"}`}> */}
+                  <div className={`row pb-1`}>
                      <div className="col-12">
                         <div className="bg-light-gray border p-1">
                            <div className="d-flex">
                               <span className="text-secondary text-uppercase mx-2 my-auto">Per</span>
                               <input className="form-control rounded-0 mr-1" />
-                              <select className="form-control rounded-0">
-                                 <option value={0}>week</option>
-                                 <option value={1}>month</option>
-                                 <option value={2}>year</option>
+                              <select className="form-control rounded-0" value={this.props.per}>
+                                 <option value={`week`}>week</option>
+                                 <option value={`month`}>month</option>
+                                 <option value={`year`}>year</option>
                               </select>
                               <span className="text-secondary text-uppercase mx-2 my-auto">For</span>
-                              <input className="form-control rounded-0" placeholder="Optional" />
+                              <input className="form-control rounded-0" placeholder="Optional"
+                                 value={this.props.for}
+                              // onChange={}
+                              />
                               <span className="text-secondary text-uppercase mx-2 my-auto">MONTHS</span>
                            </div>
                         </div>
                      </div>
                   </div>
 
-                  <div className={`row pb-1 ${this.state.isCostPriceMargin ? "" : "d-none"}`}>
+                  {/* <div className={`row pb-1 ${this.state.isCostPriceMargin ? "" : "d-none"}`}> */}
+                  <div className={`row pb-1`}>
                      <div className="col-12">
                         <div className="bg-light-gray border p-1">
                            <div className="row">
                               <div className="col-4">
-                                 <input className="form-control border border-success rounded-0 mr-1" placeholder="-- Cost Price --" />
+                                 <input className="form-control border border-success rounded-0 mr-1"
+                                    type="number"
+                                    placeholder="-- Cost Price --"
+                                    value={this.state.costPrice}
+                                    onChange={(ev) => {
+                                       if (ev.target.value === 0) this.setState({ costPrice: null })
+                                       else this.setState({ costPrice: ev.target.value });
+                                    }}
+                                 />
                               </div>
-                              <span className="text-success text-uppercase mx-2 my-auto">20% MARGIN</span>
+                              <span className="text-success mx-2 my-auto">{this.state.margin}% MARGIN</span>
                            </div>
                         </div>
                      </div>
@@ -308,7 +328,10 @@ export default class PriceItemForm extends Component {
 
                   <div className="row">
                      <div className="col-4 pr-0">
-                        <input type="text" id="unit" className="form-control rounded-0" />
+                        <input type="text" id="unit" className="form-control rounded-0"
+                           value={this.state.unitPrice}
+                           onChange={(ev => this.setState({ unitPrice: ev.target.value }))}
+                        />
                         <label htmlFor="unit" className="text-gray fa-xs text-uppercase">Unit Price</label>
                      </div>
                      <div className="col-4 pr-0">

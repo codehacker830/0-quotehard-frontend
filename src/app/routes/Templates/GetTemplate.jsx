@@ -143,16 +143,11 @@ export default class GetTemplate extends Component {
                   {/* Template Setting */}
                   <div className="row">
                      <div className="col-sm-6">
-
                      </div>
-                     <div className="col-sm-6">
-                        <div className="pl-4 py-2" style={{ borderLeft: "4px solid #eee" }}>
-                           <TemplateSettings
-                              {...this.state.settings}
-                              updateSettings={(settings) => this.setState({ settings: settings })}
-                           />
-                        </div>
-                     </div>
+                     <TemplateSettings
+                        {...this.state.settings}
+                        updateSettings={(settings) => this.setState({ settings: settings })}
+                     />
                   </div>
 
                   {/* Template Title */}

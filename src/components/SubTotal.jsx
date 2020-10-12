@@ -5,13 +5,19 @@ export default class SubTotal extends Component {
       return (
          <div className="row">
             <div className="d-flex ml-auto">
-               <button className="btn btn-" onClick={() => this.props.removeItem(this.props.index)}>
-                  <i className="fa fa-trash-alt"></i>
-               </button>
-               <span className="m-auto p-2">Subtotal</span>
-               <div className="border p-3" style={{ width: 240, height: 60 }}>
-                  200
-            </div>
+               <div className="py-3">
+                  <button className="btn btn-light mb-auto" onClick={() => this.props.removeItem(this.props.index)}>
+                     <i className="fa fa-trash-alt"></i>
+                  </button>
+               </div>
+               <div className="p-3 text-right my-auto">
+                  <p className="text-secondary mb-0">Option selected</p>
+                  <p className="text-black mb-0">Subtotal</p>
+               </div>
+               <div className="border p-3 text-right my-auto" style={{ width: 240, height: "100%" }}>
+                  <p className="text-secondary mb-0">0 of 2</p>
+                  <p className="text-black mb-0">200</p>
+               </div>
             </div>
          </div>
       );

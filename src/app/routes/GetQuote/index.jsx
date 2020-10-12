@@ -29,7 +29,7 @@ import {
 } from "../../../constants/InitState";
 import AddItemBtn from "../../../components/AddItemBtn";
 
-const quoteDataApires = {
+const quoteDataApiRes = {
    createdBy: "thisisuseridwhocreatetshi",
    toPeopleList: [
       {
@@ -178,7 +178,7 @@ export default class GetQuote extends Component {
       //       console.error("get quote detail api error =>", err)
       //    });
       // }
-      //  const { toPeopleList, title, settings, items, notes } = quoteDataApires;
+      //  const { toPeopleList, title, settings, items, notes } = quoteDataApiRes;
       //  this.setState({
       //    toPeopleList,
       //    title,
@@ -357,27 +357,18 @@ export default class GetQuote extends Component {
                         </div>
                      </div>
                      {/* Quote Setting */}
-                     <div className="col-sm-6">
-                        <div
-                           className="pl-4 py-2"
-                           style={{ borderLeft: "4px solid #eee" }}
-                        >
-                           <QuoteSettings
-                              {...this.state.settings}
-                              validDate={this.state.validDate}
-                              validTime={this.state.validTime}
-                              sentDate={this.state.sentDate}
-                              sentTime={this.state.sentTime}
-                              updateValidDate={(val) => this.setState({ validDate: val })}
-                              updateValidTime={(val) => this.setState({ validTime: val })}
-                              updateSentDate={(val) => this.setState({ sentDate: val })}
-                              updateSentTime={(val) => this.setState({ sentTime: val })}
-                              updateSettings={(settings) =>
-                                 this.setState({ settings: settings })
-                              }
-                           />
-                        </div>
-                     </div>
+                     <QuoteSettings
+                        {...this.state.settings}
+                        validDate={this.state.validDate}
+                        validTime={this.state.validTime}
+                        sentDate={this.state.sentDate}
+                        sentTime={this.state.sentTime}
+                        updateValidDate={(val) => this.setState({ validDate: val })}
+                        updateValidTime={(val) => this.setState({ validTime: val })}
+                        updateSentDate={(val) => this.setState({ sentDate: val })}
+                        updateSentTime={(val) => this.setState({ sentTime: val })}
+                        updateSettings={(settings) => this.setState({ settings: settings })}
+                     />
                   </div>
 
                   {/* Template Title */}

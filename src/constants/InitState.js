@@ -7,15 +7,15 @@ export const initQuoteSettings = {
       lastName: "Devom",
       email: "honestypasion0615@gmail.com",
       companyName: "AllOver",
-      location: "232"
+      location: "232",
    },
 
    discount: 50,
    currency: "156",
    taxMode: "no_tax",
    priceDisplayLevel: "itemQuantityAndTotal",
-   displayItemCode: true
-}
+   displayItemCode: true,
+};
 
 export const initTemplateSettings = {
    discount: 0,
@@ -26,6 +26,18 @@ export const initTemplateSettings = {
 };
 
 export const initPriceItem = {
+   isOptional: false,
+   isOptionSelected: false,
+   isMultipleChoice: false,
+   isEditableQuantity: false,
+   isDiscount: false,
+   discount: null,
+   isSubscription: false,
+   per: "year",
+   for: null,
+   isCostPriceMargin: false,
+   costPrice: null,
+
    _id: "",
    itemCode: "",
    productHeading: "",
@@ -33,19 +45,17 @@ export const initPriceItem = {
    files: [],
    itemCategory: "sales",
    tax: 10,
-   discount: 0,
 
-   costPrice: 0,
    unitPrice: 0,
    quantity: 0,
-   itemTotal: 0
+   // itemTotal: 0,
 };
 export const initTextItem = {
    _id: "",
    textHeading: "here is text heading",
    longDescription: "description",
-   files: []
+   files: [],
 };
 export const initSubTotal = {
-   subTotal: null
-}
+   subTotal: null,
+};
