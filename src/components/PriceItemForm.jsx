@@ -64,8 +64,6 @@ export default class PriceItemForm extends Component {
 
    render() {
       console.log(" priceitem props ===== ", this.props);
-      const itemTotal = this.props.priceItem.unitPrice * this.props.priceItem.quantity * (100 - this.props.priceItem.discount) / 100;
-      console.log(" itemTotal ===== ", itemTotal);
 
       return (
          <React.Fragment>
@@ -285,11 +283,16 @@ export default class PriceItemForm extends Component {
                                  <input
                                     type="number"
                                     className="form-control rounded-0"
-                                    value={this.props.priceItem.discount || ""}
+                                    value={this.props.priceItem.discount}
                                     onChange={(ev) => {
+                                       const discount = ev.target.value;
                                        const newItem = {
                                           category: "priceItem",
-                                          priceItem: { ... this.props.priceItem, discount: ev.target.value }
+                                          priceItem: {
+                                             ... this.props.priceItem,
+                                             discount: discount,
+                                             itemTotal: this.props.priceItem.itemTotal * (100 - discount) / 100
+                                          }
                                        };
                                        this.props.updateItem(this.props.index, newItem);
                                     }}

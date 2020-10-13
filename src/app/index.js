@@ -27,7 +27,7 @@ export default class AppRoot extends Component {
          <main id="main-container" className={isBgGray ? "" : "bg-white"}>
             <Header />
             <Switch>
-               <Route exact path="/app" component={asyncComponent(() => import("./routes/Dashboard"))} />
+               <Route exact path="/app" component={asyncComponent(() => import("./routes/Dashabord/index"))} />
                <Route exact path="/app/quotes" component={asyncComponent(() => import("./routes/Quotes"))} />
 
                <Route exact path="/app/quote/get" component={asyncComponent(() => import("./routes/GetQuote"))} />

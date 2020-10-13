@@ -313,10 +313,8 @@ export default class GetQuote extends Component {
                               <div className="row no-gutters">
                                  <QuoteToPeopleList
                                     toPeopleList={this.state.toPeopleList}
-                                    removeContact={(contact) => {
-                                       const newCL = this.state.toPeopleList.filter(
-                                          (it, index) => it._id !== contact._id
-                                       );
+                                    removeContact={(ind) => {
+                                       const newCL = this.state.toPeopleList.filter((it, index) => index !== ind);
                                        this.setState({ toPeopleList: newCL });
                                     }}
                                  />
@@ -337,14 +335,8 @@ export default class GetQuote extends Component {
                                  <CompleterContact
                                     emailTo={this.state.emailTo}
                                     addContact={(contact) => {
-                                       if (
-                                          this.state.toPeopleList.find(
-                                             (it) => it._id === contact._id
-                                          )
-                                       )
-                                          this.setState({ emailTo: "" });
-                                       else
-                                          this.setState({
+                                       if (this.state.toPeopleList.find((it) => it._id === contact._id)) this.setState({ emailTo: "" });
+                                       else this.setState({
                                              toPeopleList: [
                                                 ...this.state.toPeopleList,
                                                 contact,

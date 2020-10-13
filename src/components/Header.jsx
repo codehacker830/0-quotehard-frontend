@@ -82,9 +82,6 @@ class Header extends Component {
                            <div className="p-3">
                               <img className="img-avatar img-avatar-thumb" src={authUser && `${authUser.image}`} alt="useravatar" />
                            </div>
-                           <div className="p-3 bg-black-75">
-                              <span className="text-white font-w600">{authUser && `${authUser.firstName} ${authUser.lastName}`}</span>
-                           </div>
                         </div>
                         <div className="p-2">
                            <Link className="dropdown-item d-flex justify-content-between align-items-center" to="/app/settings">

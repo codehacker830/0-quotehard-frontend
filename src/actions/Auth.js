@@ -19,13 +19,13 @@ export const setInitUrl = (url) => {
 export const getUser = () => {
    return (dispatch) => {
       dispatch({ type: FETCH_START });
-      axios.get('/user',
+      axios.get('/account',
       ).then(({ data }) => {
          console.log("get User res: ", data);
-         if (data.user) {
+         if (data.account) {
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
-            dispatch({ type: USER_DATA, payload: data.user });
+            dispatch({ type: USER_DATA, payload: data.account });
          } else {
             dispatch({ type: FETCH_ERROR, payload: data.error });
          }
@@ -41,18 +41,18 @@ export const userSignIn = ({ email, password }) => {
       dispatch({ type: FETCH_START });
       // dispatch({ type: USER_TOKEN_SET, payload: null });
       // dispatch({ type: USER_DATA, payload: null });
-      axios.post('/user/login', {
+      axios.post('/account/login', {
          email: email,
          password: password,
       }
       ).then(({ data }) => {
          console.log("userSignIn: ", data);
-         if (data.user) {
+         if (data.account) {
             localStorage.setItem("token", JSON.stringify(data.access_token));
             axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
-            dispatch({ type: USER_DATA, payload: data.user });
+            dispatch({ type: USER_DATA, payload: data.account });
          } else {
             dispatch({ type: FETCH_ERROR, payload: data.error });
          }
@@ -67,7 +67,7 @@ export const userSignUp = ({ firstName, lastName, email, password, companyName, 
    console.log(firstName, lastName, email, password, location);
    return (dispatch) => {
       dispatch({ type: FETCH_START });
-      axios.post('/user', {
+      axios.post('/account', {
          firstName,
          lastName,
          email,
@@ -77,12 +77,12 @@ export const userSignUp = ({ firstName, lastName, email, password, companyName, 
       }
       ).then(({ data }) => {
          console.log("data:", data);
-         if (data.user) {
+         if (data.account) {
             localStorage.setItem("token", JSON.stringify(data.access_token));
             axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
-            dispatch({ type: USER_DATA, payload: data.user });
+            dispatch({ type: USER_DATA, payload: data.account });
          } else {
             console.log("payload: data.error", data.error);
             dispatch({ type: FETCH_ERROR, payload: "Network Error" });
@@ -97,7 +97,7 @@ export const userSignUp = ({ firstName, lastName, email, password, companyName, 
 export const userSignOut = () => {
    return (dispatch) => {
       dispatch({ type: FETCH_START });
-      axios.get('/user/logout',
+      axios.get('/account/logout',
       ).then(({ data }) => {
          if (data.status === "success") {
             localStorage.removeItem("token");
@@ -105,6 +105,28 @@ export const userSignOut = () => {
             dispatch({ type: SIGNOUT_USER_SUCCESS });
          } else {
             dispatch({ type: FETCH_ERROR, payload: data.error });
+         }
+      }).catch(function (error) {
+         dispatch({ type: FETCH_ERROR, payload: error.message });
+         console.log("Error****:", error.message);
+      });
+   }
+};
+
+export const userUpdate = ({ firstName, lastName, email, image, password }) => {
+   console.log(firstName, lastName, email, image, password);
+   return (dispatch) => {
+      dispatch({ type: FETCH_START });
+      axios.post('/account', { firstName, lastName, email, image, password }
+      ).then(({ data }) => {
+         console.log("data:", data);
+         if (data.account) {
+            dispatch({ type: FETCH_SUCCESS });
+            dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
+            dispatch({ type: USER_DATA, payload: data.account });
+         } else {
+            console.log("payload: data.error", data.error);
+            dispatch({ type: FETCH_ERROR, payload: "Network Error" });
          }
       }).catch(function (error) {
          dispatch({ type: FETCH_ERROR, payload: error.message });

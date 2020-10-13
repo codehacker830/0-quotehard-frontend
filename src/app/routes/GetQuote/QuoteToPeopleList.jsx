@@ -7,7 +7,7 @@ export const QuotetoPeopleList = (props) => {
             props.toPeopleList.map((contact, index) => {
                return (
                   <div className="alert alert-info w-100 border border-primary" key={index}>
-                     <button type="button" className="btn close" onClick={() => props.removeContact(contact)}>
+                     <button type="button" className="btn close" onClick={() => props.removeContact(index)}>
                         <span>×</span>
                      </button>
                      <strong className="text-black my-1 mr-1">{contact.firstName} {contact.lastName}</strong>
