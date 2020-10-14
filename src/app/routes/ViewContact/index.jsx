@@ -15,20 +15,16 @@ export const ViewContact = (props) => {
    const [showActivity, setShowActivity] = useState(false);
    const [contact, setContact] = useState({});
 
-   console.error("view contact props => ", props);
-
-
    React.useEffect(() => {
       const { match } = props;
 
       const contactId = match.params.id;
 
       axios.get(`/contacts/id/${contactId}`).then(({ data }) => {
-         console.error("API RESPNSE =>", data);
-
+         console.log("API RESPNSE =>", data);
          setContact(data.contact);
       }).catch((err) => {
-         console.error("get contact api error ==>", err)
+         console.log("GET contact API error ==>", err)
       })
 
    }, [props.match]);
@@ -77,9 +73,8 @@ export const ViewContact = (props) => {
                            <CompanyPeopleList contact={contact} />
                         }
                      </div>
-
-
                   </div>
+                  
                   {/* Recent Activity */}
                   <div className="row no-gutters mb-1">
                      <div className="w-100 font-size-sm mb-1">

@@ -328,21 +328,19 @@ export default class GetQuote extends Component {
                                     id="emailTo"
                                     className="form-control rounded-0"
                                     value={this.state.emailTo}
-                                    onChange={(ev) =>
-                                       this.setState({ emailTo: ev.target.value })
-                                    }
+                                    onChange={(ev) => this.setState({ emailTo: ev.target.value })}
                                  />
                                  <CompleterContact
                                     emailTo={this.state.emailTo}
                                     addContact={(contact) => {
                                        if (this.state.toPeopleList.find((it) => it._id === contact._id)) this.setState({ emailTo: "" });
                                        else this.setState({
-                                             toPeopleList: [
-                                                ...this.state.toPeopleList,
-                                                contact,
-                                             ],
-                                             emailTo: "",
-                                          });
+                                          toPeopleList: [
+                                             ...this.state.toPeopleList,
+                                             contact,
+                                          ],
+                                          emailTo: "",
+                                       });
                                     }}
                                  />
                                  <LableFor toPeopleList={this.state.toPeopleList} />

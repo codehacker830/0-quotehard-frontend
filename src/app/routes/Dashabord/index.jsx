@@ -5,7 +5,7 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import axios from '../../../util/Api';
 import QuoteTableShow from './QuoteTableShow';
-import { isCompositeComponentWithType } from 'react-dom/test-utils';
+import { countDecimals, toFixedFloat } from '../../../util';
 
 const quotes = [
    {
@@ -20,32 +20,54 @@ const quotes = [
 ];
 
 export default class Dashboard extends Component {
-   state = {
-      search: ""
-   };
+   constructor(props) {
+      super(props);
+      this.state = {
+         search: "",
+         quotes: []
+      };
+   }
    onClickArchive = () => { }
    componentDidMount() {
-      axios
-         .get('/quotes')
-         .then(({ data }) => { 
+      axios.get('/quotes')
+         .then(({ data }) => {
             console.log("RRRRRRRRRRRRRRRR ===", data)
-          });
+            this.setState({ quotes: data.quotes });
+         }).catch(err => {
+            console.error(" error during get quotes :", err)
+         });
    }
    render() {
       const { search } = this.state;
       const { match } = this.props;
-      const dataMock = [
+
+      const awaitingQuotes = this.state.quotes.filter((it) => it.status === "awaiting");
+      const acceptedQuotes = this.state.quotes.filter((it) => it.status === "accepted");
+      let awaitingTotal = 0;
+      for (let i = 0; i < awaitingQuotes.length; i++) {
+         awaitingTotal += awaitingQuotes[i].quoteTotal;
+      }
+      let acceptedTotal = 0;
+      for (let i = 0; i < acceptedQuotes.length; i++) {
+         acceptedTotal += acceptedQuotes[i].quoteTotal;
+      }
+      let total = awaitingTotal + acceptedTotal;
+
+      console.log("awaitingTotal => ", awaitingTotal);
+      console.log("acceptedTotal => ", acceptedTotal);
+      console.log("total => ", total);
+      const chartMock = [
          {
-            title: '63% Awaiting Acceptance',
-            value: 15,
-            color: 'rgb(255, 128, 66)'
-         }, {
-            title: '38% Accepted',
-            value: 10,
-            color: 'rgb(0, 196, 159)'
+            title: `${awaitingTotal / total * 100}% Awaiting Acceptance`,
+            value: awaitingTotal,
+            color: 'rgb(113, 117, 123)'
+         },
+         {
+            title: `${acceptedTotal / total * 100}% Accepted`,
+            value: acceptedTotal,
+            color: 'rgb(33, 118, 199)'
          }
       ];
-      const total = 25;
 
       const highChartOptions = {
          title: {
@@ -62,8 +84,7 @@ export default class Dashboard extends Component {
             <div className="row py-3">
                <div className="col-md-6">
                   <div className="form-group">
-                     <button
-                        className="btn btn-success"
+                     <button className="btn btn-success"
                         onClick={() => this.props.history.push({
                            pathname: "/app/quote/get",
                            state: {
@@ -87,7 +108,7 @@ export default class Dashboard extends Component {
                </div>
             </div>
             <div className="row">
-               <QuoteTableShow />
+               <QuoteTableShow quotes={this.state.quotes} />
 
                <div className="col-md-6">
                   <div className="mb-4">
@@ -98,32 +119,44 @@ export default class Dashboard extends Component {
                               <div className="stat-h1">
                                  <span className="text-primary font-size-h2">
                                     <span className="font-size-base">$</span>
-                                    <span>300</span>
-                                    <span className="font-size-base">.00</span>
+                                    <span>{acceptedTotal.toFixed(0)}</span>
+                                    <span className="font-size-base">.{countDecimals(acceptedTotal.toFixed(2))}</span>
                                  </span>
                                  <p className="text-primary font-size-lg mb-0">Quotes Accepted</p>
                                  <span className="text-black font-size-lg">
                                     <span className="font-size-sm">$</span>
-                                    <span>500</span>
-                                    <span className="decimal">.00</span>
+                                    <span>{awaitingTotal.toFixed(0)}</span>
+                                    <span className="font-size-base">.{countDecimals(awaitingTotal.toFixed(2))}</span>
                                  </span>
                                  <p className="text-black mb-0">Awaiting Acceptance</p>
                               </div>
                            </div>
                            <div className="col-sm-6">
-                              <div className="stat-pie stat-pie-loading" data-highcharts-chart="0">
-                                 <PieChart
-                                    data={dataMock}
-                                    style={{
-                                       color: 'blue'
-                                    }}
-                                    label={({ dataEntry }) => dataEntry.value / total * 100 + "%"}
-                                    startAngle={-90}
-                                    lineWidth={70}
-                                    paddingAngle={1}
-                                    reveal={100}
-                                    animate={true}
-                                    animationDuration={500} />
+                              <div className="row no-gutters justify-content-center">
+                                 <div className="stat-pie stat-pie-loading" style={{ width: "236px", height: "236px", background: "url(/pie-loading.png) no-repeat", backgroundSize: "236px 236px" }}>
+                                    {
+                                       total !== 0 &&
+                                       <PieChart
+                                          data={chartMock}
+                                          style={{
+                                             color: 'blue',
+                                             justifyContent: "center",
+                                             width: "236px",
+                                             height: "236px"
+                                          }}
+                                          label={({ dataEntry }) => {
+                                             let labelNum = dataEntry.value / total * 100;
+                                             return `${labelNum.toFixed(0) + "%"}`;
+                                          }}
+                                          startAngle={-90}
+                                          lineWidth={70}
+                                          paddingAngle={1}
+                                          reveal={100}
+                                          animate={false}
+                                       // animationDuration={500}
+                                       />
+                                    }
+                                 </div>
                               </div>
                            </div>
                         </div>

@@ -1,7 +1,7 @@
 import { isNumber } from 'highcharts';
 import React, { Component } from 'react';
 import { toastr } from 'react-redux-toastr';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import NavCrump from '../../components/NavCrump';
 import {
    companyData
@@ -26,12 +26,21 @@ export default class CreateContact extends Component {
          firstName: "",
          lastName: "",
          email: "",
+         companyId: "",
          companyName: "",
+
+         companyTitle: "",
          phones: [],
          addresses: [],
       };
+      this.companyContainer = React.createRef();
    }
-
+   onClickOutsideHandler = (ev) => {
+      console.log("Sdfasdf");
+      if (!this.companyContainer.current.contains(ev.target)) {
+         this.setState({ show: false });
+      }
+   }
    handleAddressForm = (ev, index) => {
       console.log(" handleAddressForm index ===>", index);
       let newAddresses = [...this.state.addresses];
@@ -53,22 +62,33 @@ export default class CreateContact extends Component {
          lastName,
          companyName,
          companyId,
+
+         companyTitle,
          email,
          phones,
          addresses
       } = this.state;
-      const data = { category, firstName, lastName, companyName, companyId, email, phones, addresses };
-      console.log("request payload =", data);
       if (category === "person" && (firstName === "" || email === "")) {
-         toastr.warning('Warning', 'First Name is required.', toastrWarningConfig);
+         toastr.warning('Warning', 'First Name and Email Address are required fields.', toastrWarningConfig);
          return;
       }
-      if (category === "company" && companyName === "" && email === "") {
-         toastr.warning('Warning', 'You need to enter a company name or email.', toastrWarningConfig);
+      if (category === "company" && companyTitle === "" && email === "") {
+         toastr.warning('Warning', 'Either one of company name or Email Address is required.', toastrWarningConfig);
          return;
       }
+      const data = {
+         category,
+         firstName,
+         lastName,
+         companyName: category === "company" ? companyTitle : companyName,
+         companyId,
+         email,
+         phones,
+         addresses
+      }
+      console.log("request payload ===>", data);
       axios.post("/contacts", data).then((res) => {
-         toastr.success("Succeeed", "New Contact was created successfully.", toastrSuccessConfig);
+         toastr.success("Succeeed", `Contact was created successfully.`, toastrSuccessConfig);
          console.log("create contact api resopnse ==>", res);
       }).catch(err => {
          toastr.error("Error", "Break down during request.", toastrErrorConfig);
@@ -77,18 +97,21 @@ export default class CreateContact extends Component {
    }
 
    componentDidMount() {
-      const { location, match } = this.props;
-      if (match.params.category !== "person" && !match.params.category !== "company") {
-         this.props.history.push('/app/c/contacts');
-         return;
-      };
-      if (location.state && location.state.company) this.setState({ companyName: location.state.company });
+      window.addEventListener('click', this.onClickOutsideHandler);
+      const { location } = this.props;
+      if (location.state && location.state.companyId) this.setState({ companyId: location.state.companyId });
+      if (location.state && location.state.companyName) this.setState({ companyName: location.state.companyName });
       if (location.state && location.state.from) this.goTo = location.state.from;
    }
-
+   componentWillUnmount() {
+      window.removeEventListener('click', this.onClickOutsideHandler);
+   }
    render() {
       console.log("this.state =>", this.state)
-      return (
+      console.log("this.props ---", this.props);
+
+      if (this.props.match.params.category !== "person" && this.props.match.params.category !== "company") return <Redirect to="/app/c/contacts" />
+      else return (
          <React.Fragment>
             <NavCrump linkTo={this.goTo}>
                Previous
@@ -97,105 +120,100 @@ export default class CreateContact extends Component {
                <div className="block block-rounded">
                   <div className="block-content">
                      <div className="maxWidth-800 p-4">
-                        {/* Full Name */}
-                        {
-                           this.props.match.params.category === "person" &&
-                           (
-                              <div>
-                                 <div className="form-group">
-                                    <div className="row">
-                                       <div className="col-md-6 col-sm-12">
-                                          <label htmlFor="firstName">First Name</label>
-                                          <input
-                                             type="text"
-                                             className="form-control"
-                                             id="firstName" name="firstName"
-                                             placeholder=""
-                                             value={this.state.firstName}
-                                             onChange={(ev) => this.setState({ firstName: ev.target.value })} />
-                                       </div>
-                                       <div className="col-md-6 col-sm-12">
-                                          <div className="d-flex">
-                                             <label htmlFor="lastName">Last Name</label>
-                                             <Link className="ml-auto" to="/app/c/contacts/create/company">Switch to Company</Link>
-                                          </div>
-                                          <input
-                                             type="text"
-                                             className="form-control"
-                                             id="lastName" name="lastName"
-                                             placeholder=""
-                                             value={this.state.lastName}
-                                             onChange={(ev) => this.setState({ lastName: ev.target.value })} />
-                                       </div>
-                                    </div>
-                                 </div>
-                                 {/* Email Address */}
-                                 <div className="form-group">
-                                    <label htmlFor="email">Email Address<span className="text-danger fa-fx font-w600 ml-1">required</span></label>
+
+                        {/* Person Full Name */}
+                        <div className={this.props.match.params.category === "person" ? "" : "d-none"}>
+                           <div className="form-group">
+                              <div className="row">
+                                 <div className="col-md-6 col-sm-12">
+                                    <label htmlFor="firstName">First Name</label>
                                     <input
                                        type="text"
                                        className="form-control"
-                                       id="email" name="email"
+                                       id="firstName" name="firstName"
                                        placeholder=""
-                                       value={this.state.email}
-                                       onChange={(ev) => this.setState({ email: ev.target.value })} />
+                                       value={this.state.firstName}
+                                       onChange={(ev) => this.setState({ firstName: ev.target.value })} />
                                  </div>
-                                 {/* Company Name */}
-                                 <div className="form-group" style={{ position: "relative" }}>
-                                    <label htmlFor="companyName">Company Name</label>
-                                    <input
-                                       type="text"
-                                       className="form-control"
-                                       id="companyName" name="companyName"
-                                       placeholder="New, or lookup existing..."
-                                       value={this.state.companyName}
-                                       onChange={(ev) => this.setState({ companyName: ev.target.value, show: true })} />
-                                    <CompleterCompany
-                                       companyName={this.state.companyName}
-                                       show={this.state.show}
-                                       setCompany={(contact) => {
-                                          this.setState({
-                                             companyName: contact.companyName,
-                                             companyId: contact._id,
-                                             show: false
-                                          });
-                                       }}
-                                    />
-                                 </div>
-                              </div>
-                           )
-                        }
-                        {
-                           this.props.match.params.category === "company" &&
-                           (
-                              <div>
-                                 <div className="form-group">
+                                 <div className="col-md-6 col-sm-12">
                                     <div className="d-flex">
-                                       <label htmlFor="companyName">Company</label>
-                                       <Link className="ml-auto" to="/app/c/contacts/create/person">Switch to person</Link>
+                                       <label htmlFor="lastName">Last Name</label>
+                                       <Link className="ml-auto" to="/app/c/contacts/create/company">Switch to Company</Link>
                                     </div>
                                     <input
                                        type="text"
                                        className="form-control"
-                                       id="companyName" name="companyName"
+                                       id="lastName" name="lastName"
                                        placeholder=""
-                                       value={this.state.companyName}
-                                       onChange={(ev) => this.setState({ companyName: ev.target.value })} />
-                                 </div>
-                                 {/* Email Address */}
-                                 <div className="form-group">
-                                    <label htmlFor="email">Email Address</label>
-                                    <input
-                                       type="text"
-                                       className="form-control"
-                                       id="email" name="email"
-                                       placeholder=""
-                                       value={this.state.email}
-                                       onChange={(ev) => this.setState({ email: ev.target.value })} />
+                                       value={this.state.lastName}
+                                       onChange={(ev) => this.setState({ lastName: ev.target.value })} />
                                  </div>
                               </div>
-                           )
-                        }
+                           </div>
+                           {/* Email Address */}
+                           <div className="form-group">
+                              <label htmlFor="personEmail">Email Address<span className="text-danger fa-fx font-w600 ml-1">required</span></label>
+                              <input
+                                 type="text"
+                                 className="form-control"
+                                 id="personEmail" name="personEmail"
+                                 placeholder=""
+                                 value={this.state.email}
+                                 onChange={(ev) => this.setState({ email: ev.target.value })} />
+                           </div>
+                           {/* Company Name */}
+                           <div className="form-group" style={{ position: "relative" }}>
+                              <label htmlFor="personOfCompany">Company</label>
+                              <div ref={this.companyContainer}>
+                                 <input
+                                    type="text"
+                                    className="form-control"
+                                    id="personOfCompany" name="personOfCompany"
+                                    placeholder="New, or lookup existing..."
+                                    value={this.state.companyName}
+                                    onChange={(ev) => this.setState({ show: true, companyName: ev.target.value, companyId: "" })} />
+                                 <CompleterCompany
+                                    show={this.state.show}
+                                    companyName={this.state.companyName}
+                                    setCompany={(contact) => {
+                                       this.setState({
+                                          companyName: contact.companyName,
+                                          companyId: contact._id,
+                                          show: false
+                                       });
+                                    }}
+                                 />
+                              </div>
+                           </div>
+                        </div>
+
+                        {/* Company */}
+                        <div className={this.props.match.params.category === "company" ? "" : "d-none"}>
+                           <div className="form-group">
+                              <div className="d-flex">
+                                 <label htmlFor="companyName">Company</label>
+                                 <Link className="ml-auto" to="/app/c/contacts/create/person">Switch to person</Link>
+                              </div>
+                              <input
+                                 type="text"
+                                 className="form-control"
+                                 id="companyTitle" name="companyTitle"
+                                 placeholder=""
+                                 value={this.state.companyTitle}
+                                 onChange={(ev) => this.setState({ companyTitle: ev.target.value })} />
+                           </div>
+                           {/* Email Address */}
+                           <div className="form-group">
+                              <label htmlFor="email">Email Address</label>
+                              <input
+                                 type="text"
+                                 className="form-control"
+                                 id="email" name="email"
+                                 placeholder=""
+                                 value={this.state.email}
+                                 onChange={(ev) => this.setState({ email: ev.target.value })} />
+                           </div>
+                        </div>
 
                         {/* Address Set From */}
                         {

@@ -14,8 +14,9 @@ const CompanyPeopleList = (props) => {
       });
    }, [props]);
 
+   console.log(" PROPS  ---- ", props);
    return (
-      <>
+      <React.Fragment>
          {
             peopleContactList.length ?
                <h4 className="mb-0">{peopleContactList.length} people</h4>
@@ -42,10 +43,11 @@ const CompanyPeopleList = (props) => {
                pathname: `/app/c/contacts/create/person`,
                state: {
                   from: `${props.location.pathname || "/app/c/contacts"}`,
-                  company: `${props.contact.companyName}`
+                  companyId: `${props.contact._id}`,
+                  companyName: `${props.contact.companyName}`
                }
             }}>Add Person</Link>
-      </>
+      </React.Fragment>
    )
 }
 

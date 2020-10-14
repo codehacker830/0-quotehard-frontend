@@ -65,3 +65,12 @@ const toDateString = (num) => {
    if (parseInt(num) < 10) str = "0" + str;
    return str;
 }
+
+export const toFixedFloat = (dt) => {
+   return parseFloat(dt).toFixed(2)
+}
+
+export const countDecimals = (num) => {
+   if (Math.floor(num.valueOf()) === num.valueOf()) return 0;
+   return num.toString().split(".")[1];
+}

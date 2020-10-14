@@ -86,51 +86,55 @@ export default class Contacts extends Component {
             <div className="block block-rounded">
                <div className="block-content">
                   {
-                     !!contactList.length ||
-                     <InlineHelp>
-                        People & Companies will be added here automatically when you create and send quotes.
-                     </InlineHelp>
+                     contactList.length === 0 ?
+                        <InlineHelp>
+                           People & Companies will be added here automatically when you create and send quotes.
+                        </InlineHelp>
+                        :
+                        <React.Fragment>
+                           <table className="quotient-table mt-3">
+                              <tbody className="rowClick">
+                                 {
+                                    contactList.map((contact, index) => {
+                                       if (contact.category === "person") return (
+                                          <tr onClick={() => history.push(`/app/c/contacts/view/${contact._id}`)} key={index}>
+                                             <td>
+                                                <div className="d-flex">
+                                                   <img className="avatar-36 mr-2 my-auto"
+                                                      src="/assets/media/avatars/person1.png"
+                                                      alt="..." />
+                                                   <div className="u-ellipsis">
+                                                      <Link to={`/app/c/contacts/view/${contact._id}`}>{contact.firstName} {contact.lastName}</Link>
+                                                      <br />
+                                                      <small className="text-gray font-size-sm">{contact.company && contact.company.companyName}</small>
+                                                   </div>
+                                                </div>
+                                             </td>
+                                          </tr>
+                                       );
+                                       else return (
+                                          <tr onClick={() => history.push(`/app/c/contacts/view/${contact._id}`)} key={index}>
+                                             <td>
+                                                <div className="d-flex">
+                                                   <img className="avatar-36 mr-2 my-auto"
+                                                      src="/assets/media/avatars/company1.png"
+                                                      alt="..." />
+                                                   <div className="u-ellipsis">
+                                                      <Link to="/app/c/contacts/view/4128663">{contact.companyName}</Link>
+                                                      <br />
+                                                   </div>
+                                                </div>
+                                             </td>
+                                          </tr>
+                                       );
+                                    })
+                                 }
+                              </tbody>
+                           </table>
+                           <TotalLabelFor list={contactList} />
+                        </React.Fragment>
                   }
-                  <table className="quotient-table mt-3">
-                     <tbody className="rowClick">
-                        {
-                           contactList.map((contact, index) => {
-                              if (contact.category === "person") return (
-                                 <tr onClick={() => history.push(`/app/c/contacts/view/${contact._id}`)} key={index}>
-                                    <td>
-                                       <div className="d-flex">
-                                          <img className="avatar-36 mr-2 my-auto"
-                                             src="/assets/media/avatars/person1.png"
-                                             alt="..." />
-                                          <div className="u-ellipsis">
-                                             <Link to={`/app/c/contacts/view/${contact._id}`}>{contact.firstName} {contact.lastName}</Link>
-                                             <br />
-                                             <small className="text-gray font-size-sm">{contact.companyName}</small>
-                                          </div>
-                                       </div>
-                                    </td>
-                                 </tr>
-                              );
-                              else return (
-                                 <tr onClick={() => history.push(`/app/c/contacts/view/${contact._id}`)}>
-                                    <td>
-                                       <div className="d-flex">
-                                          <img className="avatar-36 mr-2 my-auto"
-                                             src="/assets/media/avatars/company1.png"
-                                             alt="..." />
-                                          <div className="u-ellipsis">
-                                             <Link to="/app/c/contacts/view/4128663">{contact.companyName}</Link>
-                                             <br />
-                                          </div>
-                                       </div>
-                                    </td>
-                                 </tr>
-                              );
-                           })
-                        }
-                     </tbody>
-                  </table>
-                  <TotalLabelFor list={contactList} />
+
                </div>
             </div>
          </div>

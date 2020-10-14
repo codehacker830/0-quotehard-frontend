@@ -46,7 +46,6 @@ export const userSignIn = ({ email, password }) => {
          password: password,
       }
       ).then(({ data }) => {
-         console.log("userSignIn: ", data);
          if (data.account) {
             localStorage.setItem("token", JSON.stringify(data.access_token));
             axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
@@ -76,7 +75,6 @@ export const userSignUp = ({ firstName, lastName, email, password, companyName, 
          location
       }
       ).then(({ data }) => {
-         console.log("data:", data);
          if (data.account) {
             localStorage.setItem("token", JSON.stringify(data.access_token));
             axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;

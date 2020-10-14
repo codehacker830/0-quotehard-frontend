@@ -2,26 +2,29 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import InlineHelp from '../../components/InlineHelp';
 import TotalLabelFor from '../../components/TotalLabelFor';
+import { toFixedFloat } from '../../util';
 import axios from '../../util/Api';
 
 export default class Quotes extends Component {
    constructor(props) {
       super(props);
       this.state = {
-
+         quotes: []
       };
    }
    componentDidMount() {
       const { location } = this.props;
-      const filter = {
-         category: location.state ? location.state.category : "",
-         id: location.state ? location.state.id : ""
-      };
-      axios.post('/quotes/get', filter).then(({ data }) => {
-
-      }).then(err => {
-         console.error("error ====>", err);
-      })
+      // const filter = {
+      //    category: location.state ? location.state.category : "",
+      //    id: location.state ? location.state.id : ""
+      // };
+      axios.get('/quotes')
+         .then(({ data }) => {
+            console.log("RRRRRRRRRRRRRRRR ===", data)
+            this.setState({ quotes: data.quotes });
+         }).catch(err => {
+            console.error(" error during get quotes :", err)
+         });
    }
    render() {
       console.error("Quotes prpos --", this.props);
@@ -93,90 +96,108 @@ export default class Quotes extends Component {
             </div>
 
             <div className="block block-rounded">
-               <div className="block-content py-3">
-                  <InlineHelp>
-                     Organise and search all your quotes in&nbsp;one&nbsp;place.
-                     <br />
-                     You&nbsp;can&nbsp;create and send your first quote in&nbsp;a matter of&nbsp;minutes.
-                  </InlineHelp>
-                  <table className="quotient-table mb-4">
-                     <tbody className="rowClick" data-tg-click="root_rowClick">
+               <div className="block-content py-4">
+                  {
+                     !!this.state.quotes.length ?
+                        <>
+                           <table className="quotient-table mb-4">
+                              <tbody className="rowClick" data-tg-click="root_rowClick">
+                                 {
+                                    this.state.quotes.map((item, index) => {
+                                       if (item.status === "draft") return (
+                                          <tr className="mod-green" key={index} onClick={() => this.props.history.push("/app/quote/5222670")}>
+                                             <td>
+                                                <span className="float-right ml-2">{toFixedFloat(item.quoteTotal)}</span>
+                                                <div className="u-ellipsis">
+                                                   <span>{item.title}</span>
+                                                </div>
+                                                <span className="float-right">
+                                                   <small className="text-gray">
+                                                      <span className="dt-time">{item.createdAt}</span>
+                                                      <span className="badge badge-success ml-1">{item.status}</span>
+                                                   </small>
+                                                </span>
+                                                <div className="u-ellipsis">
+                                                   <small className="text-gray"> {item.contactNameTo} by {item.userFrom} </small>
+                                                </div>
+                                             </td>
+                                          </tr>
+                                       );
+                                       else if (item.status === "awaiting") return (
+                                          <tr className="mod-white" key={index} onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
+                                             <td>
+                                                <span className="float-right ml-2">{toFixedFloat(item.quoteTotal)}</span>
+                                                <div className="u-ellipsis">
+                                                   <span>{item.title}</span>
+                                                </div>
+                                                <span className="float-right">
+                                                   <small className="text-gray">
+                                                      <span className="dt-time">{item.createdAt}</span>
+                                                   </small>
+                                                </span>
+                                                <div className="u-ellipsis">
+                                                   <small className="text-gray">
+                                                      <span className={`${item.viewedAt ? "text-danger" : "text-success"} mr-1`}>
+                                                         {item.viewedAt ? `Viewed ` + item.viewedAt : `Unopened`}
+                                                      </span>
+                                                      {item.contactNameTo} by {item.userFrom}
+                                                   </small>
+                                                </div>
+                                             </td>
+                                          </tr>
+                                       );
+                                       else return (
+                                          <tr className="mod-blue" key={index} onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
+                                             <td>
+                                                <span className="float-right ml-2">300.00</span>
+                                                <div className="u-ellipsis">
+                                                   <span>can you checkout the service price today?</span>
+                                                </div>
+                                                <span className="float-right">
+                                                   <small className="text-gray">
+                                                      <span className="dt-time">Sep 7</span>
+                                                      <span className="badge badge-primary ml-1">Accepted</span>
+                                                   </small>
+                                                </span>
+                                                <div className="u-ellipsis">
+                                                   <small className="text-gray">
+                                                      <span data-tg-control="{&quot;QuotesLastView&quot;:[1599451559]}">
+                                                         <span className="text-danger mr-1">Viewed 1 hour ago</span>
+                                                      </span>HK by A Devom #3</small>
+                                                </div>
+                                             </td>
+                                          </tr>
+                                       );
+                                    })
+                                 }
 
-                        <tr className="mod-white" onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
-                           <td>
-                              <span className="float-right ml-2">300.00</span>
-                              <div className="u-ellipsis">
-                                 <span>Test Quote</span>
-                              </div>
-                              <span className="float-right">
-                                 <small className="text-gray">
-                                    <span className="dt-time">36 minutes ago</span>
-                                 </small>
-                              </span>
-                              <div className="u-ellipsis">
-                                 <small className="text-gray">
-                                    <span className="text-danger mr-1">Viewed 29 minutes ago</span>
-                                    DanilCompany by A Devom #4
-                                    </small>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr className="mod-green" onClick={() => this.props.history.push("/app/quote/5222670")}>
-                           <td>
-                              <span className="float-right ml-2">1,350.00</span>
-                              <div className="u-ellipsis">
-                                 <span>Please checkout your bill...(Title Of Quote)</span>
-                              </div>
-                              <span className="float-right">
-                                 <small className="text-gray">
-                                    <span className="dt-time">37 minutes ago</span>
-                                    <span className="badge badge-success ml-1">Draft</span>
-                                 </small>
-                              </span>
-                              <div className="u-ellipsis">
-                                 <small className="text-gray"> DanilCompany by A Devom #2 </small>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr className="mod-blue" onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
-                           <td>
-                              <span className="float-right ml-2">300.00</span>
-                              <div className="u-ellipsis">
-                                 <span>can you checkout the service price today?</span>
-                              </div>
-                              <span className="float-right">
-                                 <small className="text-gray">
-                                    <span className="dt-time">Sep 7</span>
-                                    <span className="badge badge-primary ml-1">Accepted</span>
-                                 </small>
-                              </span>
-                              <div className="u-ellipsis">
-                                 <small className="text-gray">
-                                    <span data-tg-control="{&quot;QuotesLastView&quot;:[1599451559]}">
-                                       <span className="text-danger mr-1">Viewed 1 hour ago</span>
-                                    </span>HK by A Devom #3</small>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr className="mod-white" onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
-                           <td>
-                              <span className="float-right ml-2">200.00</span>
-                              <div className="u-ellipsis">
-                                 <span>Titile of Quote</span>
-                              </div>
-                              <span className="float-right">
-                                 <small className="text-gray">
-                                    <span className="dt-time">Sep 1</span></small>
-                              </span>
-                              <div className="u-ellipsis">
-                                 <small className="text-gray">
-                                    <span className="text-success mr-1">Unopened</span>Allover by A Devom #1</small>
-                              </div>
-                           </td>
-                        </tr>
-                     </tbody>
-                  </table>
-                  <TotalLabelFor list={null} />
+
+                                 <tr className="mod-white" onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
+                                    <td>
+                                       <span className="float-right ml-2">200.00</span>
+                                       <div className="u-ellipsis">
+                                          <span>Titile of Quote</span>
+                                       </div>
+                                       <span className="float-right">
+                                          <small className="text-gray">
+                                             <span className="dt-time">Sep 1</span></small>
+                                       </span>
+                                       <div className="u-ellipsis">
+                                          <small className="text-gray">
+                                             <span className="text-success mr-1">Unopened</span>Allover by A Devom #1</small>
+                                       </div>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                           <TotalLabelFor list={this.state.quotes} />
+                        </>
+                        : <InlineHelp>
+                           Organise and search all your quotes in&nbsp;one&nbsp;place.
+                           <br />
+                           You&nbsp;can&nbsp;create and send your first quote in&nbsp;a matter of&nbsp;minutes.
+                        </InlineHelp>
+                  }
                </div>
             </div>
          </div>
