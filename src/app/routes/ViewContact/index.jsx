@@ -24,7 +24,8 @@ export const ViewContact = (props) => {
          console.log("API RESPNSE =>", data);
          setContact(data.contact);
       }).catch((err) => {
-         console.log("GET contact API error ==>", err)
+         console.error("GET contact API error ==>", err)
+         props.history.push("/app/c/contacts");
       })
 
    }, [props.match]);
@@ -74,7 +75,7 @@ export const ViewContact = (props) => {
                         }
                      </div>
                   </div>
-                  
+
                   {/* Recent Activity */}
                   <div className="row no-gutters mb-1">
                      <div className="w-100 font-size-sm mb-1">
