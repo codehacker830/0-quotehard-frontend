@@ -31,7 +31,12 @@ export default class GetTemplate extends Component {
                priceItem: initPriceItem,
             }
          ],
-         notes: [initTextItem]
+         notes: [
+            {
+               category: "textItem",
+               textItem: initTextItem
+            }
+         ]
       }
    }
    removeImageItem = (url) => {
@@ -44,8 +49,10 @@ export default class GetTemplate extends Component {
    }
 
    updateItem = (ind, item) => {
-      let newItems = { ...this.state.items };
+      // console.log("adfasdf ", ind, item);
+      let newItems = [...this.state.items];
       newItems[ind] = item;
+      console.log("adfasdf ", ind, newItems);
       this.setState({ items: newItems });
    }
    addItem = (ind, category) => {
@@ -56,7 +63,7 @@ export default class GetTemplate extends Component {
       });
       else if (category === "textItem") newItems.splice(ind + 1, 0, {
          category: category,
-         priceItem: initTextItem,
+         textItem: initTextItem,
       });
       else newItems.splice(ind + 1, 0, {
          category: category,
@@ -66,14 +73,15 @@ export default class GetTemplate extends Component {
    }
    orderUpItem = (ind) => {
       let newItems = [...this.state.items];
-      newItems.splice(ind, 1);
-      newItems.splice(Math.max(ind - 1, 0), 0);
+      const [dIt,] = newItems.splice(ind, 1);
+      newItems.splice(Math.max(ind - 1, 0), 0, dIt);
       this.setState({ items: newItems });
    }
    orderDownItem = (ind) => {
       let newItems = [...this.state.items];
       const [dIt,] = newItems.splice(ind, 1);
-      newItems.splice(Math.min(ind + 1, this.state.items.length), 0);
+      newItems.splice(Math.min(ind + 1, this.state.items.length), 0, dIt);
+      this.setState({ items: newItems });
    }
    removeItem = (ind) => {
       let newItems = [...this.state.items];
@@ -100,28 +108,32 @@ export default class GetTemplate extends Component {
          ]
       });
    }
-   updateNote = (ind, item) => {
-      let newNotes = { ...this.state.notes };
-      newNotes[ind] = item;
+   updateNote = (ind, note) => {
+      let newNotes = [...this.state.notes];
+      newNotes[ind] = note;
       this.setState({ notes: newNotes });
    }
    addNote = (ind, category) => {
       let newNotes = [...this.state.notes];
-      if (category === "priceItem") newNotes.splice(ind + 1, 0, initPriceItem);
-      else if (category === "textItem") newNotes.splice(ind + 1, 0, initTextItem);
-      else newNotes.splice(ind + 1, 0, initSubTotal);
+      newNotes.splice(ind + 1, 0, {
+         category: "textItem",
+         textItem: initTextItem,
+      });
       this.setState({ notes: newNotes });
    }
    orderUpNote = (ind) => {
+      console.log("index  ===", ind)
       let newNotes = [...this.state.notes];
-      newNotes.splice(ind, 1);
-      newNotes.splice(Math.max(ind - 1, 0), 0);
+      const [dIt,] = newNotes.splice(ind, 1);
+      newNotes.splice(Math.max(ind - 1, 0), 0, dIt);
+      
       this.setState({ notes: newNotes });
    }
    orderDownNote = (ind) => {
       let newNotes = [...this.state.notes];
       const [dIt,] = newNotes.splice(ind, 1);
-      newNotes.splice(Math.min(ind + 1, this.state.notes.length), 0);
+      newNotes.splice(Math.min(ind + 1, this.state.notes.length), 0, dIt);
+      this.setState({ notes: newNotes });
    }
    removeNote = (ind) => {
       let newNotes = [...this.state.notes];
@@ -206,7 +218,13 @@ export default class GetTemplate extends Component {
                      })
                   }
 
-                  <AddItemBtn onClickAdd={() => this.setState({ items: [...this.state.items, initPriceItem] })} />
+                  <AddItemBtn onClickAdd={() => {
+                     const newItem = {
+                        category: "priceItem",
+                        priceItem: initPriceItem
+                     }
+                     this.setState({ items: [...this.state.items, newItem] })
+                  }} />
 
                   {/* Quote total */}
                   <div className="quote-edit-total-wrap">
@@ -300,7 +318,7 @@ export default class GetTemplate extends Component {
                   {/* Footer action button group */}
                   <div className="row p-3">
                      <button className="btn btn-lg btn-rounded btn-hero-primary mr-1">Create</button>
-                     <button className="btn btn-lg btn-rounded btn-hero-secondary" onClick={() => this.props.history.push("/app/content/item-text/browse")}>Cancel</button>
+                     <button className="btn btn-lg btn-rounded btn-hero-secondary" onClick={() => this.props.history.push("/app/content/templates")}>Cancel</button>
                   </div>
                </div>
             </div>

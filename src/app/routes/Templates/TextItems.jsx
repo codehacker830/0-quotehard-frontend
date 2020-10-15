@@ -1,8 +1,22 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import InlineHelp from '../../../components/InlineHelp';
+import axios from '../../../util/Api';
 
 export default class TextItems extends Component {
+   state = {
+      textItems: []
+   };
+   componentDidMount() {
+      axios.get('/templates/textitems').then(({ data }) => {
+         console.log("response ============", data);
+         this.setState({
+            textItems: data.textItems
+         });
+      }).catch(err => {
+         console.error("err during get textItems =>", err);
+      })
+   }
    render() {
       const { history } = this.props;
       return (
@@ -40,28 +54,38 @@ export default class TextItems extends Component {
             </div>
             <div className="block block-rounded">
                <div className="block-content">
-                  <InlineHelp>
-                     Create reusable items for your products and services, that autocomplete in quotes and templates.
-                  </InlineHelp>
-                  <table className="quotient-table">
-                     <tbody className="rowClick">
-                        <tr onClick={() => history.push(`/app/content/item-text/view/989002`)}>
-                           <td>
-                              <div className="d-flex">
-                                 <div className="u-ellipsis">
-                                    <Link to="/app/content/item-text/view/989002">Item Header</Link>
-                                    <br />
-                                    <small className="text-gray font-size-sm">It's long description</small>
-                                 </div>
-                              </div>
-                           </td>
-                        </tr>
-                     </tbody>
-                  </table>
-
-                  <div className="px-2 py-4">
-                     <span>Total 2</span>
-                  </div>
+                  {
+                     this.state.textItems.length === 0 ?
+                        <InlineHelp>
+                           Create reusable items for your products and services, that autocomplete in quotes and templates.
+                        </InlineHelp>
+                        : <React.Fragment>
+                           <table className="quotient-table">
+                              <tbody className="rowClick">
+                                 {
+                                    this.state.textItems.map((item, index) => {
+                                       return (
+                                          <tr onClick={() => history.push(`/app/content/item-text/view/${item._id}`)} key={index}>
+                                             <td>
+                                                <div className="d-flex">
+                                                   <div className="u-ellipsis">
+                                                      <Link to={`/app/content/item-text/view/${item._id}`}>{item.textHeading}</Link>
+                                                      <br />
+                                                      <small className="text-gray font-size-sm">{item.longDescription}</small>
+                                                   </div>
+                                                </div>
+                                             </td>
+                                          </tr>
+                                       );
+                                    })
+                                 }
+                              </tbody>
+                           </table>
+                           <div className="px-2 py-4">
+                              <span>Total {this.state.textItems.length}</span>
+                           </div>
+                        </React.Fragment>
+                  }
                </div>
             </div>
          </div>

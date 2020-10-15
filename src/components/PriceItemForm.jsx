@@ -71,7 +71,7 @@ export default class PriceItemForm extends Component {
             <div className="row pb-1">
                <div className="col-sm-12">
                   {
-                     this.state.isOptional &&
+                     this.props.priceItem.isOptional &&
                      <div className="form-check form-check-inline toolWrapper">
                         <input type="checkbox"
                            className="form-check-input"
@@ -85,7 +85,7 @@ export default class PriceItemForm extends Component {
                      </div>
                   }
                   {
-                     this.state.isMultipleChoice &&
+                     this.props.priceItem.isMultipleChoice &&
                      <div className="form-check toolWrapper">
                         <input type="radio"
                            className="form-check-input"
@@ -127,10 +127,18 @@ export default class PriceItemForm extends Component {
                               <input className="form-check-input"
                                  type="checkbox"
                                  ref={this.optionalItemRef}
-                                 value={this.state.isOptional}
+                                 value={this.props.priceItem.isOptional}
                                  onClick={() => {
-                                    if (this.state.isMultipleChoice === true && this.state.isOptional === false) this.multipleChoiceRef.current.click();
-                                    this.setState({ isOptional: !this.state.isOptional });
+                                    if (this.props.priceItem.isMultipleChoice === true && this.props.priceItem.isOptional === false) this.multipleChoiceRef.current.click();
+                                    const newItem = {
+                                       category: "priceItem",
+                                       priceItem: {
+                                          ... this.props.priceItem,
+                                          isOptional: !this.props.priceItem.isOptional,
+                                          isMultipleChoice: false
+                                       }
+                                    };
+                                    this.props.updateItem(this.props.index, newItem);
                                  }}
                                  id="optional" name="optional" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="optional">Optional Item</label>
@@ -139,10 +147,18 @@ export default class PriceItemForm extends Component {
                               <input className="form-check-input"
                                  type="checkbox"
                                  ref={this.multipleChoiceRef}
-                                 value={this.state.isMultipleChoice}
+                                 value={this.props.priceItem.isMultipleChoice}
                                  onClick={() => {
-                                    if (this.state.isOptional === true && this.state.isMultipleChoice === false) this.optionalItemRef.current.click();
-                                    this.setState({ isMultipleChoice: !this.state.isMultipleChoice });
+                                    if (this.props.priceItem.isOptional === true && this.props.priceItem.isMultipleChoice === false) this.optionalItemRef.current.click();
+                                    const newItem = {
+                                       category: "priceItem",
+                                       priceItem: {
+                                          ... this.props.priceItem,
+                                          isMultipleChoice: !this.props.priceItem.isMultipleChoice,
+                                          isOptional: false
+                                       }
+                                    };
+                                    this.props.updateItem(this.props.index, newItem);
                                  }}
                                  id="multiple" name="multiple" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="multiple">Multiple Choice</label>
@@ -151,32 +167,56 @@ export default class PriceItemForm extends Component {
                            <div className="form-check pb-1">
                               <input className="form-check-input"
                                  type="checkbox"
-                                 value={this.state.isEditableQuantity}
-                                 onChange={() => this.setState({ isEditableQuantity: !this.state.isEditableQuantity })}
+                                 value={this.props.priceItem.isEditableQuantity}
+                                 onClick={() => {
+                                    const newItem = {
+                                       category: "priceItem",
+                                       priceItem: { ... this.props.priceItem, isEditableQuantity: !this.props.priceItem.isEditableQuantity }
+                                    };
+                                    this.props.updateItem(this.props.index, newItem);
+                                 }}
                                  id="editable-quantity" name="editable-quantity" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="editable-quantity">Editable Quantity</label>
                            </div>
                            <div className="form-check pb-1">
                               <input className="form-check-input"
                                  type="checkbox"
-                                 value={this.state.isDiscount}
-                                 onChange={() => this.setState({ isDiscount: !this.state.isDiscount })}
+                                 value={this.props.priceItem.isDiscount}
+                                 onChange={() => {
+                                    const newItem = {
+                                       category: "priceItem",
+                                       priceItem: { ... this.props.priceItem, isDiscount: !this.props.priceItem.isDiscount }
+                                    };
+                                    this.props.updateItem(this.props.index, newItem);
+                                 }}
                                  id="discount-percent" name="discount-percent" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="discount-percent">Discount %</label>
                            </div>
                            <div className="form-check pb-1">
                               <input className="form-check-input"
                                  type="checkbox"
-                                 value={this.state.isSubscription}
-                                 onChange={() => this.setState({ isSubscription: !this.state.isSubscription })}
+                                 value={this.props.priceItem.isSubscription}
+                                 onChange={() => {
+                                    const newItem = {
+                                       category: "priceItem",
+                                       priceItem: { ... this.props.priceItem, isSubscription: !this.props.priceItem.isSubscription }
+                                    };
+                                    this.props.updateItem(this.props.index, newItem);
+                                 }}
                                  id="subscription" name="subscription" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="subscription">Subscription - Repeating Cost</label>
                            </div>
                            <div className="form-check pb-1">
                               <input className="form-check-input"
                                  type="checkbox"
-                                 value={this.state.isCostPriceMargin}
-                                 onChange={() => this.setState({ isCostPriceMargin: !this.state.isCostPriceMargin })}
+                                 value={this.props.priceItem.isCostPriceMargin}
+                                 onChange={() => {
+                                    const newItem = {
+                                       category: "priceItem",
+                                       priceItem: { ... this.props.priceItem, isCostPriceMargin: !this.props.priceItem.isCostPriceMargin }
+                                    };
+                                    this.props.updateItem(this.props.index, newItem);
+                                 }}
                                  id="cost-margin" name="cost-margin" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="cost-margin">Cost Price & Margin</label>
                            </div>
@@ -227,10 +267,39 @@ export default class PriceItemForm extends Component {
             <div className="row">
                <div className="col-sm-6 pr-0">
                   <div className="w-100 border p-2 mb-2">
-                     <input className="form-control border-0 rounded-0 p-2 mb-1" placeholder="Item Code / ID (optional)" />
-                     <textarea className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2" rows={1} placeholder="Product or Service Heading">
+                     <input className="form-control border-0 rounded-0 p-2 mb-1"
+                        placeholder="Item Code / ID (optional)"
+                        value={this.props.priceItem.itemCode}
+                        onChange={(ev) => {
+                           const newItem = {
+                              category: "priceItem",
+                              priceItem: { ... this.props.priceItem, itemCode: ev.target.value }
+                           };
+                           this.props.updateItem(this.props.index, newItem);
+                        }}
+                     />
+                     <textarea className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2"
+                        rows={1} placeholder="Product or Service Heading"
+                        value={this.props.priceItem.productHeading}
+                        onChange={(ev) => {
+                           const newItem = {
+                              category: "priceItem",
+                              priceItem: { ... this.props.priceItem, productHeading: ev.target.value }
+                           };
+                           this.props.updateItem(this.props.index, newItem);
+                        }}
+                     >
                      </textarea>
-                     <textarea className="form-control border-0 rounded-0 mt-1 p-2" rows={1} placeholder="Long description">
+                     <textarea className="form-control border-0 rounded-0 mt-1 p-2" rows={1} placeholder="Long description"
+                        value={this.props.priceItem.longDescription}
+                        onChange={(ev) => {
+                           const newItem = {
+                              category: "priceItem",
+                              priceItem: { ... this.props.priceItem, longDescription: ev.target.value }
+                           };
+                           this.props.updateItem(this.props.index, newItem);
+                        }}
+                     >
                      </textarea>
 
                      {/* Images preview section */}
@@ -251,13 +320,15 @@ export default class PriceItemForm extends Component {
                <div className="col-sm-6">
                   <div className="row pb-1">
                      <div className="col-6 pr-0">
-                        <select className="custom-select rounded-0" value={this.props.priceItem.itemCategory} onChange={(ev) => {
-                           const newItem = {
-                              category: "priceItem",
-                              priceItem: { ... this.props.priceItem, itemCategory: ev.target.value }
-                           };
-                           this.props.updateItem(this.props.index, newItem);
-                        }}>
+                        <select className="custom-select rounded-0"
+                           value={this.props.priceItem.itemCategory}
+                           onChange={(ev) => {
+                              const newItem = {
+                                 category: "priceItem",
+                                 priceItem: { ... this.props.priceItem, itemCategory: ev.target.value }
+                              };
+                              this.props.updateItem(this.props.index, newItem);
+                           }}>
                            <option value="sales">Sales</option>
                         </select>
                      </div>
@@ -274,8 +345,8 @@ export default class PriceItemForm extends Component {
                         </select>
                      </div>
                   </div>
-                  {/* <div className={`row pb-1 ${this.state.isDiscount ? "" : "d-none"}`}> */}
-                  <div className={`row pb-1`}>
+                  <div className={`row pb-1 ${this.props.priceItem.isDiscount ? "" : "d-none"}`}>
+                     {/* <div className={`row pb-1`}> */}
                      <div className="col-12">
                         <div className="bg-light-gray border p-1">
                            <div className="row">
@@ -304,8 +375,8 @@ export default class PriceItemForm extends Component {
                      </div>
                   </div>
 
-                  {/* <div className={`row pb-1 ${this.state.isSubscription ? "" : "d-none"}`}> */}
-                  <div className={`row pb-1`}>
+                  <div className={`row pb-1 ${this.props.priceItem.isSubscription ? "" : "d-none"}`}>
+                     {/* <div className={`row pb-1`}> */}
                      <div className="col-12">
                         <div className="bg-light-gray border p-1">
                            <div className="d-flex">
@@ -334,11 +405,11 @@ export default class PriceItemForm extends Component {
                               </select>
                               <span className="text-secondary text-uppercase mx-2 my-auto">For</span>
                               <input type="number" className="form-control rounded-0" placeholder="Optional"
-                                 value={this.props.priceItem.for}
+                                 value={this.props.priceItem.period}
                                  onChange={(ev) => {
                                     const newItem = {
                                        category: "priceItem",
-                                       priceItem: { ... this.props.priceItem, for: ev.target.value }
+                                       priceItem: { ... this.props.priceItem, period: ev.target.value }
                                     };
                                     this.props.updateItem(this.props.index, newItem);
                                  }}
@@ -349,8 +420,8 @@ export default class PriceItemForm extends Component {
                      </div>
                   </div>
 
-                  {/* <div className={`row pb-1 ${this.state.isCostPriceMargin ? "" : "d-none"}`}> */}
-                  <div className={`row pb-1`}>
+                  <div className={`row pb-1 ${this.props.priceItem.isCostPriceMargin ? "" : "d-none"}`}>
+                     {/* <div className={`row pb-1`}> */}
                      <div className="col-12">
                         <div className="bg-light-gray border p-1">
                            <div className="row">
@@ -418,7 +489,7 @@ export default class PriceItemForm extends Component {
                            }}
                         />
                         <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">
-                           <span className="text-primary">{this.state.isEditableQuantity ? "Editable " : ""}</span>
+                           <span className="text-primary">{this.props.priceItem.isEditableQuantity ? "Editable " : ""}</span>
                            Quantity
                         </label>
                      </div>

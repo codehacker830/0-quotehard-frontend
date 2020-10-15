@@ -38,7 +38,7 @@ export const initPriceItem = {
    
    per: 1,
    every: "week",
-   for: 1,
+   period: 1,
 
    isCostPriceMargin: false,
    costPrice: 0,
@@ -57,9 +57,9 @@ export const initPriceItem = {
    itemTotal: 0,
 };
 export const initTextItem = {
-   _id: "",
-   textHeading: "here is text heading",
-   longDescription: "description",
+   // _id: "",
+   textHeading: "",
+   longDescription: "",
    files: [],
 };
 export const initSubTotal = {

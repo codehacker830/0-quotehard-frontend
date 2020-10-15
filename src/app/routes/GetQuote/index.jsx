@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import NavCrump from "../../../components/NavCrump";
-import QuoteToPeopleList from "./QuoteToPeopleList";
+import QuoteToPeopleList from "./components/QuoteToPeopleList";
 import QuoteSettings from "../../../components/QuoteSettings";
 import PriceItemForm from "../../../components/PriceItemForm";
 import TextItemForm from "../../../components/TextItemForm";
@@ -12,8 +12,8 @@ import {
    toastrErrorConfig,
    toastrInfoConfig,
 } from "../../../util/toastrConfig";
-import CompleterContact from "./CompleterContact";
-import LableFor from "./LableFor";
+import CompleterContact from "./components/CompleterContact";
+import LableFor from "./components/LableFor";
 import axios from "../../../util/Api";
 import {
    parseDate,
@@ -142,7 +142,12 @@ export default class GetQuote extends Component {
                priceItem: initPriceItem,
             },
          ],
-         notes: [initTextItem],
+         notes: [
+            {
+               category: "textItem",
+               textItem: initTextItem
+            }
+         ],
       };
    }
    removeImageItem = (url) => {
@@ -154,6 +159,11 @@ export default class GetQuote extends Component {
       console.log(this.state.fileArray);
    };
    handleClickSaveNext = () => {
+      const { toPeopleList, title, settings, items, notes } = this.state;
+      if (toPeopleList.length === 0) { toastr.info("Required", "You must add at least one contact.", toastrInfoConfig); return; }
+      if (title === "") { toastr.info("Required", "You are missing a Quote Title.", toastrInfoConfig); return; }
+
+
       toastr.success(
          "The is success",
          "success message here",
@@ -161,23 +171,78 @@ export default class GetQuote extends Component {
       );
    };
    handleClickSave = () => {
-      toastr.info("This is info", "info message here", toastrInfoConfig);
-      toastr.warning(
-         "This is warning",
-         "warning message here",
-         toastrWarningConfig
-      );
-      toastr.error("This is error", "error message here", toastrErrorConfig);
+      const { toPeopleList, title, settings, items, notes } = this.state;
+      if (title === "") { toastr.info("Required", "You are missing a Quote Title.", toastrInfoConfig); return; }
+      const toPeopleIdList = [];
+      for (let i = 0; i < toPeopleList.length; i++) {
+         toPeopleIdList.push(toPeopleList[i]._id);
+      }
+      console.log("people id listtttttttttttttttt ", toPeopleIdList);
+      const data = {
+         status: "draft",
+         toPeopleList: toPeopleIdList,
+         title,
+         settings,
+         items,
+         notes
+      };
+      if (this.props.location.pathname === '/app/quote/get') {
+         axios.post('/quotes', data)
+            .then(({ data }) => {
+               console.log("res data =>", data);
+               toastr.success(
+                  "Success",
+                  "New Quote draft was created.",
+                  toastrSuccessConfig
+               );
+            })
+            .catch(err => {
+               console.error(" error ===>", err);
+               toastr.error("Error", "Quote failed to create", toastrErrorConfig);
+            });
+      } else if (this.props.match.path = "/app/quote/:id") {
+         const quoteId = this.props.match.params.id;
+         axios.put(`/quotes/${quoteId}`, data)
+            .then(({ data }) => {
+               console.log("uuuuuuuuuuuuuuuuu =>", data);
+               toastr.success(
+                  "Success",
+                  "Quote draft was updated.",
+                  toastrSuccessConfig
+               );
+            })
+            .catch(err => {
+               console.error(" error ===>", err);
+               toastr.error("Error", "Quote failed to update", toastrErrorConfig);
+            });
+      }
+      else {
+         toastr.warning(
+            "Warning",
+            "Something went wrong before request.",
+            toastrWarningConfig
+         );
+      }
+
    };
    componentDidMount() {
-      // if (this.props.match.params && this.props.match.params.id !== "get") {
-      //    // Get quote details with quote ID
-      //    axios.get(`/quotes/${this.props.match.params.id}`).then(({ data }) => {
-      //       console.log(" ress sss  =>", data);
-      //    }).catch(err => {
-      //       console.error("get quote detail api error =>", err)
-      //    });
-      // }
+      if (this.props.match.params) {
+         // Get quote details with quote ID
+         axios.get(`/quotes/search-by-id/${this.props.match.params.id}`).then(({ data }) => {
+            console.log(" resssssssssssssssss sss  =>", data);
+            const { quote } = data;
+            this.setState({
+               title: quote.title,
+               toPeopleList: quote.toPeopleList,
+               settings: quote.settings,
+               items: quote.items,
+               notes: quote.notes
+            });
+         }).catch(err => {
+            console.error("get quote detail api error =>", err);
+            toastr.error("Error", "Quote was not found", toastrErrorConfig);
+         });
+      }
       //  const { toPeopleList, title, settings, items, notes } = quoteDataApiRes;
       //  this.setState({
       //    toPeopleList,
@@ -215,7 +280,7 @@ export default class GetQuote extends Component {
       });
       else if (category === "textItem") newItems.splice(ind + 1, 0, {
          category: category,
-         priceItem: initTextItem,
+         textItem: initTextItem,
       });
       else newItems.splice(ind + 1, 0, {
          category: category,
@@ -225,14 +290,15 @@ export default class GetQuote extends Component {
    }
    orderUpItem = (ind) => {
       let newItems = [...this.state.items];
-      newItems.splice(ind, 1);
-      newItems.splice(Math.max(ind - 1, 0), 0);
+      const [dIt,] = newItems.splice(ind, 1);
+      newItems.splice(Math.max(ind - 1, 0), 0, dIt);
       this.setState({ items: newItems });
    }
    orderDownItem = (ind) => {
       let newItems = [...this.state.items];
       const [dIt,] = newItems.splice(ind, 1);
-      newItems.splice(Math.min(ind + 1, this.state.items.length), 0);
+      newItems.splice(Math.min(ind + 1, this.state.items.length), 0, dIt);
+      this.setState({ items: newItems });
    }
    removeItem = (ind) => {
       let newItems = [...this.state.items];
@@ -259,28 +325,30 @@ export default class GetQuote extends Component {
          ]
       });
    }
-   updateNote = (ind, item) => {
-      let newNotes = { ...this.state.notes };
-      newNotes[ind] = item;
+   updateNote = (ind, note) => {
+      let newNotes = [...this.state.notes];
+      newNotes[ind] = note;
       this.setState({ notes: newNotes });
    }
    addNote = (ind, category) => {
       let newNotes = [...this.state.notes];
-      if (category === "priceItem") newNotes.splice(ind + 1, 0, initPriceItem);
-      else if (category === "textItem") newNotes.splice(ind + 1, 0, initTextItem);
-      else newNotes.splice(ind + 1, 0, initSubTotal);
+      newNotes.splice(ind + 1, 0, {
+         category: "textItem",
+         textItem: initTextItem,
+      });
       this.setState({ notes: newNotes });
    }
    orderUpNote = (ind) => {
       let newNotes = [...this.state.notes];
-      newNotes.splice(ind, 1);
-      newNotes.splice(Math.max(ind - 1, 0), 0);
+      const [dIt,] = newNotes.splice(ind, 1);
+      newNotes.splice(Math.max(ind - 1, 0), 0, dIt);
       this.setState({ notes: newNotes });
    }
    orderDownNote = (ind) => {
       let newNotes = [...this.state.notes];
       const [dIt,] = newNotes.splice(ind, 1);
-      newNotes.splice(Math.min(ind + 1, this.state.notes.length), 0);
+      newNotes.splice(Math.min(ind + 1, this.state.notes.length), 0, dIt);
+      this.setState({ notes: newNotes });
    }
    removeNote = (ind) => {
       let newNotes = [...this.state.notes];
@@ -294,12 +362,11 @@ export default class GetQuote extends Component {
       console.log(" GetQute state => ", this.state);
       console.log(" GetQute props => ", this.props);
       const { location } = this.props;
-      const { state } = location;
       let HeadLinkText = "Dashboard";
-      if (state && state.from === "/app/quotes") HeadLinkText = "Quotes";
+      if (location.state && location.state.from === "/app/quotes") HeadLinkText = "Quotes";
       return (
          <React.Fragment>
-            <NavCrump linkTo={`${state && state.from ? state.from : "/app"}`}>
+            <NavCrump linkTo={`${location.state && location.state.from ? location.state.from : "/app"}`}>
                {HeadLinkText}
             </NavCrump>
             <div className="content bg-custom">
@@ -371,6 +438,8 @@ export default class GetQuote extends Component {
                            className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2 my-4"
                            rows={1}
                            placeholder="Title of Quote"
+                           value={this.state.title}
+                           onChange={(ev) => this.setState({ title: ev.target.value })}
                         ></textarea>
                      </div>
                   </div>
@@ -526,7 +595,7 @@ export default class GetQuote extends Component {
                      })
                   }
 
-                  <AddItemBtn onClickAdd={() => this.setState({ notes: [...this.state.notes, initTextItem] })} />
+                  <AddItemBtn onClickAdd={() => this.setState({ notes: [...this.state.notes, { category: "textItem", textItem: initTextItem }] })} />
 
                   {/* Footer action button group */}
                   <div className="row p-3">

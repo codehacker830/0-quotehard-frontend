@@ -1,9 +1,25 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import InlineHelp from '../../../components/InlineHelp';
+import { toFixedFloat } from '../../../util';
+import axios from '../../../util/Api';
 
 export default class PriceItems extends Component {
+   state = {
+      priceItems: []
+   };
+   componentDidMount() {
+      axios.get('/templates/priceitems').then(({ data }) => {
+         console.log("response ============", data);
+         this.setState({
+            priceItems: data.priceItems
+         });
+      }).catch(err => {
+         console.error("err during get priceitems =>", err);
+      })
+   }
    render() {
+      console.log("111111 priceItems state 1111111", this.state);
       return (
          <div className="content">
             <div className="block block-rounded">
@@ -39,29 +55,51 @@ export default class PriceItems extends Component {
             </div>
             <div className="block block-rounded">
                <div className="block-content">
-                  <InlineHelp>
-                     Create reusable items for your products and services, that autocomplete in quotes and templates.
-                  </InlineHelp>
-                  <table className="quotient-table">
-                     <tbody className="rowClick">
-                        <tr onClick={() => this.props.history.push(`/app/content/item-price/view/989008`)}>
-                           <td>
-                              <div className="d-flex">
-                                 <div className="u-ellipsis">
-                                    <Link to="/app/content/item-price/view/989008">Massage service</Link>
-                                    <br />
-                                    <small className="text-gray font-size-sm">It's long description</small>
-                                 </div>
-                                 <span className="ml-auto">10 @ 50.00</span>
-                              </div>
-                           </td>
-                        </tr>
-                     </tbody>
-                  </table>
+                  {
+                     this.state.priceItems.length === 0 ?
+                        <InlineHelp>
+                           Create reusable items for your products and services, that autocomplete in quotes and templates.
+                        </InlineHelp>
+                        : <React.Fragment>
+                           <table className="quotient-table">
+                              <tbody className="rowClick">
+                                 {
+                                    this.state.priceItems.map((item, index) => {
+                                       return (
+                                          <tr onClick={() => this.props.history.push(`/app/content/item-price/view/${item._id}`)} key={index}>
+                                             <td>
+                                                <div className="d-flex">
+                                                   <div className="u-ellipsis">
+                                                      <Link to={`/app/content/item-price/view/${item._id}`}>{item.productHeading}</Link>
+                                                      <br />
+                                                      <small className="text-gray font-size-sm">{item.longDescription}</small>
+                                                   </div>
+                                                   {
+                                                      item.isSubscription ?
+                                                         <>
+                                                            <span className="text-gray font-size-sm ml-auto"> per {item.per} {item.every}</span>
+                                                            {
+                                                               item.period ?
+                                                                  null
+                                                                  : <span className="text-gray font-size-sm ml-auto"> (for {item.period} months)</span>
+                                                            }
+                                                         </>
+                                                         : <span className="text-black font-size-sm ml-auto">{item.quantity} @ {toFixedFloat(item.unitPrice)}</span>
+                                                   }
+                                                </div>
+                                             </td>
+                                          </tr>
+                                       );
+                                    })
+                                 }
 
-                  <div className="px-2 py-4">
-                     <span>Total 2</span>
-                  </div>
+                              </tbody>
+                           </table>
+                           <div className="px-2 py-4">
+                              <span>Total {this.state.priceItems.length}</span>
+                           </div>
+                        </React.Fragment>
+                  }
                </div>
             </div>
          </div>

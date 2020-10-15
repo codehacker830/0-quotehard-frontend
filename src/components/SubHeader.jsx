@@ -9,6 +9,8 @@ class SubHeader extends Component {
          location.pathname === "/app/content/template/get"
          || location.pathname === "/app/content/item-price/create-new"
          || location.pathname === "/app/content/item-text/create-new"
+         || location.pathname.includes("/app/content/item-price/view")
+         || location.pathname.includes("/app/content/item-text/view")
       ) hidden = true;
       return (
          <div className={`bg-body-light border-top border-bottom ${hidden ? "d-none" : ""}`}>

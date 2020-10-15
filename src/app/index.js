@@ -20,7 +20,6 @@ export default class AppRoot extends Component {
          || location.pathname === "/app/content/templates"
          || location.pathname === "/app/content/item-price/browse"
          || location.pathname === "/app/content/item-text/browse"
-         || location.pathname === "/app/content/item-text/browse"
 
       ) isBgGray = true;
       return (

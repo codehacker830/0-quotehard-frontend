@@ -110,7 +110,7 @@ class QuoteTableShow extends Component {
                                                    </span>
                                                    <div className="u-ellipsis">
                                                       <small className="text-gray">
-                                                         <span className="text-danger mr-1">{item.viewedAt}</span>{item.contactNameTo} by {item.userFrom}</small>
+                                                         <span className="text-danger mr-1">Viewed {item.viewedAt}</span>{item.contactNameTo} by {item.userFrom}</small>
                                                    </div>
                                                 </td>
                                              </tr>

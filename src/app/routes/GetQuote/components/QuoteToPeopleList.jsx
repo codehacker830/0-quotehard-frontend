@@ -1,6 +1,8 @@
 import React from 'react'
+import CompanyNameShow from './CompanyNameShow';
 
 export const QuotetoPeopleList = (props) => {
+
    return (
       <>
          {
@@ -11,7 +13,7 @@ export const QuotetoPeopleList = (props) => {
                         <span>×</span>
                      </button>
                      <strong className="text-black my-1 mr-1">{contact.firstName} {contact.lastName}</strong>
-                     <span className="text-secondary">{contact.company}</span>
+                     <CompanyNameShow companyId={contact.company} />
                      <p className="mb-0">{contact.email}</p>
                   </div>
                );

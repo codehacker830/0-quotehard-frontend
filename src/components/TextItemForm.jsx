@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import NavCrump from './NavCrump';
 
 export default class TextItemForm extends Component {
    fileObj = [];
@@ -35,9 +34,7 @@ export default class TextItemForm extends Component {
    onClickOutsideHandle = (ev) => {
       if (this.state.isAddItemListOpen && !this.addItemOptionContainer.current.contains(ev.target)) this.setState({ isAddItemListOpen: false });
    }
-   componentDidUpdate() {
-      this.fileArray = this.state.fileArray;
-   }
+
    componentDidMount() {
       window.addEventListener('click', this.onClickOutsideHandle);
    }
@@ -45,6 +42,8 @@ export default class TextItemForm extends Component {
       window.removeEventListener('click', this.onClickOutsideHandle);
    }
    render() {
+      console.log("TextItemForm State -------", this.state);
+      console.log("TextItemForm Props -------", this.props);
       return (
          <React.Fragment>
             {/* ToolWrapper */}
@@ -118,15 +117,35 @@ export default class TextItemForm extends Component {
             <div className="row">
                <div className="col-sm-12 col-md-10 col-lg-8">
                   <div className="w-100 border p-2 mb-2">
-                     <textarea className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2" rows={1} placeholder="Text Heading">
+                     <textarea className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2"
+                        rows={1} placeholder="Text Heading"
+                        value={this.props.textItem.textHeading}
+                        onChange={(ev) => {
+                           const newItem = {
+                              category: "textItem",
+                              textItem: { ... this.props.textItem, textHeading: ev.target.value }
+                           };
+                           this.props.updateItem(this.props.index, newItem);
+                        }}
+                     >
                      </textarea>
-                     <textarea className="form-control border-0 rounded-0 mt-1 p-2" rows={1} placeholder="Long description, terms of trade or compelling sales text">
+                     <textarea className="form-control border-0 rounded-0 mt-1 p-2"
+                        rows={1} placeholder="Long description, terms of trade or compelling sales text"
+                        value={this.props.textItem.longDescription}
+                        onChange={(ev) => {
+                           const newItem = {
+                              category: "textItem",
+                              textItem: { ... this.props.textItem, longDescription: ev.target.value }
+                           };
+                           this.props.updateItem(this.props.index, newItem);
+                        }}
+                     >
                      </textarea>
 
                      {/* Images preview section */}
                      <div className="row m-1">
                         {(this.state.fileArray || []).map((url, index) => (
-                           <div className="p-1">
+                           <div className="p-1" key={index}>
                               <img src={url} className="mr-2 image-preview-size" alt="..." />
                               <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)}>
                                  <i className="fa fa-times-circle"></i>

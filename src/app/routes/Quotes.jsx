@@ -27,7 +27,7 @@ export default class Quotes extends Component {
          });
    }
    render() {
-      console.error("Quotes prpos --", this.props);
+      console.log("Quotes prpos --", this.props);
       return (
          <div className="content">
             <div className="block block-rounded">
@@ -105,7 +105,12 @@ export default class Quotes extends Component {
                                  {
                                     this.state.quotes.map((item, index) => {
                                        if (item.status === "draft") return (
-                                          <tr className="mod-green" key={index} onClick={() => this.props.history.push("/app/quote/5222670")}>
+                                          <tr className="mod-green" key={index} onClick={() => this.props.history.push({
+                                             pathname: `/app/quote/${item._id}`,
+                                             state: {
+                                                from: this.props.location.pathname
+                                             }
+                                          })}>
                                              <td>
                                                 <span className="float-right ml-2">{toFixedFloat(item.quoteTotal)}</span>
                                                 <div className="u-ellipsis">
@@ -114,7 +119,7 @@ export default class Quotes extends Component {
                                                 <span className="float-right">
                                                    <small className="text-gray">
                                                       <span className="dt-time">{item.createdAt}</span>
-                                                      <span className="badge badge-success ml-1">{item.status}</span>
+                                                      <span className="badge badge-primary px-3 py-1 ml-1 text-uppercase">{item.status}</span>
                                                    </small>
                                                 </span>
                                                 <div className="u-ellipsis">
@@ -149,45 +154,28 @@ export default class Quotes extends Component {
                                        else return (
                                           <tr className="mod-blue" key={index} onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
                                              <td>
-                                                <span className="float-right ml-2">300.00</span>
+                                                <span className="float-right ml-2">{toFixedFloat(item.quoteTotal)}</span>
                                                 <div className="u-ellipsis">
-                                                   <span>can you checkout the service price today?</span>
+                                                   <span>{item.title}</span>
                                                 </div>
                                                 <span className="float-right">
                                                    <small className="text-gray">
-                                                      <span className="dt-time">Sep 7</span>
-                                                      <span className="badge badge-primary ml-1">Accepted</span>
+                                                      <span className="dt-time">{item.createdAt}</span>
+                                                      <span className="badge badge-primary px-3 py-1 ml-1 text-uppercase">{item.status}</span>
                                                    </small>
                                                 </span>
                                                 <div className="u-ellipsis">
                                                    <small className="text-gray">
                                                       <span data-tg-control="{&quot;QuotesLastView&quot;:[1599451559]}">
-                                                         <span className="text-danger mr-1">Viewed 1 hour ago</span>
-                                                      </span>HK by A Devom #3</small>
+                                                         {/* <span className="text-danger mr-1">Viewed 1 hour ago</span> */}
+                                                         <span className="text-danger mr-1">Viewed {item.viewedAt}</span>
+                                                      </span>{item.contactNameTo} by {item.userFrom}</small>
                                                 </div>
                                              </td>
                                           </tr>
                                        );
                                     })
                                  }
-
-
-                                 <tr className="mod-white" onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
-                                    <td>
-                                       <span className="float-right ml-2">200.00</span>
-                                       <div className="u-ellipsis">
-                                          <span>Titile of Quote</span>
-                                       </div>
-                                       <span className="float-right">
-                                          <small className="text-gray">
-                                             <span className="dt-time">Sep 1</span></small>
-                                       </span>
-                                       <div className="u-ellipsis">
-                                          <small className="text-gray">
-                                             <span className="text-success mr-1">Unopened</span>Allover by A Devom #1</small>
-                                       </div>
-                                    </td>
-                                 </tr>
                               </tbody>
                            </table>
                            <TotalLabelFor list={this.state.quotes} />
