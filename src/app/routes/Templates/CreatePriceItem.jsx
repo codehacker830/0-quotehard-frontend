@@ -110,7 +110,7 @@ export default class CreatePriceItem extends Component {
       }
    }
    componentDidMount() {
-      if (this.props.match.params) {
+      if (this.props.location.pathname !== '/app/content/item-price/create-new' && this.props.match.params) {
          // Get priceItem details with priceItem ID
          axios.get(`/templates/priceitem-by-id/${this.props.match.params.id}`).then(({ data }) => {
             console.log(" res ^^^^^^^^^^^^^^^^^^^^^^^^^^^ =>", data);

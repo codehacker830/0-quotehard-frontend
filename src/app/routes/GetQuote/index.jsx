@@ -613,9 +613,7 @@ export default class GetQuote extends Component {
                      </button>
                      <button
                         className="btn btn-lg btn-rounded btn-hero-secondary"
-                        onClick={() =>
-                           this.props.history.push("/app/content/item-text/browse")
-                        }
+                        onClick={() => this.props.history.push("/app/quotes")}
                      >
                         Cancel
                      </button>

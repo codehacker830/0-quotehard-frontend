@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import InlineHelp from '../../../components/InlineHelp';
+import TotalLabelFor from '../../../components/TotalLabelFor';
 import axios from '../../../util/Api';
 
 export default class TextItems extends Component {
@@ -81,9 +82,7 @@ export default class TextItems extends Component {
                                  }
                               </tbody>
                            </table>
-                           <div className="px-2 py-4">
-                              <span>Total {this.state.textItems.length}</span>
-                           </div>
+                           <TotalLabelFor list={this.state.textItems} />
                         </React.Fragment>
                   }
                </div>

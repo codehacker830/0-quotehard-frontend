@@ -67,7 +67,7 @@ export default class CreateTextItem extends Component {
       }
    }
    componentDidMount() {
-      if (this.props.match.params) {
+      if (this.props.location.pathname !== '/app/content/item-text/create-new' && this.props.match.params) {
          // Get textItem details with textItem ID
          axios.get(`/templates/textitem-by-id/${this.props.match.params.id}`).then(({ data }) => {
             console.log(" res ^^^^^^^^^^^^^^^^^^^^^^^^^^^ =>", data);

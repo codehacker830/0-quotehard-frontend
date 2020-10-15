@@ -96,11 +96,11 @@ export default class Quotes extends Component {
             </div>
 
             <div className="block block-rounded">
-               <div className="block-content py-4">
+               <div className="block-content">
                   {
                      !!this.state.quotes.length ?
                         <>
-                           <table className="quotient-table mb-4">
+                           <table className="quotient-table">
                               <tbody className="rowClick" data-tg-click="root_rowClick">
                                  {
                                     this.state.quotes.map((item, index) => {
