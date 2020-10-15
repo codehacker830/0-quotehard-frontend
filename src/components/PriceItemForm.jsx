@@ -76,7 +76,7 @@ export default class PriceItemForm extends Component {
                         <input type="checkbox"
                            className="form-check-input"
                            name="option-checkbox"
-                           value={this.state.isOptionSelected}
+                           checked={this.state.isOptionSelected}
                            onClick={() => this.setState({ isOptionSelected: !this.state.isOptionSelected })}
                         />
                         <label className="form-check-label">
@@ -127,7 +127,7 @@ export default class PriceItemForm extends Component {
                               <input className="form-check-input"
                                  type="checkbox"
                                  ref={this.optionalItemRef}
-                                 value={this.props.priceItem.isOptional}
+                                 checked={this.props.priceItem.isOptional}
                                  onClick={() => {
                                     if (this.props.priceItem.isMultipleChoice === true && this.props.priceItem.isOptional === false) this.multipleChoiceRef.current.click();
                                     const newItem = {
@@ -147,7 +147,7 @@ export default class PriceItemForm extends Component {
                               <input className="form-check-input"
                                  type="checkbox"
                                  ref={this.multipleChoiceRef}
-                                 value={this.props.priceItem.isMultipleChoice}
+                                 checked={this.props.priceItem.isMultipleChoice}
                                  onClick={() => {
                                     if (this.props.priceItem.isOptional === true && this.props.priceItem.isMultipleChoice === false) this.optionalItemRef.current.click();
                                     const newItem = {
@@ -167,7 +167,7 @@ export default class PriceItemForm extends Component {
                            <div className="form-check pb-1">
                               <input className="form-check-input"
                                  type="checkbox"
-                                 value={this.props.priceItem.isEditableQuantity}
+                                 checked={this.props.priceItem.isEditableQuantity}
                                  onClick={() => {
                                     const newItem = {
                                        category: "priceItem",
@@ -181,7 +181,7 @@ export default class PriceItemForm extends Component {
                            <div className="form-check pb-1">
                               <input className="form-check-input"
                                  type="checkbox"
-                                 value={this.props.priceItem.isDiscount}
+                                 checked={this.props.priceItem.isDiscount}
                                  onChange={() => {
                                     const newItem = {
                                        category: "priceItem",
@@ -195,7 +195,7 @@ export default class PriceItemForm extends Component {
                            <div className="form-check pb-1">
                               <input className="form-check-input"
                                  type="checkbox"
-                                 value={this.props.priceItem.isSubscription}
+                                 checked={this.props.priceItem.isSubscription}
                                  onChange={() => {
                                     const newItem = {
                                        category: "priceItem",
@@ -209,7 +209,7 @@ export default class PriceItemForm extends Component {
                            <div className="form-check pb-1">
                               <input className="form-check-input"
                                  type="checkbox"
-                                 value={this.props.priceItem.isCostPriceMargin}
+                                 checked={this.props.priceItem.isCostPriceMargin}
                                  onChange={() => {
                                     const newItem = {
                                        category: "priceItem",

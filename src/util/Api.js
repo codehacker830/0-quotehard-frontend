@@ -13,5 +13,7 @@ let axios = Axios.create({
 const token = JSON.parse(localStorage.getItem('token'));
 console.error("__ token __", token);
 
-axios.defaults.headers.common['Authorization'] = "Bearer " + token;
+if (token) axios.defaults.headers.common['Authorization'] = "Bearer " + token;
+else axios.defaults.headers.common['Authorization'] = null;
+
 export default axios;

@@ -26,12 +26,12 @@ export const StatusBanner = (props) => {
                   <div className="font-size-h2 font-w600 text-success text-center">1</div>
                </div>
                <div className="px-4 ml-auto my-auto">
-                  <Link to={{
-                     pathname: "/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g",
+                  {/* <Link to={{
+                     pathname: `/q/NDgVC1jaJlnZI1NAHgj5QdCvg4ZgP7qLNaYinjzg8rM`,
                      state: {
                         mode: "preview"
                      }
-                  }}>Preview as Your Customer</Link>
+                  }}>Preview as Your Customer</Link> */}
                </div>
             </div>
 

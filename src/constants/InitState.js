@@ -29,6 +29,7 @@ export const initPriceItem = {
    isOptional: false,
    isOptionSelected: false,
    isMultipleChoice: false,
+   isChoiceSelected: false,
    isEditableQuantity: false,
 
    isDiscount: false,
