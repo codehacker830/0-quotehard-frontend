@@ -22,7 +22,8 @@ class PublicQuoteView extends Component {
          quote: {},
          commentShow: false,
          privateNoteShow: false,
-         questionSectionShow: false
+         questionSectionShow: false,
+         isAgreeChecked: false
       };
       this.hiddenFileInput = React.createRef();
    }
@@ -49,7 +50,7 @@ class PublicQuoteView extends Component {
          .then(({ data }) => {
             console.log("========== res =========", data);
             toastr.success('Accepted', 'Quote was accepted,', toastrSuccessConfig);
-            this.props.history.push(`/q/${this.props.match.params}/accepted`);
+            this.props.history.push(`/q/${entoken}/accepted`);
          })
          .catch(err => {
             console.error(" ========== checking public draft error =========", err);
@@ -70,11 +71,11 @@ class PublicQuoteView extends Component {
    }
    componentDidMount() {
       this.mounted = true;
-      const { entoken } = this.props.match.params;
+      const entoken = this.props.match.params.entoken;
       console.log("***** entoken ***** ", entoken);
       if (this.mounted) {
          this.setState({ isLoading: true });
-         axios.post('/quotes/view-draft', { entoken: entoken })
+         axios.post('/quotes/view-draft', { entoken })
             .then(({ data }) => {
                console.log("========== res =========", data);
                this.setState({ isLoading: false, quote: data.quote })
@@ -566,18 +567,34 @@ class PublicQuoteView extends Component {
                                        <div className="bg-acceptBox px-4 py-5">
                                           <div className="form-group">
                                              <label htmlFor="additionalComments">Additional comments</label>
+                                             <div className={`float-right ${this.state.quote.status === "accepted" ? "" : "d-none"}`}>
+                                                <span className="badge badge-primary px-3 py-1 ml-1 text-uppercase">Accepted</span>
+                                             </div>
                                              <textarea className="form-control" id="additionalComments" name="additionalComments" rows={4} placeholder="Optional.." defaultValue={""} />
+
                                           </div>
                                           <div className="form-group">
                                              <label htmlFor="referenceNum">Your order/reference number</label>
                                              <textarea className="form-control" id="referenceNum" name="referenceNum" rows={1} placeholder="Optional.." defaultValue={""} />
                                           </div>
-                                          <div className="form-check">
-                                             <input className="form-check-input" type="checkbox" defaultValue id="agreeCheck" name="agreeCheck" />
+                                          <div className={`form-check ${this.state.quote.status === "accepted" ? "d-none" : ""}`}>
+                                             <input className="form-check-input" type="checkbox"
+                                                checked={this.state.isAgreeChecked}
+                                                id="agreeCheck" name="agreeCheck"
+                                                onChange={() => this.setState({ isAgreeChecked: !this.state.isAgreeChecked })}
+                                             />
                                              <label className="form-check-label" htmlFor="agreeCheck">Yes, I agree to and accept this quote</label>
                                           </div>
+                                          <div className={`form-check ${this.state.quote.status === "accepted" ? "" : "d-none"}`}>
+                                             <input className="form-check-input" type="checkbox"
+                                                defaultChecked
+                                                id="agreeCheckAccepted" name="agreeCheckAccepted"
+                                                disabled
+                                             />
+                                             <label className="form-check-label" htmlFor="agreeCheckAccepted">Yes, I agree to and accept this quote</label>
+                                          </div>
                                           <div className={`mt-4 ${this.state.quote.status === "awaiting" ? "" : "d-none"}`}>
-                                             <button type="button" className="btn btn-square btn-hero-primary mr-2" onClick={this.onClickAccept}>Accept Quote</button>
+                                             <button type="button" className="btn btn-square btn-hero-primary mr-2" disabled={!this.state.isAgreeChecked} onClick={this.onClickAccept}>Accept Quote</button>
                                              <button type="button" className="btn btn-square btn-hero-secondary" onClick={this.onClickDecline}>Decline</button>
                                           </div>
                                        </div>
