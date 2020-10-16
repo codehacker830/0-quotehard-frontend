@@ -60,7 +60,7 @@ const quoteDataApiRes = {
       validUntil: new Date(Date.now() + 1000 * 3600 * 24 * 50),
       sentAt: new Date(),
       userFrom: {
-         _id: "5f7b39e8f1f85766fc60d8d3",
+         _id: "5f85447fed77730be4610ef4",
          firstName: "A",
          lastName: "Devom",
          email: "honestypasion0615@gmail.com",
@@ -159,13 +159,58 @@ export default class GetQuote extends Component {
       const { toPeopleList, title, settings, items, notes } = this.state;
       if (toPeopleList.length === 0) { toastr.info("Required", "You must add at least one contact.", toastrInfoConfig); return; }
       if (title === "") { toastr.info("Required", "You are missing a Quote Title.", toastrInfoConfig); return; }
-
-
-      toastr.success(
-         "The is success",
-         "success message here",
-         toastrSuccessConfig
-      );
+      const toPeopleIdList = [];
+      for (let i = 0; i < toPeopleList.length; i++) {
+         toPeopleIdList.push(toPeopleList[i]._id);
+      }
+      console.log("people id listtttttttttttttttt ", toPeopleIdList);
+      const data = {
+         status: "draft",
+         toPeopleList: toPeopleIdList,
+         title,
+         settings,
+         items,
+         notes
+      };
+      if (this.props.location.pathname === '/app/quote/get') {
+         axios.post('/quotes', data)
+            .then(({ data }) => {
+               console.log("res data =>", data);
+               toastr.success(
+                  "Success",
+                  "New Quote draft was created.",
+                  toastrSuccessConfig
+               );
+               this.props.history.push(`/q/${data.entoken}`);
+            })
+            .catch(err => {
+               console.error(" error ===>", err);
+               toastr.error("Error", "Quote failed to create", toastrErrorConfig);
+            });
+      } else if (this.props.match.path = "/app/quote/:id") {
+         const quoteId = this.props.match.params.id;
+         axios.put(`/quotes/${quoteId}`, data)
+            .then(({ data }) => {
+               console.log("uuuuuuuuuuuuuuuuu =>", data);
+               toastr.success(
+                  "Success",
+                  "Quote draft was defined.",
+                  toastrSuccessConfig
+               );
+               this.props.history.push(`/q/${data.entoken}`);
+            })
+            .catch(err => {
+               console.error(" error ===>", err);
+               toastr.error("Error", "Quote failed to update", toastrErrorConfig);
+            });
+      }
+      else {
+         toastr.warning(
+            "Warning",
+            "Something went wrong before request.",
+            toastrWarningConfig
+         );
+      }
    };
    handleClickSave = () => {
       const { toPeopleList, title, settings, items, notes } = this.state;

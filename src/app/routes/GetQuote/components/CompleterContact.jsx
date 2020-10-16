@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { withRouter } from 'react-router-dom';
 import { peopleContacts } from '../../../../constants/Dump';
 import axios from '../../../../util/Api';
 
@@ -20,7 +21,7 @@ export const CompleterContact = (props) => {
    if (props.emailTo === "") return null;
    else return (
       <ul className="completer-ui completer-new-contact" style={{ left: 0, top: 38 }}>
-         <li className="text-info"><i className="fa fa-plus" /> Create New Contact…</li>
+         <li className="text-info" onClick={() => props.history.push("/app/c/contacts/create/person")}><i className="fa fa-plus" /> Create New Contact…</li>
          {
             list.map((contact, index) => {
                return (
@@ -37,4 +38,4 @@ export const CompleterContact = (props) => {
    )
 }
 
-export default CompleterContact
+export default withRouter(CompleterContact)

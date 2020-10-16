@@ -2,12 +2,12 @@ export const initQuoteSettings = {
    validUntil: new Date(Date.now() + 1000 * 3600 * 24 * 365),
    sentAt: new Date(),
    userFrom: {
-      _id: "5f7b39e8f1f85766fc60d8d3",
-      firstName: "A",
-      lastName: "Devom",
-      email: "honestypasion0615@gmail.com",
-      companyName: "AllOver",
-      location: "232",
+      _id: "",
+      firstName: "",
+      lastName: "",
+      email: "@gmail.com",
+      companyName: "",
+      location: "",
    },
 
    discount: 50,

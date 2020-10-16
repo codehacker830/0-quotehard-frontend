@@ -48,6 +48,7 @@ class PublicQuoteView extends Component {
          .then(({ data }) => {
             console.log("========== res =========", data);
             toastr.success('Accepted', 'Quote was accepted,', toastrSuccessConfig);
+            this.props.history.push(`/q/${this.props.match.params}/accepted`);
          })
          .catch(err => {
             console.error(" ========== checking public draft error =========", err);

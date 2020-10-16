@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-export default class QuoteSettings extends Component {
+class QuoteSettings extends Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -71,10 +72,9 @@ export default class QuoteSettings extends Component {
                   <div className="pb-2">
                      <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">FROM</label>
                      <select className="custom-select rounded-0"
-                        value={this.props.userFrom._id}
+                        value={this.props.auth.authUser._id}
                         onChange={(ev) => this.props.updateSettings({ ...settings, userFrom: { ...this.props.userFrom, _id: ev.target.value } })}>
-                        <option value={`5f7b39e8f1f85766fc60d8d4`}>A Devom</option>
-                        <option value={`5f7b39e8f1f85766fc60d8d3`}>John Doe</option>
+                        <option value={this.props.auth.authUser._id}>{this.props.auth.authUser.firstName + " " + this.props.auth.authUser.lastName}</option>
                      </select>
                   </div>
                   <div className="pb-2">
@@ -372,3 +372,8 @@ export default class QuoteSettings extends Component {
       );
    }
 }
+
+const mapStateToProps = ({ auth }) => {
+   return { auth };
+}
+export default connect(mapStateToProps)(QuoteSettings);
