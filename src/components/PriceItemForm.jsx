@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import { toFixedFloat } from '../util';
 
 export default class PriceItemForm extends Component {
    fileObj = [];
@@ -334,9 +335,10 @@ export default class PriceItemForm extends Component {
                      </div>
                      <div className="col-6">
                         <select className="custom-select rounded-0" value={this.props.priceItem.tax} onChange={(ev) => {
+                           const tax = ev.target.value === "" ? 0 : ev.target.value;
                            const newItem = {
                               category: "priceItem",
-                              priceItem: { ... this.props.priceItem, tax: ev.target.value }
+                              priceItem: { ... this.props.priceItem, tax }
                            };
                            this.props.updateItem(this.props.index, newItem);
                         }}>
@@ -356,7 +358,7 @@ export default class PriceItemForm extends Component {
                                     className="form-control rounded-0"
                                     value={this.props.priceItem.discount}
                                     onChange={(ev) => {
-                                       const discount = ev.target.value;
+                                       const discount = ev.target.value === "" ? 0 : ev.target.value;
                                        const newItem = {
                                           category: "priceItem",
                                           priceItem: {
@@ -385,9 +387,10 @@ export default class PriceItemForm extends Component {
                                  className="form-control rounded-0 mr-1"
                                  value={this.props.priceItem.per}
                                  onChange={(ev) => {
+                                    const per = ev.target.value === "" ? 1 : ev.target.value;
                                     const newItem = {
                                        category: "priceItem",
-                                       priceItem: { ... this.props.priceItem, per: ev.target.value }
+                                       priceItem: { ... this.props.priceItem, per }
                                     };
                                     this.props.updateItem(this.props.index, newItem);
                                  }}
@@ -431,7 +434,7 @@ export default class PriceItemForm extends Component {
                                     placeholder="-- Cost Price --"
                                     value={this.props.priceItem.costPrice}
                                     onChange={(ev) => {
-                                       const costPrice = ev.target.value;
+                                       const costPrice = ev.target.value === "" ? 0 : ev.target.value;
                                        const newItem = {
                                           category: "priceItem",
                                           priceItem: {
@@ -444,7 +447,7 @@ export default class PriceItemForm extends Component {
                                     }}
                                  />
                               </div>
-                              <span className="text-success mx-2 my-auto">{this.props.priceItem.margin}% MARGIN</span>
+                              <span className="text-success mx-2 my-auto">{toFixedFloat(this.props.priceItem.margin)}% MARGIN</span>
                            </div>
                         </div>
                      </div>
@@ -457,7 +460,7 @@ export default class PriceItemForm extends Component {
                            id="unit" className="form-control rounded-0"
                            value={this.props.priceItem.unitPrice}
                            onChange={(ev) => {
-                              const unitPrice = ev.target.value;
+                              const unitPrice = ev.target.value === "" ? 0 : ev.target.value;
                               const newItem = {
                                  category: "priceItem",
                                  priceItem: {
@@ -476,7 +479,7 @@ export default class PriceItemForm extends Component {
                         <input type="number" id="quantity" className={`form-control rounded-0 ${this.state.isEditableQuantity ? "border-primary" : ""}`}
                            value={this.props.priceItem.quantity}
                            onChange={(ev) => {
-                              const quantity = ev.target.value;
+                              const quantity = ev.target.value === "" ? 0 : ev.target.value;
                               const newItem = {
                                  category: "priceItem",
                                  priceItem: {
@@ -497,7 +500,7 @@ export default class PriceItemForm extends Component {
                         <input type="number" id="total" className="form-control rounded-0"
                            value={this.props.priceItem.itemTotal}
                            onChange={(ev) => {
-                              const itemTotal = ev.target.value;
+                              const itemTotal = ev.target.value === "" ? 0 : ev.target.value;
                               const newItem = {
                                  category: "priceItem",
                                  priceItem: {

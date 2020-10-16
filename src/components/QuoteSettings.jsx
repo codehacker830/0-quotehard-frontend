@@ -79,11 +79,14 @@ export default class QuoteSettings extends Component {
                   </div>
                   <div className="pb-2">
                      <label htmlFor="quote_discount_overall" className="text-gray fa-xs text-uppercase">DISCOUNT %</label>
-                     <input type="text"
+                     <input type="number"
                         id="quote_discount_overall"
                         className="form-control rounded-0 maxWidth-180"
                         value={this.props.discount}
-                        onChange={(ev) => this.props.updateSettings({ ...settings, discount: ev.target.value })}
+                        onChange={(ev) => {
+                           const discount = ev.target.value === "" ? 0 : ev.target.value;
+                           this.props.updateSettings({ ...settings, discount })
+                        }}
                      />
                   </div>
                   <div className="pb-2">

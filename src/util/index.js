@@ -74,3 +74,8 @@ export const countDecimals = (num) => {
    if (Math.floor(num.valueOf()) === num.valueOf()) return 0;
    return num.toString().split(".")[1];
 }
+
+export const caculateTotalTax = (pItemArr) => {
+   let totalTax = 0;
+   return totalTax;
+}

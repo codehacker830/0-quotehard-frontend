@@ -28,6 +28,7 @@ import {
    initSubTotal,
 } from "../../../constants/InitState";
 import AddItemBtn from "../../../components/AddItemBtn";
+import QuoteItemTotal from "../../../components/QuoteItemTotal";
 
 const quoteDataApiRes = {
    createdBy: "thisisuseridwhocreatetshi",
@@ -118,14 +119,10 @@ const quoteDataApiRes = {
 };
 
 export default class GetQuote extends Component {
-   constructor(orops) {
-      super();
+   constructor(props) {
+      super(props);
       this.state = {
          fileArray: [],
-         isEditableQuantity: false,
-         isDiscount: false,
-         isSubscription: false,
-         isCostPriceMargin: false,
          emailTo: "",
 
          validDate: parseDate(initQuoteSettings.validUntil),
@@ -229,7 +226,7 @@ export default class GetQuote extends Component {
       if (this.props.match.params) {
          // Get quote details with quote ID
          axios.get(`/quotes/search-by-id/${this.props.match.params.id}`).then(({ data }) => {
-            console.log(" resssssssssssssssss sss  =>", data);
+            console.log(" ressssssssssssssssssss  =>", data);
             const { quote } = data;
             this.setState({
                title: quote.title,
@@ -497,81 +494,7 @@ export default class GetQuote extends Component {
                      this.setState({ items: [...this.state.items, newItem] })
                   }} />
 
-                  {/* subtotal 1 */}
-                  <table className="quoteTotal hasTerm table table-borderless">
-                     <tbody>
-                        <tr className="options">
-                           <td className="total-desc">
-                              <p className="quote-text-sm">Options selected</p>
-                              <p className="quote-text-sm">
-                                 Optional extras are excluded from this calculation
-                              </p>
-                           </td>
-                           <td className="total-price">
-                              <p className="quote-text-sm">1 of 1</p>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td className="total-desc">Subtotal</td>
-                           <td className="total-price">100.00</td>
-                        </tr>
-                        <tr className="total">
-                           <td className="total-desc">
-                              <span className="quoteTotal-gDesc">
-                                 Total including tax
-                           </span>
-                           </td>
-                           <td className="total-price">
-                              <span className="quoteTotal-gTotal">$100.00</span>
-                              <div className="quote-text-sm">per week</div>
-                              <div className="quote-text-sm">(for 4 weeks)</div>
-                           </td>
-                        </tr>
-                     </tbody>
-                  </table>
-
-                  {/* subtotal 2 */}
-                  <table className="quoteTotal hasNoTerm table table-borderless">
-                     <tbody>
-                        <tr className="options">
-                           <td className="total-desc">
-                              <p className="quote-text-sm">
-                                 <span>Options selected</span>
-                              </p>
-                              <p className="quote-text-sm">
-                                 Optional extras are excluded from this calculation
-                              </p>
-                           </td>
-                           <td className="total-price">
-                              <p className="quote-text-sm">2 of 4</p>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td className="total-desc">Subtotal</td>
-                           <td className="total-price">900.00</td>
-                        </tr>
-                        <tr className="tProfit">
-                           <td className="total-desc">Total margin 20%</td>
-                           <td className="total-price">100.00</td>
-                        </tr>
-                        <tr>
-                           <td className="total-desc">Tax 10%</td>
-                           <td className="total-price">80.00</td>
-                        </tr>
-                        <tr className="total">
-                           <td className="total-desc">
-                              <span className="quoteTotal-gDesc">
-                                 Total including tax
-                    </span>
-                           </td>
-                           <td className="total-price">
-                              <span className="quoteTotal-gTotal">$980.00</span>
-                              <p className="quote-text-sm">per week</p>
-                              <p className="quote-text-sm">(for 4 weeks)</p>
-                           </td>
-                        </tr>
-                     </tbody>
-                  </table>
+                  <QuoteItemTotal settings={this.state.settings} items={this.state.items} />
 
                   {
                      this.state.notes.map((item, index) => {
