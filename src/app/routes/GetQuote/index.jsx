@@ -305,18 +305,6 @@ class GetQuote extends Component {
             toastr.error("Error", "Quote was not found", toastrErrorConfig);
          });
       }
-      //  const { toPeopleList, title, settings, items, notes } = quoteDataApiRes;
-      //  this.setState({
-      //    toPeopleList,
-      //    title,
-      //    settings,
-      //    items,
-      //    notes,
-      //    validDate: parseDate(settings.validUntil),
-      //    validTime: parseTime(settings.validUntil),
-      //    sentDate: parseDate(settings.sentAt),
-      //    sentTime: parseTime(settings.sentAt),
-      //  });
    }
    removeImageItem = (url) => {
       const newFileArray = this.state.fileArray.filter(item => item !== url);

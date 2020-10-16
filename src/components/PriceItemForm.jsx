@@ -129,7 +129,7 @@ export default class PriceItemForm extends Component {
                                  type="checkbox"
                                  ref={this.optionalItemRef}
                                  checked={this.props.priceItem.isOptional}
-                                 onClick={() => {
+                                 onChange={() => {
                                     if (this.props.priceItem.isMultipleChoice === true && this.props.priceItem.isOptional === false) this.multipleChoiceRef.current.click();
                                     const newItem = {
                                        category: "priceItem",
@@ -149,7 +149,7 @@ export default class PriceItemForm extends Component {
                                  type="checkbox"
                                  ref={this.multipleChoiceRef}
                                  checked={this.props.priceItem.isMultipleChoice}
-                                 onClick={() => {
+                                 onChange={() => {
                                     if (this.props.priceItem.isOptional === true && this.props.priceItem.isMultipleChoice === false) this.optionalItemRef.current.click();
                                     const newItem = {
                                        category: "priceItem",
@@ -169,7 +169,7 @@ export default class PriceItemForm extends Component {
                               <input className="form-check-input"
                                  type="checkbox"
                                  checked={this.props.priceItem.isEditableQuantity}
-                                 onClick={() => {
+                                 onChange={() => {
                                     const newItem = {
                                        category: "priceItem",
                                        priceItem: { ... this.props.priceItem, isEditableQuantity: !this.props.priceItem.isEditableQuantity }
