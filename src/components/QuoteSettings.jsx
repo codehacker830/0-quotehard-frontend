@@ -72,7 +72,7 @@ class QuoteSettings extends Component {
                   <div className="pb-2">
                      <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">FROM</label>
                      <select className="custom-select rounded-0"
-                        value={this.props.auth.authUser._id}
+                        value={this.props.userFrom._id}
                         onChange={(ev) => this.props.updateSettings({ ...settings, userFrom: { ...this.props.userFrom, _id: ev.target.value } })}>
                         <option value={this.props.auth.authUser._id}>{this.props.auth.authUser.firstName + " " + this.props.auth.authUser.lastName}</option>
                      </select>

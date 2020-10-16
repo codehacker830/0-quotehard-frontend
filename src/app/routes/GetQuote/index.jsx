@@ -29,6 +29,7 @@ import {
 } from "../../../constants/InitState";
 import AddItemBtn from "../../../components/AddItemBtn";
 import QuoteItemTotal from "../../../components/QuoteItemTotal";
+import { connect } from "react-redux";
 
 const quoteDataApiRes = {
    createdBy: "thisisuseridwhocreatetshi",
@@ -118,21 +119,40 @@ const quoteDataApiRes = {
    ],
 };
 
-export default class GetQuote extends Component {
+class GetQuote extends Component {
+   initSettings = {
+      validUntil: new Date(Date.now() + 1000 * 3600 * 24 * 365),
+      sentAt: new Date(),
+      userFrom: {
+         _id: this.props.authUser._id,
+         firstName: this.props.authUser.firstName,
+         lastName: this.props.authUser.lastName,
+         email: this.props.authUser.email,
+         companyName: this.props.authUser.companyName,
+         location: this.props.authUser.location,
+      },
+
+      discount: 0,
+      currency: "156",
+      taxMode: "no_tax",
+      priceDisplayLevel: "itemQuantityAndTotal",
+      displayItemCode: true,
+   };
+
    constructor(props) {
       super(props);
       this.state = {
          fileArray: [],
          emailTo: "",
 
-         validDate: parseDate(initQuoteSettings.validUntil),
-         validTime: parseTime(initQuoteSettings.validUntil),
-         sentDate: parseDate(initQuoteSettings.sentAt),
-         sentTime: parseTime(initQuoteSettings.sentAt),
+         validDate: parseDate(this.initSettings.validUntil),
+         validTime: parseTime(this.initSettings.validUntil),
+         sentDate: parseDate(this.initSettings.sentAt),
+         sentTime: parseTime(this.initSettings.sentAt),
 
          toPeopleList: [],
          title: "",
-         settings: initQuoteSettings,
+         settings: this.initSettings,
          items: [
             {
                category: "priceItem",
@@ -401,6 +421,7 @@ export default class GetQuote extends Component {
       else this.setState({ notes: [initTextItem] })
    }
    render() {
+      console.log(" GetQute initSettings ===> ", this.initSettings);
       console.log(" GetQute state => ", this.state);
       console.log(" GetQute props => ", this.props);
       const { location } = this.props;
@@ -592,3 +613,8 @@ export default class GetQuote extends Component {
       );
    }
 }
+const mapStateToProps = ({ auth }) => {
+   const { authUser } = auth;
+   return { authUser }
+}
+export default connect(mapStateToProps)(GetQuote)
