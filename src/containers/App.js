@@ -61,6 +61,7 @@ class App extends Component {
                <Switch>
                   <RestrictedRoute path='/app' token={token} component={asyncComponent(() => import("../app"))} />
                   {/* <Route path='/app' component={asyncComponent(() => import("../app"))} /> */}
+                  
                   <Route exact path='/q/:entoken' component={asyncComponent(() => import("./PublicQuoteView"))} />
                   <Route exact path='/q/:entoken/accepted' component={asyncComponent(() => import("./ThankyouPage"))} />
                   <Route path='/sign-in' component={SignIn} />

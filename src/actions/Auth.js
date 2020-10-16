@@ -28,10 +28,13 @@ export const getUser = () => {
             dispatch({ type: USER_DATA, payload: data.account });
          } else {
             dispatch({ type: FETCH_ERROR, payload: data.error });
+            dispatch({ type: SIGNOUT_USER_SUCCESS });
          }
       }).catch(function (error) {
          dispatch({ type: FETCH_ERROR, payload: error.message });
+         
          console.log("Error****:", error.message);
+         dispatch({ type: SIGNOUT_USER_SUCCESS });
       });
    }
 };

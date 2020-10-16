@@ -8,6 +8,7 @@ import { toFixedFloat } from '../util';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
 import { toastrErrorConfig, toastrSuccessConfig } from '../util/toastrConfig';
+import QuoteItemTotal from '../components/QuoteItemTotal';
 
 class PublicQuoteView extends Component {
    mounted = false;
@@ -84,6 +85,7 @@ class PublicQuoteView extends Component {
       }
    }
    render() {
+      console.log(" ----------- PublicQuoteView state ------", this.state);
       console.log(" ----------- PublicQuoteView props ------", this.props);
       if (this.state.isLoading) return null;
       else return (
@@ -317,9 +319,10 @@ class PublicQuoteView extends Component {
                                  </div>
                               </div> */}
                               {/* Quote total */}
-                              <div className="quoteViewTotalWrap">
-                                 {/* Has Subscription QuoteTotal */}
-                                 <table className={`quoteTotal hasTerm table table-borderless`}>
+                              <div className="quoteViewTotalWrap pt-3">
+                                 <QuoteItemTotal settings={this.state.quote.settings} items={this.state.quote.items} />
+
+                                 {/* <table className={`quoteTotal hasTerm table table-borderless`}>
                                     <tbody>
                                        <tr className="options">
                                           <td className="total-desc">
@@ -343,10 +346,10 @@ class PublicQuoteView extends Component {
                                           </td>
                                        </tr>
                                     </tbody>
-                                 </table>
+                                 </table> */}
 
                                  {/* Has No Subscription QuoteTotal */}
-                                 <table className="quoteTotal hasNoTerm table table-borderless">
+                                 {/* <table className="quoteTotal hasNoTerm table table-borderless">
                                     <tbody>
                                        <tr className="options">
                                           <td className="total-desc">
@@ -377,7 +380,7 @@ class PublicQuoteView extends Component {
                                           </td>
                                        </tr>
                                     </tbody>
-                                 </table>
+                                 </table> */}
                                  {/* ******************************* */}
 
 

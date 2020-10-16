@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { caculateTotalTax, toFixedFloat } from '../util';
+import { toFixedFloat } from '../util';
 
 export default class QuoteItemTotal extends Component {
    render() {

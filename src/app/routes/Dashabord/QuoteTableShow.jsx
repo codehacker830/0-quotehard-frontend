@@ -6,7 +6,7 @@ import { toFixedFloat } from '../../../util';
 
 class QuoteTableShow extends Component {
    render() {
-      this.props.quotes
+      console.log(" =============== this.props.quotes   ///", this.props.quotes);
       const draftQuotes = this.props.quotes.filter((it) => it.status === "draft");
       const awaitingQuotes = this.props.quotes.filter((it) => it.status === "awaiting");
       const acceptedQuotes = this.props.quotes.filter((it) => it.status === "accepted");
@@ -56,7 +56,7 @@ class QuoteTableShow extends Component {
                               <table className="quotient-table mb-4">
                                  <tbody className="rowClick" data-tg-click="root_rowClick">
                                     {awaitingQuotes.map((item, index) => (
-                                       <tr className="mod-white" key={index} onClick={() => this.props.history.push(`/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g`)}>
+                                       <tr className="mod-white" key={index} onClick={() => this.props.history.push(`/q/${item.entoken}`)}>
                                           <td>
                                              <span className="float-right ml-2">{toFixedFloat(item.quoteTotal)}</span>
                                              <div className="u-ellipsis">
@@ -95,7 +95,7 @@ class QuoteTableShow extends Component {
                                     {
                                        acceptedQuotes.map((item, index) => {
                                           return (
-                                             <tr className="mod-blue" key={index} onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
+                                             <tr className="mod-blue" key={index} onClick={() => this.props.history.push(`/q/${item.entoken}`)}>
                                                 <td>
                                                    <span className="float-right ml-2">{toFixedFloat(item.quoteTotal)}</span>
                                                    <button className="btn btn-sm btn-alt-dark float-left m-1 mr-2" onClick={() => this.onClickArchive()}>Archive</button>

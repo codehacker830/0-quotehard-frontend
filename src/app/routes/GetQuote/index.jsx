@@ -268,9 +268,9 @@ export default class GetQuote extends Component {
 
    };
    componentDidMount() {
-      if (this.props.match.params) {
+      if (this.props.match.params && this.props.match.params.id) {
          // Get quote details with quote ID
-         axios.get(`/quotes/search-by-id/${this.props.match.params.id}`).then(({ data }) => {
+         axios.get(`/quotes/get-by-id/${this.props.match.params.id}`).then(({ data }) => {
             console.log(" ressssssssssssssssssss  =>", data);
             const { quote } = data;
             this.setState({
