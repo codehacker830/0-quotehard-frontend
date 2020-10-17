@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { toastr } from "react-redux-toastr";
 import { Link } from "react-router-dom";
 import { userSignIn } from "../actions/Auth";
+import { toastrErrorConfig, toastrWarningConfig } from "../util/toastrConfig";
 
 class SignIn extends Component {
    state = {
@@ -9,12 +11,21 @@ class SignIn extends Component {
       email: "",
       password: ""
    };
-   componentWillReceiveProps(nextProps) {
-      console.error(" ___ next props in SignIn page ___ ", nextProps);
-      if (nextProps.authUser) {
-         this.props.history.push('/app');
+   onClickSignIn = (ev) => {
+      const { email, password } = this.state;
+      if (email === "" || password === "") {
+         toastr.warning("Required", "Email and password fields are required.", toastrWarningConfig);
       }
-   }
+      else this.props.userSignIn({ email, password });
+   };
+
+   componentWillReceiveProps(nextProps) {
+      if (nextProps.auth.authUser) {
+         this.props.history.push('/app');
+      } else if (nextProps.commonData.error !== "") {
+         toastr.error("Incorrect", nextProps.commonData.error, toastrErrorConfig);
+      }
+   };
    render() {
       const { checked, email, password } = this.state;
       const { history } = this.props;
@@ -64,10 +75,7 @@ class SignIn extends Component {
                                  <input type="checkbox" className="custom-control-input" id="remember-me-checkbox" name="remember-me-checkbox" checked={checked} onChange={() => this.setState({ checked: !checked })} />
                                  <label className="custom-control-label" htmlFor="remember-me-checkbox">Remember me</label>
                               </div>
-                              <button className="btn btn-block btn-hero-lg btn-hero-primary" onClick={(ev) => {
-                                 ev.preventDefault();
-                                 this.props.userSignIn({ email: this.state.email, password: this.state.password });
-                              }}>
+                              <button className="btn btn-block btn-hero-lg btn-hero-primary" onClick={this.onClickSignIn}>
                                  <i className="fa fa-fw fa-sign-in-alt mr-1" /> Sign In
                               </button>
                               <p className="mt-3 mb-0 d-lg-flex justify-content-lg-between">
@@ -98,8 +106,7 @@ class SignIn extends Component {
 }
 
 const mapStateToProps = ({ auth, commonData }) => {
-   const { authUser } = auth;
-   return { authUser };
+   return { auth, commonData };
 }
 const mapDispatchToProps = { userSignIn };
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

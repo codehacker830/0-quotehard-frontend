@@ -32,7 +32,7 @@ export const getUser = () => {
          }
       }).catch(function (error) {
          dispatch({ type: FETCH_ERROR, payload: error.message });
-         
+
          console.log("Error****:", error.message);
          dispatch({ type: SIGNOUT_USER_SUCCESS });
       });
@@ -56,10 +56,13 @@ export const userSignIn = ({ email, password }) => {
             dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
             dispatch({ type: USER_DATA, payload: data.account });
          } else {
+            console.log(" User Sign In error ========> ", data);
             dispatch({ type: FETCH_ERROR, payload: data.error });
          }
       }).catch(function (error) {
-         dispatch({ type: FETCH_ERROR, payload: error.message });
+         console.log(" User Sign In error status ========> ", error.response.status);
+         if(error.response.status === 422) dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
+         else dispatch({ type: FETCH_ERROR, payload: "Invalid credentials." });
          console.log("Error****:", error.message);
       });
    }
