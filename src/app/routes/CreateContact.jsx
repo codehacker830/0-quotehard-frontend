@@ -87,12 +87,15 @@ export default class CreateContact extends Component {
          addresses
       }
       console.log("request payload ===>", data);
-      axios.post("/contacts", data).then((res) => {
+      axios.post("/contacts", data).then(({data}) => {
          toastr.success("Succeeed", `Contact was created successfully.`, toastrSuccessConfig);
-         console.log("create contact api resopnse ==>", res);
+         console.log("create contact api resopnse ==>", data);
+         this.props.history.push(`/app/c/contacts/view/${data.contact._id}`);
       }).catch(err => {
          toastr.error("Error", "Break down during request.", toastrErrorConfig);
          console.error("create contact api error ==>", err);
+         toastr.error("Error", `Failed to create contact.`, toastrSuccessConfig);
+         this.props.history.push(`/app/c/contacts`);
       });
    }
 
@@ -170,6 +173,7 @@ export default class CreateContact extends Component {
                                     className="form-control"
                                     id="personOfCompany" name="personOfCompany"
                                     placeholder="New, or lookup existing..."
+                                    autoComplete="off"
                                     value={this.state.companyName}
                                     onChange={(ev) => this.setState({ show: true, companyName: ev.target.value, companyId: "" })} />
                                  <CompleterCompany

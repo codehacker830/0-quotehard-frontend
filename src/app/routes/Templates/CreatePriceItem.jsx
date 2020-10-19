@@ -53,7 +53,7 @@ export default class CreatePriceItem extends Component {
          quantity,
          itemTotal,
       } = this.state.priceItem;
-      if (productHeading === "" && itemCode === "") { toastr.info("Required", "You are missing a Title Or item code.", toastrInfoConfig); return; }
+      if (productHeading === "" && itemCode === "") { toastr.info("Required", "Title Or item code is missing.", toastrInfoConfig); return; }
       const payload = {
          isOptional,
          isOptionSelected,
@@ -89,6 +89,7 @@ export default class CreatePriceItem extends Component {
                "New PriceItem template was created.",
                toastrSuccessConfig
             );
+            this.props.history.push("/app/content/item-price/browse");
          }).catch(err => {
             console.error("error during create priceItem =>", err);
             toastr.error("Error", "PriceItem failed to create", toastrErrorConfig);
@@ -97,12 +98,12 @@ export default class CreatePriceItem extends Component {
          const priceItemId = this.props.match.params.id;
          axios.post(`/templates/update-priceitem-by-id/${priceItemId}`, payload).then(({ data }) => {
             console.log(" update priceItem res =>", data);
-
             toastr.success(
                "Success",
                "PriceItem template was updated.",
                toastrSuccessConfig
             );
+            this.props.history.push("/app/content/item-price/browse");
          }).catch(err => {
             console.error("error during update priceItem =>", err);
             toastr.error("Error", "PriceItem failed to update", toastrErrorConfig);

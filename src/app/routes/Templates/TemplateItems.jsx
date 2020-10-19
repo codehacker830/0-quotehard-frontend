@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import InlineHelp from '../../../components/InlineHelp';
 
 export default class TemplateItems extends Component {
+   
+   componentDidMount() {
+
+   }
    render() {
       const { history } = this.props;
       return (
