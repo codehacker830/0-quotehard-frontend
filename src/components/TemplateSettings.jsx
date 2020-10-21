@@ -5,7 +5,7 @@ class TemplateSettings extends React.Component {
       show: true
    }
    render() {
-      const settings = { ... this.props };
+      const settings = { ...this.props };
       return (
          <div className="col-sm-6">
             <div className="pl-4 py-2" style={{ borderLeft: "4px solid #eee" }}>

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { toastr } from 'react-redux-toastr';
 import AddItemBtn from '../../../components/AddItemBtn';
 import NavCrump from '../../../components/NavCrump';
 import PriceItemForm from '../../../components/PriceItemForm';
+import QuoteItemTotal from '../../../components/QuoteItemTotal';
 import SubTotal from '../../../components/SubTotal';
 import TemplateSettings from '../../../components/TemplateSettings';
 import TextItemForm from '../../../components/TextItemForm';
@@ -11,18 +13,15 @@ import {
    initTextItem,
    initSubTotal,
 } from '../../../constants/InitState';
+import axios from '../../../util/Api';
+import { toastrErrorConfig, toastrSuccessConfig } from '../../../util/toastrConfig';
 
 export default class GetTemplate extends Component {
-   constructor(orops) {
-      super();
+   constructor(props) {
+      super(props);
       this.state = {
          fileArray: [],
-         isEditableQuantity: false,
-         isDiscount: false,
-         isSubscription: false,
-         isCostPriceMargin: false,
 
-         toPeopleList: [],
          title: "",
          settings: initTemplateSettings,
          items: [
@@ -39,6 +38,58 @@ export default class GetTemplate extends Component {
          ]
       }
    }
+   onClickCreate = () => {
+      const { title, settings, items, notes } = this.state;
+      if (title === "") { toastr.info("Required", "You are missing a Template Title.", toastrInfoConfig); return; }
+      const data = {
+         title,
+         settings,
+         items,
+         notes
+      };
+      axios.post('/templates', data)
+         .then(({ data }) => {
+            console.log("res data ---------------->", data);
+            toastr.success(
+               "Success",
+               "New Template was created.",
+               toastrSuccessConfig
+            );
+            // this.props.history.push("/app/content/templates")
+         })
+         .catch(err => {
+            console.error(" error ===>", err);
+            toastr.error("Error", "Template failed to create", toastrErrorConfig);
+         });
+   }
+   onClickUpdate = () => {
+      const { title, settings, items, notes } = this.state;
+      if (title === "") { toastr.info("Required", "Missing a Template Title.", toastrInfoConfig); return; }
+      const data = {
+         title,
+         settings,
+         items,
+         notes
+      };
+      axios.put('/templates', data)
+         .then(({ data }) => {
+            console.log("res data ---------------->", data);
+            toastr.success(
+               "Success",
+               "Template was updated.",
+               toastrSuccessConfig
+            );
+            // this.props.history.push("/app/content/templates")
+         })
+         .catch(err => {
+            console.error(" error ===>", err);
+            toastr.error("Error", "Template failed to update", toastrErrorConfig);
+         });
+   }
+   onClickCancel = () => {
+      this.props.history.push("/app/content/templates");
+   }
+
    removeImageItem = (url) => {
       const newFileArray = this.state.fileArray.filter(item => item !== url);
       this.setState({ fileArray: newFileArray });
@@ -126,7 +177,7 @@ export default class GetTemplate extends Component {
       let newNotes = [...this.state.notes];
       const [dIt,] = newNotes.splice(ind, 1);
       newNotes.splice(Math.max(ind - 1, 0), 0, dIt);
-      
+
       this.setState({ notes: newNotes });
    }
    orderDownNote = (ind) => {
@@ -143,8 +194,25 @@ export default class GetTemplate extends Component {
       }
       else this.setState({ notes: [initTextItem] })
    }
+
+   componentDidMount() {
+      console.log("----------this.props.match.params.id----------------", this.props.match.params.id);
+      axios.get(`/templates/${this.props.match.params.id}`).then(({ data }) => {
+         console.log("response to get template by id ===>", data);
+         const { title, settings, items, notes } = data.template;
+         this.setState({
+            title,
+            settings,
+            items,
+            notes
+         });
+      }).catch(err => {
+         console.error("Error during get template by id.");
+      });
+   }
    render() {
-      console.log(" state  ===", this.state)
+      console.log(" Get Template state  ===>", this.state)
+      console.log(" Get Template props  ===>", this.props)
       return (
          <React.Fragment>
             <NavCrump linkTo="/app/content/templates">
@@ -174,7 +242,7 @@ export default class GetTemplate extends Component {
                      </div>
                   </div>
 
-                  {/* Controller button group */}
+                  {/* items */}
                   {
                      this.state.items.map((item, index) => {
                         if (item.category === "priceItem") return <PriceItemForm
@@ -226,71 +294,10 @@ export default class GetTemplate extends Component {
                      this.setState({ items: [...this.state.items, newItem] })
                   }} />
 
-                  {/* Quote total */}
-                  <div className="quote-edit-total-wrap">
+                  {/* Quote item total show */}
+                  <QuoteItemTotal settings={this.state.settings} items={this.state.items} />
 
-                     {/* Has Subscription QuoteTotal */}
-                     <table className={`quoteTotal hasTerm table table-borderless`}>
-                        <tbody>
-                           <tr className="options">
-                              <td className="total-desc">
-                                 <p className="quote-text-sm">Options selected</p>
-                                 <p className="quote-text-sm">Optional extras are excluded from this calculation</p>
-                              </td>
-                              <td className="total-price">
-                                 <p className="quote-text-sm">1 of 1</p>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td className="total-desc">Subtotal</td>
-                              <td className="total-price">100.00</td>
-                           </tr>
-                           <tr className="total">
-                              <td className="total-desc"><span className="quoteTotal-gDesc">Total including tax</span></td>
-                              <td className="total-price"><span className="quoteTotal-gTotal">$100.00</span>
-                                 <div className="quote-text-sm">per week</div>
-                                 <div className="quote-text-sm">(for 4 weeks)</div>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-
-                     {/* Has No Subscription QuoteTotal */}
-                     <table className="quoteTotal hasNoTerm table table-borderless">
-                        <tbody>
-                           <tr className="options">
-                              <td className="total-desc">
-                                 <p className="quote-text-sm"><span>Options selected</span></p>
-                                 <p className="quote-text-sm">Optional extras are excluded from this calculation</p>
-                              </td>
-                              <td className="total-price">
-                                 <p className="quote-text-sm">2 of 4</p>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td className="total-desc">Subtotal</td>
-                              <td className="total-price">900.00</td>
-                           </tr>
-                           <tr className="tProfit">
-                              <td className="total-desc">Total margin 20%</td>
-                              <td className="total-price">100.00</td>
-                           </tr>
-                           <tr>
-                              <td className="total-desc">Tax 10%</td>
-                              <td className="total-price">80.00</td>
-                           </tr>
-                           <tr className="total">
-                              <td className="total-desc"><span className="quoteTotal-gDesc">Total including tax</span></td>
-                              <td className="total-price">
-                                 <span className="quoteTotal-gTotal">$980.00</span>
-                                 <p className="quote-text-sm">per week</p>
-                                 <p className="quote-text-sm">(for 4 weeks)</p>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                  </div>
-
+                  {/* Here is notes */}
                   {
                      this.state.notes.map((item, index) => {
                         return <TextItemForm
@@ -313,12 +320,20 @@ export default class GetTemplate extends Component {
                      })
                   }
 
-                  <AddItemBtn onClickAdd={() => this.setState({ notes: [...this.state.notes, initTextItem] })} />
+                  <AddItemBtn onClickAdd={() => this.setState({ notes: [...this.state.notes, { category: "textItem", textItem: initTextItem }] })} />
 
                   {/* Footer action button group */}
                   <div className="row p-3">
-                     <button className="btn btn-lg btn-rounded btn-hero-primary mr-1">Create</button>
-                     <button className="btn btn-lg btn-rounded btn-hero-secondary" onClick={() => this.props.history.push("/app/content/templates")}>Cancel</button>
+                     {
+                        this.props.match.path === "/app/content/template/:id" &&
+                        <button className="btn btn-lg btn-rounded btn-hero-primary mr-3" onClick={this.onClickUpdate}>Update</button>
+
+                     }
+                     {
+                        this.props.match.path === "/app/content/template/get" &&
+                        <button className="btn btn-lg btn-rounded btn-hero-primary mr-3" onClick={this.onClickCreate}>Create</button>
+                     }
+                     <button className="btn btn-lg btn-rounded btn-hero-secondary" onClick={this.onClickCancel}>Cancel</button>
                   </div>
                </div>
             </div>

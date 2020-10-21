@@ -23,12 +23,14 @@ export default class Dashboard extends Component {
    constructor(props) {
       super(props);
       this.state = {
+         dropdownOpen: false,
          search: "",
          quotes: []
       };
    }
    onClickArchive = () => { }
    componentDidMount() {
+      // get all quotes
       axios.get('/quotes')
          .then(({ data }) => {
             console.log("RRRRRRRRRRRRRRRR ===", data)
@@ -36,6 +38,8 @@ export default class Dashboard extends Component {
          }).catch(err => {
             console.error(" error during get quotes :", err)
          });
+
+      // get all templates list (_id, title)
    }
    render() {
       const { search } = this.state;
@@ -83,14 +87,39 @@ export default class Dashboard extends Component {
          <div className="content">
             <div className="row py-3">
                <div className="col-md-6">
-                  <div className="form-group">
+
+                  <div className="form-group" style={{ position: "relative" }}>
                      <button className="btn btn-success"
-                        onClick={() => this.props.history.push({
-                           pathname: "/app/quote/get",
-                           state: {
-                              from: this.props.location.pathname
-                           }
-                        })}>New Quote</button>
+                        onClick={() => {
+                           // this.props.history.push({
+                           //    pathname: "/app/quote/get",
+                           //    state: {
+                           //       from: this.props.location.pathname
+                           //    }
+                           // });
+
+                           this.setState({ dropdownOpen: !this.state.dropdownOpen })
+                        }}>
+                        <span>New Quote</span>
+                        <i className={`fa fa-fw fa-angle-down ml-1 `} />
+                     </button>
+                     <div className={`dropdown-menu dropdown-menu-left p-0 border ${this.state.dropdownOpen ? "show" : ""}`}
+                        x-placement="bottom-end">
+                        <div className="p-2">
+                           <Link className="dropdown-item" to="">Quote template-1</Link>
+
+                           <div role="separator" className="dropdown-divider" />
+                           <Link className="dropdown-item" to={{
+                              pathname: "/app/quote/get",
+                              state: {
+                                 from: this.props.location.pathname
+                              }
+                           }}>
+                              New Quote, without Template
+                           </Link>
+                        </div>
+                     </div>
+
                   </div>
                </div>
                <div className="col-md-6">

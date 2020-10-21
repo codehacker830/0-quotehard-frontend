@@ -1,4 +1,3 @@
-import { isNumber } from 'highcharts';
 import React, { Component } from 'react';
 import { toastr } from 'react-redux-toastr';
 import { Link, Redirect } from 'react-router-dom';

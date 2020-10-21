@@ -59,8 +59,7 @@ export const userSignIn = ({ email, password }) => {
             console.log(" User Sign In error ========> ", data);
             dispatch({ type: FETCH_ERROR, payload: data.error });
          }
-      }).catch(function (error) {
-         console.log(" User Sign In error status ========> ", error.response.status);
+      }).catch((error) => {
          if(error.response.status === 422) dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
          else dispatch({ type: FETCH_ERROR, payload: "Invalid credentials." });
          console.log("Error****:", error.message);
@@ -69,7 +68,6 @@ export const userSignIn = ({ email, password }) => {
 };
 
 export const userSignUp = ({ firstName, lastName, email, password, companyName, location }) => {
-   console.log(firstName, lastName, email, password, location);
    return (dispatch) => {
       dispatch({ type: FETCH_START });
       axios.post('/account', {
