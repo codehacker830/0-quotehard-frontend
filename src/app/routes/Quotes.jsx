@@ -27,6 +27,7 @@ export default class Quotes extends Component {
          });
    }
    render() {
+      console.log("Quotes state --", this.state);
       console.log("Quotes prpos --", this.props);
       return (
          <div className="content">
@@ -129,7 +130,7 @@ export default class Quotes extends Component {
                                           </tr>
                                        );
                                        else if (item.status === "awaiting") return (
-                                          <tr className="mod-white" key={index} onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
+                                          <tr className="mod-white" key={index} onClick={() => this.props.history.push(`/q/${item.entoken}`)}>
                                              <td>
                                                 <span className="float-right ml-2">{toFixedFloat(item.quoteTotal)}</span>
                                                 <div className="u-ellipsis">
@@ -152,7 +153,7 @@ export default class Quotes extends Component {
                                           </tr>
                                        );
                                        else return (
-                                          <tr className="mod-blue" key={index} onClick={() => this.props.history.push("/q/C.xOH0nfW9bvohXqbDYoz-gofQEUST17fH7aavLnK0g")}>
+                                          <tr className="mod-blue" key={index} onClick={() => this.props.history.push(`/q/${item.entoken}`)}>
                                              <td>
                                                 <span className="float-right ml-2">{toFixedFloat(item.quoteTotal)}</span>
                                                 <div className="u-ellipsis">

@@ -406,6 +406,12 @@ a.nav-link.active {
 .toolWrapper {
    position: absolute;
 }
+.bg-disabled {
+   background-color: #e9ecef;
+   opacity: 1;
+   box-shadow: none;
+   cursor: default;
+}
 @media (max-width: 600px) {
    .toolWrapper {
       position: relative;

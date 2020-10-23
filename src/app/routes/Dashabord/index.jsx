@@ -25,22 +25,35 @@ export default class Dashboard extends Component {
       this.state = {
          dropdownOpen: false,
          search: "",
-         quotes: []
+         quotes: [],
+         templates: []
       };
+      this.dropdownContainer = React.createRef();
    }
-   onClickArchive = () => { }
+   onClickOutsideHandler = (ev) => {
+      if (this.state.dropdownOpen && !this.dropdownContainer.current.contains(ev.target)) {
+         this.setState({ dropdownOpen: false });
+      }
+   }
    componentDidMount() {
-      // get all quotes
-      axios.get('/quotes')
-         .then(({ data }) => {
-            console.log("RRRRRRRRRRRRRRRR ===", data)
-            this.setState({ quotes: data.quotes });
-         }).catch(err => {
-            console.error(" error during get quotes :", err)
-         });
-
-      // get all templates list (_id, title)
+      window.addEventListener('click', this.onClickOutsideHandler);
+      // get all quotes and templates
+      const Promise1 = axios.get('/quotes');
+      const Promise2 = axios.get('/templates');
+      Promise.all([Promise1, Promise2]).then((values) => {
+         console.log("values ==========================>", values);
+         this.setState({
+            quotes: values[0].data.quotes,
+            templates: values[1].data.templates
+         })
+      }).catch(err => {
+         console.error(" error ===>", err);
+      });
    }
+   componentWillUnmount() {
+      window.removeEventListener('click', this.onClickOutsideHandler);
+   }
+
    render() {
       const { search } = this.state;
       const { match } = this.props;
@@ -83,43 +96,52 @@ export default class Dashboard extends Component {
             }
          ]
       }
+      const templateList = this.state.templates.filter((temp, index) => temp.status === "current");
       return (
          <div className="content">
             <div className="row py-3">
                <div className="col-md-6">
 
-                  <div className="form-group" style={{ position: "relative" }}>
-                     <button className="btn btn-success"
-                        onClick={() => {
-                           // this.props.history.push({
-                           //    pathname: "/app/quote/get",
-                           //    state: {
-                           //       from: this.props.location.pathname
-                           //    }
-                           // });
-
-                           this.setState({ dropdownOpen: !this.state.dropdownOpen })
-                        }}>
-                        <span>New Quote</span>
-                        <i className={`fa fa-fw fa-angle-down ml-1 `} />
-                     </button>
-                     <div className={`dropdown-menu dropdown-menu-left p-0 border ${this.state.dropdownOpen ? "show" : ""}`}
-                        x-placement="bottom-end">
-                        <div className="p-2">
-                           <Link className="dropdown-item" to="">Quote template-1</Link>
-
-                           <div role="separator" className="dropdown-divider" />
-                           <Link className="dropdown-item" to={{
-                              pathname: "/app/quote/get",
-                              state: {
-                                 from: this.props.location.pathname
-                              }
+                  <div className="form-group">
+                     <div style={{ position: "relative", width: "fit-content" }} ref={this.dropdownContainer}>
+                        <button className="btn btn-success"
+                           onClick={() => {
+                              if (templateList.length === 0) {
+                                 this.props.history.push({
+                                    pathname: "/app/quote/get",
+                                    state: {
+                                       from: this.props.location.pathname
+                                    }
+                                 });
+                              } else this.setState({ dropdownOpen: !this.state.dropdownOpen })
                            }}>
-                              New Quote, without Template
+                           <span>New Quote</span>
+                           {
+                              templateList.length !== 0 &&
+                              <i className={`fa fa-fw fa-angle-down ml-1 `} />
+                           }
+                        </button>
+                        <div className={`dropdown-menu dropdown-menu-left p-0 border ${this.state.dropdownOpen ? "show" : ""}`}>
+                           <div className="p-2">
+                              {
+                                 templateList.map((template, index) => {
+                                    return (
+                                       <Link className="dropdown-item" to={`/app/quote/get/from-template/${template._id}`} key={index}>{template.title}</Link>
+                                    );
+                                 })
+                              }
+                              <div role="separator" className="dropdown-divider" />
+                              <Link className="dropdown-item" to={{
+                                 pathname: "/app/quote/get",
+                                 state: {
+                                    from: this.props.location.pathname
+                                 }
+                              }}>
+                                 New Quote, without Template
                            </Link>
+                           </div>
                         </div>
                      </div>
-
                   </div>
                </div>
                <div className="col-md-6">

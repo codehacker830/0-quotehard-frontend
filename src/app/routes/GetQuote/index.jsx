@@ -30,94 +30,8 @@ import {
 import AddItemBtn from "../../../components/AddItemBtn";
 import QuoteItemTotal from "../../../components/QuoteItemTotal";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
-const quoteDataApiRes = {
-   createdBy: "thisisuseridwhocreatetshi",
-   toPeopleList: [
-      {
-         _id: "12345",
-         firstName: "Raffale",
-         lastName: "Cantatore",
-         email: "honestypassion0615@gmail.com",
-         company: "Raff Company",
-      },
-      {
-         _id: "13452",
-         firstName: "Danil",
-         lastName: "Zolo",
-         email: "danilo@gmail.com",
-         company: "Danil Company",
-      },
-      // {
-      //    _id: "248318",
-      //    firstName: "Radoje",
-      //    lastName: "Cofallo",
-      //    email: "cofallo@gmail.com",
-      //    company: "AllOver"
-      // }
-   ],
-   title: "this is Quote title",
-   settings: {
-      validUntil: new Date(Date.now() + 1000 * 3600 * 24 * 50),
-      sentAt: new Date(),
-      userFrom: {
-         _id: "5f85447fed77730be4610ef4",
-         firstName: "A",
-         lastName: "Devom",
-         email: "honestypasion0615@gmail.com",
-         companyName: "AllOver",
-         location: "232",
-      },
-      discount: 50,
-      currency: "156",
-      taxMode: "no_tax",
-      priceDisplayLevel: "itemQuantityAndTotal",
-      displayItemCode: true,
-   },
-   items: [
-      {
-         category: "priceItem",
-         priceItem: {
-            itemCode: "icode-1",
-            productHeading: "this is product heading",
-            longDescription: "long description",
-            files: [
-               "https://static.productionready.io/images/smiley-cyrus.jpg",
-               "https://static.productionready.io/images/smiley-cyrus.jpg",
-            ],
-            itemCategory: "sales",
-            tax: 10,
-            unitPrice: 10,
-            quantity: 10,
-            itemTotal: 100,
-         },
-      },
-      {
-         category: "textItem",
-         textItem: {
-            textHeading: "here is text heading",
-            longDescription: "description",
-            files: [
-               "https://static.productionready.io/images/smiley-cyrus.jpg",
-               "https://static.productionready.io/images/smiley-cyrus.jpg",
-            ],
-         },
-      },
-      {
-         category: "subTotal",
-      },
-   ],
-   notes: [
-      {
-         textHeading: "here is text heading",
-         longDescription: "descriptioin",
-         files: [
-            "https://static.productionready.io/images/smiley-cyrus.jpg",
-            "https://static.productionready.io/images/smiley-cyrus.jpg",
-         ],
-      },
-   ],
-};
 
 class GetQuote extends Component {
    initSettings = {
@@ -142,6 +56,7 @@ class GetQuote extends Component {
    constructor(props) {
       super(props);
       this.state = {
+         show: false,
          fileArray: [],
          emailTo: "",
 
@@ -166,6 +81,7 @@ class GetQuote extends Component {
             }
          ],
       };
+      this.actionsContainer = React.createRef();
    }
    removeImageItem = (url) => {
       const newFileArray = this.state.fileArray.filter((item) => item !== url);
@@ -287,25 +203,7 @@ class GetQuote extends Component {
       }
 
    };
-   componentDidMount() {
-      if (this.props.match.params && this.props.match.params.id) {
-         // Get quote details with quote ID
-         axios.get(`/quotes/get-by-id/${this.props.match.params.id}`).then(({ data }) => {
-            console.log(" ressssssssssssssssssss  =>", data);
-            const { quote } = data;
-            this.setState({
-               title: quote.title,
-               toPeopleList: quote.toPeopleList,
-               settings: quote.settings,
-               items: quote.items,
-               notes: quote.notes
-            });
-         }).catch(err => {
-            console.error("get quote detail api error =>", err);
-            toastr.error("Error", "Quote was not found", toastrErrorConfig);
-         });
-      }
-   }
+
    removeImageItem = (url) => {
       const newFileArray = this.state.fileArray.filter(item => item !== url);
       this.setState({ fileArray: newFileArray });
@@ -408,18 +306,126 @@ class GetQuote extends Component {
       }
       else this.setState({ notes: [initTextItem] })
    }
+
+   onClickOutsideHandler = (ev) => {
+      if (!this.actionsContainer.current.contains(ev.target)) {
+         this.setState({ show: false });
+      }
+   }
+   componentDidMount() {
+      window.addEventListener('click', this.onClickOutsideHandler);
+      if (this.props.match.path === "/app/quote/:id") {
+         // Get quote details with quote ID
+         axios.get(`/quotes/get-by-id/${this.props.match.params.id}`).then(({ data }) => {
+            console.log(" ressssssssssssssssssss  =>", data);
+            const { quote } = data;
+            this.setState({
+               title: quote.title,
+               toPeopleList: quote.toPeopleList,
+               settings: quote.settings,
+               items: quote.items,
+               notes: quote.notes
+            });
+         }).catch(err => {
+            console.error("get quote detail api error =>", err);
+         });
+      } else if (this.props.match.path === "/app/quote/get/from-template/:id") {
+         // get template detials with id
+         axios.get(`/templates/id/${this.props.match.params.id}`).then(({ data }) => {
+            console.log("DDDDDDDDDDDDDDDDDDDDDAAAAAAAAAAAAATTTTTTTTTTT", data);
+            const { template } = data;
+            this.setState({
+               title: template.title,
+               toPeopleList: [],
+               settings: { ...initQuoteSettings, ...template.settings },
+               items: template.items,
+               notes: template.notes
+            });
+         }).catch(err => {
+            console.error("get tempate detail api error =>", err);
+         });
+      }
+   }
+   componentWillUnmount() {
+      window.removeEventListener('click', this.onClickOutsideHandler);
+   }
    render() {
       console.log(" GetQute initSettings ===> ", this.initSettings);
       console.log(" GetQute state => ", this.state);
       console.log(" GetQute props => ", this.props);
       const { location } = this.props;
-      let HeadLinkText = "Dashboard";
-      if (location.state && location.state.from === "/app/quotes") HeadLinkText = "Quotes";
+      const linkTo = location.state && location.state.from ? location.state.from : "/app";
+      let linkName = "Dashboard";
+      if (location.state && location.state.from === "/app/quotes") linkName = "Quotes";
       return (
          <React.Fragment>
-            <NavCrump linkTo={`${location.state && location.state.from ? location.state.from : "/app"}`}>
-               {HeadLinkText}
-            </NavCrump>
+            <div className="bg-body-light border-top border-bottom">
+               <div className="content content-full py-3">
+                  <div className="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
+                     <h1 className="flex-sm-fill font-size-sm text-uppercase font-w700 mt-2 mb-0 mb-sm-2">
+                        <Link to={linkTo}>
+                           <i className="fa fa-arrow-left fa-fw mr-2" />
+                           <span className="text-primary">{linkName}</span>
+                        </Link>
+                     </h1>
+
+                     <div className={`dropdown ${this.props.match.path === "/app/quote/:id" ? "d-inline-block" : "d-none"}`} ref={this.actionsContainer}>
+                        <button type="button" className="btn btn-dual" onClick={() => this.setState({ show: !this.state.show })}>
+                           <span className="text-primary">Actions</span>
+                           <i className="fa fa-fw fa-angle-down ml-1 text-primary" />
+                        </button>
+
+                        <div className={`dropdown-menu dropdown-menu-right p-0 ${this.state.show ? "show" : ""}`} style={{ minWidth: 250 }}>
+                           <ul className="nav-items my-0 py-1">
+                              <li>
+                                 <button className="dropdown-item text-dark media py-2">
+                                    <div className="mx-3">
+                                       <i className="fa fa-fw fa-arrow-alt-circle-right text-secondary" />
+                                    </div>
+                                    <div className="media-body font-size-sm pr-2">
+                                       <div className="font-w600">Mark as Sent(don't email)</div>
+                                    </div>
+                                 </button>
+                              </li>
+                              <li>
+                                 <button className="dropdown-item text-dark media py-2">
+                                    <div className="mx-3">
+                                       <i className="fa fa-fw fa-copy text-secondary" />
+                                    </div>
+                                    <div className="media-body font-size-sm pr-2">
+                                       <div className="font-w600">Copy</div>
+                                    </div>
+                                 </button>
+                              </li>
+                              <li>
+                                 <button className="dropdown-item text-dark media py-2">
+                                    <div className="mx-3">
+                                       <i className="fa fa-fw fa-plus-circle text-secondary" />
+                                    </div>
+                                    <div className="media-body font-size-sm pr-2">
+                                       <div className="font-w600">Copy to Template</div>
+                                    </div>
+                                 </button>
+                              </li>
+                              <li>
+                                 <button className="dropdown-item text-dark media py-2">
+                                    <div className="mx-3">
+                                       <i className="fa fa-fw fa-trash-alt text-secondary" />
+                                    </div>
+                                    <div className="media-body font-size-sm pr-2">
+                                       <div className="font-w600">Delete</div>
+                                    </div>
+                                 </button>
+                              </li>
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            {/* <NavCrump linkTo={linkTo}>
+               {linkName}
+            </NavCrump> */}
             <div className="content bg-custom">
                <div className="mt-6 mb-5">
                   <div className="row">

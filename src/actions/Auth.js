@@ -60,8 +60,9 @@ export const userSignIn = ({ email, password }) => {
             dispatch({ type: FETCH_ERROR, payload: data.error });
          }
       }).catch((error) => {
-         if(error.response.status === 422) dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
-         else dispatch({ type: FETCH_ERROR, payload: "Invalid credentials." });
+         // if(error.response.status === 422) dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
+         // else 
+         dispatch({ type: FETCH_ERROR, payload: "Invalid credentials." });
          console.log("Error****:", error.message);
       });
    }

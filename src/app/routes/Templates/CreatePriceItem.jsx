@@ -25,7 +25,7 @@ export default class CreatePriceItem extends Component {
    updateItem = (ind, item) => {
       this.setState({ priceItem: item.priceItem });
    }
-   onClickCreate = () => {
+   onClickSubmit = () => {
       const {
          isOptional,
          isOptionSelected,
@@ -126,10 +126,12 @@ export default class CreatePriceItem extends Component {
       }
    }
    render() {
+      const from = this.props.location.state ? this.props.location.state.from : "/app/content/item-price/browse";
+      const LinkTo = this.props.location.state && this.props.location.state.from.includes("/app/content/template/") ? "Origin Template" : "Items";
       return (
          <React.Fragment>
-            <NavCrump linkTo="/app/content/item-price/browse">
-               Items
+            <NavCrump linkTo={from}>
+               {LinkTo}
             </NavCrump>
             <div className="content bg-custom">
                <div className="mt-6 mb-5">
@@ -148,7 +150,7 @@ export default class CreatePriceItem extends Component {
 
                {/* Footer action button group */}
                <div className="row p-3">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.onClickCreate}>
+                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.onClickSubmit}>
                      {this.props.location.pathname === '/app/content/item-price/create-new' && "Create"}
                      {this.props.match.path === '/app/content/item-price/view/:id' && "Update"}
                   </button>

@@ -1,8 +1,9 @@
 
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { toFixedFloat } from '../util';
 
-export default class PriceItemForm extends Component {
+class PriceItemForm extends Component {
    fileObj = [];
    fileArray = [];
    constructor(props) {
@@ -78,7 +79,7 @@ export default class PriceItemForm extends Component {
                            className="form-check-input"
                            name="option-checkbox"
                            checked={this.state.isOptionSelected}
-                           onClick={() => this.setState({ isOptionSelected: !this.state.isOptionSelected })}
+                           onChange={() => this.setState({ isOptionSelected: !this.state.isOptionSelected })}
                         />
                         <label className="form-check-label">
                            Option {this.state.isOptionSelected ? "Selected" : ""}
@@ -90,9 +91,18 @@ export default class PriceItemForm extends Component {
                      <div className="form-check toolWrapper">
                         <input type="radio"
                            className="form-check-input"
-                           name={`multipleChoiceGroup-1`}
-                           defaultValue="option1"
-                           defaultChecked
+                           name={`multipleChoiceGroup-${this.props.priceItem.title}`}
+                           checked={this.props.priceItem.isChoiceSelected}
+                           onChange={() => {
+                              const newItem = {
+                                 category: "priceItem",
+                                 priceItem: {
+                                    ... this.props.priceItem,
+                                    isChoiceSelected: !this.props.priceItem.isChoiceSelected
+                                 }
+                              };
+                              this.props.updateItem(this.props.index, newItem);
+                           }}
                         />
                         <label className="form-check-label">1 of 1 Selected</label>
                      </div>
@@ -256,9 +266,20 @@ export default class PriceItemForm extends Component {
                      <button className="btn btn-light mr-1" disabled={this.props.isOrderDownDisabled} onClick={() => this.props.orderDownItem(this.props.index)}>
                         <i className="fa fa-long-arrow-alt-down"></i>
                      </button>
-                     <button className="btn btn-light" disabled={this.props.isRemoveDisabled} onClick={() => this.props.removeItem(this.props.index)}>
+                     <button className="btn btn-light mr-1" disabled={this.props.isRemoveDisabled} onClick={() => this.props.removeItem(this.props.index)}>
                         <i className="fa fa-trash-alt"></i>
                      </button>
+                     {
+                        this.props.isViewOnly &&
+                        <button className="btn btn-light mr-1" onClick={() => this.props.history.push({
+                           pathname: `/app/content/item-price/view/${this.props.priceItem._id}`,
+                           state: {
+                              from: this.props.location.pathname
+                           }
+                        })}>
+                           <span className="text-primary"><i className="fa fa-pen"></i> Edit</span>
+                        </button>
+                     }
                   </div>
                </div>
             </div>
@@ -267,8 +288,9 @@ export default class PriceItemForm extends Component {
             {/* Textarea section */}
             <div className="row">
                <div className="col-sm-6 pr-0">
-                  <div className="w-100 border p-2 mb-2">
+                  <div className={`w-100 border p-2 mb-2 ${this.props.isViewOnly ? "bg-disabled" : ""}`}>
                      <input className="form-control border-0 rounded-0 p-2 mb-1"
+                        disabled={!!this.props.isViewOnly}
                         placeholder="Item Code / ID (optional)"
                         value={this.props.priceItem.itemCode}
                         onChange={(ev) => {
@@ -281,6 +303,7 @@ export default class PriceItemForm extends Component {
                      />
                      <textarea className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2"
                         rows={1} placeholder="Product or Service Heading"
+                        disabled={!!this.props.isViewOnly}
                         value={this.props.priceItem.productHeading}
                         onChange={(ev) => {
                            const newItem = {
@@ -292,6 +315,7 @@ export default class PriceItemForm extends Component {
                      >
                      </textarea>
                      <textarea className="form-control border-0 rounded-0 mt-1 p-2" rows={1} placeholder="Long description"
+                        disabled={!!this.props.isViewOnly}
                         value={this.props.priceItem.longDescription}
                         onChange={(ev) => {
                            const newItem = {
@@ -304,24 +328,28 @@ export default class PriceItemForm extends Component {
                      </textarea>
 
                      {/* Images preview section */}
-                     <div className="row m-1">
+                     <div className={`row no-gutters ${this.props.isViewOnly ? "bg-disabled" : ""}`}>
                         {(this.state.fileArray || []).map((url, index) => (
-                           <div className="p-1">
+                           <div className="p-1" key={index}>
                               <img src={url} className="mr-2 image-preview-size" alt="..." />
-                              <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)}>
-                                 <i className="fa fa-times-circle"></i>
-                              </button>
+                              {
+                                 !this.props.isViewOnly &&
+                                 <button className="btn btn-sm btn-light"
+                                    onClick={() => this.removeImageItem(url)}>
+                                    <i className="fa fa-times-circle"></i>
+                                 </button>
+                              }
                            </div>
                         ))}
                      </div>
                   </div>
                </div>
 
-
-               <div className="col-sm-6">
+               <div className="col-sm-6 pl-1">
                   <div className="row pb-1">
                      <div className="col-6 pr-0">
                         <select className="custom-select rounded-0"
+                           disabled={!!this.props.isViewOnly}
                            value={this.props.priceItem.itemCategory}
                            onChange={(ev) => {
                               const newItem = {
@@ -333,15 +361,18 @@ export default class PriceItemForm extends Component {
                            <option value="sales">Sales</option>
                         </select>
                      </div>
-                     <div className="col-6">
-                        <select className="custom-select rounded-0" value={this.props.priceItem.tax} onChange={(ev) => {
-                           const tax = ev.target.value === "" ? 0 : ev.target.value;
-                           const newItem = {
-                              category: "priceItem",
-                              priceItem: { ... this.props.priceItem, tax }
-                           };
-                           this.props.updateItem(this.props.index, newItem);
-                        }}>
+                     <div className="col-6 pl-1">
+                        <select className="custom-select rounded-0"
+                           disabled={!!this.props.isViewOnly}
+                           value={this.props.priceItem.tax}
+                           onChange={(ev) => {
+                              const tax = ev.target.value === "" ? 0 : ev.target.value;
+                              const newItem = {
+                                 category: "priceItem",
+                                 priceItem: { ... this.props.priceItem, tax }
+                              };
+                              this.props.updateItem(this.props.index, newItem);
+                           }}>
                            <option value="0">No tax</option>
                            <option value="10">10% tax</option>
                         </select>
@@ -356,6 +387,7 @@ export default class PriceItemForm extends Component {
                                  <input
                                     type="number"
                                     className="form-control rounded-0"
+                                    disabled={!!this.props.isViewOnly}
                                     value={this.props.priceItem.discount}
                                     onChange={(ev) => {
                                        const discount = ev.target.value === "" ? 0 : ev.target.value;
@@ -385,6 +417,7 @@ export default class PriceItemForm extends Component {
                               <span className="text-secondary text-uppercase mx-2 my-auto">Per</span>
                               <input type="number"
                                  className="form-control rounded-0 mr-1"
+                                 disabled={!!this.props.isViewOnly}
                                  value={this.props.priceItem.per}
                                  onChange={(ev) => {
                                     const per = ev.target.value === "" ? 1 : ev.target.value;
@@ -395,19 +428,23 @@ export default class PriceItemForm extends Component {
                                     this.props.updateItem(this.props.index, newItem);
                                  }}
                               />
-                              <select className="form-control rounded-0" value={this.props.priceItem.every} onChange={(ev) => {
-                                 const newItem = {
-                                    category: "priceItem",
-                                    priceItem: { ... this.props.priceItem, every: ev.target.value }
-                                 };
-                                 this.props.updateItem(this.props.index, newItem);
-                              }}>
+                              <select className="form-control rounded-0"
+                                 disabled={!!this.props.isViewOnly}
+                                 value={this.props.priceItem.every}
+                                 onChange={(ev) => {
+                                    const newItem = {
+                                       category: "priceItem",
+                                       priceItem: { ... this.props.priceItem, every: ev.target.value }
+                                    };
+                                    this.props.updateItem(this.props.index, newItem);
+                                 }}>
                                  <option value={`week`}>week</option>
                                  <option value={`month`}>month</option>
                                  <option value={`year`}>year</option>
                               </select>
                               <span className="text-secondary text-uppercase mx-2 my-auto">For</span>
                               <input type="number" className="form-control rounded-0" placeholder="Optional"
+                                 disabled={!!this.props.isViewOnly}
                                  value={this.props.priceItem.period}
                                  onChange={(ev) => {
                                     const newItem = {
@@ -432,6 +469,7 @@ export default class PriceItemForm extends Component {
                                  <input className="form-control border border-success rounded-0 mr-1"
                                     type="number"
                                     placeholder="-- Cost Price --"
+                                    disabled={!!this.props.isViewOnly}
                                     value={this.props.priceItem.costPrice}
                                     onChange={(ev) => {
                                        const costPrice = ev.target.value === "" ? 0 : ev.target.value;
@@ -458,6 +496,7 @@ export default class PriceItemForm extends Component {
                         <input
                            type="number"
                            id="unit" className="form-control rounded-0"
+                           disabled={!!this.props.isViewOnly}
                            value={this.props.priceItem.unitPrice}
                            onChange={(ev) => {
                               const unitPrice = ev.target.value === "" ? 0 : ev.target.value;
@@ -475,8 +514,9 @@ export default class PriceItemForm extends Component {
                         />
                         <label htmlFor="unit" className="text-gray fa-xs text-uppercase">Unit Price</label>
                      </div>
-                     <div className="col-4 pr-0">
+                     <div className="col-4 pl-1 pr-0">
                         <input type="number" id="quantity" className={`form-control rounded-0 ${this.state.isEditableQuantity ? "border-primary" : ""}`}
+                           disabled={!!this.props.isViewOnly}
                            value={this.props.priceItem.quantity}
                            onChange={(ev) => {
                               const quantity = ev.target.value === "" ? 0 : ev.target.value;
@@ -496,9 +536,10 @@ export default class PriceItemForm extends Component {
                            Quantity
                         </label>
                      </div>
-                     <div className="col-4">
+                     <div className="col-4 pl-1">
                         <input type="number" id="total" className="form-control rounded-0"
                            value={this.props.priceItem.itemTotal}
+                           disabled={!!this.props.isViewOnly}
                            onChange={(ev) => {
                               const itemTotal = ev.target.value === "" ? 0 : ev.target.value;
                               const newItem = {
@@ -521,3 +562,5 @@ export default class PriceItemForm extends Component {
       );
    }
 }
+
+export default withRouter(PriceItemForm);
