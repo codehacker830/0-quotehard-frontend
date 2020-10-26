@@ -34,25 +34,6 @@ import { Link } from "react-router-dom";
 
 
 class GetQuote extends Component {
-   initSettings = {
-      validUntil: new Date(Date.now() + 1000 * 3600 * 24 * 365),
-      sentAt: new Date(),
-      userFrom: {
-         _id: this.props.authUser._id,
-         firstName: this.props.authUser.firstName,
-         lastName: this.props.authUser.lastName,
-         email: this.props.authUser.email,
-         companyName: this.props.authUser.companyName,
-         location: this.props.authUser.location,
-      },
-
-      discount: 0,
-      currency: "156",
-      taxMode: "no_tax",
-      priceDisplayLevel: "itemQuantityAndTotal",
-      displayItemCode: true,
-   };
-
    constructor(props) {
       super(props);
       this.state = {
@@ -60,14 +41,14 @@ class GetQuote extends Component {
          fileArray: [],
          emailTo: "",
 
-         validDate: parseDate(this.initSettings.validUntil),
-         validTime: parseTime(this.initSettings.validUntil),
-         sentDate: parseDate(this.initSettings.sentAt),
-         sentTime: parseTime(this.initSettings.sentAt),
+         validDate: parseDate(initQuoteSettings.validUntil),
+         validTime: parseTime(initQuoteSettings.validUntil),
+         sentDate: parseDate(initQuoteSettings.sentAt),
+         sentTime: parseTime(initQuoteSettings.sentAt),
 
          toPeopleList: [],
          title: "",
-         settings: this.initSettings,
+         settings: initQuoteSettings,
          items: [
             {
                category: "priceItem",
@@ -180,7 +161,15 @@ class GetQuote extends Component {
          items,
          notes
       };
-      if (this.props.location.pathname === '/app/quote/get') {
+      if (this.props.location.pathname === '/app/quote/get' || this.props.match.path === "/app/quote/get/from-template/:id") {
+         if (toPeopleIdList.length === 0) {
+            toastr.warning(
+               "Warning",
+               "Please input at leat one contact.",
+               toastrWarningConfig
+            );
+            return;
+         }
          axios.post('/quotes', data)
             .then(({ data }) => {
                console.log("res data =>", data);
@@ -348,12 +337,15 @@ class GetQuote extends Component {
       } else if (this.props.match.path === "/app/quote/get/from-template/:id") {
          // get template detials with id
          axios.get(`/templates/id/${this.props.match.params.id}`).then(({ data }) => {
-            console.log("DDDDDDDDDDDDDDDDDDDDDAAAAAAAAAAAAATTTTTTTTTTT", data);
             const { template } = data;
+            console.log("DDDDDDDDDDDDDDDDDDDDDAAAAAAAAAAAAATTTTTTTTTTT", data);
+            console.log("template", template);
+            console.log("initQuoteSettings", initQuoteSettings);
+            console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", { ...initQuoteSettings, ...template.settings });
             this.setState({
                title: template.title,
                toPeopleList: [],
-               settings: { ...initQuoteSettings, ...template.settings },
+               settings: { ...initQuoteSettings, ...template.settings, userFrom: this.props.authUser._id },
                items: template.items,
                notes: template.notes
             });
@@ -366,7 +358,7 @@ class GetQuote extends Component {
       window.removeEventListener('click', this.onClickOutsideHandler);
    }
    render() {
-      console.log(" GetQute initSettings ===> ", this.initSettings);
+      console.log(" GetQute initSettings ===> ", initQuoteSettings);
       console.log(" GetQute state => ", this.state);
       console.log(" GetQute props => ", this.props);
       const { location } = this.props;

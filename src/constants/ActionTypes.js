@@ -23,3 +23,4 @@ export const USER_TOKEN_SET = 'user_token_set';
 export const THEME_COLOR = 'theme_color';
 export const USER_SETTINGS = 'user_settings';
 export const QUOTE_DEFAULTS = 'quote_defaults';
+export const GET_TEAMMATES = 'get_teammates';

@@ -7,7 +7,8 @@ import {
 
 
    THEME_COLOR,
-   QUOTE_DEFAULTS
+   QUOTE_DEFAULTS,
+   GET_TEAMMATES
 } from '../constants/ActionTypes';
 
 export function setThemeColor(color) {
@@ -17,18 +18,27 @@ export function setThemeColor(color) {
 export const getSettings = () => {
    return (dispatch) => {
       dispatch({ type: FETCH_START });
-      axios.get('settings',
-      ).then(({ data }) => {
-         console.log("user Settings: ", data);
-         if (data.result) {
-            dispatch({ type: FETCH_SUCCESS });
-            dispatch({ type: USER_SETTINGS, payload: data.user });
-         } else {
-            dispatch({ type: FETCH_ERROR, payload: data.error });
-         }
+      axios.get('/settings').then(({ data }) => {
+         console.log("user Settings : ", data);
+         dispatch({ type: FETCH_SUCCESS });
+         dispatch({ type: USER_SETTINGS, payload: data.user });
       }).catch(function (error) {
          dispatch({ type: FETCH_ERROR, payload: error.message });
          console.log("Error****:", error.message);
       });
    }
 };
+
+export const getTeammates = () => {
+   return (dispatch) => {
+      dispatch({ type: FETCH_START });
+      axios.get('/teammates').then(({ data }) => {
+         console.log("teammates response : ", data);
+         dispatch({ type: FETCH_SUCCESS });
+         dispatch({ type: GET_TEAMMATES, payload: data.teammates });
+      }).catch((err) => {
+         dispatch({ type: FETCH_ERROR, payload: error.message });
+         console.log("Error****:", error.message);
+      })
+   }
+}

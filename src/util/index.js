@@ -28,19 +28,23 @@ export const alterTypeVariableStr = (str) => {
    }
 }
 
-export const parseDate = (sentAt) => {
-   if (isValidDateObj(sentAt)) {
-      const year = sentAt.getFullYear();
-      const month = sentAt.getMonth();
-      const day = sentAt.getDate();
+export const parseDate = (dtObj) => {
+   if (isValidDateObj(dtObj)) {
+      const year = dtObj.getFullYear();
+      const month = dtObj.getMonth();
+      const day = dtObj.getDate();
+      console.log("dtObj =>", dtObj)
+      console.log("year =>", year);
+      console.log("month =>", month);
+      console.log("day =>", day);
       return toDateString(year) + "/" + toDateString(month) + "/" + toDateString(day);
    }
    else return "";
 }
-export const parseTime = (sentAt) => {
-   if (isValidDateObj(sentAt)) {
-      const hours = sentAt.getHours();
-      const minutes = sentAt.getMinutes();
+export const parseTime = (dtObj) => {
+   if (isValidDateObj(dtObj)) {
+      const hours = dtObj.getHours();
+      const minutes = dtObj.getMinutes();
       return toDateString(hours) + ":" + toDateString(minutes);
    }
    else return "";

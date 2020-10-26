@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { getTeammates } from '../actions/Setting';
 
 class QuoteSettings extends Component {
    constructor(props) {
       super(props);
       this.state = {
          show: false,
+         teammates: []
       };
    }
-
+   componentDidMount() {
+      this.props.getTeammates();
+   }
    render() {
       console.log(" this props =>", this.props);
       const settings = { ... this.props };
@@ -72,9 +76,15 @@ class QuoteSettings extends Component {
                   <div className="pb-2">
                      <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">FROM</label>
                      <select className="custom-select rounded-0"
-                        value={this.props.userFrom._id}
-                        onChange={(ev) => this.props.updateSettings({ ...settings, userFrom: { ...this.props.userFrom, _id: ev.target.value } })}>
-                        <option value={this.props.auth.authUser._id}>{this.props.auth.authUser.firstName + " " + this.props.auth.authUser.lastName}</option>
+                        value={this.props.userFrom}
+                        onChange={(ev) => this.props.updateSettings({ ...settings, userFrom: ev.target.value })}>
+                        {
+                           this.props.settings.teammates.map((mate, index) => {
+                              const mateFullName = mate.firstName + " " + mate.lastName;
+                              return (<option value={mate._id} key={index}>{mateFullName}</option>);
+                           })
+                        }
+
                      </select>
                   </div>
                   <div className="pb-2">
@@ -373,7 +383,9 @@ class QuoteSettings extends Component {
    }
 }
 
-const mapStateToProps = ({ auth }) => {
-   return { auth };
+const mapStateToProps = ({ auth, settings }) => {
+   return { auth, settings };
 }
-export default connect(mapStateToProps)(QuoteSettings);
+
+const mapDispatchToProps = { getTeammates };
+export default connect(mapStateToProps, mapDispatchToProps)(QuoteSettings);

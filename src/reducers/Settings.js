@@ -1,9 +1,11 @@
 import {
-   QUOTE_DEFAULTS
+   QUOTE_DEFAULTS,
+   GET_TEAMMATES
 } from '../constants/ActionTypes';
 
 const initialSettings = {
-
+   quoteDefaults: null,
+   teammates: []
 };
 
 const settings = (state = initialSettings, action) => {
@@ -11,9 +13,13 @@ const settings = (state = initialSettings, action) => {
       case QUOTE_DEFAULTS:
          return {
             ...state,
-            quoteDefaults: action.quoteDefaults
+            quoteDefaults: action.payload
          };
-
+      case GET_TEAMMATES:
+         return {
+            ...state,
+            teammates: action.payload
+         };
       default:
          return state;
    }

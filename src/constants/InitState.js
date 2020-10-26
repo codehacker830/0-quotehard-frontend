@@ -1,14 +1,15 @@
 export const initQuoteSettings = {
-   validUntil: new Date(Date.now() + 1000 * 3600 * 24 * 365),
-   sentAt: new Date(),
-   userFrom: {
-      _id: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      companyName: "",
-      location: "",
-   },
+   validUntil: new Date(Date.now() + 1000 * 3600 * 24 * 60),
+   sentAt: null,
+   userFrom: "",
+   // userFrom: {
+   //    _id: "",
+   //    firstName: "",
+   //    lastName: "",
+   //    email: "",
+   //    companyName: "",
+   //    location: "",
+   // },
 
    discount: 0,
    currency: "156",
@@ -36,7 +37,7 @@ export const initPriceItem = {
    discount: 0,
 
    isSubscription: false,
-   
+
    per: 1,
    every: "week",
    period: 1,

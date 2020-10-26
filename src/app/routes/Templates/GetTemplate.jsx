@@ -60,7 +60,7 @@ export default class GetTemplate extends Component {
                "New Template was created.",
                toastrSuccessConfig
             );
-            // this.props.history.push("/app/content/templates")
+            this.props.history.push("/app/content/templates")
          })
          .catch(err => {
             console.error(" error ===>", err);

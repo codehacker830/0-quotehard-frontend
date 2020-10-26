@@ -443,7 +443,9 @@ class PriceItemForm extends Component {
                                  <option value={`year`}>year</option>
                               </select>
                               <span className="text-secondary text-uppercase mx-2 my-auto">For</span>
-                              <input type="number" className="form-control rounded-0" placeholder="Optional"
+                              <input type="number"
+                                 className="form-control rounded-0" 
+                                 placeholder="Optional"
                                  disabled={!!this.props.isViewOnly}
                                  value={this.props.priceItem.period}
                                  onChange={(ev) => {
