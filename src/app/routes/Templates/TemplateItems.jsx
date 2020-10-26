@@ -3,6 +3,7 @@ import { toastr } from 'react-redux-toastr';
 import { Link } from 'react-router-dom';
 import InlineHelp from '../../../components/InlineHelp';
 import TotalLabelFor from '../../../components/TotalLabelFor';
+import { formatDate } from '../../../util';
 import axios from '../../../util/Api';
 import { toastrErrorConfig, toastrSuccessConfig } from '../../../util/toastrConfig';
 
@@ -114,7 +115,7 @@ export default class TemplateItems extends Component {
                                                          <span className="badge badge-success px-2 py-1 ml-1 text-uppercase">Default</span>
                                                       }
                                                       <br />
-                                                      <small className="text-gray font-size-sm">{item.updatedAt}</small>
+                                                      <small className="text-gray font-size-sm">{formatDate(item.updatedAt)}</small>
                                                    </div>
                                                 </div>
                                              </td>

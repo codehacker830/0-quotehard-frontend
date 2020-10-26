@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import InlineHelp from '../../components/InlineHelp';
 import TotalLabelFor from '../../components/TotalLabelFor';
-import { toFixedFloat } from '../../util';
+import { formatDate, toFixedFloat } from '../../util';
 import axios from '../../util/Api';
 
 export default class Quotes extends Component {
@@ -119,7 +119,7 @@ export default class Quotes extends Component {
                                                 </div>
                                                 <span className="float-right">
                                                    <small className="text-gray">
-                                                      <span className="dt-time">{item.createdAt}</span>
+                                                      <span className="dt-time">{formatDate(item.createdAt)}</span>
                                                       <span className="badge badge-primary px-3 py-1 ml-1 text-uppercase">{item.status}</span>
                                                    </small>
                                                 </span>
@@ -138,13 +138,13 @@ export default class Quotes extends Component {
                                                 </div>
                                                 <span className="float-right">
                                                    <small className="text-gray">
-                                                      <span className="dt-time">{item.createdAt}</span>
+                                                      <span className="dt-time">{formatDate(item.createdAt)}</span>
                                                    </small>
                                                 </span>
                                                 <div className="u-ellipsis">
                                                    <small className="text-gray">
                                                       <span className={`${item.viewedAt ? "text-danger" : "text-success"} mr-1`}>
-                                                         {item.viewedAt ? `Viewed ` + item.viewedAt : `Unopened`}
+                                                         {item.viewedAt ? `Viewed ` + formatDate(item.viewedAt) : `Unopened`}
                                                       </span>
                                                       {item.contactNameTo} by {item.userFrom}
                                                    </small>
@@ -161,7 +161,7 @@ export default class Quotes extends Component {
                                                 </div>
                                                 <span className="float-right">
                                                    <small className="text-gray">
-                                                      <span className="dt-time">{item.createdAt}</span>
+                                                      <span className="dt-time">{formatDate(item.createdAt)}</span>
                                                       <span className="badge badge-primary px-3 py-1 ml-1 text-uppercase">{item.status}</span>
                                                    </small>
                                                 </span>
@@ -169,7 +169,7 @@ export default class Quotes extends Component {
                                                    <small className="text-gray">
                                                       <span data-tg-control="{&quot;QuotesLastView&quot;:[1599451559]}">
                                                          {/* <span className="text-danger mr-1">Viewed 1 hour ago</span> */}
-                                                         <span className="text-danger mr-1">Viewed {item.viewedAt}</span>
+                                                         <span className="text-danger mr-1">Viewed {formatDate(item.viewedAt)}</span>
                                                       </span>{item.contactNameTo} by {item.userFrom}</small>
                                                 </div>
                                              </td>

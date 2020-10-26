@@ -4,12 +4,13 @@ import NavCrump from '../../components/NavCrump'
 import StatusBanner from '../../components/StatusBanner'
 import ProgressBar from '../../components/ProgressBar';
 import axios from '../../util/Api';
-import { toFixedFloat } from '../../util';
+import { formatDate, formatDateTime, toFixedFloat } from '../../util';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
 import { toastrErrorConfig, toastrSuccessConfig, toastrWarningConfig } from '../../util/toastrConfig';
 import QuoteItemTotal from '../../components/QuoteItemTotal';
 import { setInitUrl, userSignOut } from '../../actions/Auth';
+import { getTeammates } from '../../actions/Setting';
 
 class PublicQuoteView extends Component {
    mounted = false;
@@ -32,7 +33,9 @@ class PublicQuoteView extends Component {
          commentContent: "",
          toMateAccountId: "",
          privateNoteContent: "",
-         answerContent: ""
+         answerContent: "",
+
+         isPrivateEligible: false
       };
       this.hiddenFileInput = React.createRef();
    }
@@ -190,12 +193,15 @@ class PublicQuoteView extends Component {
                   discussions: data.quote.discussions ? data.quote.discussions : []
                });
                if (this.props.auth.authUser) {
-                  axios.get('/teammates').then(({ data }) => {
-                     this.setState({ teammates: data.teammates });
+                  axios.get('/teammates').then((res) => {
+                     console.log("get teammates api response ============>", res.data)
+                     const { teammates } = res.data;
+                     this.setState({ teammates: teammates });
                      if (this.props.match.path === '/q/:entoken/author-discuss') {
-                        if (this.props.auth.authUser._id === data.quote.author._id) {
-                           console.log(" this user is eligable %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-                           // this.props.history.push(`/q/${entoken}`);
+
+                        if (teammates.find(mate => mate._id === this.props.auth.authUser._id)) {
+                           console.log(" this user is Eligible %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+                           this.setState({ isPrivateEligible: true });
                         } else {
                            this.props.setInitUrl(`/q/${entoken}`);
                            this.props.history.push('/sign-in');
@@ -288,11 +294,11 @@ class PublicQuoteView extends Component {
                               </div>
                               <div className="mb-1">
                                  <span className="text-gray fa-xs text-uppercase">Date</span>
-                                 <p className="mb-0">{this.state.quote.createdAt}</p>
+                                 <p className="mb-0">{formatDate(this.state.quote.createdAt)}</p>
                               </div>
                               <div className="mb-1">
                                  <span className="text-gray fa-xs text-uppercase">Valid Until</span>
-                                 <p className="mb-0">{this.state.quote.settings.validUntil}</p>
+                                 <p className="mb-0">{formatDate(this.state.quote.settings.validUntil)}</p>
                               </div>
                            </div>
                         </div>
@@ -538,28 +544,30 @@ class PublicQuoteView extends Component {
                                  <h3 className="py-3 border-bottom mx-4">Questions & Answers</h3>
                                  {
                                     this.state.discussions.map((discussion, index) => {
-                                       if (discussion.category === "privateNote") return (
-                                          <div className="discuss-row discuss-form mb-3 d-flex" key={index}>
-                                             <img className="avatar-48 mr-3 mb-2" src={discussion.privateNote.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
-                                             <div className="border-green-left pl-3">
-                                                <div className="row no-gutters mb-1">
-                                                   <span className="badge badge-success px-3 py-1 mr-2 text-uppercase">private</span>
-                                                   <span className="font-w700 text-black mr-2">{discussion.privateNote.author.firstName + " " + discussion.privateNote.author.lastName}</span>
-                                                   <span className="font-w400 text-secondary">{discussion.privateNote.updatedAt}</span>
-                                                </div>
-                                                <div className="row no-gutters">
-                                                   <span className="text-black">{discussion.privateNote.content}</span>
+                                       if (discussion.category === "privateNote") {
+                                          if (this.state.isPrivateEligible) return (
+                                             <div className="discuss-row discuss-form mb-3 d-flex" key={index}>
+                                                <img className="avatar-48 mr-3 mb-2" src={discussion.privateNote.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
+                                                <div className="border-green-left pl-3">
+                                                   <div className="row no-gutters mb-1">
+                                                      <span className="badge badge-success px-3 py-1 mr-2 text-uppercase">private</span>
+                                                      <span className="font-w700 text-black mr-2">{discussion.privateNote.author.firstName + " " + discussion.privateNote.author.lastName}</span>
+                                                      <span className="font-w400 text-secondary">{formatDateTime(discussion.privateNote.updatedAt)}</span>
+                                                   </div>
+                                                   <div className="row no-gutters">
+                                                      <span className="text-black">{discussion.privateNote.content}</span>
+                                                   </div>
                                                 </div>
                                              </div>
-                                          </div>
-                                       );
+                                          );
+                                       }
                                        else if (discussion.category === "comment") return (
                                           <div className="discuss-row discuss-form mb-3 d-flex" key={index}>
                                              <img className="avatar-48 mr-3 mb-2" src={discussion.comment.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
                                              <div className="">
                                                 <div className="row no-gutters mb-1">
                                                    <span className="font-w700 text-black mr-2">{discussion.comment.author.firstName + " " + discussion.comment.author.lastName}</span>
-                                                   <span className="font-w400 text-secondary">{discussion.comment.updatedAt}</span>
+                                                   <span className="font-w400 text-secondary">{formatDateTime(discussion.comment.updatedAt)}</span>
                                                 </div>
                                                 <div className="row no-gutters">
                                                    <span className="text-black">{discussion.comment.content}</span>
@@ -576,7 +584,7 @@ class PublicQuoteView extends Component {
                                                    <div className="">
                                                       <div className="row no-gutters mb-1">
                                                          <span className="font-w700 text-black mr-2">{discussion.questionAndAnswer.question.author.firstName + " " + discussion.questionAndAnswer.question.author.lastName}</span>
-                                                         <span className="font-w400 text-secondary">{discussion.questionAndAnswer.question.updatedAt}</span>
+                                                         <span className="font-w400 text-secondary">{formatDateTime(discussion.questionAndAnswer.question.updatedAt)}</span>
                                                       </div>
                                                       <div className="row no-gutters">
                                                          <span className="text-black">{discussion.questionAndAnswer.question.content}</span>
@@ -590,7 +598,7 @@ class PublicQuoteView extends Component {
                                                       <div className="">
                                                          <div className="row no-gutters mb-1">
                                                             <span className="font-w700 text-black mr-2">{discussion.questionAndAnswer.answer.author.firstName + " " + discussion.questionAndAnswer.answer.author.lastName}</span>
-                                                            <span className="font-w400 text-secondary">{discussion.questionAndAnswer.answer.updatedAt}</span>
+                                                            <span className="font-w400 text-secondary">{formatDateTime(discussion.questionAndAnswer.answer.updatedAt)}</span>
                                                          </div>
                                                          <div className="row no-gutters">
                                                             <span className="text-black">{discussion.questionAndAnswer.answer.content}</span>
@@ -875,5 +883,5 @@ class PublicQuoteView extends Component {
 const mapStateToProps = ({ auth }) => {
    return { auth };
 }
-const mapDispatchToProps = { setInitUrl, userSignOut };
+const mapDispatchToProps = { setInitUrl, userSignOut, getTeammates };
 export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);

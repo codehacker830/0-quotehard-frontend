@@ -1,3 +1,6 @@
+const monthNames = ["January", "February", "March", "April", "May", "June",
+   "July", "August", "September", "October", "November", "December"
+];
 export const alterTypeVariableStr = (str) => {
    switch (str) {
       case "primaryPhone":
@@ -82,4 +85,34 @@ export const countDecimals = (num) => {
 export const caculateTotalTax = (pItemArr) => {
    let totalTax = 0;
    return totalTax;
+}
+
+export const formatDate = (date) => {
+   if (!date) return "";
+   else {
+      const dtObj = new Date(date);
+      if (isValidDateObj(dtObj)) {
+         const year = dtObj.getFullYear();
+         const monthName = monthNames[dtObj.getMonth()];
+         const day = dtObj.getDate();
+         return monthName + " " + day + ", " + year;
+      }
+      else return "";
+   }
+}
+
+export const formatDateTime = (date) => {
+   if (!date) return "";
+   else {
+      const dtObj = new Date(date);
+      if (isValidDateObj(dtObj)) {
+         const year = dtObj.getFullYear();
+         const monthName = monthNames[dtObj.getMonth()];
+         const day = dtObj.getDate();
+         const hour = dtObj.getHours();
+         const minutes = dtObj.getMinutes();
+         return monthName + " " + day + ", " + year + " at " + hour + ":" + minutes;
+      }
+      else return "";
+   }
 }

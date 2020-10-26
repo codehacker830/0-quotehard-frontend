@@ -2,7 +2,7 @@ import { time } from 'highcharts';
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { initTemplateSettings } from '../../../constants/InitState';
-import { toFixedFloat } from '../../../util';
+import { formatDate, toFixedFloat } from '../../../util';
 
 class QuoteTableShow extends Component {
    render() {
@@ -29,7 +29,7 @@ class QuoteTableShow extends Component {
                                        </div>
                                        <span className="float-right">
                                           <small className="text-gray">
-                                             <span className="dt-time">{item.createdAt}</span>
+                                             <span className="dt-time">{formatDate(item.createdAt)}</span>
                                              <span className="badge badge-success px-3 py-1 ml-1 text-uppercase">{item.status}</span>
                                           </small>
                                        </span>
@@ -64,13 +64,13 @@ class QuoteTableShow extends Component {
                                              </div>
                                              <span className="float-right">
                                                 <small className="text-gray">
-                                                   <span className="dt-time">{item.createdAt}</span>
+                                                   <span className="dt-time">{formatDate(item.createdAt)}</span>
                                                 </small>
                                              </span>
                                              <div className="u-ellipsis">
                                                 <small className="text-gray">
                                                    <span className={`${item.viewedAt ? "text-danger" : "text-success"} mr-1`}>
-                                                      {item.viewedAt ? `Viewed ` + item.viewedAt : `Unopened`}
+                                                      {item.viewedAt ? `Viewed ` + formatDate(item.viewedAt) : `Unopened`}
                                                    </span>
                                                    {item.contactNameTo} by {item.userFrom}
                                                 </small>
@@ -104,13 +104,13 @@ class QuoteTableShow extends Component {
                                                    </div>
                                                    <span className="float-right">
                                                       <small className="text-gray">
-                                                         <span className="dt-time">{item.createdAt}</span>
+                                                         <span className="dt-time">{formatDate(item.createdAt)}</span>
                                                          <span className="badge badge-primary px-3 py-1 ml-1 text-uppercase">{item.status}</span>
                                                       </small>
                                                    </span>
                                                    <div className="u-ellipsis">
                                                       <small className="text-gray">
-                                                         <span className="text-danger mr-1">Viewed {item.viewedAt}</span>{item.contactNameTo} by {item.userFrom}</small>
+                                                         <span className="text-danger mr-1">Viewed {formatDate(item.viewedAt)}</span>{item.contactNameTo} by {item.userFrom}</small>
                                                    </div>
                                                 </td>
                                              </tr>

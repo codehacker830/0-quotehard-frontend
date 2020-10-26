@@ -2,6 +2,7 @@ import React from 'react'
 import { toastr } from 'react-redux-toastr';
 import { Link, withRouter } from 'react-router-dom'
 import { allActivities } from '../constants/Dump';
+import { formatDate } from '../util';
 import axios from '../util/Api';
 import { toastrErrorConfig, toastrSuccessConfig } from '../util/toastrConfig';
 
@@ -44,19 +45,19 @@ export const StatusBanner = (props) => {
                   <div className="row">
                      <div className="bg-white p-4 mb-3 maxWidth-200 mr-2">
                         <div className="font-size-h2 mb-1">Sent</div>
-                        <div className="text-muted">September 7, 2020</div>
+                        <div className="text-muted">{formatDate(props.quote.settings.sentAt)}</div>
                      </div>
                      <div className="p-4 mb-3 maxWidth-200 mr-2">
                         <div className="font-size-h4 mb-1 text-success text-center">Opens</div>
-                        <div className="font-size-h2 font-w600 text-success text-center">2</div>
+                        <div className="font-size-h2 font-w600 text-success text-center">{props.quote.openTimes}</div>
                      </div>
                      <div className="p-4 mb-3 maxWidth-200 mr-2">
                         <div className="font-size-h4 mb-1 text-success text-center">Q&A</div>
-                        <div className="font-size-h2 font-w600 text-success text-center">1</div>
+                        <div className="font-size-h2 font-w600 text-success text-center">{props.quote.discussions.length}</div>
                      </div>
                      <div className="p-4 mb-3 maxWidth-200 mr-2">
                         <div className="font-size-h4 mb-1 text-success text-center">Notes</div>
-                        <div className="font-size-h2 font-w600 text-success text-center">1</div>
+                        <div className="font-size-h2 font-w600 text-success text-center">{props.quote.notes.length}</div>
                      </div>
                      <div className="px-4 ml-auto my-auto">
                         {/* <Link to={{
