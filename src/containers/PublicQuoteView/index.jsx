@@ -189,22 +189,25 @@ class PublicQuoteView extends Component {
                   quote: data.quote,
                   discussions: data.quote.discussions
                });
-               if (this.props.match.path === '/q/:entoken/author-discuss') {
-                  if (this.props.auth.authUser && this.props.auth.authUser._id === data.quote.author._id) {
-                     console.log(" this user is eligable %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-                     // this.props.history.push(`/q/${entoken}`);
-                     // axios.get('/teammates').then(({ data }) => {
-                     //    this.setState({ teammates: data.teammates });
-                     // }).catch(err => {
-                     //    console.error("error during get teammates ==>", err);
-                     //    this.props.setInitUrl(`/q/${entoken}`);
-                     //    this.props.userSignOut;
-                     // });
-                  } else {
+               if (this.props.auth.authUser) {
+                  axios.get('/teammates').then(({ data }) => {
+                     this.setState({ teammates: data.teammates });
+                     if (this.props.match.path === '/q/:entoken/author-discuss') {
+                        if (this.props.auth.authUser._id === data.quote.author._id) {
+                           console.log(" this user is eligable %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+                           // this.props.history.push(`/q/${entoken}`);
+                        } else {
+                           this.props.setInitUrl(`/q/${entoken}`);
+                           this.props.history.push('/sign-in');
+                        }
+                     }
+                  }).catch(err => {
+                     console.error("error during get teammates ==>", err);
                      this.props.setInitUrl(`/q/${entoken}`);
-                     this.props.history.push('/sign-in');
-                  }
+                     this.props.userSignOut;
+                  });
                }
+
             })
             .catch(err => {
                console.error(" ========== checking public draft error =========", err);
@@ -717,8 +720,13 @@ class PublicQuoteView extends Component {
                                                 {
                                                    (this.state.teammates.length > 0) &&
                                                    <optgroup label="Send email to:">
-                                                      <option value={"5f85447fed77730be4610ef4"}>A Devom - note to self</option>
-                                                      <option value={"5f85498cdd3f585b74d58481"}>B Devom</option>
+                                                      {
+                                                         this.state.teammates.map((mate, index) => {
+                                                            const mateFullName = mate.firstName + " " + mate.lastName;
+                                                            const isMe = mate._id === this.props.auth.authUser._id;
+                                                            return (<option value={mate._id} key={index}>{mateFullName} {isMe ? "- note to self" : ""}</option>);
+                                                         })
+                                                      }
                                                    </optgroup>
                                                 }
 
