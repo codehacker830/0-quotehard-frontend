@@ -21,7 +21,8 @@ class SignIn extends Component {
 
    componentWillReceiveProps(nextProps) {
       if (nextProps.auth.authUser) {
-         this.props.history.push('/app');
+         console.log("^^^^^^^^^^^^^^^^^^ this.props.auth.initURL ", this.props.auth.initURL);
+         this.props.history.push(this.props.auth.initURL === '' || this.props.auth.initURL === '/sign-in' ? '/app' : this.props.auth.initURL);
       } else if (nextProps.commonData.error !== "") {
          toastr.error("Incorrect", nextProps.commonData.error, toastrErrorConfig);
       }

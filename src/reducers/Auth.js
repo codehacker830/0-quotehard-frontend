@@ -2,8 +2,8 @@ import { INIT_URL, SIGNOUT_USER_SUCCESS, USER_DATA, USER_TOKEN_SET } from "../co
 
 const INIT_STATE = {
    token: JSON.parse(localStorage.getItem('token')),
-   initURL: '',
-   authUser: JSON.parse(localStorage.getItem('user')),
+   initURL: "",
+   authUser: null
 };
 
 

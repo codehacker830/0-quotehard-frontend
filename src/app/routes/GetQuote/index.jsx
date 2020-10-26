@@ -109,6 +109,14 @@ class GetQuote extends Component {
          notes
       };
       if (this.props.location.pathname === '/app/quote/get') {
+         if (toPeopleIdList.length === 0) {
+            toastr.warning(
+               "Warning",
+               "Contacts where quote sent to should be at least one.",
+               toastrWarningConfig
+            );
+            return;
+         }
          axios.post('/quotes', data)
             .then(({ data }) => {
                console.log("res data =>", data);
@@ -125,6 +133,14 @@ class GetQuote extends Component {
             });
       } else if (this.props.match.path = "/app/quote/:id") {
          const quoteId = this.props.match.params.id;
+         if (toPeopleIdList.length === 0) {
+            toastr.warning(
+               "Warning",
+               "Contacts where quote sent to should be at least one.",
+               toastrWarningConfig
+            );
+            return;
+         }
          axios.put(`/quotes/${quoteId}`, data)
             .then(({ data }) => {
                console.log("uuuuuuuuuuuuuuuuu =>", data);
@@ -143,7 +159,7 @@ class GetQuote extends Component {
       else {
          toastr.warning(
             "Warning",
-            "Something went wrong before request.",
+            "Failed before request.",
             toastrWarningConfig
          );
       }

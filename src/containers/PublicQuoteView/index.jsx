@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import NavCrump from '../components/NavCrump'
-import StatusBanner from '../components/StatusBanner'
-import ProgressBar from '../components/ProgressBar';
-import axios from '../util/Api';
-import { toFixedFloat } from '../util';
+import NavCrump from '../../components/NavCrump'
+import StatusBanner from '../../components/StatusBanner'
+import ProgressBar from '../../components/ProgressBar';
+import axios from '../../util/Api';
+import { toFixedFloat } from '../../util';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
-import { toastrErrorConfig, toastrSuccessConfig } from '../util/toastrConfig';
-import QuoteItemTotal from '../components/QuoteItemTotal';
+import { toastrErrorConfig, toastrSuccessConfig, toastrWarningConfig } from '../../util/toastrConfig';
+import QuoteItemTotal from '../../components/QuoteItemTotal';
+import { setInitUrl, userSignOut } from '../../actions/Auth';
 
 class PublicQuoteView extends Component {
    mounted = false;
@@ -18,12 +19,20 @@ class PublicQuoteView extends Component {
       super();
       this.state = {
          isLoading: true,
+         teammates: [],
          fileArray: [],
          quote: {},
          commentShow: false,
          privateNoteShow: false,
          questionSectionShow: false,
-         isAgreeChecked: false
+         isAgreeChecked: false,
+
+         discussions: [],
+         questionContent: "",
+         commentContent: "",
+         toMateAccountId: "",
+         privateNoteContent: "",
+         answerContent: ""
       };
       this.hiddenFileInput = React.createRef();
    }
@@ -69,20 +78,138 @@ class PublicQuoteView extends Component {
             toastr.error('Error', 'Failed during quote decline request.,', toastrErrorConfig);
          });
    }
+
+   onClickAddPrivateNote = () => {
+      const { privateNoteContent, toMateAccountId } = this.state;
+      const { entoken } = this.props.match.params;
+      console.log(" privateNoteContent =>", privateNoteContent);
+      if (privateNoteContent === "") {
+         toastr.warning("Warning", "Private note should not be empty.", toastrWarningConfig);
+         return;
+      }
+      axios.post('/quotes/private-note', { privateNoteContent, toMateAccountId, entoken })
+         .then(({ data }) => {
+            toastr.success("Succeed", "Private note was submitted.", toastrSuccessConfig);
+            console.log(" Private note submit response ==> ", data)
+            this.setState({
+               discussions: data.discussions,
+               privateNoteContent: ""
+            });
+         })
+         .catch(err => {
+            console.error("error during submit private note ==>", err);
+         });
+   }
+
+   onSubmitCommemt = () => {
+      const { commentContent } = this.state;
+      const { entoken } = this.props.match.params;
+      console.log(" commentContent =>", commentContent);
+      if (commentContent === "") {
+         toastr.warning("Warning", "Comment should not be empty.", toastrWarningConfig);
+         return;
+      }
+      axios.post('/quotes/comment', { commentContent, entoken })
+         .then(({ data }) => {
+            toastr.success("Succeed", "Comment was submitted.", toastrSuccessConfig);
+            console.log(" comment submit response ==> ", data)
+            this.setState({
+               discussions: data.discussions,
+               commentContent: ""
+            });
+         })
+         .catch(err => {
+            console.error("error during submit comment ==>", err);
+         });
+   }
+   onSubmitQuestion = () => {
+      const { questionContent } = this.state;
+      const { entoken } = this.props.match.params;
+      if (questionContent === "") {
+         toastr.warning("Warning", "Answer content should not be empty.", toastrWarningConfig);
+         return;
+      }
+      axios.post('/quotes/ask-question', { questionContent, entoken })
+         .then(({ data }) => {
+            toastr.success("Succeed", "Question was submitted.", toastrSuccessConfig);
+            this.setState({
+               discussions: data.discussions,
+               questionContent: ""
+            });
+         })
+         .catch(err => {
+            console.error("error during submit question ==>", err);
+         });
+   }
+   onSubmitAnswer = (qaId) => {
+      const { answerContent } = this.state;
+      const { entoken } = this.props.match.params;
+      if (answerContent === "") {
+         toastr.warning("Warning", "Answer content should not be empty.", toastrWarningConfig);
+         return;
+      }
+      axios.post('/quotes/answer-question', { answerContent, entoken, qaId })
+         .then(({ data }) => {
+            toastr.success("Succeed", "Answer was submitted.", toastrSuccessConfig);
+            this.setState({
+               discussions: data.discussions,
+               answerContent: ""
+            });
+         })
+         .catch(err => {
+            console.error("error during submit answer ==>", err);
+         });
+   }
+   onSubmitDismiss = (qaId) => {
+      const { entoken } = this.props.match.params;
+      axios.post('/quotes/dismiss', { entoken, qaId })
+         .then(({ data }) => {
+            toastr.success("Succeed", "Answer was dismissed.", toastrSuccessConfig);
+            this.setState({
+               discussions: data.discussions,
+               answerContent: ""
+            });
+         })
+         .catch(err => {
+            console.error("error during submit dismiss ==>", err);
+         });
+   }
    componentDidMount() {
       this.mounted = true;
       const entoken = this.props.match.params.entoken;
       console.log("***** entoken ***** ", entoken);
       if (this.mounted) {
          this.setState({ isLoading: true });
+
          axios.post('/quotes/view-draft', { entoken })
             .then(({ data }) => {
-               console.log("========== res =========", data);
-               this.setState({ isLoading: false, quote: data.quote })
+               console.log("========== Publick overview did mount get quote =========", data);
+               this.setState({
+                  isLoading: false,
+                  quote: data.quote,
+                  discussions: data.quote.discussions
+               });
+               if (this.props.match.path === '/q/:entoken/author-discuss') {
+                  if (this.props.auth.authUser && this.props.auth.authUser._id === data.quote.author._id) {
+                     console.log(" this user is eligable %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+                     // this.props.history.push(`/q/${entoken}`);
+                     // axios.get('/teammates').then(({ data }) => {
+                     //    this.setState({ teammates: data.teammates });
+                     // }).catch(err => {
+                     //    console.error("error during get teammates ==>", err);
+                     //    this.props.setInitUrl(`/q/${entoken}`);
+                     //    this.props.userSignOut;
+                     // });
+                  } else {
+                     this.props.setInitUrl(`/q/${entoken}`);
+                     this.props.history.push('/sign-in');
+                  }
+               }
             })
             .catch(err => {
                console.error(" ========== checking public draft error =========", err);
             });
+
       }
    }
    render() {
@@ -401,117 +528,242 @@ class PublicQuoteView extends Component {
 
 
                               {/* Discussion or Question Section */}
+
+                              {/* show QA records */}
+                              {/* <div className={`mb-4 ${this.state.discussions.length ? "" : "d-none"}`}> */}
+                              <div className={`mb-4 `}>
+                                 <h3 className="py-3 border-bottom mx-4">Questions & Answers</h3>
+                                 {
+                                    this.state.discussions.map((discussion, index) => {
+                                       if (discussion.category === "privateNote") return (
+                                          <div className="discuss-row discuss-form mb-3 d-flex" key={index}>
+                                             <img className="avatar-48 mr-3 mb-2" src={discussion.privateNote.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
+                                             <div className="border-green-left pl-3">
+                                                <div className="row no-gutters mb-1">
+                                                   <span className="badge badge-success px-3 py-1 mr-2 text-uppercase">private</span>
+                                                   <span className="font-w700 text-black mr-2">{discussion.privateNote.author.firstName + " " + discussion.privateNote.author.lastName}</span>
+                                                   <span className="font-w400 text-secondary">{discussion.privateNote.updatedAt}</span>
+                                                </div>
+                                                <div className="row no-gutters">
+                                                   <span className="text-black">{discussion.privateNote.content}</span>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       );
+                                       else if (discussion.category === "comment") return (
+                                          <div className="discuss-row discuss-form mb-3 d-flex" key={index}>
+                                             <img className="avatar-48 mr-3 mb-2" src={discussion.comment.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
+                                             <div className="">
+                                                <div className="row no-gutters mb-1">
+                                                   <span className="font-w700 text-black mr-2">{discussion.comment.author.firstName + " " + discussion.comment.author.lastName}</span>
+                                                   <span className="font-w400 text-secondary">{discussion.comment.updatedAt}</span>
+                                                </div>
+                                                <div className="row no-gutters">
+                                                   <span className="text-black">{discussion.comment.content}</span>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       );
+                                       else if (discussion.category === "questionAndAnswer") {
+                                          const isAnswerAbleUser = this.props.auth.authUser && (this.props.auth.authUser._id === this.state.quote.author._id);
+                                          return (
+                                             <React.Fragment key={index}>
+                                                <div className="discuss-row discuss-form mb-3 d-flex">
+                                                   <img className="avatar-48 mr-3 mb-2" src={discussion.questionAndAnswer.question.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
+                                                   <div className="">
+                                                      <div className="row no-gutters mb-1">
+                                                         <span className="font-w700 text-black mr-2">{discussion.questionAndAnswer.question.author.firstName + " " + discussion.questionAndAnswer.question.author.lastName}</span>
+                                                         <span className="font-w400 text-secondary">{discussion.questionAndAnswer.question.updatedAt}</span>
+                                                      </div>
+                                                      <div className="row no-gutters">
+                                                         <span className="text-black">{discussion.questionAndAnswer.question.content}</span>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                                {
+                                                   discussion.questionAndAnswer.answer.status === "answered" &&
+                                                   <div className="discuss-row discuss-form mb-3 d-flex">
+                                                      <img className="avatar-48 mr-3 mb-2" src={discussion.questionAndAnswer.answer.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
+                                                      <div className="">
+                                                         <div className="row no-gutters mb-1">
+                                                            <span className="font-w700 text-black mr-2">{discussion.questionAndAnswer.answer.author.firstName + " " + discussion.questionAndAnswer.answer.author.lastName}</span>
+                                                            <span className="font-w400 text-secondary">{discussion.questionAndAnswer.answer.updatedAt}</span>
+                                                         </div>
+                                                         <div className="row no-gutters">
+                                                            <span className="text-black">{discussion.questionAndAnswer.answer.content}</span>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                }
+                                                {
+                                                   discussion.questionAndAnswer.answer.status === "dismissed" && null
+                                                }
+                                                {
+                                                   discussion.questionAndAnswer.answer.status === "pending" && isAnswerAbleUser &&
+                                                   <div className="discuss-row discuss-form">
+                                                      <textarea
+                                                         className="form-control mb-2"
+                                                         name="example-textarea-input"
+                                                         rows={4}
+                                                         state={this.state.answerContent}
+                                                         onChange={(ev) => this.setState({ answerContent: ev.target.value })} />
+
+                                                      {/* Images preview section */}
+                                                      <div className="row m-1">
+                                                         {(this.state.fileArray || []).map((url, index) => (
+                                                            <div className="p-1" key={index}>
+                                                               <img src={url} className="mr-2 image-preview-size" alt="..." />
+                                                               <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)}>
+                                                                  <i className="fa fa-times-circle"></i>
+                                                               </button>
+                                                            </div>
+                                                         ))}
+                                                      </div>
+
+                                                      {/* <ProgressBar percentage={75} /> */}
+                                                      <input type="file"
+                                                         ref={this.hiddenFileInput}
+                                                         onChange={this.uploadMultipleFiles}
+                                                         className="d-none"
+                                                         multiple
+                                                      />
+                                                      <button className="btn btn-hero-sm btn-square btn-outline-warning w-100 p-3"
+                                                         onClick={this.handleClickFileOpen}
+                                                      >
+                                                         <i className="si si-paper-clip fa-fw mr-1"></i>
+                                                      Add Image or File
+                                                      </button>
+                                                      <div className="row no-gutters mt-3">
+                                                         <button className="btn btn-secondary mr-2" onClick={() => this.onSubmitAnswer(discussion._id)}>Answer Question</button>
+                                                         <button className="btn btn-alt-secondary" onClick={() => this.onSubmitDismiss(discussion._id)}>Dismiss</button>
+                                                      </div>
+                                                   </div>
+                                                }
+                                             </React.Fragment>
+                                          );
+                                       }
+                                    })
+                                 }
+                              </div>
                               {
-                                 this.props.auth && this.props.auth.authUser ?
-                                    <div className="discuss-wrap">
-                                       <div className="mb-4">
-                                          {/* button wrapper  */}
-                                          <div className={`discuss-button-wrap ${this.state.commentShow || this.state.privateNoteShow ? "d-none" : ""}`}>
-                                             <button className="btn btn-rounded btn-secondary font-size-sm  px-3 py-2 mr-1" onClick={() => this.setState({ commentShow: true })}>Comment</button>
-                                             <button className="btn btn-rounded btn-success font-size-sm px-3 py-2" onClick={() => this.setState({ privateNoteShow: true })}>Private Note</button>
+                                 this.props.auth.authUser && (this.props.auth.authUser._id === this.state.quote.author._id) ?
+                                    <div className="discuss-wrap mb-4">
+                                       {/* controller button wrapper  */}
+                                       <div className={`discuss-button-wrap ${this.state.commentShow || this.state.privateNoteShow ? "d-none" : ""}`}>
+                                          <button className="btn btn-rounded btn-secondary font-size-sm  px-3 py-2 mr-1" onClick={() => this.setState({ commentShow: true })}>Comment</button>
+                                          <button className="btn btn-rounded btn-success font-size-sm px-3 py-2" onClick={() => this.setState({ privateNoteShow: true })}>Private Note</button>
+                                       </div>
+
+                                       {/* ------------------- comment wraper ----------------------- */}
+                                       <div className={`discuss-row discuss-form ${this.state.commentShow ? "" : "d-none"}`}>
+                                          <p>Send email to:</p>
+                                          <h3>
+                                             {this.state.quote.toPeopleList.map((person, index) => {
+                                                return (
+                                                   <span className="mr-2" key={index}>{person.firstName} {person.lastName},</span>
+                                                );
+                                             })}
+                                          </h3>
+                                          <textarea
+                                             className="form-control mb-2"
+                                             name="comment-content-input"
+                                             rows={4}
+                                             placeholder="Write comment..."
+                                             value={this.state.commentContent}
+                                             onChange={(ev) => this.setState({ commentContent: ev.target.value })}
+                                          />
+
+                                          {/* Images preview section */}
+                                          <div className="row m-1">
+                                             {(this.state.fileArray || []).map((url, index) => (
+                                                <div className="p-1">
+                                                   <img src={url} className="mr-2 image-preview-size" alt="..." />
+                                                   <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)}>
+                                                      <i className="fa fa-times-circle"></i>
+                                                   </button>
+                                                </div>
+                                             ))}
                                           </div>
 
-                                          {/* comment wraper */}
-                                          <div className={`discuss-row discuss-form ${this.state.commentShow ? "" : "d-none"}`}>
-                                             <p>Send email to:</p>
-                                             <h3>
-                                                {this.state.quote.toPeopleList.map((person, index) => {
-                                                   return (
-                                                      <span className="mr-2" key={index}>{person.firstName} {person.lastName},</span>
-                                                   );
-                                                })}
-                                             </h3>
-                                             <textarea
-                                                className="form-control mb-2"
-                                                name="example-textarea-input"
-                                                rows={4}
-                                                placeholder="Write comment..."
-                                                defaultValue={""} />
-
-                                             {/* Images preview section */}
-                                             <div className="row m-1">
-                                                {(this.state.fileArray || []).map((url, index) => (
-                                                   <div className="p-1">
-                                                      <img src={url} className="mr-2 image-preview-size" alt="..." />
-                                                      <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)}>
-                                                         <i className="fa fa-times-circle"></i>
-                                                      </button>
-                                                   </div>
-                                                ))}
-                                             </div>
-
-                                             <ProgressBar percentage={75} />
-                                             <input type="file"
-                                                ref={this.hiddenFileInput}
-                                                onChange={this.uploadMultipleFiles}
-                                                className="d-none"
-                                                multiple
-                                             />
-                                             <button className="btn btn-hero-sm btn-square btn-outline-warning w-100 p-3"
-                                                onClick={this.handleClickFileOpen}
-                                             >
-                                                <i className="si si-paper-clip fa-fw mr-1"></i>
+                                          {/* <ProgressBar percentage={75} /> */}
+                                          <input type="file"
+                                             ref={this.hiddenFileInput}
+                                             onChange={this.uploadMultipleFiles}
+                                             className="d-none"
+                                             multiple
+                                          />
+                                          <button className="btn btn-hero-sm btn-square btn-outline-warning w-100 p-3"
+                                             onClick={this.handleClickFileOpen}
+                                          >
+                                             <i className="si si-paper-clip fa-fw mr-1"></i>
                                                 Add Image or File
                                              </button>
-                                             <div className="row no-gutters mt-3">
-                                                <button className="btn btn-secondary mr-2">Send Comment</button>
-                                                <button className="btn btn-alt-secondary" onClick={() => this.setState({ commentShow: false, privateNoteShow: false })}>Cancel</button>
-                                             </div>
+                                          <div className="row no-gutters mt-3">
+                                             <button className="btn btn-secondary mr-2" onClick={this.onSubmitCommemt}>Send Comment</button>
+                                             <button className="btn btn-alt-secondary" onClick={() => this.setState({ commentShow: false, privateNoteShow: false })}>Cancel</button>
+                                          </div>
+                                       </div>
+
+                                       {/* --------------------- private note wraper --------------------------- */}
+                                       <div className={`discuss-row discuss-form ${this.state.privateNoteShow ? "" : "d-none"}`}>
+                                          <h3>Private Note</h3>
+                                          <div className="form-group">
+                                             <label htmlFor="sendMode">Send to:</label>
+                                             <select className="form-control" id="sendMode" name="sendMode"
+                                                value={this.state.toMateAccountId}
+                                                onChange={(ev) => this.setState({ toMateAccountId: ev.target.value })}
+                                             >
+                                                <option value={""}>Add as Private Note only</option>
+                                                {
+                                                   (this.state.teammates.length > 0) &&
+                                                   <optgroup label="Send email to:">
+                                                      <option value={"5f85447fed77730be4610ef4"}>A Devom - note to self</option>
+                                                      <option value={"5f85498cdd3f585b74d58481"}>B Devom</option>
+                                                   </optgroup>
+                                                }
+
+                                             </select>
+                                          </div>
+                                          <textarea
+                                             className="form-control mb-2"
+                                             name="example-textarea-input"
+                                             rows={4}
+                                             placeholder="Write private note..."
+                                             value={this.state.privateNoteContent}
+                                             onChange={(ev) => this.setState({ privateNoteContent: ev.target.value })}
+                                          />
+
+                                          {/* Images preview section */}
+                                          <div className="row m-1">
+                                             {(this.state.fileArray || []).map((url, index) => (
+                                                <div className="p-1" key={index}>
+                                                   <img src={url} className="mr-2 image-preview-size" alt="..." />
+                                                   <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)}>
+                                                      <i className="fa fa-times-circle"></i>
+                                                   </button>
+                                                </div>
+                                             ))}
                                           </div>
 
-                                          {/* private note wraper */}
-                                          <div className={`discuss-row discuss-form ${this.state.privateNoteShow ? "" : "d-none"}`}>
-                                             <h3>Private Note</h3>
-                                             <div className="form-group">
-                                                <label htmlFor="sendMode">Send to:</label>
-                                                <select className="form-control" id="sendMode" name="sendMode">
-                                                   <option value={0}>Add as Private Note only</option>
-                                                   <optgroup label="Send email to:">
-                                                      <option value={1}>A Devom - note to self</option>
-                                                   </optgroup>
-                                                </select>
-                                             </div>
-                                             <textarea
-                                                className="form-control mb-2"
-                                                name="example-textarea-input"
-                                                rows={4}
-                                                placeholder="Write private note..."
-                                                defaultValue={""} />
-
-                                             {/* Images preview section */}
-                                             <div className="row m-1">
-                                                {(this.state.fileArray || []).map((url, index) => (
-                                                   <div className="p-1" key={index}>
-                                                      <img src={url} className="mr-2 image-preview-size" alt="..." />
-                                                      <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)}>
-                                                         <i className="fa fa-times-circle"></i>
-                                                      </button>
-                                                   </div>
-                                                ))}
-                                             </div>
-
-                                             <ProgressBar percentage={75} />
-                                             <input type="file"
-                                                ref={this.hiddenFileInput}
-                                                onChange={this.uploadMultipleFiles}
-                                                className="d-none"
-                                                multiple
-                                             />
-                                             <button className="btn btn-hero-sm btn-square btn-outline-warning w-100 p-3"
-                                                onClick={this.handleClickFileOpen}
-                                             >
-                                                <i className="si si-paper-clip fa-fw mr-1"></i>
-                                          Add Image or File
-                                       </button>
-                                             <div className="row no-gutters my-3">
-                                                <button className="btn btn-success mr-2">Add Private Note</button>
-                                                <button className="btn btn-alt-secondary" onClick={() => this.setState({ commentShow: false, privateNoteShow: false })}>Cancel</button>
-                                             </div>
-                                             <div className="row no-gutters">
-                                                <p>
-                                                   Customers will <strong>not</strong> see Private Notes on Quotes.
-                                          </p>
-                                             </div>
+                                          {/* <ProgressBar percentage={75} /> */}
+                                          <input type="file"
+                                             ref={this.hiddenFileInput}
+                                             onChange={this.uploadMultipleFiles}
+                                             className="d-none"
+                                             multiple
+                                          />
+                                          <button className="btn btn-hero-sm btn-square btn-outline-warning w-100 p-3"
+                                             onClick={this.handleClickFileOpen}
+                                          >
+                                             <i className="si si-paper-clip fa-fw mr-1"></i>
+                                                Add Image or File
+                                             </button>
+                                          <div className="row no-gutters my-3">
+                                             <button className="btn btn-success mr-2" onClick={this.onClickAddPrivateNote}>Add Private Note</button>
+                                             <button className="btn btn-alt-secondary" onClick={() => this.setState({ commentShow: false, privateNoteShow: false })}>Cancel</button>
+                                          </div>
+                                          <div className="row no-gutters">
+                                             <p>Customers will <strong>not</strong> see Private Notes on Quotes.</p>
                                           </div>
                                        </div>
                                     </div>
@@ -523,14 +775,14 @@ class PublicQuoteView extends Component {
                                              <button className="btn btn-hero-lg btn-outline-primary mr-1 mb-3" onClick={() => this.setState({ questionSectionShow: true })}>Ask a Question</button>
                                           </div>
 
-                                          {/* question section wraper */}
+                                          {/* --------------------- question section wraper ------------------------ */}
                                           <div className={`discuss-row discuss-form ${this.state.questionSectionShow ? "" : "d-none"}`}>
                                              <textarea
                                                 className="form-control mb-2"
                                                 name="example-textarea-input"
                                                 rows={4}
-                                                placeholder=""
-                                                defaultValue={""} />
+                                                value={this.state.questionContent}
+                                                onChange={(ev) => this.setState({ questionContent: ev.target.value })} />
 
                                              {/* Images preview section */}
                                              <div className="row m-1">
@@ -544,7 +796,7 @@ class PublicQuoteView extends Component {
                                                 ))}
                                              </div>
 
-                                             <ProgressBar percentage={75} />
+                                             {/* <ProgressBar percentage={75} /> */}
                                              <input type="file"
                                                 ref={this.hiddenFileInput}
                                                 onChange={this.uploadMultipleFiles}
@@ -558,12 +810,13 @@ class PublicQuoteView extends Component {
                                                 Add Image or File
                                              </button>
                                              <div className="row no-gutters mt-3">
-                                                <button className="btn btn-secondary mr-2">Submit Question</button>
+                                                <button className="btn btn-secondary mr-2" onClick={this.onSubmitQuestion}>Submit Question</button>
                                                 <button className="btn btn-alt-secondary" onClick={() => this.setState({ questionSectionShow: false })}>Cancel</button>
                                              </div>
                                           </div>
                                        </div>
 
+                                       {/* ------------------------- Additional comments and accept/decline section ------------------------------- */}
                                        <div className="bg-acceptBox px-4 py-5">
                                           <div className="form-group">
                                              <label htmlFor="additionalComments">Additional comments</label>
@@ -583,7 +836,7 @@ class PublicQuoteView extends Component {
                                                 id="agreeCheck" name="agreeCheck"
                                                 onChange={() => this.setState({ isAgreeChecked: !this.state.isAgreeChecked })}
                                              />
-                                             <label className="form-check-label" htmlFor="agreeCheck">Yes, I agree to and accept this quote</label>
+                                             <label className="form-check-label" htmlFor="agreeCheck">Yes, I {`my full name`} agree to and accept this quote</label>
                                           </div>
                                           <div className={`form-check ${this.state.quote.status === "accepted" ? "" : "d-none"}`}>
                                              <input className="form-check-input" type="checkbox"
@@ -591,7 +844,7 @@ class PublicQuoteView extends Component {
                                                 id="agreeCheckAccepted" name="agreeCheckAccepted"
                                                 disabled
                                              />
-                                             <label className="form-check-label" htmlFor="agreeCheckAccepted">Yes, I agree to and accept this quote</label>
+                                             <label className="form-check-label" htmlFor="agreeCheckAccepted">Yes, {`my full name`} I agree to and accept this quote</label>
                                           </div>
                                           <div className={`mt-4 ${this.state.quote.status === "awaiting" ? "" : "d-none"}`}>
                                              <button type="button" className="btn btn-square btn-hero-primary mr-2" disabled={!this.state.isAgreeChecked} onClick={this.onClickAccept}>Accept Quote</button>
@@ -614,4 +867,5 @@ class PublicQuoteView extends Component {
 const mapStateToProps = ({ auth }) => {
    return { auth };
 }
-export default connect(mapStateToProps)(PublicQuoteView);
+const mapDispatchToProps = { setInitUrl, userSignOut };
+export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);

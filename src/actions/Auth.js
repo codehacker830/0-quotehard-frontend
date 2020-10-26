@@ -99,20 +99,22 @@ export const userSignUp = ({ firstName, lastName, email, password, companyName, 
 
 export const userSignOut = () => {
    return (dispatch) => {
-      dispatch({ type: FETCH_START });
-      axios.get('/account/logout',
-      ).then(({ data }) => {
-         if (data.status === "success") {
-            localStorage.removeItem("token");
-            dispatch({ type: FETCH_SUCCESS });
-            dispatch({ type: SIGNOUT_USER_SUCCESS });
-         } else {
-            dispatch({ type: FETCH_ERROR, payload: data.error });
-         }
-      }).catch(function (error) {
-         dispatch({ type: FETCH_ERROR, payload: error.message });
-         console.log("Error****:", error.message);
-      });
+      localStorage.removeItem("token");
+      dispatch({ type: SIGNOUT_USER_SUCCESS });
+      // dispatch({ type: FETCH_START });
+      // axios.get('/account/logout',
+      // ).then(({ data }) => {
+      //    if (data.status === "success") {
+      //       localStorage.removeItem("token");
+      //       dispatch({ type: FETCH_SUCCESS });
+      //       dispatch({ type: SIGNOUT_USER_SUCCESS });
+      //    } else {
+      //       dispatch({ type: FETCH_ERROR, payload: data.error });
+      //    }
+      // }).catch(function (error) {
+      //    dispatch({ type: FETCH_ERROR, payload: error.message });
+      //    console.log("Error****:", error.message);
+      // });
    }
 };
 

@@ -29,12 +29,18 @@ const RestrictedRoute = ({ component: Component, token, ...rest }) => {
 
 
 class App extends Component {
-   componentWillMount() {
+   constructor(props) {
+      super(props);
+      
       if (this.props.initURL === '') {
          this.props.setInitUrl(this.props.history.location.pathname);
       }
    }
-
+   // componentWillMount() {
+   //    if (this.props.initURL === '') {
+   //       this.props.setInitUrl(this.props.history.location.pathname);
+   //    }
+   // }
 
    componentWillReceiveProps(nextProps) {
       if (nextProps.token) {
@@ -61,8 +67,9 @@ class App extends Component {
                <Switch>
                   <RestrictedRoute path='/app' token={token} component={asyncComponent(() => import("../app"))} />
                   {/* <Route path='/app' component={asyncComponent(() => import("../app"))} /> */}
-                  
+
                   <Route exact path='/q/:entoken' component={asyncComponent(() => import("./PublicQuoteView"))} />
+                  <Route exact path='/q/:entoken/author-discuss' component={asyncComponent(() => import("./PublicQuoteView"))} />
                   <Route exact path='/q/:entoken/accepted' component={asyncComponent(() => import("./ThankyouPage"))} />
                   <Route path='/sign-in' component={SignIn} />
                   <Route path='/new-account' component={SignUp} />
