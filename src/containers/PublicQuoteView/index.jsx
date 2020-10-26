@@ -568,7 +568,7 @@ class PublicQuoteView extends Component {
                                           </div>
                                        );
                                        else if (discussion.category === "questionAndAnswer") {
-                                          const isAnswerAbleUser = this.props.auth.authUser && (this.props.auth.authUser._id === this.state.quote.author._id);
+                                          const isAnswerAbleUser = this.props.auth.authUser && this.state.quote && (this.props.auth.authUser._id === this.state.quote.author._id);
                                           return (
                                              <React.Fragment key={index}>
                                                 <div className="discuss-row discuss-form mb-3 d-flex">
@@ -649,7 +649,7 @@ class PublicQuoteView extends Component {
                                  }
                               </div>
                               {
-                                 this.props.auth.authUser && (this.props.auth.authUser._id === this.state.quote.author._id) ?
+                                 this.props.auth.authUser && this.state.quote && (this.props.auth.authUser._id === this.state.quote.author._id) ?
                                     <div className="discuss-wrap mb-4">
                                        {/* controller button wrapper  */}
                                        <div className={`discuss-button-wrap ${this.state.commentShow || this.state.privateNoteShow ? "d-none" : ""}`}>
