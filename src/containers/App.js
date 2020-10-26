@@ -31,16 +31,11 @@ const RestrictedRoute = ({ component: Component, token, ...rest }) => {
 class App extends Component {
    constructor(props) {
       super(props);
-      
+
       if (this.props.initURL === '') {
          this.props.setInitUrl(this.props.history.location.pathname);
       }
    }
-   // componentWillMount() {
-   //    if (this.props.initURL === '') {
-   //       this.props.setInitUrl(this.props.history.location.pathname);
-   //    }
-   // }
 
    componentWillReceiveProps(nextProps) {
       if (nextProps.token) {

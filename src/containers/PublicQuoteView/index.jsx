@@ -187,7 +187,7 @@ class PublicQuoteView extends Component {
                this.setState({
                   isLoading: false,
                   quote: data.quote,
-                  discussions: data.quote.discussions
+                  discussions: data.quote.discussions ? data.quote.discussions : []
                });
                if (this.props.auth.authUser) {
                   axios.get('/teammates').then(({ data }) => {
