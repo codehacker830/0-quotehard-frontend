@@ -48,7 +48,7 @@ class GetQuote extends Component {
 
          toPeopleList: [],
          title: "",
-         settings: initQuoteSettings,
+         settings: { ...initQuoteSettings, userFrom: this.props.authUser._id },
          items: [
             {
                category: "priceItem",
@@ -154,6 +154,7 @@ class GetQuote extends Component {
                   "New Quote draft was created.",
                   toastrSuccessConfig
                );
+               this.props.history.push(`/app/quote/${data.quote._id}`)
             })
             .catch(err => {
                console.error(" error ===>", err);
