@@ -23,11 +23,14 @@ export const StatusBanner = (props) => {
          })
          .catch(err => {
             console.error(" error => ", err);
-            toastr.error("Error", "Failed to send quote email", toastrErrorConfig);
+            toastr.error("Error", "Failed to send quote.", toastrErrorConfig);
          });
    }
    const onClickEditDraft = () => {
       props.history.push(`/app/quote/${props.quote._id}`);
+   }
+   const onClickArchive = () => {
+      
    }
    return (
       <div className="bg-body-light border-bottom">
@@ -43,22 +46,48 @@ export const StatusBanner = (props) => {
                <div className="container">
                   {/* status */}
                   <div className="row">
-                     <div className="bg-white p-4 mb-3 maxWidth-200 mr-2">
-                        <div className="font-size-h2 mb-1">Sent</div>
-                        <div className="text-muted">{formatDate(props.quote.settings.sentAt)}</div>
+                     {
+                        props.quote.status === "awaiting" &&
+                        <div className="bg-white p-4 maxWidth-200 mb-3 mr-2">
+                           <div className="font-size-h3 mb-1">Sent</div>
+                           <div className="text-muted">{formatDate(props.quote.settings.sentAt)}</div>
+                        </div>
+                     }
+                     {
+                        props.quote.status === "accepted" &&
+                        <div className="bg-info p-4 maxWidth-200 mb-3 mr-2">
+                           <div className="font-size-h3 text-white mb-1">Accepted</div>
+                           <div className="text-white">{formatDate(props.quote.settings.sentAt)}</div>
+                           <button className="btn btn-sm btn-alt-dark float-left m-1 mr-2" onClick={onClickArchive}>Archive</button>
+                        </div>
+                     }
+                     {
+                        props.quote.status === "declined" &&
+                        <div className="bg-danger p-4 maxWidth-200 mb-3 mr-2">
+                           <div className="font-size-h3 text-white mb-1">Declined</div>
+                           <div className="text-white">{formatDate(props.quote.settings.sentAt)}</div>
+                           <button className="btn btn-sm btn-alt-dark float-left m-1 mr-2" onClick={onClickArchive}>Archive</button>
+                        </div>
+                     }
+                     <div className="p-4 maxWidth-200 mb-3 mr-2 mt-3">
+                        <div className="mb-1 text-warning text-center">Opens</div>
+                        <div className="font-size-h1 font-w600 text-warning text-center">{props.quote.openTimes}</div>
                      </div>
-                     <div className="p-4 mb-3 maxWidth-200 mr-2">
-                        <div className="font-size-h4 mb-1 text-success text-center">Opens</div>
-                        <div className="font-size-h2 font-w600 text-success text-center">{props.quote.openTimes}</div>
-                     </div>
-                     <div className="p-4 mb-3 maxWidth-200 mr-2">
-                        <div className="font-size-h4 mb-1 text-success text-center">Q&A</div>
-                        <div className="font-size-h2 font-w600 text-success text-center">{props.quote.discussions.length}</div>
-                     </div>
-                     <div className="p-4 mb-3 maxWidth-200 mr-2">
-                        <div className="font-size-h4 mb-1 text-success text-center">Notes</div>
-                        <div className="font-size-h2 font-w600 text-success text-center">{props.quote.notes.length}</div>
-                     </div>
+                     {
+                        !!props.quote.discussions.length &&
+                        <div className="p-4 maxWidth-200 mb-3 mr-2 mt-3">
+                           <div className="mb-1 text-secondary text-center">Q&A</div>
+                           <div className="font-size-h1 font-w600 text-secondary text-center">{props.quote.discussions.length}</div>
+                        </div>
+                     }
+                     {
+                        !!props.quote.notes.length &&
+                        <div className="p-4 maxWidth-200 mb-3 mr-2 mt-3">
+                           <div className="mb-1 text-success text-center">Notes</div>
+                           <div className="font-size-h1 font-w600 text-success text-center">{props.quote.notes.length}</div>
+                        </div>
+                     }
+
                      <div className="px-4 ml-auto my-auto">
                         {/* <Link to={{
                      pathname: `/q/NDgVC1jaJlnZI1NAHgj5QdCvg4ZgP7qLNaYinjzg8rM`,
