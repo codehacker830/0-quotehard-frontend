@@ -194,12 +194,11 @@ class PublicQuoteView extends Component {
                });
                if (this.props.auth.authUser) {
                   axios.get('/teammates').then((res) => {
-                     console.log("get teammates api response ============>", res.data)
-                     const { teammates } = res.data;
-                     this.setState({ teammates: teammates });
-                     if (this.props.match.path === '/q/:entoken/author-discuss') {
-
-                        if (teammates.find(mate => mate._id === this.props.auth.authUser._id)) {
+                     console.log("get teammates api response ============>", res.data.teammates)
+                     this.setState({ teammates: res.data.teammates });
+                     if (this.props.match.path === '/q/:entoken' || this.props.match.path === '/q/:entoken/author-discuss') {
+                        const me = res.data.teammates.find(mate => mate._id === this.props.auth.authUser._id);
+                        if (me) {
                            console.log(" this user is Eligible %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
                            this.setState({ isPrivateEligible: true });
                         } else {
