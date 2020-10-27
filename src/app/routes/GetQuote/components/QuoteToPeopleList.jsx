@@ -4,7 +4,7 @@ import CompanyNameShow from './CompanyNameShow';
 export const QuotetoPeopleList = (props) => {
 
    return (
-      <>
+      <React.Fragment>
          {
             props.toPeopleList.map((contact, index) => {
                return (
@@ -19,7 +19,7 @@ export const QuotetoPeopleList = (props) => {
                );
             })
          }
-      </>
+      </React.Fragment>
 
    )
 }
