@@ -11,6 +11,7 @@ import { toastrErrorConfig, toastrSuccessConfig, toastrWarningConfig } from '../
 import QuoteItemTotal from '../../components/QuoteItemTotal';
 import { setInitUrl, userSignOut } from '../../actions/Auth';
 import { getTeammates } from '../../actions/Setting';
+import DeclineCommentShow from './components/DeclineCommentShow';
 
 class PublicQuoteView extends Component {
    mounted = false;
@@ -549,7 +550,7 @@ class PublicQuoteView extends Component {
                                                 <img className="avatar-48 mr-3 mb-2" src={discussion.privateNote.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
                                                 <div className="border-green-left pl-3">
                                                    <div className="row no-gutters mb-1">
-                                                      <span className="badge badge-success px-3 py-1 mr-2 text-uppercase">private</span>
+                                                      <span className="badge badge-success my-auto mr-2 text-uppercase">private</span>
                                                       <span className="font-w700 text-black mr-2">{discussion.privateNote.author.firstName + " " + discussion.privateNote.author.lastName}</span>
                                                       <span className="font-w400 text-secondary">{formatDateTime(discussion.privateNote.updatedAt)}</span>
                                                    </div>
@@ -660,8 +661,8 @@ class PublicQuoteView extends Component {
                                     <div className="discuss-wrap mb-4">
                                        {/* controller button wrapper  */}
                                        <div className={`discuss-button-wrap ${this.state.commentShow || this.state.privateNoteShow ? "d-none" : ""}`}>
-                                          <button className="btn btn-rounded btn-secondary font-size-sm  px-3 py-2 mr-1" onClick={() => this.setState({ commentShow: true })}>Comment</button>
-                                          <button className="btn btn-rounded btn-success font-size-sm px-3 py-2" onClick={() => this.setState({ privateNoteShow: true })}>Private Note</button>
+                                          <button className="btn btn-sm btn-dark font-size-sm px-2 py-1 mr-2" onClick={() => this.setState({ commentShow: true })}>Comment</button>
+                                          <button className="btn btn-sm btn-success font-size-sm px-2 py-1" onClick={() => this.setState({ privateNoteShow: true })}>Private Note</button>
                                        </div>
 
                                        {/* ------------------- comment wraper ----------------------- */}
@@ -785,7 +786,7 @@ class PublicQuoteView extends Component {
                                     :
                                     <div className="discuss-wrap">
                                        <div className="mb-4">
-                                          {/* button wrapper  */}
+                                          {/* question button wrapper  */}
                                           <div className={`discuss-button-wrap ${this.state.questionSectionShow ? "d-none" : ""}`}>
                                              <button className="btn btn-hero-lg btn-outline-primary mr-1 mb-3" onClick={() => this.setState({ questionSectionShow: true })}>Ask a Question</button>
                                           </div>
@@ -868,6 +869,7 @@ class PublicQuoteView extends Component {
                                        </div>
                                     </div>
                               }
+                              <DeclineCommentShow quote={this.state.quote} />
                            </div>
                         </div>
                      </div>
