@@ -40,7 +40,7 @@ export const initPriceItem = {
 
    per: 1,
    every: "week",
-   period: 1,
+   period: 0,
 
    isCostPriceMargin: false,
    costPrice: 0,

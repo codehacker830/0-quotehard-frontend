@@ -89,15 +89,7 @@ class GetQuote extends Component {
          items,
          notes
       };
-      if (this.props.location.pathname === '/app/quote/get') {
-         if (toPeopleIdList.length === 0) {
-            toastr.warning(
-               "Warning",
-               "Contacts where quote sent to should be at least one.",
-               toastrWarningConfig
-            );
-            return;
-         }
+      if (this.props.match.path === '/app/quote/get' || this.props.match.path === '/app/quote/get/from-template/:id') {
          axios.post('/quotes', data)
             .then(({ data }) => {
                console.log("res data =>", data);
@@ -114,14 +106,6 @@ class GetQuote extends Component {
             });
       } else if (this.props.match.path = "/app/quote/:id") {
          const quoteId = this.props.match.params.id;
-         if (toPeopleIdList.length === 0) {
-            toastr.warning(
-               "Warning",
-               "Contacts where quote sent to should be at least one.",
-               toastrWarningConfig
-            );
-            return;
-         }
          axios.put(`/quotes/${quoteId}`, data)
             .then(({ data }) => {
                console.log("uuuuuuuuuuuuuuuuu =>", data);
@@ -136,13 +120,13 @@ class GetQuote extends Component {
                console.error(" error ===>", err);
                toastr.error("Error", "Quote failed to update", toastrErrorConfig);
             });
-      }
-      else {
-         toastr.warning(
-            "Warning",
-            "Failed before request.",
-            toastrWarningConfig
-         );
+      } else {
+         console.error("Error !!!!!!!!!!!!!!");
+         // toastr.warning(
+         //    "Warning",
+         //    "Failed before request.",
+         //    toastrWarningConfig
+         // );
       }
    };
    handleClickSave = () => {
