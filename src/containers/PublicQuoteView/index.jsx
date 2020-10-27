@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import NavCrump from '../../components/NavCrump'
 import StatusBanner from '../../components/StatusBanner'
 import ProgressBar from '../../components/ProgressBar';
@@ -197,15 +197,13 @@ class PublicQuoteView extends Component {
                   axios.get('/teammates').then((res) => {
                      console.log("get teammates api response ============>", res.data.teammates)
                      this.setState({ teammates: res.data.teammates });
-                     if (this.props.match.path === '/q/:entoken' || this.props.match.path === '/q/:entoken/author-discuss') {
-                        const me = res.data.teammates.find(mate => mate._id === this.props.auth.authUser._id);
-                        if (me) {
-                           console.log(" this user is Eligible %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-                           this.setState({ isPrivateEligible: true });
-                        } else {
-                           this.props.setInitUrl(`/q/${entoken}`);
-                           this.props.history.push('/sign-in');
-                        }
+                     const me = res.data.teammates.find(mate => mate._id === this.props.auth.authUser._id);
+                     if (me) {
+                        console.log(" this user is Eligible %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+                        this.setState({ isPrivateEligible: true });
+                     }
+                     else {
+                        this.setState({ isPrivateEligible: false });
                      }
                   }).catch(err => {
                      console.error("error during get teammates ==>", err);
@@ -224,7 +222,14 @@ class PublicQuoteView extends Component {
    render() {
       console.log(" ----------- PublicQuoteView state ------", this.state);
       console.log(" ----------- PublicQuoteView props ------", this.props);
-      if (this.state.isLoading) return null;
+      if (this.state.isLoading) return <div>loading...</div>;
+      else if (this.props.match.path === '/q/:entoken/author-discuss') {
+         if (!this.state.isPrivateEligible) {
+            this.props.setInitUrl(`/q/${this.props.match.params.entoken}`);
+            // this.props.history.push('/sign-in');
+            return <Redirect to="/sign-in" />
+         } else return <Redirect to={`/q/${this.props.match.params.entoken}`} />
+      }
       else return (
          <React.Fragment>
             <main id="main-container" className="bg-white">
