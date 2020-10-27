@@ -146,7 +146,6 @@ class GetQuote extends Component {
          notes
       };
       if (this.props.location.pathname === '/app/quote/get' || this.props.match.path === "/app/quote/get/from-template/:id") {
-         if (toPeopleIdList.length === 0) { toastr.info("Required", "You must add at least one contact.", toastrInfoConfig); return; }
          axios.post('/quotes', data)
             .then(({ data }) => {
                console.log("res data =>", data);
