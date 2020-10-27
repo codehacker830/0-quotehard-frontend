@@ -10,11 +10,13 @@ export const CompanyNameShow = (props) => {
             // console.log("44444444444444 ", data);
             setCompanyName(data.contact.companyName);
          })
-         .catch();
-   }, [props]);
+         .catch(err => {
+            console.error("Error during search company name by companyid", err);
+         });
+   }, [props.companyId]);
    return (
       <span className="text-secondary">{companyName}</span>
    )
 }
 
-export default CompanyNameShow
+export default CompanyNameShow;

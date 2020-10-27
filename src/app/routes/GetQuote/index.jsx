@@ -95,7 +95,7 @@ class GetQuote extends Component {
                console.log("res data =>", data);
                toastr.success(
                   "Success",
-                  "New Quote draft was created.",
+                  "New Quote was defined.",
                   toastrSuccessConfig
                );
                this.props.history.push(`/q/${data.entoken}`);
@@ -111,7 +111,7 @@ class GetQuote extends Component {
                console.log("uuuuuuuuuuuuuuuuu =>", data);
                toastr.success(
                   "Success",
-                  "Quote draft was defined.",
+                  "Quote was defined.",
                   toastrSuccessConfig
                );
                this.props.history.push(`/q/${data.entoken}`);
@@ -146,14 +146,7 @@ class GetQuote extends Component {
          notes
       };
       if (this.props.location.pathname === '/app/quote/get' || this.props.match.path === "/app/quote/get/from-template/:id") {
-         if (toPeopleIdList.length === 0) {
-            toastr.warning(
-               "Warning",
-               "Please input at leat one contact.",
-               toastrWarningConfig
-            );
-            return;
-         }
+         if (toPeopleIdList.length === 0) { toastr.info("Required", "You must add at least one contact.", toastrInfoConfig); return; }
          axios.post('/quotes', data)
             .then(({ data }) => {
                console.log("res data =>", data);
