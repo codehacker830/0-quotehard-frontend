@@ -7,8 +7,10 @@ import axios from '../util/Api';
 import asyncComponent from '../util/asyncComponent';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
-import ForgotPassword from './ForgotPassword';
+import RequestPassword from './RequestPassword';
+import RequestPasswordSent from './RequestPasswordSent';
 import Error404 from '../components/Error404';
+import RequestPasswordExpired from './RequestPasswordExpired';
 
 const RestrictedRoute = ({ component: Component, token, ...rest }) => {
    return (
@@ -66,9 +68,12 @@ class App extends Component {
                   <Route exact path='/q/:entoken/author-discuss' component={asyncComponent(() => import("./PublicQuoteView"))} />
                   <Route exact path='/q/:entoken/accepted' component={asyncComponent(() => import("./ThankyouPage"))} />
                   <Route exact path='/q/:entoken' component={asyncComponent(() => import("./PublicQuoteView"))} />
-                  <Route path='/sign-in' component={SignIn} />
-                  <Route path='/new-account' component={SignUp} />
-                  <Route path='/forgot-pass' component={ForgotPassword} />
+                  <Route exact path='/sign-in' component={SignIn} />
+                  <Route exact path='/new-account' component={SignUp} />
+                  <Route exact path='/request-password' component={RequestPassword} />
+                  <Route exact path='/request-password/sent' component={RequestPasswordSent} />
+                  <Route exact path='/request-password/new/expired' component={RequestPasswordExpired} />
+                  <Route exact path='/request-password/new/:entoken' component={RequestPasswordSent} />
                   <Route component={Error404} />
                </Switch>
             </div>

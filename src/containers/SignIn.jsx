@@ -80,7 +80,7 @@ class SignIn extends Component {
                                  <i className="fa fa-fw fa-sign-in-alt mr-1" /> Sign In
                               </button>
                               <p className="mt-3 mb-0 d-lg-flex justify-content-lg-between">
-                                 <Link className="btn btn-sm btn-light d-block d-lg-inline-block mb-1" to="/forgot-pass">
+                                 <Link className="btn btn-sm btn-light d-block d-lg-inline-block mb-1" to="/request-password">
                                     <i className="fa fa-exclamation-triangle text-muted mr-1" />
                                     Forgot password
                                  </Link>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
-export default class ForgotPassword extends Component {
+export default class RequestPassword extends Component {
    state = {
       email: ""
    };
