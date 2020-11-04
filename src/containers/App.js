@@ -74,7 +74,7 @@ class App extends Component {
                   <Route exact path='/request-password' component={RequestPassword} />
                   <Route exact path='/request-password/sent' component={RequestPasswordSent} />
                   <Route exact path='/request-password/new/expired' component={RequestPasswordExpired} />
-                  <Route exact path='/request-password/new/:entoken' component={ChangePassword} />
+                  <Route exact path='/request-password/change/:entoken' component={ChangePassword} />
                   <Route component={Error404} />
                </Switch>
             </div>

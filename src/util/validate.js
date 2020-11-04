@@ -10,3 +10,15 @@ export const validateEmail = (email) => {
 
    return error;
 };
+
+export const validatePassword = (password) => {
+   let error = "";
+
+   if (!password) {
+      error = "Please enter a password.";
+   } else if (password.length < 6) {
+      error = "Your password needs to be at least 6 characters long.";
+   }
+
+   return error;
+};

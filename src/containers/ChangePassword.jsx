@@ -1,28 +1,39 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { userResetPassword } from '../actions/Auth';
+import { fetchError, fetchStart, fetchSuccess, showMessage } from '../actions/Common';
 import axios from '../util/Api';
-import { validateEmail } from '../util/validate';
+import { validatePassword } from '../util/validate';
 
-export default class ChangePassword extends Component {
+class ChangePassword extends Component {
    state = {
+      isMounted: false,
       password: "",
       loading: false,
    };
    onHandleSubmit = () => {
-      // const error = validateEmail(this.state.password);
-      // if (error) {
-      //    toast.success(error);
-      //    return;
-      // }
-      // this.setState({ loading: true });
-      // axios.post("/request-password", { password: this.state.password }).then((data) => {
+      const { entoken } = this.props.match.params;
+      const { password } = this.state;
+      const error = validatePassword(password);
+      if (error) {
+         toast.success(error);
+         return;
+      }
+      console.log(" entoken ===>", entoken);
+      console.log(" password ===>", password);
+      this.props.userResetPassword({ entoken, password });
+
+      // axios.post("/reset-password", { password: this.state.password }).then((data) => {
       //    this.setState({ loading: false });
-      //    if (!data.account) {
-      //       toast.success(`We can’t find an account by ${this.state.password}.`);
+      //    if (!data.isValid) {
+      //       this.props.history.push('/request-password/new/expired');
       //       return;
+      //    } else {
+
       //    }
-      //    this.props.history.push('/request-password/sent');
+
       // }).catch(err => {
       //    this.setState({ loading: false });
       //    console.error("error during request password-reset-link :", err);
@@ -31,22 +42,26 @@ export default class ChangePassword extends Component {
    }
    componentDidMount() {
       const { entoken } = this.props.match.params;
+      this.props.fetchStart();
       axios.post('/validate-entoken', { entoken })
          .then(({ data }) => {
+            this.setState({ isMounted: true });
+            this.props.fetchSuccess();
             if (!data.isValid) {
-               this.setState({ loading: false });
                this.props.history.push('/request-password/new/expired');
             }
          })
          .catch(err => {
-            this.setState({ loading: false });
+            this.props.fetchError();
             console.error("error during change password :", err);
             toast.success(`Try again later.`);
          });
    }
    render() {
-      const { password } = this.state;
-      return (
+      const { isMounted, password } = this.state;
+      console.log(" change password props ==>", this.props);
+      if (!isMounted) return null;
+      else return (
          <main id="main-container">
             <div className="row no-gutters">
                {/* Main Section */}
@@ -60,7 +75,7 @@ export default class ChangePassword extends Component {
                                  <h2 className="font-w700">Change your password</h2>
                                  <label className="font-size-h5" for="new-password">New password</label>
                                  <input
-                                    type="text"
+                                    type="password"
                                     className="form-control form-control-lg form-control-alt"
                                     placeholder=""
                                     id="new-password"
@@ -73,11 +88,11 @@ export default class ChangePassword extends Component {
                            <div className="form-group text-center">
                               <button type="submit"
                                  className="btn btn-block btn-hero-lg btn-hero-primary"
-                                 disabled={this.state.loading}
+                                 disabled={this.props.commonData.loading}
                                  onClick={this.onHandleSubmit}
                               >
                                  {
-                                    this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />
+                                    this.props.commonData.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />
                                  }
                                  Save password
                               </button>
@@ -98,3 +113,18 @@ export default class ChangePassword extends Component {
       );
    }
 }
+
+const mapStateToProps = ({ auth, commonData }) => {
+   return { auth, commonData };
+}
+const mapDispatchToProps = (dispatch, ownProps) => {
+   return {
+      fetchStart: () => { dispatch(fetchStart) },
+      fetchSuccess: () => { dispatch(fetchSuccess) },
+      fetchError: () => { dispatch(fetchError) },
+      showMessage: () => { dispatch(showMessage) },
+      userResetPassword: ({ entoken, password }) => { dispatch(userResetPassword({ entoken, password })) }
+   }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);

@@ -3,10 +3,12 @@ import {
    FETCH_START,
    FETCH_SUCCESS,
    INIT_URL,
+   SHOW_MESSAGE,
    SIGNOUT_USER_SUCCESS,
    USER_DATA,
    USER_TOKEN_SET
 } from "../constants/ActionTypes";
+import { history } from "../store";
 import axios from '../util/Api'
 
 export const setInitUrl = (url) => {
@@ -139,3 +141,32 @@ export const userUpdate = ({ firstName, lastName, email, image, password }) => {
       });
    }
 };
+
+export const userResetPassword = ({ entoken, password }) => {
+   return (dispatch) => {
+      dispatch({ type: FETCH_START });
+      // dispatch({ type: USER_TOKEN_SET, payload: null });
+      // dispatch({ type: USER_DATA, payload: null });
+      axios.post('/reset-password', { entoken, password }
+      ).then(({ data }) => {
+         console.log(" asldfjasdlfjalsd ", data);
+         if (data.isValid) {
+            localStorage.setItem("token", JSON.stringify(data.access_token));
+            axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
+            dispatch({ type: FETCH_SUCCESS });
+            dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
+            dispatch({ type: USER_DATA, payload: data.account });
+            location.replace('/app');
+
+         } else {
+            console.log(" User Reset password error ========> ", data);
+            dispatch({ type: FETCH_ERROR, payload: data.message });
+            location.replace('/request-password/new/expired');
+         }
+      }).catch((error) => {
+         dispatch({ type: FETCH_ERROR, payload: "Your password needs to be at least 6 characters long." });
+         dispatch({ type: SHOW_MESSAGE, payload: error.message })
+         console.log("Error****:", error.message);
+      });
+   }
+}

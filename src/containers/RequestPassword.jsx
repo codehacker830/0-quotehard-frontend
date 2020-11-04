@@ -16,7 +16,7 @@ export default class RequestPassword extends Component {
          return;
       }
       this.setState({ loading: true });
-      axios.post("/request-password", { email: this.state.email }).then((data) => {
+      axios.post("/request-password", { email: this.state.email }).then(({ data }) => {
          this.setState({ loading: false });
          if (!data.success) {
             toast.success(`We can’t find an account by ${this.state.email}.`);
