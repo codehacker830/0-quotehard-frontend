@@ -1,14 +1,36 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import { toast } from 'react-toastify';
+import axios from '../util/Api';
+import { validateEmail } from '../util/validate';
 
 export default class RequestPassword extends Component {
    state = {
-      email: ""
+      email: "",
+      loading: false,
    };
+   onHandleSubmit = () => {
+      const error = validateEmail(this.state.email);
+      if (error) {
+         toast.success(error);
+         return;
+      }
+      this.setState({ loading: true });
+      axios.post("/request-password", { email: this.state.email }).then((data) => {
+         this.setState({ loading: false });
+         if (!data.success) {
+            toast.success(`We can’t find an account by ${this.state.email}.`);
+            return;
+         }
+         this.props.history.push('/request-password/sent');
+      }).catch(err => {
+         this.setState({ loading: false });
+         console.error("error during request password change :", err);
+         toast.success(`Try again later.`);
+      });
+   }
    render() {
-      const { checked, email, password } = this.state;
-      const { history } = this.props;
-      console.log("Login State = ", this.state);
+      const { email } = this.state;
       return (
          <main id="main-container">
             <div className="row no-gutters">
@@ -32,8 +54,17 @@ export default class RequestPassword extends Component {
                               </div>
                            </div>
                            <div className="form-group text-center">
-                              <button type="submit" className="btn btn-block btn-hero-lg btn-hero-primary">
-                                 <i className="fa fa-fw fa-reply mr-1" /> Send link
+                              <button type="submit"
+                                 className="btn btn-block btn-hero-lg btn-hero-primary"
+                                 disabled={this.state.loading}
+                                 onClick={this.onHandleSubmit}
+                              >
+                                 {
+                                    this.state.loading ?
+                                       <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />
+                                       : <i className="fa fa-fw fa-reply mr-1" />
+                                 }
+                                 Send link
                               </button>
                               <p className="mt-3 mb-0 d-lg-flex justify-content-lg-between">
                                  <Link className="btn btn-sm btn-light d-block d-lg-inline-block mb-1" to="/sign-in">

@@ -11,6 +11,7 @@ import RequestPassword from './RequestPassword';
 import RequestPasswordSent from './RequestPasswordSent';
 import Error404 from '../components/Error404';
 import RequestPasswordExpired from './RequestPasswordExpired';
+import ChangePassword from './ChangePassword';
 
 const RestrictedRoute = ({ component: Component, token, ...rest }) => {
    return (
@@ -73,7 +74,7 @@ class App extends Component {
                   <Route exact path='/request-password' component={RequestPassword} />
                   <Route exact path='/request-password/sent' component={RequestPasswordSent} />
                   <Route exact path='/request-password/new/expired' component={RequestPasswordExpired} />
-                  <Route exact path='/request-password/new/:entoken' component={RequestPasswordSent} />
+                  <Route exact path='/request-password/new/:entoken' component={ChangePassword} />
                   <Route component={Error404} />
                </Switch>
             </div>
