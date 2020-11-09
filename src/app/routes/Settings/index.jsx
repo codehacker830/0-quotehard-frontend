@@ -1,63 +1,31 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import AccountAndBilling from './components/AccountAndBilling';
-import AddOns from './components/AddOns';
-import AddTeamMember from './components/AddTeamMember';
-import ConnectWithOtherApps from './components/ConnectWithOtherApps';
-import SettingQuote from './components/SettingQuote';
+import { Switch, Route } from 'react-router-dom';
+import asyncComponent from '../../../util/asyncComponent';
 
 export default class Settings extends Component {
    render() {
       return (
-         <div className="content py-5">
-            <div className="row">
-               <div className="col-md-6 col-sm-12">
-                  <h1 className="pt-5 px-2 mb-5">CodeNetflix </h1>
-                  
-                  <SettingQuote />
+         <Switch>
+            <Route exact path="/app/settings" component={asyncComponent(() => import("./Dashboard"))} />
+            {/* Right section */}
+            <Route exact path="/app/settings/profile" component={asyncComponent(() => import("./Profile"))} />
 
-                  <AddTeamMember />
-                  
-                  <AccountAndBilling />
-                  
-                  <AddOns />
+            {/* Left section */}
+            <Route exact path="/app/settings/quote/appearance" component={asyncComponent(() => import("."))} />
+            <Route exact path="/app/settings/quote/defaults" component={asyncComponent(() => import("./QuoteDefaults"))} />
 
-                  <ConnectWithOtherApps />
-               </div>
-               
-               <div className="col-md-6 col-sm-12">
-                  <div className="px-3 py-5">
-                     <Link to="/app/settings/profile">
-                        <img className="img-avatar img-avatar96 img-avatar-thumb border border-primary rounded-0 m-0" src="/assets/media/avatars/avatar8.jpg" alt="..." />
-                     </Link>
-                     <div className="row no-gutters mt-3">
-                        <span className="text-black font-size-h5 font-w700">Raffale C</span>
-                     </div>
-                     <div className="row no-gutters mt-3">
-                        <Link to="/app/settings/profile">Edit Your Profile</Link>
-                     </div>
-                     {/* <div className="row no-gutters mb-5">
-                        <Link to="/app/settings/two-factor/info">
-                           Two-Factor Authentication
-                           <span className="label label-off ml-1">OFF</span>
-                        </Link>
-                     </div> */}
+            <Route exact path="/app/settings/customer-emails" component={asyncComponent(() => import("."))} />
+            <Route exact path="/app/settings/sales-tax-categories" component={asyncComponent(() => import("./SalesTaxCategories"))} />
+            <Route exact path="/app/settings/team" component={asyncComponent(() => import("./Team"))} />
+            <Route exact path="/app/settings/billing-overview" component={asyncComponent(() => import("./BillingOverview"))} />
+            <Route exact path="/app/settings/account-information" component={asyncComponent(() => import("./AccountInformation"))} />
+            <Route exact path="/app/settings/your-data" component={asyncComponent(() => import("."))} />
 
-                     <div className="row no-gutters maxWidth-300 mt-3">
-                        <Link to="/new-account" className="mb-1">Create Another Account</Link>
-                        <span className="text-black">
-                           Automatically qualify for a Multi-Account 20% Discount across everything, when 2 or more accounts have the same Account Owner.
-                        </span>
-                     </div>
+            <Route exact path="/app/settings/sales-category/:id" component={asyncComponent(() => import("./SalesCategory"))} />
+            <Route exact path="/app/settings/sales-tax/:id" component={asyncComponent(() => import("./SalesTax"))} />
 
-                     {/* <div className="row no-gutters maxWidth-300 mt-3">
-                        <Link to="/app/referrals" className="mb-1">Your Referral Link</Link>
-                        <span className="text-black">If you refer someone and they become a paid customer, you’ll get FREE credit.</span>
-                     </div> */}
-                  </div>
-               </div>
-            </div>
-         </div>
+            <Route exact path="/app/settings/payment-details" component={asyncComponent(() => import("./PaymentDetails"))} />
+         </Switch>
       );
    }
 }

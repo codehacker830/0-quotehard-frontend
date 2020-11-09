@@ -50,30 +50,7 @@ class AppRoot extends Component {
 
 
                <Route path="/app/content" component={asyncComponent(() => import("./routes/Templates"))} />
-               <Route path="/app/settings">
-                  <Switch>
-                     <Route exact path="/app/settings" component={asyncComponent(() => import("./routes/Settings"))} />
-                     {/* Right section */}
-                     <Route exact path="/app/settings/profile" component={asyncComponent(() => import("./routes/Settings/Profile"))} />
-
-                     {/* Left section */}
-                     <Route exact path="/app/settings/quote/appearance" component={asyncComponent(() => import("./routes/Settings"))} />
-                     <Route exact path="/app/settings/quote/defaults" component={asyncComponent(() => import("./routes/Settings/QuoteDefaults"))} />
-
-                     <Route exact path="/app/settings/customer-emails" component={asyncComponent(() => import("./routes/Settings"))} />
-                     <Route exact path="/app/settings/sales-tax-categories" component={asyncComponent(() => import("./routes/Settings/SalesTaxCategories"))} />
-                     <Route exact path="/app/settings/team" component={asyncComponent(() => import("./routes/Settings/Team"))} />
-                     <Route exact path="/app/settings/billing-overview" component={asyncComponent(() => import("./routes/Settings/BillingOverview"))} />
-                     <Route exact path="/app/settings/account-information" component={asyncComponent(() => import("./routes/Settings/AccountInformation"))} />
-                     <Route exact path="/app/settings/your-data" component={asyncComponent(() => import("./routes/Settings"))} />
-
-                     <Route exact path="/app/settings/sales-category/:id" component={asyncComponent(() => import("./routes/Settings/SalesCategory"))} />
-                     <Route exact path="/app/settings/sales-tax/:id" component={asyncComponent(() => import("./routes/Settings/SalesTax"))} />
-
-                     <Route exact path="/app/settings/payment-details" component={asyncComponent(() => import("./routes/Settings/PaymentDetails"))} />
-
-                  </Switch>
-               </Route>
+               <Route path="/app/settings" component={asyncComponent(() => import("./routes/Settings"))} />
             </Switch>
             {/* <Footer /> */}
          </main>
