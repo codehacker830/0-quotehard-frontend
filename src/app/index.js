@@ -51,6 +51,7 @@ class AppRoot extends Component {
 
                <Route path="/app/content" component={asyncComponent(() => import("./routes/Templates"))} />
                <Route path="/app/settings" component={asyncComponent(() => import("./routes/Settings"))} />
+               <Route path="/app/add-ons" component={asyncComponent(() => import("./routes/AddOns"))} />
             </Switch>
             {/* <Footer /> */}
          </main>

@@ -3,17 +3,18 @@ import { Link } from 'react-router-dom'
 
 export const NavCrump = (props) => {
    const [show, setShow] = useState(false);
-   const actionsContainer = useRef(null);
+   // const actionsContainer = useRef(null);
+
    const onClickOutsideHandler = (ev) => {
-      console.log("asdfasdf");
       console.log("show ===", show);
-      if (!actionsContainer.current.contains(ev.target)) setShow(false);
+      // if (!actionsContainer.current.contains(ev.target)) setShow(false);
    }
+   
    useEffect(() => {
-      window.addEventListener('click', onClickOutsideHandler);
-      return () => {
-         window.removeEventListener('click', onClickOutsideHandler);
-      };
+      // window.addEventListener('click', onClickOutsideHandler);
+      // return () => {
+      //    window.removeEventListener('click', onClickOutsideHandler);
+      // };
    }, []);
    return (
       <div className="bg-body-light border-top border-bottom">
@@ -28,7 +29,7 @@ export const NavCrump = (props) => {
                         </Link>
                      </h1>
 
-                     <div className="dropdown d-inline-block show" ref={actionsContainer}>
+                     {/* <div className="dropdown d-inline-block show" ref={actionsContainer}>
                         <button type="button" className="btn btn-dual" onClick={() => setShow(!show)}>
                            <span className="text-primary">Actions</span>
                            <i className="fa fa-fw fa-angle-down ml-1 text-primary" />
@@ -78,7 +79,7 @@ export const NavCrump = (props) => {
                               </li>
                            </ul>
                         </div>
-                     </div>
+                     </div> */}
 
                   </div>
                   : props.children
