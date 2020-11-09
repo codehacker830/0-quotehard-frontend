@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import NavCrump from '../../../components/NavCrump'
 
 export const QuoteDefaults = (props) => {
    const [taxMode, setTaxMode] = useState("exclusive_excluding");

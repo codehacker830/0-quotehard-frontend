@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import NavCrump from '../../../components/NavCrump';
 
 export default class Followingups extends Component {
    state = {
@@ -11,9 +10,6 @@ export default class Followingups extends Component {
    render() {
       return (
          <React.Fragment>
-            <NavCrump linkTo={`/app/settings`}>
-               Settings
-            </NavCrump>
             <div className="content">
                <h2 className="my-4">Follow-ups</h2>
                <p>
