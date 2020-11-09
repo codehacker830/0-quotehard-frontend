@@ -239,8 +239,8 @@ export const QuoteDefaults = (props) => {
                   <label htmlFor="account_amounts_entered">Select</label>
                   <select className="custom-select rounded-0"
                      // defaultValue={`exclusive_excluding`}
-                     value={this.state.taxMode}
-                     onChange={(ev) => this.setState({ taxMode: ev.target.value })}>
+                     value={taxMode}
+                     onChange={(ev) => setTaxMode(ev.target.value)}>
                      <option value="exclusive_including">Tax Exclusive (Inclusive Total)</option>
                      <option value="exclusive_excluding">Tax Exclusive</option>
                      <option value="inclusive">Tax Inclusive</option>
