@@ -21,8 +21,6 @@ class ChangePassword extends Component {
          toast.success(error);
          return;
       }
-      console.log(" entoken ===>", entoken);
-      console.log(" password ===>", password);
       this.props.userResetPassword({ entoken, password });
 
       // axios.post("/reset-password", { password: this.state.password }).then((data) => {
@@ -59,7 +57,6 @@ class ChangePassword extends Component {
    }
    render() {
       const { isMounted, password } = this.state;
-      console.log(" change password props ==>", this.props);
       if (!isMounted) return null;
       else return (
          <main id="main-container">

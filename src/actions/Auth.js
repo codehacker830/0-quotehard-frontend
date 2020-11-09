@@ -149,7 +149,6 @@ export const userResetPassword = ({ entoken, password }) => {
       // dispatch({ type: USER_DATA, payload: null });
       axios.post('/reset-password', { entoken, password }
       ).then(({ data }) => {
-         console.log(" asldfjasdlfjalsd ", data);
          if (data.isValid) {
             localStorage.setItem("token", JSON.stringify(data.access_token));
             axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
@@ -166,7 +165,7 @@ export const userResetPassword = ({ entoken, password }) => {
       }).catch((error) => {
          dispatch({ type: FETCH_ERROR, payload: "Your password needs to be at least 6 characters long." });
          dispatch({ type: SHOW_MESSAGE, payload: error.message })
-         console.log("Error****:", error.message);
+         console.log("User Reset password Error****:", error.message);
       });
    }
 }
