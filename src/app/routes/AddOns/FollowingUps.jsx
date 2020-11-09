@@ -4,7 +4,9 @@ import NavCrump from '../../../components/NavCrump';
 
 export default class Followingups extends Component {
    state = {
-      isChecked: false
+      isChecked: true,
+      followFirstDelayedDays: 3,
+      followSecondDelayedDays: 12
    }
    render() {
       return (
@@ -34,12 +36,22 @@ export default class Followingups extends Component {
                   <div className={`${this.state.isChecked ? "" : "d-none"}`}>
                      <div className="row no-gutters ml-4 mb-2" style={{ lineHeight: "32px" }}>
                         If not accepted after
-                        <input type="number" className="form-control rounded-0 width-70 mx-1" id="upopened" name="upopened" placeholder="" />
+                        <input type="number"
+                           className="form-control rounded-0 width-70 mx-1"
+                           id="upopened" name="upopened" placeholder=""
+                           value={this.state.followFirstDelayedDays}
+                           onChange={(ev) => this.setState({ followFirstDelayedDays: ev.target.value })}
+                        />
                         days OR if unopened after 12 hours
                      </div>
                      <div className="row no-gutters ml-4 mb-2" style={{ lineHeight: "32px" }}>
                         If not accepted after
-                        <input type="number" className="form-control rounded-0 width-70 mx-1" id="unaccepted" name="unaccepted" placeholder="" />
+                        <input type="number"
+                           className="form-control rounded-0 width-70 mx-1"
+                           id="unaccepted" name="unaccepted" placeholder=""
+                           value={this.state.followSecondDelayedDays}
+                           onChange={(ev) => this.setState({ followSecondDelayedDays: ev.target.value })}
+                        />
                         days
                      </div>
                   </div>
