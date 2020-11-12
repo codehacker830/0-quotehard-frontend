@@ -1,7 +1,33 @@
 import React, { Component } from 'react';
-import NavCrump from '../../../components/NavCrump';
+import TextareaAutosize from 'react-autosize-textarea/lib';
+import { Link } from 'react-router-dom';
+import YouTube from 'react-youtube';
 
 export default class Leads extends Component {
+   constructor(props) {
+      super(props);
+      this.state = {
+         isShowCode: false
+      }
+      this.code = "";
+      this.leadFormCode = `<!-- Quotient Lead Form -->
+      <div id="quotient-lead-form"></div>
+      <script>
+            (function (w, s, o, g, i, a, m) {
+               a = s.createElement(o);
+               m = s.getElementsByTagName(o)[0];
+               a.async = 1; a.src = g; w._qLead = function(){};
+               m.parentNode.insertBefore(a, m);
+            })(window, document, 'script', 'https://www.quotientapp.com/e/39310-1d2ce4e9213f4170a3ceb990d0ae61f5/form/embed.js');
+            _qLead.id = 'quotient-lead-form';
+      </script>
+      <!-- End Quotient Lead Form -->`;
+   }
+
+   _onReady = (event) => {
+      // access to player in all event handlers via event.target
+      event.target.pauseVideo();
+   }
    render() {
       return (
          <React.Fragment>
@@ -15,10 +41,96 @@ export default class Leads extends Component {
                   </p>
                   <div className="mb-3">
                      <h4>Share your Lead Form URL</h4>
+                     <div className="form-group">
+                        <label htmlFor="lead-url">
+                           Copy and paste to use.
+                           <Link to={`https://www.quotientapp.com/e/39310-1d2ce4e9213f4170a3ceb990d0ae61f5/form`}> Preview…</Link>
+                        </label>
+                        <input type="email"
+                           className="form-control p-4 rounded-0"
+                           id="lead-url" name="lead-url"
+                           value={`https://www.quotientapp.com/e/39310-1d2ce4e9213f4170a3ceb990d0ae61f5/form`}
+                        />
+                     </div>
+                     {
+                        this.state.isShowCode ?
+                           <div>
+                              <p> Copy and paste into the your HTML to embed your Lead Form.</p>
+                              <Link to="https://www.quotientapp.com/help/leads" />
+                              <TextareaAutosize className="form-control p-4 rounded-0 mb-2">
+                                 {this.leadFormCode}
+                              </TextareaAutosize>
+                              <button className="btn btn-sm btn-light" onClick={() => this.setState({ isShowCode: false })}>
+                                 Hide code…
+                              </button>
+                           </div>
+                           : <p>How to embed into your own website:
+                              <button className="btn btn-sm btn-light ml-2" onClick={() => this.setState({ isShowCode: true })}>
+                                 Show code…
+                              </button>
+                           </p>
+                     }
+                  </div>
+                  <div className="mb-5">
+                     <h4>Email Notifications</h4>
+                     <p>Get notified the moment a new Lead request happens.</p>
+                     <Link className="btn btn-sm btn-alt-secondary" to="/app/add-ons/leads/notification">Email Settings</Link>
+                  </div>
+                  <div className="mb-5">
+                     <button className="btn btn-outline-secondary">Disable Lead Form</button>
+                  </div>
+
+                  <div className="w-100 border-bottom mb-5"></div>
+
+                  <div className="mb-2">
+                     <h3>How can I use the Lead From?</h3>
+                     <ul className="fa-ul">
+                        <li>
+                           <span className="fa-li">
+                              <i className="fa fa-arrow-right" />
+                           </span> Create a link from the contact page on your own website
+                        </li>
+                        <li>
+                           <span className="fa-li">
+                              <i className="fa fa-arrow-right" />
+                           </span> Add a link from your Facebook page
+                        </li>
+                        <li>
+                           <span className="fa-li">
+                              <i className="fa fa-arrow-right" />
+                           </span> Send the link out in your next Mailchimp newsletter
+                        </li>
+                        <li>
+                           <span className="fa-li">
+                              <i className="fa fa-arrow-right" />
+                           </span> Place a link in your email signature
+                        </li>
+                     </ul>
+                  </div>
+
+                  <div className="mb-2">
+                     <h4>How do Leads work?</h4>
+                     <YouTube videoId="kHehCv4SGzs" opts={{
+                        width: '100%',
+                        height: '460',
+                        playerVars: {
+                           // https://developers.google.com/youtube/player_parameters
+                           // autoplay: 1,
+                        }
+                     }} onReady={this._onReady} />
+                  </div>
+
+                  <div className="mb-2">
+                     <h4>Also, use Zapier with Leads</h4>
+                     <p>
+                        Create a completely custom Lead Form or create New Leads with 1000’s of other apps using Zapier.
+                        <br />
+                        See <Link to="/app/add-ons/zapier">{`Settings > Add-ons > Zapier`}</Link>.
+                     </p>
                   </div>
                </div>
             </div>
-         </React.Fragment>
+         </React.Fragment >
       );
    }
 }
