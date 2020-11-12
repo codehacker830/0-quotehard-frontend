@@ -435,6 +435,76 @@ a.nav-link.active {
    box-shadow: none;
    cursor: default;
 }
+.u-preview-shadow {
+   color: black;
+   border: 1px solid #ddd;
+   box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.1);
+}
+.u-highlight-tag {
+   padding: 0 5px;
+   display: inline-block;
+   background: #f2f7fa;
+   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.07);
+   border-radius: 2px;
+   color: #777;
+}
+.emailPreviewSubject {
+   font-weight: 700;
+   font-size: 110%;
+}
+.emailPreviewMessage,
+.emailPreviewSubject {
+   padding-bottom: 20px;
+}
+.emailWording-small {
+   font-size: 12px;
+   display: block;
+   color: #999;
+}
+.emailWording-subject {
+   margin-bottom: 6px;
+   font-weight: 700;
+   padding: 15px 20px;
+}
+.emailWording-body {
+   border: 1px solid #ccc;
+   background: #fff;
+   margin-bottom: 20px;
+   margin-top: 15px;
+}
+.emailWording-nonEdit {
+   padding: 20px 23px;
+   box-shadow: 0 0 2px -1px rgba(0, 0, 0, 0.2);
+   color: #404040;
+   margin: 0;
+}
+.sendEmail-part1,
+.sendEmail-part2 {
+   border-color: #fff;
+   padding: 20px;
+}
+.sendEmail-part1 {
+   border-bottom: 1px dashed #ddd;
+   padding-bottom: 20px;
+}
+.sendEmail-part2 {
+   border-top: 1px dashed #ddd;
+}
+
+.textarea {
+   display: block;
+   width: 100%;
+   overflow: hidden;
+   resize: both;
+   min-height: 40px;
+   line-height: 20px;
+}
+
+.textarea[contenteditable]:empty::before {
+   content: "Placeholder still possible";
+   color: gray;
+}
+
 @media (max-width: 600px) {
    .toolWrapper {
       position: relative;

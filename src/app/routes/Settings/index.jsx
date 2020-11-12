@@ -15,6 +15,7 @@ export default class Settings extends Component {
             <Route exact path="/app/settings/quote/defaults" component={asyncComponent(() => import("./QuoteDefaults"))} />
 
             <Route exact path="/app/settings/customer-emails" component={asyncComponent(() => import("./CustomerEmails"))} />
+            <Route exact path="/app/settings/customer-email-change/:id" component={asyncComponent(() => import("./CustomerEmailChange"))} />
             <Route exact path="/app/settings/sales-tax-categories" component={asyncComponent(() => import("./SalesTaxCategories"))} />
             <Route exact path="/app/settings/team" component={asyncComponent(() => import("./Team"))} />
             <Route exact path="/app/settings/billing-overview" component={asyncComponent(() => import("./BillingOverview"))} />
