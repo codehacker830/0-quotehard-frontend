@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TextareaAutosize from 'react-autosize-textarea/lib';
 import { Link } from 'react-router-dom';
 import YouTube from 'react-youtube';
+import NavCrump from '../../../../components/NavCrump';
 
 export default class Leads extends Component {
    constructor(props) {
@@ -31,6 +32,9 @@ export default class Leads extends Component {
    render() {
       return (
          <React.Fragment>
+            <NavCrump linkTo={`/app/settings`}>
+               Settings
+            </NavCrump>
             <div className="content">
                <h2 className="my-4">Leads</h2>
                <div className="maxWidth-800">
@@ -39,7 +43,7 @@ export default class Leads extends Component {
                      be added directly into Quotient, ready to be converted into a quote. You'll get notified
                      instantly by email and on your Dashboard when a new request happens.
                   </p>
-                  <div className="mb-3">
+                  <div className="mb-5">
                      <h4>Share your Lead Form URL</h4>
                      <div className="form-group">
                         <label htmlFor="lead-url">
@@ -56,7 +60,7 @@ export default class Leads extends Component {
                         this.state.isShowCode ?
                            <div>
                               <p> Copy and paste into the your HTML to embed your Lead Form.</p>
-                              <Link to="https://www.quotientapp.com/help/leads" />
+                              <Link to="https://www.quotientapp.com/help/leads">Learn more in the support article.</Link>
                               <TextareaAutosize className="form-control p-4 rounded-0 mb-2">
                                  {this.leadFormCode}
                               </TextareaAutosize>
@@ -70,6 +74,12 @@ export default class Leads extends Component {
                               </button>
                            </p>
                      }
+                     <div className="row no-gutters">
+                        <div className="d-flex text-success mr-2">
+                           <span className="m-auto font-w700"><i className="far fa-fw fa-check-circle mr-1" />Published Live</span>
+                        </div>
+                        <Link className="btn btn-alt-primary" to="/app/add-ons/leads/config">Edit Form</Link>
+                     </div>
                   </div>
                   <div className="mb-5">
                      <h4>Email Notifications</h4>

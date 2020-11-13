@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import NavCrump from '../../../components/NavCrump';
 
 export default class EmailNotifications extends Component {
    state = {
@@ -9,6 +10,9 @@ export default class EmailNotifications extends Component {
    render() {
       return (
          <React.Fragment>
+            <NavCrump linkTo={`/app/settings`}>
+               Settings
+         </NavCrump>
             <div className="content">
                <h2 className="my-4">Email Notifications</h2>
 
