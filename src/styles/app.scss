@@ -505,6 +505,144 @@ a.nav-link.active {
    color: gray;
 }
 
+.contact-example-bord {
+   border: 1px solid #ccc;
+   border-right: 0;
+   border-left: 0;
+   float: left;
+   width: 100%;
+   transition: margin-top 0.5s ease;
+   margin-top: 20px;
+}
+
+.contact-example,
+.contact-example * {
+   transition: all 1s ease;
+}
+
+.contact-example {
+   float: left;
+   padding: 0 0 10px;
+   width: 100%;
+   .inner {
+      background: #fff;
+      padding: 20px 15px 5px;
+      width: 235px;
+      margin-left: auto;
+      margin-right: auto;
+   }
+   .example-left {
+      float: left;
+      width: 205px;
+   }
+   .example-right {
+      float: left;
+      width: 0;
+   }
+   .example-block {
+      display: block;
+      float: left;
+      width: 100%;
+      padding: 5px 10px 10px;
+   }
+   .example-hide {
+      width: 0;
+      opacity: 0;
+      padding: 0;
+      margin: 0;
+      .example-contact {
+         width: 100%;
+         height: 0;
+         transform: scale(0);
+      }
+   }
+   .example-title {
+      font-size: 15px;
+      color: #555;
+      display: block;
+      width: auto;
+      margin-bottom: 0;
+      margin-top: 5px;
+      padding-bottom: 5px;
+   }
+   .example-lines-wrap {
+      transition: none;
+   }
+   .example-lines {
+      width: 73%;
+      display: block;
+      float: left;
+   }
+   .example-lines-bg {
+      width: 27%;
+      display: block;
+      float: left;
+   }
+   .example-lines-right {
+      .example-lines {
+         width: 67%;
+      }
+      .example-lines-bg {
+         width: 33%;
+      }
+   }
+   .example-accept-block {
+      padding: 15px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-radius: 3px;
+   }
+   .example-tick {
+      opacity: 0.15;
+   }
+   .example-tick {
+      width: 100%;
+      margin-bottom: 10px;
+   }
+   .example-accept {
+      font-size: 9px;
+      color: #fff;
+      padding: 3px;
+      width: 42px;
+      display: block;
+      background: grey;
+      border-radius: 2px;
+      text-align: center;
+   }
+   .example-logo {
+      max-width: 60px;
+      max-height: 60px;
+      display: block;
+   }
+}
+.isHidden {
+   display: none;
+}
+// .clear {
+//    clear: both;
+//    display: block;
+//    overflow: hidden;
+//    visibility: hidden;
+//    width: 0;
+//    height: 0;
+// }
+.appear-check-3-img {
+   width: 100%;
+   margin-top: 5px;
+   display: block;
+   border: 1px solid #ccc;
+}
+.appear-check-3 {
+   width: 33%;
+   display: block;
+   float: left;
+   padding-left: 10px;
+   padding-right: 6px;
+   input {
+      margin-right: 3px;
+   }
+}
+
 @media (max-width: 600px) {
    .toolWrapper {
       position: relative;
