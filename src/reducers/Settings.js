@@ -8,7 +8,7 @@ const initialSettings = {
    teammates: []
 };
 
-const settings = (state = initialSettings, action) => {
+export default (state = initialSettings, action) => {
    switch (action.type) {
       case QUOTE_DEFAULTS:
          return {
@@ -24,5 +24,3 @@ const settings = (state = initialSettings, action) => {
          return state;
    }
 };
-
-export default settings;

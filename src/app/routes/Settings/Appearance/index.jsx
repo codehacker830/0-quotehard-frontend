@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import TextareaAutosize from 'react-autosize-textarea/lib';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import NavCrump from '../../../components/NavCrump';
+import { uploadLogo, removeLogo } from '../../../../actions/Appearance';
+import NavCrump from '../../../../components/NavCrump';
+import { LOGO_URL } from '../../../../constants/ActionTypes';
 
-export default class Appearance extends Component {
+class Appearance extends Component {
    constructor(props) {
       super(props);
       this.state = {
+         loading: false,
+         selectedFile: null,
          fileBlob: "",
          heightWeight: "bold",
          isPrintEnabled: false,
@@ -16,18 +21,28 @@ export default class Appearance extends Component {
    handleClickFileOpen = () => {
       this.hiddenFileInput.current.click();
    }
-   uploadFile = (e) => {
+   onFileChange = (e) => {
       console.log("e.target.files ==>", e.target.files);
-      if (e.target.files[0]) this.setState({ fileBlob: URL.createObjectURL(e.target.files[0]) });
+      if (e.target.files[0]) this.setState({
+         selectedFile: e.target.files[0],
+         fileBlob: URL.createObjectURL(e.target.files[0])
+      });
    }
-
    removeImageItem = () => {
       this.setState({ fileBlob: "" });
    }
    onChangeHeightWeight = (ev) => {
       this.setState({ heightWeight: ev.target.value });
    }
+   onClickSaveAndPublish = () => {
+      this.setState({ loading: true });
+      setTimeout(() => {
+         this.setState({ loading: false });
+         this.props.history.push("/app/settings");
+      }, 2000)
+   }
    render() {
+      console.log("Appearanc props __", this.props);
       return (
          <React.Fragment>
             <NavCrump linkTo={`/app/settings`}>
@@ -35,37 +50,47 @@ export default class Appearance extends Component {
             </NavCrump>
             <div className="content">
                <h2 className="my-4">Layout, Style and Company Information</h2>
-               <div className="row mb-5">
+               <div className="row mb-4">
                   <div className="col-sm-7 border-right pr-4">
                      <h4 className="mb-2">Logo</h4>
                      <div className="ml-3 mb-4">
                         <input type="file"
                            ref={this.hiddenFileInput}
-                           onChange={this.uploadFile}
+                           onChange={this.props.uploadLogo}
                            className="d-none"
                         />
 
                         {
-                           this.state.fileBlob !== "" ?
+                           this.props.appearanceSetting.logoURL ?
                               <div className="row justify-content-center" style={{ position: "relative" }}>
-                                 <img src={this.state.fileBlob} className="mr-2 image-preview-size" alt="..." />
-                                 <button className="btn btn-sm btn-light" onClick={this.removeImageItem} style={{ position: "absolute", top: 5, right: 5 }}>
+                                 <img src={this.props.appearanceSetting.logoURL} className="mr-2 image-preview-size" alt="..." />
+                                 <button className="btn btn-sm btn-light" onClick={() => this.props.removeLogo(this.props.appearanceSetting.logoURL)} style={{ position: "absolute", top: 5, right: 5 }}>
                                     <i className="fa fa-times-circle"></i>
                                  </button>
                               </div>
                               :
-                              <div className="">
+                              <div className="p-2">
                                  <button className="btn btn-square btn-outline-secondary"
                                     onClick={this.handleClickFileOpen}
-                                 ><i className="si si-paper-clip fa-fw mr-1" />Choose logo</button>
+                                    disabled={this.props.commonData.loading}
+                                 >
+                                    {
+                                       this.props.commonData.loading && this.props.commonData.type === LOGO_URL ?
+                                          <div className="spinner-border spinner-border-sm text-secondary mr-1" role="status">
+                                             <span className="sr-only">Loading...</span>
+                                          </div>
+                                          : <i className="si si-paper-clip fa-fw mr-1" />
+                                    }
+                                    Choose logo
+                                    </button>
                               </div>
                         }
                      </div>
 
-                     <h4 className="mb-2">Colors</h4>
+                     {/* <h4 className="mb-2">Colors</h4>
                      <div className="ml-3 mb-4">
 
-                     </div>
+                     </div> */}
 
                      <h4 className="mb-2">Contact Detail</h4>
                      <div className="ml-3 mb-4">
@@ -73,12 +98,12 @@ export default class Appearance extends Component {
                            <label className="appear-check-3">
                               <input type="radio" id="pLayout__s_contact_format-0" name="pLayout[_s][contact_format]" />
                            Columns
-                           <img className="appear-check-3-img" src="https://asset.quotientapp.com/image/app-layout-example/contact-format-columns-02.png" alt="Left" />
+                           <img className="appear-check-3-img" src="https://asset.quotientapp.com/image/app-layout-example/contact-format-columns-02.png" alt="Column" />
                            </label>
                            <label className="appear-check-3">
                               <input type="radio" id="pLayout__s_contact_format-1" name="pLayout[_s][contact_format]" />
                            In-line
-                           <img className="appear-check-3-img" src="https://asset.quotientapp.com/image/app-layout-example/contact-format-inline-02.png" alt="Centered" />
+                           <img className="appear-check-3-img" src="https://asset.quotientapp.com/image/app-layout-example/contact-format-inline-02.png" alt="In-line" />
                            </label>
                            <label className="appear-check-3">
                               <input type="radio" id="pLayout__s_contact_format-2" name="pLayout[_s][contact_format]" />
@@ -94,7 +119,7 @@ export default class Appearance extends Component {
                         </div>
                      </div>
 
-                     <h4 className="mb-2">Contact Detail</h4>
+                     <h4 className="mb-2">Layout</h4>
                      <div className="ml-3 mb-4">
                         <div className="row from-group">
                            <label className="appear-check-3">
@@ -231,19 +256,19 @@ export default class Appearance extends Component {
 
                      <h4 className="mb-2">Company Information</h4>
                      <div className="ml-3 mb-4">
-                        <div className="form-group maxWidth-550">
+                        <div className="maxWidth-550 mb-2">
                            <label htmlFor="pLayout[_s][comp_name]">Company or Organization</label>
                            <input type="text" className="form-control rounded-0" id="pLayout[_s][comp_name]" name="pLayout[_s][comp_name]" placeholder="ACME Corp." />
                         </div>
-                        <div className="form-group maxWidth-550">
+                        <div className="maxWidth-550 mb-2">
                            <label htmlFor="pLayout__s_comp_address">Address</label>
                            <TextareaAutosize type="text" className="form-control rounded-0" id="pLayout__s_comp_address" name="pLayout__s_comp_address" rows={3} placeholder="Postal and Physical address" />
                         </div>
-                        <div className="form-group maxWidth-550">
+                        <div className="maxWidth-550 mb-2">
                            <label htmlFor="pLayout__s_comp_website">Website</label>
                            <input type="text" className="form-control rounded-0" id="pLayout__s_comp_website" name="pLayout__s_comp_website" placeholder="www.example.com" />
                         </div>
-                        <div className="form-group maxWidth-550">
+                        <div className="maxWidth-550 mb-2">
                            <label htmlFor="pLayout__s_comp_phone">Phone</label>
                            <input type="text" className="form-control rounded-0" id="pLayout__s_comp_phone" name="pLayout__s_comp_phone" placeholder="" />
                         </div>
@@ -256,9 +281,13 @@ export default class Appearance extends Component {
                         <div className="contact-example" style={{ backgroundColor: 'rgb(255, 255, 255)' }}>
                            <div className="inner">
                               <div className="example-left">
-                                 <div className="example-block example-hide">
-                                    <img className="example-logo example-logo-top" src="https://asset.quotientapp.com/file-s/1/logo-v3/39310/a269ba8815ec54d524fa8d8b51e491f4" alt="Example logo" style={{ marginLeft: 0 }} />
-                                 </div>
+                                 {
+                                    this.props.appearanceSetting.logoURL ?
+                                       <div className="example-block">
+                                          <img className="example-logo example-logo-top" src={this.props.appearanceSetting.logoURL} alt="Example logo" style={{ marginLeft: 0 }} />
+                                       </div>
+                                       : null
+                                 }
                                  <img className="example-block example-hide example-contact " src="https://asset.quotientapp.com/image/app-layout-example/contact-inline-center-01.png" alt="Example contact details" />
                                  <img className="example-block example-contact" src="https://asset.quotientapp.com/image/app-layout-example/contact-inline-left-01.png" alt="Example contact details" />
                                  <img className="example-block example-contact   example-hide" src="https://asset.quotientapp.com/image/app-layout-example/contact-column-01.png" alt="Example contact details" />
@@ -293,7 +322,17 @@ export default class Appearance extends Component {
                </div>
 
                <div className="mb-4">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-2">Save</button>
+                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-2"
+                     onClick={this.onClickSaveAndPublish}
+                     disabled={this.state.loading}
+                  >
+                     {
+                        this.state.loading &&
+                        <div className="spinner-border spinner-border-sm text-white mr-1" role="status">
+                           <span className="sr-only">Loading...</span>
+                        </div>
+                     }
+                     Save & Publish</button>
                   <Link className="btn btn-lg btn-rounded btn-hero-secondary" to="/app/settings">Cancel</Link>
                </div>
             </div>
@@ -301,3 +340,9 @@ export default class Appearance extends Component {
       );
    }
 }
+
+const mapStateToProps = ({ appearanceSetting, commonData }) => {
+   return { appearanceSetting, commonData };
+};
+const mapDispatchToProps = { uploadLogo, removeLogo };
+export default connect(mapStateToProps, mapDispatchToProps)(Appearance);

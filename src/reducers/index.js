@@ -4,6 +4,7 @@ import { reducer as toastrReducer } from 'react-redux-toastr';
 import Auth from './Auth';
 import Common from './Common';
 import Settings from './Settings';
+import Appearance from './Appearance';
 
 
 export default (history) => combineReducers({
@@ -11,5 +12,6 @@ export default (history) => combineReducers({
    auth: Auth,
    commonData: Common,
    settings: Settings,
+   appearanceSetting: Appearance,
    toastr: toastrReducer
 });

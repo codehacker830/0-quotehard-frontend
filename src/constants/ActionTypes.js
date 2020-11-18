@@ -24,3 +24,8 @@ export const THEME_COLOR = 'theme_color';
 export const USER_SETTINGS = 'user_settings';
 export const QUOTE_DEFAULTS = 'quote_defaults';
 export const GET_TEAMMATES = 'get_teammates';
+
+// Service
+export const UPLOAD_IMAGE = 'upload_image';
+export const LOGO_URL = 'logo_url';
+

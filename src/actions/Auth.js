@@ -21,8 +21,7 @@ export const setInitUrl = (url) => {
 export const getUser = () => {
    return (dispatch) => {
       dispatch({ type: FETCH_START });
-      axios.get('/account',
-      ).then(({ data }) => {
+      axios.get('/account').then(({ data }) => {
          console.log("get User res: ", data);
          if (data.account) {
             dispatch({ type: FETCH_SUCCESS });
