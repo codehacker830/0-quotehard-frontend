@@ -1,13 +1,19 @@
 import { LOGO_URL } from "../constants/ActionTypes";
-import { initPricingFormat, initTextStyles } from "../constants/InitState";
+import { initCompanyInformation, initTextStyles } from "../constants/InitState";
 
 const initialState = {
-   logoURL: null,
-   contactDetail: null,
-   layout: null,
+   logoURL: "",
+   contactDetail: 0,
+   isDisplayFullCustomerDetail: false,
+   layout: 0,
    textStyles: initTextStyles,
-   pricingFormat: initPricingFormat,
+   describeTaxAs: "",
+   displayInTotal: {
+      isCurrencySymbol: true,
+      isCurrencyCode: false
+   },
    isEnablePrintPDF: false,
+   companyInformation: initCompanyInformation
 };
 
 export default (state = initialState, action) => {

@@ -69,9 +69,9 @@ export const initSubTotal = {
 };
 
 export const initTextStyles = {
-   headingFont: null,
-   bodyText: null,
-   headingWeight: null,
+   headingFont: 0,
+   bodyText: 0,
+   headingWeight: 0,
 };
 
 export const initPricingFormat = {
@@ -80,4 +80,11 @@ export const initPricingFormat = {
       isCurrencySymbol: true,
       isCurrencyCode: false
    }
+}
+
+export const initCompanyInformation = {
+   companyName: "",
+   address: "",
+   website: "",
+   phone: ""
 }
