@@ -1,19 +1,27 @@
-import { LOGO_URL } from "../constants/ActionTypes";
-import { initCompanyInformation, initTextStyles } from "../constants/InitState";
+import { APPEARANCE_SETTINGS, LOGO_URL } from "../constants/ActionTypes";
 
 const initialState = {
-   logoURL: "",
-   contactDetail: 0,
+   logo: "",
+
+   contactDetailLayout: 0,
    isDisplayFullCustomerDetail: false,
    layout: 0,
-   textStyles: initTextStyles,
-   describeTaxAs: "",
-   displayInTotal: {
-      isCurrencySymbol: true,
-      isCurrencyCode: false
-   },
-   isEnablePrintPDF: false,
-   companyInformation: initCompanyInformation
+
+   headingFont: 0,
+   bodyText: 0,
+   headingWeight: 0,
+
+   describeTaxAs: 4,
+   displayCurrencySymbolInTotal: true,
+   displayCurrencyCodeInTotal: false,
+
+   isEnabledPrintPDF: false,
+   pdfPageSize: 1,
+
+   companyName: "",
+   companyAddress: "",
+   companyWebsite: "",
+   companyPhone: ""
 };
 
 export default (state = initialState, action) => {
@@ -21,8 +29,13 @@ export default (state = initialState, action) => {
       case LOGO_URL:
          return {
             ...state,
-            logoURL: action.payload
+            logo: action.payload
          };
+      case APPEARANCE_SETTINGS:
+         return {
+            ...state,
+            ...action.payload
+         }
       default:
          return state;
    }

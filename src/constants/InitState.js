@@ -67,24 +67,3 @@ export const initTextItem = {
 export const initSubTotal = {
    subTotal: null,
 };
-
-export const initTextStyles = {
-   headingFont: 0,
-   bodyText: 0,
-   headingWeight: 0,
-};
-
-export const initPricingFormat = {
-   describeTaxAs: "",
-   displayInTotal: {
-      isCurrencySymbol: true,
-      isCurrencyCode: false
-   }
-}
-
-export const initCompanyInformation = {
-   companyName: "",
-   address: "",
-   website: "",
-   phone: ""
-}

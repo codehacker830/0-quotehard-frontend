@@ -70,6 +70,9 @@ class App extends Component {
                   <Route exact path='/q/:entoken/accepted' component={asyncComponent(() => import("./ThankyouPage"))} />
                   <Route exact path='/q/:entoken' component={asyncComponent(() => import("./PublicQuoteView"))} />
                   <Route exact path='/sign-in' component={SignIn} />
+                  <Route exact path='/sign-in/invite/i/:invitationEntoken' component={SignIn} />
+                  <Route exact path='/sign-in/invite/i/already-have-access/:invitationEntoken' component={SignIn} />
+                  
                   <Route exact path='/new-account' component={SignUp} />
                   <Route exact path='/request-password' component={RequestPassword} />
                   <Route exact path='/request-password/sent' component={RequestPasswordSent} />

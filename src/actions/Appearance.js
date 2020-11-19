@@ -1,4 +1,4 @@
-import { FETCH_ERROR, FETCH_START, FETCH_SUCCESS, LOGO_URL } from "../constants/ActionTypes"
+import { APPEARANCE_SETTINGS, FETCH_ERROR, FETCH_START, FETCH_SUCCESS, LOGO_URL } from "../constants/ActionTypes"
 import axios from "../util/Api";
 
 
@@ -24,7 +24,7 @@ export const uploadLogo = (e) => {
          .then(({ data }) => {
             console.log(" image upload response -->", data);
             dispatch({ type: FETCH_SUCCESS });
-            dispatch({ type: LOGO_URL, payload: data.logoURL });
+            dispatch({ type: LOGO_URL, payload: data.logo });
          })
          .catch((err) => {
             dispatch({ type: FETCH_ERROR });
@@ -32,14 +32,28 @@ export const uploadLogo = (e) => {
          });
    }
 }
-export const removeLogo = (logoURL) => {
-   console.log("______ logoURL _______", logoURL);
+export const removeLogo = (logo) => {
+   console.log("______ logo _______", logo);
    return (dispatch) => {
       dispatch({ type: FETCH_START, payload: LOGO_URL });
-      axios.post("/service/remove-logo", { logoURL })
+      axios.post("/service/remove-logo", { logo })
          .then(({ data }) => {
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: LOGO_URL, payload: null });
+         })
+         .catch((err) => {
+            dispatch({ type: FETCH_ERROR });
+         })
+   }
+}
+
+export const getAppearanceSettings = () => {
+   return (dispatch) => {
+      dispatch({ type: FETCH_START, payload: APPEARANCE_SETTINGS });
+      axios.get("/settings/appearance")
+         .then(({ data }) => {
+            dispatch({ type: FETCH_SUCCESS });
+            dispatch({ type: APPEARANCE_SETTINGS, payload: { ...data } });
          })
          .catch((err) => {
             dispatch({ type: FETCH_ERROR });

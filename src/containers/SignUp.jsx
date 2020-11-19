@@ -69,9 +69,6 @@ class SignUp extends Component {
                      </div>
                      {/* END Header */}
                      {/* Sign Up Form */}
-                     {/* jQuery Validation (.js-validation-signup class is initialized in js/pages/op_auth_signup.min.js which was auto
-                           compiled from _es6/pages/op_auth_signup.js) */}
-                     {/* For more info and examples you can check out https://github.com/jzaefferer/jquery-validation */}
                      <div className="row no-gutters justify-content-center">
                         <div className="col-sm-8 col-xl-6">
                            <div className="py-3">

@@ -69,7 +69,7 @@ export const userSignIn = ({ email, password }) => {
    }
 };
 
-export const userSignUp = ({ firstName, lastName, email, password, companyName, location }) => {
+export const userSignUp = ({ firstName, lastName, email, password, companyName, location, role, isOwner }) => {
    return (dispatch) => {
       dispatch({ type: FETCH_START });
       axios.post('/account', {
@@ -78,7 +78,8 @@ export const userSignUp = ({ firstName, lastName, email, password, companyName, 
          email,
          password,
          companyName,
-         location
+         location,
+         role, isOwner
       }
       ).then(({ data }) => {
          if (data.account) {

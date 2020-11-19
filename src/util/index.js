@@ -116,3 +116,18 @@ export const formatDateTime = (date) => {
       else return "";
    }
 }
+
+export const switchHeadingFont = (value) => {
+   switch (value) {
+      case "0":
+         return "Helvetica";
+      case "1":
+         return "Tahoma";
+      case "2":
+         return "Georgia";
+      case "3":
+         return "Times";
+      default:
+         return "Helvetica";
+   }
+}

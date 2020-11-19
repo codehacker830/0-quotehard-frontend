@@ -7,6 +7,7 @@ export default class Settings extends Component {
       return (
          <Switch>
             <Route exact path="/app/settings" component={asyncComponent(() => import("./Dashboard"))} />
+            <Route exact path="/app/settings/quick-start" component={asyncComponent(() => import("./QuickStart"))} />
             {/* Right section */}
             <Route exact path="/app/settings/profile" component={asyncComponent(() => import("./Profile"))} />
 
