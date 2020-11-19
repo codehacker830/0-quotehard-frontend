@@ -5,7 +5,7 @@ import {
 
 const initialSettings = {
    quoteDefaults: null,
-   teammates: []
+   teamMembers: []
 };
 
 export default (state = initialSettings, action) => {
@@ -18,7 +18,7 @@ export default (state = initialSettings, action) => {
       case GET_TEAMMATES:
          return {
             ...state,
-            teammates: action.payload
+            teamMembers: action.payload
          };
       default:
          return state;

@@ -7,7 +7,7 @@ class QuoteSettings extends Component {
       super(props);
       this.state = {
          show: false,
-         teammates: []
+         teamMembers: []
       };
    }
    componentDidMount() {
@@ -79,7 +79,7 @@ class QuoteSettings extends Component {
                         value={this.props.userFrom}
                         onChange={(ev) => this.props.updateSettings({ ...settings, userFrom: ev.target.value })}>
                         {
-                           this.props.settings.teammates.map((mate, index) => {
+                           this.props.settings.teamMembers.map((mate, index) => {
                               const mateFullName = mate.firstName + " " + mate.lastName;
                               return (<option value={mate._id} key={index}>{mateFullName}</option>);
                            })
@@ -324,8 +324,8 @@ class QuoteSettings extends Component {
                            id="pricing-display-level1"
                            name="pricing-display-level"
                            value="itemQuantityAndTotal"
-                           checked={this.props.priceDisplayLevel === "itemQuantityAndTotal"}
-                           onChange={(ev) => this.props.updateSettings({ ...settings, priceDisplayLevel: ev.target.value })}
+                           checked={this.props.pricingDisplayLevel === "itemQuantityAndTotal"}
+                           onChange={(ev) => this.props.updateSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
                         />
                         <label className="custom-control-label" htmlFor="pricing-display-level1">Item Quantity & Total</label>
                      </div>
@@ -335,8 +335,8 @@ class QuoteSettings extends Component {
                            id="price-display-level2"
                            name="pricing-display-level"
                            value="itemQuantity"
-                           checked={this.props.priceDisplayLevel === "itemQuantity"}
-                           onChange={(ev) => this.props.updateSettings({ ...settings, priceDisplayLevel: ev.target.value })}
+                           checked={this.props.pricingDisplayLevel === "itemQuantity"}
+                           onChange={(ev) => this.props.updateSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
                         />
                         <label className="custom-control-label" htmlFor="price-display-level2">Item Quantity</label>
                      </div>
@@ -346,8 +346,8 @@ class QuoteSettings extends Component {
                            id="pricing-display-level3"
                            name="pricing-display-level"
                            value="itemTotal"
-                           checked={this.props.priceDisplayLevel === "itemTotal"}
-                           onChange={(ev) => this.props.updateSettings({ ...settings, priceDisplayLevel: ev.target.value })}
+                           checked={this.props.pricingDisplayLevel === "itemTotal"}
+                           onChange={(ev) => this.props.updateSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
                         />
                         <label className="custom-control-label" htmlFor="pricing-display-level3">Item Total</label>
                      </div>
@@ -357,8 +357,8 @@ class QuoteSettings extends Component {
                            id="pricing-display-level4"
                            name="pricing-display-level"
                            value="hideAll"
-                           checked={this.props.priceDisplayLevel === "hideAll"}
-                           onChange={(ev) => this.props.updateSettings({ ...settings, priceDisplayLevel: ev.target.value })}
+                           checked={this.props.pricingDisplayLevel === "hideAll"}
+                           onChange={(ev) => this.props.updateSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
                         />
                         <label className="custom-control-label" htmlFor="pricing-display-level4">Hide All</label>
                      </div>

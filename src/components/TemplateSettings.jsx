@@ -245,8 +245,8 @@ class TemplateSettings extends React.Component {
                            id="pricing-display-level1"
                            name="pricing-display-level"
                            value="itemQuantityAndTotal"
-                           checked={this.props.priceDisplayLevel === "itemQuantityAndTotal"}
-                           onChange={(ev) => this.props.updateSettings({ ...settings, priceDisplayLevel: ev.target.value })}
+                           checked={this.props.pricingDisplayLevel === "itemQuantityAndTotal"}
+                           onChange={(ev) => this.props.updateSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
                         />
                         <label className="custom-control-label" htmlFor="pricing-display-level1">Item Quantity & Total</label>
                      </div>
@@ -256,8 +256,8 @@ class TemplateSettings extends React.Component {
                            id="price-display-level2"
                            name="pricing-display-level"
                            value="itemQuantity"
-                           checked={this.props.priceDisplayLevel === "itemQuantity"}
-                           onChange={(ev) => this.props.updateSettings({ ...settings, priceDisplayLevel: ev.target.value })}
+                           checked={this.props.pricingDisplayLevel === "itemQuantity"}
+                           onChange={(ev) => this.props.updateSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
                         />
                         <label className="custom-control-label" htmlFor="price-display-level2">Item Quantity</label>
                      </div>
@@ -267,8 +267,8 @@ class TemplateSettings extends React.Component {
                            id="pricing-display-level3"
                            name="pricing-display-level"
                            value="itemTotal"
-                           checked={this.props.priceDisplayLevel === "itemTotal"}
-                           onChange={(ev) => this.props.updateSettings({ ...settings, priceDisplayLevel: ev.target.value })}
+                           checked={this.props.pricingDisplayLevel === "itemTotal"}
+                           onChange={(ev) => this.props.updateSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
                         />
                         <label className="custom-control-label" htmlFor="pricing-display-level3">Item Total</label>
                      </div>
@@ -278,8 +278,8 @@ class TemplateSettings extends React.Component {
                            id="pricing-display-level4"
                            name="pricing-display-level"
                            value="hideAll"
-                           checked={this.props.priceDisplayLevel === "hideAll"}
-                           onChange={(ev) => this.props.updateSettings({ ...settings, priceDisplayLevel: ev.target.value })}
+                           checked={this.props.pricingDisplayLevel === "hideAll"}
+                           onChange={(ev) => this.props.updateSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
                         />
                         <label className="custom-control-label" htmlFor="pricing-display-level4">Hide All</label>
                      </div>

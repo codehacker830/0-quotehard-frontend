@@ -14,7 +14,7 @@ export const initQuoteSettings = {
    discount: 0,
    currency: "156",
    taxMode: "no_tax",
-   priceDisplayLevel: "itemQuantityAndTotal",
+   pricingDisplayLevel: "itemQuantityAndTotal",
    displayItemCode: true,
 };
 
@@ -22,7 +22,7 @@ export const initTemplateSettings = {
    discount: 0,
    currency: "156",
    taxMode: "no_tax",
-   priceDisplayLevel: "itemQuantityAndTotal",
+   pricingDisplayLevel: "itemQuantityAndTotal",
    displayItemCode: true,
 };
 

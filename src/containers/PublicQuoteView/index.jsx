@@ -21,7 +21,7 @@ class PublicQuoteView extends Component {
       super();
       this.state = {
          isLoading: true,
-         teammates: [],
+         teamMembers: [],
          fileArray: [],
          quote: {},
          commentShow: false,
@@ -194,10 +194,10 @@ class PublicQuoteView extends Component {
                   discussions: data.quote.discussions ? data.quote.discussions : []
                });
                if (this.props.auth.authUser) {
-                  axios.get('/teammates').then((res) => {
-                     console.log("get teammates api response ============>", res.data.teammates)
-                     this.setState({ teammates: res.data.teammates });
-                     const me = res.data.teammates.find(mate => mate._id === this.props.auth.authUser._id);
+                  axios.get('/team-members').then((res) => {
+                     console.log("get team-members api response ============>", res.data.teamMembers)
+                     this.setState({ teamMembers: res.data.teamMembers });
+                     const me = res.data.teamMembers.find(mate => mate._id === this.props.auth.authUser._id);
                      if (me) {
                         console.log(" this user is Eligible %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
                         this.setState({ isPrivateEligible: true });
@@ -206,7 +206,7 @@ class PublicQuoteView extends Component {
                         this.setState({ isPrivateEligible: false });
                      }
                   }).catch(err => {
-                     console.error("error during get teammates ==>", err);
+                     console.error("error during get teamMembers ==>", err);
                      this.props.setInitUrl(`/q/${entoken}`);
                      this.props.userSignOut;
                   });
@@ -731,10 +731,10 @@ class PublicQuoteView extends Component {
                                              >
                                                 <option value={""}>Add as Private Note only</option>
                                                 {
-                                                   (this.state.teammates.length > 0) &&
+                                                   (this.state.teamMembers.length > 0) &&
                                                    <optgroup label="Send email to:">
                                                       {
-                                                         this.state.teammates.map((mate, index) => {
+                                                         this.state.teamMembers.map((mate, index) => {
                                                             const mateFullName = mate.firstName + " " + mate.lastName;
                                                             const isMe = mate._id === this.props.auth.authUser._id;
                                                             return (<option value={mate._id} key={index}>{mateFullName} {isMe ? "- note to self" : ""}</option>);
