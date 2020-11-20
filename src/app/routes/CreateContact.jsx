@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { toastr } from 'react-redux-toastr';
+import { toast } from 'react-toastify';
 import { Link, Redirect } from 'react-router-dom';
 import NavCrump from '../../components/NavCrump';
 import {
    companyData
 } from "../../constants/Dump";
 import axios from '../../util/Api';
-import { toastrErrorConfig, toastrSuccessConfig, toastrWarningConfig } from '../../util/toastrConfig';
+import { toastErrorConfig, toastSuccessConfig, toastWarningConfig } from '../../util/toastrConfig';
 import AddressForm from '../../components/Contact/AddressForm';
 import AddAddressBtn from '../../components/Contact/AddAddressBtn';
 import AddPhoneBtn from '../../components/Contact/AddPhoneBtn';
@@ -68,11 +68,11 @@ export default class CreateContact extends Component {
          addresses
       } = this.state;
       if (category === "person" && (firstName === "" || email === "")) {
-         toastr.warning('Warning', 'First Name and Email Address are required fields.', toastrWarningConfig);
+         toast.warn('First Name and Email Address are required fields.', toastWarningConfig);
          return;
       }
       if (category === "company" && companyTitle === "" && email === "") {
-         toastr.warning('Warning', 'Either one of company name or Email Address is required.', toastrWarningConfig);
+         toast.warn('Either one of company name or Email Address is required.', toastWarningConfig);
          return;
       }
       const data = {
@@ -87,13 +87,13 @@ export default class CreateContact extends Component {
       }
       console.log("request payload ===>", data);
       axios.post("/contacts", data).then(({data}) => {
-         toastr.success("Succeeed", `Contact was created successfully.`, toastrSuccessConfig);
+         toast.success("Contact was created successfully.", toastSuccessConfig);
          console.log("create contact api resopnse ==>", data);
          this.props.history.push(`/app/c/contacts/view/${data.contact._id}`);
       }).catch(err => {
-         toastr.error("Error", "Break down during request.", toastrErrorConfig);
+         toast.error("Break down during request.", toastErrorConfig);
          console.error("create contact api error ==>", err);
-         toastr.error("Error", `Failed to create contact.`, toastrSuccessConfig);
+         toast.error("Failed to create contact.", toastErrorConfig);
          this.props.history.push(`/app/c/contacts`);
       });
    }

@@ -1,6 +1,6 @@
 import { isNumber } from 'highcharts';
 import React, { Component } from 'react';
-import { toastr } from 'react-redux-toastr';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import AddAddressBtn from '../../components/Contact/AddAddressBtn';
 import AddPhoneBtn from '../../components/Contact/AddPhoneBtn';
@@ -10,7 +10,7 @@ import {
    companyData
 } from "../../constants/Dump";
 import axios from '../../util/Api';
-import { toastrSuccessConfig } from '../../util/toastrConfig';
+import { toastSuccessConfig } from '../../util/toastrConfig';
 
 export default class EditContact extends Component {
    constructor(props) {
@@ -59,22 +59,22 @@ export default class EditContact extends Component {
       const data = { category, firstName, lastName, companyName, companyId, email, phones, addresses };
       console.log("edit contact request payload =", data);
       if (category === "person" && (firstName === "" || email === "")) {
-         toastr.warning('Warning !', 'First Name is required.', toastrWarningConfig);
+         toast.warn('First Name is required.', toastWarningConfig);
          return;
       }
       if (category === "company" && companyName === "" && email === "") {
-         toastr.warning('Warning !', 'You need to enter a company name or email.', toastrWarningConfig);
+         toast.warn('You need to enter a company name or email.', toastWarningConfig);
          return;
       }
       const { match } = this.props;
       const contactId = match.params.id;
       if (!contactId) {
-         toastr.warning('Warning !', "Contact can't be catched.", toastrWarningConfig);
+         toast.warn("Contact can't be catched.", toastWarningConfig);
          return;
       }
       axios.put(`/contacts/${contactId}`, data).then((res) => {
          console.log("api resopnse = >", res);
-         toastr.success('Success !', "Contact was updated successfully.", toastrSuccessConfig);
+         toast.success("Contact was updated successfully.", toastSuccessConfig);
          // this.props.history.push(this.goTo);
       }).catch(err => {
          console.error("err => ", err);

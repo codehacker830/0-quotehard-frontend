@@ -7,10 +7,10 @@ import TextItemForm from "../../../components/TextItemForm";
 import SubTotal from "../../../components/SubTotal";
 import { toastr } from "react-redux-toastr";
 import {
-   toastrWarningConfig,
-   toastrSuccessConfig,
-   toastrErrorConfig,
-   toastrInfoConfig,
+   toastWarningConfig,
+   toastSuccessConfig,
+   toastErrorConfig,
+   toastInfoConfig,
 } from "../../../util/toastrConfig";
 import CompleterContact from "./components/CompleterContact";
 import LableFor from "./components/LableFor";
@@ -74,8 +74,8 @@ class GetQuote extends Component {
    };
    handleClickSaveNext = () => {
       const { toPeopleList, title, settings, items, notes } = this.state;
-      if (toPeopleList.length === 0) { toastr.info("Required", "You must add at least one contact.", toastrInfoConfig); return; }
-      if (title === "") { toastr.info("Required", "You are missing a Quote Title.", toastrInfoConfig); return; }
+      if (toPeopleList.length === 0) { toast.info("You must add at least one contact.", toastInfoConfig); return; }
+      if (title === "") { toast.info("You are missing a Quote Title.", toastInfoConfig); return; }
       const toPeopleIdList = [];
       for (let i = 0; i < toPeopleList.length; i++) {
          toPeopleIdList.push(toPeopleList[i]._id);
@@ -93,45 +93,33 @@ class GetQuote extends Component {
          axios.post('/quotes', data)
             .then(({ data }) => {
                console.log("res data =>", data);
-               toastr.success(
-                  "Success",
-                  "New Quote was defined.",
-                  toastrSuccessConfig
-               );
+               toast.success("New Quote was defined.", toastSuccessConfig);
                this.props.history.push(`/q/${data.entoken}`);
             })
             .catch(err => {
                console.error(" error ===>", err);
-               toastr.error("Error", "Quote failed to create", toastrErrorConfig);
+               toast.error("Quote failed to create", toastErrorConfig);
             });
       } else if (this.props.match.path = "/app/quote/:id") {
          const quoteId = this.props.match.params.id;
          axios.put(`/quotes/${quoteId}`, data)
             .then(({ data }) => {
                console.log("uuuuuuuuuuuuuuuuu =>", data);
-               toastr.success(
-                  "Success",
-                  "Quote was defined.",
-                  toastrSuccessConfig
-               );
+               toast.success("Quote was defined.", toastSuccessConfig);
                this.props.history.push(`/q/${data.entoken}`);
             })
             .catch(err => {
                console.error(" error ===>", err);
-               toastr.error("Error", "Quote failed to update", toastrErrorConfig);
+               toast.error("Quote failed to update", toastErrorConfig);
             });
       } else {
          console.error("Error !!!!!!!!!!!!!!");
-         // toastr.warning(
-         //    "Warning",
-         //    "Failed before request.",
-         //    toastrWarningConfig
-         // );
+         // toast.warn("Failed before request.", toastWarningConfig);
       }
    };
    handleClickSave = () => {
       const { toPeopleList, title, settings, items, notes } = this.state;
-      if (title === "") { toastr.info("Required", "You are missing a Quote Title.", toastrInfoConfig); return; }
+      if (title === "") { toast.info("Missing a Quote Title.", toastInfoConfig); return; }
       const toPeopleIdList = [];
       for (let i = 0; i < toPeopleList.length; i++) {
          toPeopleIdList.push(toPeopleList[i]._id);
@@ -149,39 +137,28 @@ class GetQuote extends Component {
          axios.post('/quotes', data)
             .then(({ data }) => {
                console.log("res data =>", data);
-               toastr.success(
-                  "Success",
-                  "New Quote draft was created.",
-                  toastrSuccessConfig
-               );
+               toast.success("New Quote draft was created.", toastSuccessConfig);
                this.props.history.push(`/app/quote/${data.quote._id}`)
             })
             .catch(err => {
                console.error(" error ===>", err);
-               toastr.error("Error", "Quote failed to create", toastrErrorConfig);
+               toast.error("Quote failed to create", toastErrorConfig);
             });
       } else if (this.props.match.path = "/app/quote/:id") {
          const quoteId = this.props.match.params.id;
          axios.put(`/quotes/${quoteId}`, data)
             .then(({ data }) => {
                console.log("uuuuuuuuuuuuuuuuu =>", data);
-               toastr.success(
-                  "Success",
-                  "Quote draft was updated.",
-                  toastrSuccessConfig
+               toast.success("Quote draft was updated.", toastSuccessConfig
                );
             })
             .catch(err => {
                console.error(" error ===>", err);
-               toastr.error("Error", "Quote failed to update", toastrErrorConfig);
+               toast.error("Quote failed to update", toastErrorConfig);
             });
       }
       else {
-         toastr.warning(
-            "Warning",
-            "Something went wrong before request.",
-            toastrWarningConfig
-         );
+         toast.warn("Failed before request.", toastWarningConfig);
       }
 
    };

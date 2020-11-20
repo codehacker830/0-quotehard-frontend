@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { toastr } from 'react-redux-toastr';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import InlineHelp from '../../../components/InlineHelp';
 import TotalLabelFor from '../../../components/TotalLabelFor';
 import { formatDate } from '../../../util';
 import axios from '../../../util/Api';
-import { toastrErrorConfig, toastrSuccessConfig } from '../../../util/toastrConfig';
+import { toastErrorConfig, toastSuccessConfig } from '../../../util/toastrConfig';
 
 export default class TemplateItems extends Component {
    mounted = false;
@@ -43,7 +43,7 @@ export default class TemplateItems extends Component {
             })
          }).catch(err => {
             console.error(" error ===>", err);
-            toastr.error("Error", "Failed to get templates list", toastrErrorConfig);
+            toast.error("Failed to get templates list", toastErrorConfig);
          });
       }
    }

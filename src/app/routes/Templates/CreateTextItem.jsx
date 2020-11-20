@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { toastr } from 'react-redux-toastr';
+import { toast } from 'react-toastify';
 import NavCrump from '../../../components/NavCrump';
 import TextItemForm from '../../../components/TextItemForm';
 import { initTextItem } from '../../../constants/InitState';
 import axios from '../../../util/Api';
-import { toastrErrorConfig, toastrInfoConfig, toastrSuccessConfig } from '../../../util/toastrConfig';
+import { toastErrorConfig, toastInfoConfig, toastSuccessConfig } from '../../../util/toastrConfig';
 
 export default class CreateTextItem extends Component {
    fileObj = [];
@@ -37,32 +37,24 @@ export default class CreateTextItem extends Component {
    }
    onClickCreate = () => {
       const { textHeading, longDescription, files } = this.state.textItem;
-      if (textHeading === "") { toastr.info("Required", "You are missing a Title.", toastrInfoConfig); return; }
+      if (textHeading === "") { toast.info("You are missing a Title.", toastInfoConfig); return; }
       const payload = { textHeading, longDescription, files };
       if (this.props.location.pathname === '/app/content/item-text/create-new') {
          axios.post('/templates/create-textitem', payload).then(({ data }) => {
             console.log(" create textitem res =>", data);
-            toastr.success(
-               "Success",
-               "New TextItem template was created.",
-               toastrSuccessConfig
-            );
+            toast.success("New TextItem template was created.", toastSuccessConfig);
          }).catch(err => {
             console.error("error during create textitem =>", err);
-            toastr.error("Error", "TextItem failed to create.", toastrErrorConfig);
+            toast.error("TextItem failed to create.", toastErrorConfig);
          });
       } else if (this.props.match.path === '/app/content/item-text/view/:id') {
          const textItemId = this.props.match.params.id;
          axios.post(`/templates/update-textitem-by-id/${textItemId}`, payload).then(({ data }) => {
             console.log(" create textitem res =>", data);
-            toastr.success(
-               "Success",
-               "TextItem template was updated.",
-               toastrSuccessConfig
-            );
+            toast.success("TextItem template was updated.", toastSuccessConfig);
          }).catch(err => {
             console.error("error during create textitem =>", err);
-            toastr.error("Error", "TextItem failed to update.", toastrErrorConfig);
+            toast.error("TextItem failed to update.", toastErrorConfig);
          });
       }
    }
@@ -77,7 +69,7 @@ export default class CreateTextItem extends Component {
             });
          }).catch(err => {
             console.error("get textItem detail api error =>", err);
-            toastr.error("Error", "TextItem was not found", toastrErrorConfig);
+            toast.error("TextItem was not found", toastErrorConfig);
          });
       }
    }

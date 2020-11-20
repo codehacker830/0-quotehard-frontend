@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { toastr } from "react-redux-toastr";
 import { Link } from "react-router-dom";
 import { userSignIn } from "../actions/Auth";
-import { toastrErrorConfig, toastrWarningConfig } from "../util/toastrConfig";
+import { toastErrorConfig, toastWarningConfig } from "../util/toastrConfig";
 
 class SignIn extends Component {
    state = {
@@ -14,7 +14,7 @@ class SignIn extends Component {
    onClickSignIn = (ev) => {
       const { email, password } = this.state;
       if (email === "" || password === "") {
-         toastr.warning("Required", "Email and password fields are required.", toastrWarningConfig);
+         toast.warn("Email and password fields are required.", toastWarningConfig);
       }
       else this.props.userSignIn({ email, password });
    };
@@ -24,7 +24,7 @@ class SignIn extends Component {
          console.log("^^^^^^^^^^^^^^^^^^ this.props.auth.initURL ", this.props.auth.initURL);
          this.props.history.push(this.props.auth.initURL === '' || this.props.auth.initURL === '/sign-in' ? '/app' : this.props.auth.initURL);
       } else if (nextProps.commonData.error !== "") {
-         toastr.error("Incorrect", nextProps.commonData.error, toastrErrorConfig);
+         toast.error(nextProps.commonData.error, toastErrorConfig);
       }
    };
    render() {

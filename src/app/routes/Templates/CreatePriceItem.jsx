@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { toastr } from 'react-redux-toastr';
+import { toast } from 'react-toastify';
 import NavCrump from '../../../components/NavCrump';
 import PriceItemForm from '../../../components/PriceItemForm';
 import { initPriceItem } from '../../../constants/InitState';
 import axios from '../../../util/Api';
-import { toastrErrorConfig, toastrInfoConfig, toastrSuccessConfig } from '../../../util/toastrConfig';
+import { toastErrorConfig, toastInfoConfig, toastSuccessConfig } from '../../../util/toastrConfig';
 
 export default class CreatePriceItem extends Component {
    constructor(orops) {
@@ -53,7 +53,7 @@ export default class CreatePriceItem extends Component {
          quantity,
          itemTotal,
       } = this.state.priceItem;
-      if (productHeading === "" && itemCode === "") { toastr.info("Required", "Title Or item code is missing.", toastrInfoConfig); return; }
+      if (productHeading === "" && itemCode === "") { toast.info("Title Or item code is missing.", toastInfoConfig); return; }
       const payload = {
          isOptional,
          isOptionSelected,
@@ -84,29 +84,21 @@ export default class CreatePriceItem extends Component {
       if (this.props.location.pathname === '/app/content/item-price/create-new') {
          axios.post('/templates/create-priceitem', payload).then(({ data }) => {
             console.log(" create priceItem res =>", data);
-            toastr.success(
-               "Success",
-               "New PriceItem template was created.",
-               toastrSuccessConfig
-            );
+            toast.success("New PriceItem template was created.", toastSuccessConfig);
             this.props.history.push("/app/content/item-price/browse");
          }).catch(err => {
             console.error("error during create priceItem =>", err);
-            toastr.error("Error", "PriceItem failed to create", toastrErrorConfig);
+            toast.error("PriceItem failed to create", toastErrorConfig);
          });
       } else if (this.props.match.path === '/app/content/item-price/view/:id') {
          const priceItemId = this.props.match.params.id;
          axios.post(`/templates/update-priceitem-by-id/${priceItemId}`, payload).then(({ data }) => {
             console.log(" update priceItem res =>", data);
-            toastr.success(
-               "Success",
-               "PriceItem template was updated.",
-               toastrSuccessConfig
-            );
+            toast.success("PriceItem template was updated.", toastSuccessConfig);
             this.props.history.push("/app/content/item-price/browse");
          }).catch(err => {
             console.error("error during update priceItem =>", err);
-            toastr.error("Error", "PriceItem failed to update", toastrErrorConfig);
+            toast.error("PriceItem failed to update", toastErrorConfig);
          });
       }
    }
@@ -121,7 +113,7 @@ export default class CreatePriceItem extends Component {
             });
          }).catch(err => {
             console.error("get priceItem detail api error =>", err);
-            toastr.error("Error", "PirceItem was not found", toastrErrorConfig);
+            toast.error("PirceItem was not found", toastErrorConfig);
          });
       }
    }

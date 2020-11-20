@@ -1,10 +1,10 @@
 import React from 'react'
-import { toastr } from 'react-redux-toastr';
+import { toast } from 'react-toastify';
 import { Link, withRouter } from 'react-router-dom'
 import { allActivities } from '../constants/Dump';
 import { formatDate } from '../util';
 import axios from '../util/Api';
-import { toastrErrorConfig, toastrSuccessConfig } from '../util/toastrConfig';
+import { toastErrorConfig, toastSuccessConfig } from '../util/toastrConfig';
 
 export const StatusBanner = (props) => {
    const [showActivity, setShowActivity] = React.useState(false);
@@ -14,23 +14,19 @@ export const StatusBanner = (props) => {
       };
       axios.post('/quotes/send', payload)
          .then(({ data }) => {
-            toastr.success(
-               "Success",
-               "Quote email was sent.",
-               toastrSuccessConfig
-            );
+            toast.success("Quote email was sent.", toastSuccessConfig);
             props.history.push(`/q/${data.entoken}`);
          })
          .catch(err => {
             console.error(" error => ", err);
-            toastr.error("Error", "Failed to send quote.", toastrErrorConfig);
+            toast.error("Failed to send quote.", toastErrorConfig);
          });
    }
    const onClickEditDraft = () => {
       props.history.push(`/app/quote/${props.quote._id}`);
    }
    const onClickArchive = () => {
-      
+
    }
    return (
       <div className="bg-body-light border-bottom">

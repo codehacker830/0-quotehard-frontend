@@ -6,8 +6,9 @@ import ProgressBar from '../../components/ProgressBar';
 import axios from '../../util/Api';
 import { formatDate, formatDateTime, toFixedFloat } from '../../util';
 import { connect } from 'react-redux';
-import { toastr } from 'react-redux-toastr';
-import { toastrErrorConfig, toastrSuccessConfig, toastrWarningConfig } from '../../util/toastrConfig';
+import { toast } from 'react-toastify';
+
+import { toastErrorConfig, toastSuccessConfig, toastWarningConfig } from '../../util/toastrConfig';
 import QuoteItemTotal from '../../components/QuoteItemTotal';
 import { setInitUrl, userSignOut } from '../../actions/Auth';
 import { getTeammates } from '../../actions/Setting';
@@ -20,7 +21,8 @@ class PublicQuoteView extends Component {
    constructor(props) {
       super();
       this.state = {
-         isLoading: true,
+         isMounting: true,
+         loading: false,
          teamMembers: [],
          fileArray: [],
          quote: {},
@@ -62,12 +64,12 @@ class PublicQuoteView extends Component {
       axios.post('/quotes/accept', { entoken: entoken })
          .then(({ data }) => {
             console.log("========== res =========", data);
-            toastr.success('Accepted', 'Quote was accepted,', toastrSuccessConfig);
+            toast.success('Quote was Accepted,', toastSuccessConfig);
             this.props.history.push(`/q/${entoken}/accepted`);
          })
          .catch(err => {
             console.error(" ========== checking public draft error =========", err);
-            toastr.error('Error', 'Failed during quote accept request.,', toastrErrorConfig);
+            toast.error('Failed during quote acception request.,', toastErrorConfig);
          });
    }
    onClickDecline = () => {
@@ -75,11 +77,11 @@ class PublicQuoteView extends Component {
       axios.post('/quotes/decline', { entoken: entoken })
          .then(({ data }) => {
             console.log("========== res =========", data);
-            toastr.success('Declined', 'Quote was declined,', toastrSuccessConfig);
+            toast.success('Quote was Declined,', toastSuccessConfig);
          })
          .catch(err => {
             console.error(" ========== checking public draft error =========", err);
-            toastr.error('Error', 'Failed during quote decline request.,', toastrErrorConfig);
+            toast.error('Failed during quote decline request.,', toastErrorConfig);
          });
    }
 
@@ -88,16 +90,20 @@ class PublicQuoteView extends Component {
       const { entoken } = this.props.match.params;
       console.log(" privateNoteContent =>", privateNoteContent);
       if (privateNoteContent === "") {
-         toastr.warning("Warning", "Private note should not be empty.", toastrWarningConfig);
+         toast.warn("Private note should not be empty.", toastWarningConfig);
          return;
       }
+      this.setState({ loading: true });
       axios.post('/quotes/private-note', { privateNoteContent, toMateAccountId, entoken })
          .then(({ data }) => {
-            toastr.success("Succeed", "Private note was submitted.", toastrSuccessConfig);
+            toast.success("Private note was Submitted.", toastSuccessConfig);
             console.log(" Private note submit response ==> ", data)
             this.setState({
+               loading: false,
                discussions: data.discussions,
-               privateNoteContent: ""
+               privateNoteContent: "",
+               commentShow: false,
+               privateNoteShow: false
             });
          })
          .catch(err => {
@@ -110,16 +116,20 @@ class PublicQuoteView extends Component {
       const { entoken } = this.props.match.params;
       console.log(" commentContent =>", commentContent);
       if (commentContent === "") {
-         toastr.warning("Warning", "Comment should not be empty.", toastrWarningConfig);
+         toast.warn("Comment should not be empty.", toastWarningConfig);
          return;
       }
+      this.setState({ loading: true });
       axios.post('/quotes/comment', { commentContent, entoken })
          .then(({ data }) => {
-            toastr.success("Succeed", "Comment was submitted.", toastrSuccessConfig);
+            toast.success("Comment was submitted.", toastSuccessConfig);
             console.log(" comment submit response ==> ", data)
             this.setState({
+               loading: false,
                discussions: data.discussions,
-               commentContent: ""
+               commentContent: "",
+               commentShow: false,
+               privateNoteShow: false
             });
          })
          .catch(err => {
@@ -130,13 +140,15 @@ class PublicQuoteView extends Component {
       const { questionContent } = this.state;
       const { entoken } = this.props.match.params;
       if (questionContent === "") {
-         toastr.warning("Warning", "Answer content should not be empty.", toastrWarningConfig);
+         toast.warn("Answer content should not be empty.", toastWarningConfig);
          return;
       }
+      this.setState({ loading: true });
       axios.post('/quotes/ask-question', { questionContent, entoken })
          .then(({ data }) => {
-            toastr.success("Succeed", "Question was submitted.", toastrSuccessConfig);
+            toast.success("Question was Submitted.", toastSuccessConfig);
             this.setState({
+               loading: false,
                discussions: data.discussions,
                questionContent: ""
             });
@@ -149,13 +161,15 @@ class PublicQuoteView extends Component {
       const { answerContent } = this.state;
       const { entoken } = this.props.match.params;
       if (answerContent === "") {
-         toastr.warning("Warning", "Answer content should not be empty.", toastrWarningConfig);
+         toast.warn("Answer content should not be empty.", toastWarningConfig);
          return;
       }
+      this.setState({ loading: true });
       axios.post('/quotes/answer-question', { answerContent, entoken, qaId })
          .then(({ data }) => {
-            toastr.success("Succeed", "Answer was submitted.", toastrSuccessConfig);
+            toast.success("Answer was Submitted.", toastSuccessConfig);
             this.setState({
+               loading: false,
                discussions: data.discussions,
                answerContent: ""
             });
@@ -166,10 +180,12 @@ class PublicQuoteView extends Component {
    }
    onSubmitDismiss = (qaId) => {
       const { entoken } = this.props.match.params;
+      this.setState({ loading: true });
       axios.post('/quotes/dismiss', { entoken, qaId })
          .then(({ data }) => {
-            toastr.success("Succeed", "Answer was dismissed.", toastrSuccessConfig);
+            toast.success("Answer was Dismissed.", toastSuccessConfig);
             this.setState({
+               loading: false,
                discussions: data.discussions,
                answerContent: ""
             });
@@ -183,13 +199,13 @@ class PublicQuoteView extends Component {
       const entoken = this.props.match.params.entoken;
       console.log("***** entoken ***** ", entoken);
       if (this.mounted) {
-         this.setState({ isLoading: true });
+         this.setState({ isMounting: true });
 
          axios.post('/quotes/view-draft', { entoken })
             .then(({ data }) => {
                console.log("========== Publick overview did mount get quote =========", data);
                this.setState({
-                  isLoading: false,
+                  isMounting: false,
                   quote: data.quote,
                   discussions: data.quote.discussions ? data.quote.discussions : []
                });
@@ -222,7 +238,7 @@ class PublicQuoteView extends Component {
    render() {
       console.log(" ----------- PublicQuoteView state ------", this.state);
       console.log(" ----------- PublicQuoteView props ------", this.props);
-      if (this.state.isLoading) return <div>loading...</div>;
+      if (this.state.isMounting) return <div>loading...</div>;
       else if (this.props.match.path === '/q/:entoken/author-discuss') {
          if (!this.state.isPrivateEligible) {
             this.props.setInitUrl(`/q/${this.props.match.params.entoken}`);
@@ -244,9 +260,9 @@ class PublicQuoteView extends Component {
                      : null
                }
 
-               <div className="content content-full h-100">
+               <div className="content content-full pt-0 h-100" style={{ backgroundColor: "#fff1f5" }}>
                   <div className="row no-gutters">
-                     <div className="px-3 py-5 mx-auto w-100 maxWidth-920">
+                     <div className="px-5 pt-5 pb-0 mx-auto w-100 maxWidth-920" style={{ backgroundColor: "white" }}>
                         <div className="row no-gutters mb-4">
                            <img title="..." alt="..." src="https://asset.quotientapp.com/file-s/1/logo-v3/38216/e17c79cff88b12263507ecb3f94b9b54" />
                         </div>
@@ -650,8 +666,12 @@ class PublicQuoteView extends Component {
                                                       Add Image or File
                                                       </button>
                                                       <div className="row no-gutters mt-3">
-                                                         <button className="btn btn-secondary mr-2" onClick={() => this.onSubmitAnswer(discussion._id)}>Answer Question</button>
-                                                         <button className="btn btn-alt-secondary" onClick={() => this.onSubmitDismiss(discussion._id)}>Dismiss</button>
+                                                         <button className="btn btn-secondary mr-2" disabled={this.state.loading} onClick={() => this.onSubmitAnswer(discussion._id)}>
+                                                            {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
+                                                            Answer Question</button>
+                                                         <button className="btn btn-alt-secondary" disabled={this.state.loading} onClick={() => this.onSubmitDismiss(discussion._id)}>
+                                                            {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
+                                                            Dismiss</button>
                                                       </div>
                                                    </div>
                                                 }
@@ -663,7 +683,7 @@ class PublicQuoteView extends Component {
                               </div>
                               {
                                  this.props.auth.authUser && this.state.quote && (this.props.auth.authUser._id === this.state.quote.author._id) ?
-                                    <div className="discuss-wrap mb-4">
+                                    <div className="discuss-wrap">
                                        {/* controller button wrapper  */}
                                        <div className={`discuss-button-wrap ${this.state.commentShow || this.state.privateNoteShow ? "d-none" : ""}`}>
                                           <button className="btn btn-sm btn-dark font-size-sm px-2 py-1 mr-2" onClick={() => this.setState({ commentShow: true })}>Comment</button>
@@ -715,7 +735,11 @@ class PublicQuoteView extends Component {
                                                 Add Image or File
                                              </button>
                                           <div className="row no-gutters mt-3">
-                                             <button className="btn btn-secondary mr-2" onClick={this.onSubmitCommemt}>Send Comment</button>
+                                             <button className="btn btn-secondary mr-2"
+                                                disabled={this.state.loading}
+                                                onClick={this.onSubmitCommemt}>
+                                                {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
+                                             Send Comment</button>
                                              <button className="btn btn-alt-secondary" onClick={() => this.setState({ commentShow: false, privateNoteShow: false })}>Cancel</button>
                                           </div>
                                        </div>
@@ -780,7 +804,9 @@ class PublicQuoteView extends Component {
                                                 Add Image or File
                                              </button>
                                           <div className="row no-gutters my-3">
-                                             <button className="btn btn-success mr-2" onClick={this.onClickAddPrivateNote}>Add Private Note</button>
+                                             <button className="btn btn-success mr-2" disabled={this.state.loading} onClick={this.onClickAddPrivateNote}>
+                                                {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
+                                                Add Private Note</button>
                                              <button className="btn btn-alt-secondary" onClick={() => this.setState({ commentShow: false, privateNoteShow: false })}>Cancel</button>
                                           </div>
                                           <div className="row no-gutters">
@@ -831,7 +857,9 @@ class PublicQuoteView extends Component {
                                                 Add Image or File
                                              </button>
                                              <div className="row no-gutters mt-3">
-                                                <button className="btn btn-secondary mr-2" onClick={this.onSubmitQuestion}>Submit Question</button>
+                                                <button className="btn btn-secondary mr-2" disabled={this.state.loading} onClick={this.onSubmitQuestion}>
+                                                   {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
+                                                   Submit Question</button>
                                                 <button className="btn btn-alt-secondary" onClick={() => this.setState({ questionSectionShow: false })}>Cancel</button>
                                              </div>
                                           </div>

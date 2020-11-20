@@ -1,63 +1,58 @@
 import React from 'react';
 
-export const toastrDefaultConfig = {
-   timeOut: 5000,
-   newestOnTop: true,
-   preventDuplicates: false,
-   position: 'top-right',
-   transitionIn: 'fadeIn',
-   transitionOut: 'fadeOut',
-   progressBar: false,
-   closeOnToastrClick: true,
+export const toastDefaultConfig = {
+   position: "top-right",
+   autoClose: 5000,
+   hideProgressBar: false,
+   closeOnClick: true,
+   pauseOnHover: true,
+   draggable: true,
+   progress: undefined,
 };
 
-export const toastrInfoConfig = {
-   timeOut: 5000,
-   newestOnTop: true,
-   preventDuplicates: false,
-   position: 'top-right',
-   transitionIn: 'bounceIn',
-   transitionOut: 'bounceOut',
-   progressBar: true,
-   closeOnToastrClick: true,
+export const toastInfoConfig = {
+   position: "top-right",
+   autoClose: 5000,
+   hideProgressBar: false,
+   closeOnClick: true,
+   pauseOnHover: true,
+   draggable: true,
+   progress: undefined,
 };
 
-export const toastrSuccessConfig = {
-   timeOut: 5000,
-   newestOnTop: true,
-   preventDuplicates: false,
-   position: 'top-right',
-   transitionIn: 'bounceIn',
-   transitionOut: 'bounceOut',
-   progressBar: true,
-   closeOnToastrClick: true,
+export const toastSuccessConfig = {
+   position: "top-right",
+   autoClose: 5000,
+   hideProgressBar: false,
+   closeOnClick: true,
+   pauseOnHover: true,
+   draggable: true,
+   progress: undefined,
 };
 
-export const toastrWarningConfig = {
-   timeOut: 5000,
-   newestOnTop: true,
-   preventDuplicates: false,
-   position: 'top-right',
-   transitionIn: 'fadeIn',
-   transitionOut: 'fadeOut',
-   progressBar: true,
-   closeOnToastrClick: true,
+export const toastWarningConfig = {
+   position: "top-right",
+   autoClose: 5000,
+   hideProgressBar: false,
+   closeOnClick: true,
+   pauseOnHover: true,
+   draggable: true,
+   progress: undefined,
 };
 
-export const toastrErrorConfig = {
-   timeOut: 5000,
-   newestOnTop: true,
-   preventDuplicates: false,
-   position: 'bottom-right',
-   transitionIn: 'fadeIn',
-   transitionOut: 'fadeOut',
-   progressBar: true,
-   closeOnToastrClick: true,
+export const toastErrorConfig = {
+   position: "top-right",
+   autoClose: 5000,
+   hideProgressBar: false,
+   closeOnClick: true,
+   pauseOnHover: true,
+   draggable: true,
+   progress: undefined,
 };
 
 
 
-export const toastrMessageOptions = {
+export const toastMessageOptions = {
    timeOut: 3000, // Default value is 0
    onShowComplete: () => console.log('SHOW: toastr error show is done'),
    onHideComplete: () => console.log('HIDE: toastr error hide is done'),

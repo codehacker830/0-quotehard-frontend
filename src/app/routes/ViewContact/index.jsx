@@ -1,11 +1,11 @@
 import React from 'react'
 import { Component } from 'react';
-import { toastr } from 'react-redux-toastr';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import NavCrump from '../../../components/NavCrump';
 import { personData, companyData, recentActivities } from "../../../constants/Dump";
 import axios from '../../../util/Api';
-import { toastrSuccessConfig } from '../../../util/toastrConfig';
+import { toastSuccessConfig } from '../../../util/toastrConfig';
 import AddressesShow from './AddressesShow';
 import AvatarImg from './AvatarImg';
 import CompanyPeopleList from './CompanyPeopleList';
@@ -45,7 +45,7 @@ export default class ViewContact extends Component {
    onClickArchive = () => {
       axios.put(`/contacts/archive/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to archive contact", data);
-         toastr.success("Archived", "Contact was archived.", toastrSuccessConfig);
+         toast.success("Contact was Archived.", toastSuccessConfig);
          this.props.history.push('/app/c/contacts');
       }).catch((err) => {
          console.error(" failed to archive contact ", err);
@@ -54,7 +54,7 @@ export default class ViewContact extends Component {
    onClickUnArchive = () => {
       axios.put(`/contacts/un-archive/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to archive contact", data);
-         toastr.success("Undo Archive", "Contact was released.", toastrSuccessConfig);
+         toast.success("Contact was Undo-Archived.", toastSuccessConfig);
          this.props.history.push('/app/c/contacts');
       }).catch((err) => {
          console.error(" failed to un-archive contact ", err);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { toastr } from 'react-redux-toastr';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import AddItemBtn from '../../../components/AddItemBtn';
 import NavCrump from '../../../components/NavCrump';
@@ -15,7 +15,7 @@ import {
    initSubTotal,
 } from '../../../constants/InitState';
 import axios from '../../../util/Api';
-import { toastrErrorConfig, toastrSuccessConfig } from '../../../util/toastrConfig';
+import { toastErrorConfig, toastSuccessConfig } from '../../../util/toastrConfig';
 
 export default class GetTemplate extends Component {
    constructor(props) {
@@ -45,7 +45,7 @@ export default class GetTemplate extends Component {
    }
    onClickCreate = () => {
       const { title, settings, items, notes } = this.state;
-      if (title === "") { toastr.info("Required", "You are missing a Template Title.", toastrInfoConfig); return; }
+      if (title === "") { toast.info("You are missing a Template Title.", toastInfoConfig); return; }
       const data = {
          title,
          settings,
@@ -55,21 +55,17 @@ export default class GetTemplate extends Component {
       axios.post('/templates', data)
          .then(({ data }) => {
             console.log("res data ---------------->", data);
-            toastr.success(
-               "Success",
-               "New Template was created.",
-               toastrSuccessConfig
-            );
+            toast.success("New Template was created.", toastSuccessConfig);
             this.props.history.push("/app/content/templates")
          })
          .catch(err => {
             console.error(" error ===>", err);
-            toastr.error("Error", "Template failed to create", toastrErrorConfig);
+            toast.error("Template failed to create", toastErrorConfig);
          });
    }
    onClickUpdate = () => {
       const { title, settings, items, notes } = this.state;
-      if (title === "") { toastr.info("Required", "Missing a Template Title.", toastrInfoConfig); return; }
+      if (title === "") { toast.info("Missing a Template Title.", toastInfoConfig); return; }
       const data = {
          title,
          settings
@@ -78,16 +74,12 @@ export default class GetTemplate extends Component {
       // axios.put(`/templates/id/${this.props.match.params.id}, data)
       //    .then(({ data }) => {
       //       console.log("res data ---------------->", data);
-      //       toastr.success(
-      //          "Success",
-      //          "Template was updated.",
-      //          toastrSuccessConfig
-      //       );
-      //       // this.props.history.push("/app/content/templates")
+      //       toast.success("Template was updated.", toastSuccessConfig);
+      //       this.props.history.push("/app/content/templates")
       //    })
       //    .catch(err => {
       //       console.error(" error ===>", err);
-      //       toastr.error("Error", "Template failed to update", toastrErrorConfig);
+      //       toast.error("Template failed to update", toastErrorConfig);
       //    });
    }
    onClickCancel = () => {
@@ -245,7 +237,7 @@ export default class GetTemplate extends Component {
    onClickArchive = () => {
       axios.put(`/templates/archive/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to archive tempalte", data);
-         toastr.success("Archived", "Template was archived.", toastrSuccessConfig);
+         toast.success("Template was Archived.", toastSuccessConfig);
          this.props.history.push('/app/content/templates');
       }).catch((err) => {
          console.error(" failed to archive template ", err);
@@ -254,7 +246,7 @@ export default class GetTemplate extends Component {
    onClickUnArchive = () => {
       axios.put(`/templates/un-archive/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to archive tempalte", data);
-         toastr.success("Undo Archive", "Template was released.", toastrSuccessConfig);
+         toast.success("Template was Undo-Archived.", toastSuccessConfig);
          this.props.history.push('/app/content/templates');
       }).catch((err) => {
          console.error(" failed to un-archive template ", err);
@@ -263,7 +255,7 @@ export default class GetTemplate extends Component {
    onClickDefault = () => {
       axios.put(`/templates/default/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to make tempalte as a default", data);
-         toastr.success("Succeed", "Default template was set.", toastrSuccessConfig);
+         toast.success("Template was set as Default.", toastSuccessConfig);
          this.props.history.push('/app/content/templates');
       }).catch((err) => {
          console.error(" failed to make template as a default ", err);
@@ -272,7 +264,7 @@ export default class GetTemplate extends Component {
    onClickUndoDefault = () => {
       axios.put(`/templates/undo-default/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to undo tempalte as a default", data);
-         toastr.success("Succeed", "Undo from default template.", toastrSuccessConfig);
+         toast.success("Template was Undone as Default.", toastSuccessConfig);
          this.props.history.push('/app/content/templates');
       }).catch((err) => {
          console.error(" failed to undo template from default ", err);
