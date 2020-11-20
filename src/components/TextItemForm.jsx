@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from '../util/Api';
 
 export default class TextItemForm extends Component {
    fileObj = [];
@@ -6,35 +7,53 @@ export default class TextItemForm extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         file: [],
+         uploading: false,
          isAddItemListOpen: false,
       };
       this.hiddenFileInput = React.createRef();
       this.addItemOptionContainer = React.createRef();
    }
    removeImageItem = (url) => {
-      const newFileArray = this.state.fileArray.filter(item => item !== url);
-      this.setState({ fileArray: newFileArray });
+      const newFileArray = this.props.textItem.files.filter(item => item !== url);
+      const newItem = {
+         category: "textItem",
+         textItem: { ... this.props.textItem, files: newFileArray }
+      };
+      this.props.updateItem(this.props.index, newItem);
    }
 
    handleClickFileOpen = () => {
       this.hiddenFileInput.current.click();
    }
-   uploadMultipleFiles = (e) => {
-      console.log("uploadMultipleFiles ==>", e.target.files);
+   uploadMultipleFiles = async (e) => {
       this.fileObj = [];
       this.fileObj.push(e.target.files);
-      console.log("this.fileObj ==", this.fileObj);
+      this.setState({ uploading: true });
       for (let i = 0; i < this.fileObj[0].length; i++) {
-         this.fileArray.push(URL.createObjectURL(this.fileObj[0][i]))
+         const formData = new FormData();
+         const selectedFile = this.fileObj[0][i];
+         formData.append(
+            "image",
+            selectedFile
+         );
+
+         const res = await axios.post("/service/upload-image", formData);
+         this.fileArray.push(res.data.image);
       }
-      this.setState({ fileArray: this.fileArray })
-      console.log("this.fileArray ==>", this.fileArray);
+      this.setState({ uploading: false });
+
+      const newItem = {
+         category: "textItem",
+         textItem: { ... this.props.textItem, files: this.fileArray }
+      };
+      this.props.updateItem(this.props.index, newItem);
    }
    onClickOutsideHandle = (ev) => {
       if (this.state.isAddItemListOpen && !this.addItemOptionContainer.current.contains(ev.target)) this.setState({ isAddItemListOpen: false });
    }
-
+   componentDidUpdate() {
+      this.fileArray = this.props.textItem.files;
+   }
    componentDidMount() {
       window.addEventListener('click', this.onClickOutsideHandle);
    }
@@ -146,7 +165,8 @@ export default class TextItemForm extends Component {
 
                      {/* Images preview section */}
                      <div className="row m-1">
-                        {(this.state.fileArray || []).map((url, index) => (
+                        {this.state.uploading && <div className="p-2 text-success font-w700">Uploading...</div>}
+                        {(this.props.textItem.files || []).map((url, index) => (
                            <div className="p-1" key={index}>
                               <img src={url} className="mr-2 image-preview-size" alt="..." />
                               <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)}>

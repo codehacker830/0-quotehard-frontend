@@ -239,6 +239,7 @@ class PublicQuoteView extends Component {
 
             })
             .catch(err => {
+               this.setState({ isMounting: false });
                console.error(" ========== checking public draft error =========", err);
             });
 
@@ -389,9 +390,7 @@ class PublicQuoteView extends Component {
                                                          {
                                                             item.priceItem.files.map((file, ind) => (
                                                                <div className="quoteFile-image" key={ind}>
-                                                                  <img
-                                                                     src="https://asset.quotientapp.com/file-s/1/quote-v2/38216/9249b88c558b4d3760e13b5a16fc315f/sm/ds/16e327281984e2fbf130376337032601.jpg"
-                                                                     alt="..." />
+                                                                  <img src={file} alt="..." />
                                                                </div>
                                                             ))
                                                          }
@@ -443,8 +442,7 @@ class PublicQuoteView extends Component {
                                              {
                                                 item.textItem.files.map((file, ind) => (
                                                    <div className="quoteFile-image" key={ind}>
-                                                      <img src="https://asset.quotientapp.com/file-s/1/quote-v2/38216/354a172205cbcc91c6e7359c8e886ede/sm/ds/496852.jpg"
-                                                         alt="..." />
+                                                      <img src={file} alt="..." />
                                                    </div>
                                                 ))
                                              }
@@ -559,6 +557,15 @@ class PublicQuoteView extends Component {
                                           <div className="tItem-text" key={index}>
                                              <h3>{note.textItem.textHeading}</h3>
                                              <p>{note.textItem.longDescription}</p>
+                                             <div className="quoteFile-set">
+                                                {
+                                                   note.textItem.files.map((file, ind) => (
+                                                      <div className="quoteFile-image" key={ind}>
+                                                         <img src={file} alt="..." />
+                                                      </div>
+                                                   ))
+                                                }
+                                             </div>
                                           </div>
                                        );
                                     })

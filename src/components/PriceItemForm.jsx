@@ -10,22 +10,23 @@ class PriceItemForm extends Component {
    constructor(props) {
       super(props);
       this.state = {
+         uploading: false,
          isSettingOpen: false,
          isAddItemListOpen: false,
 
-         fileArray: [],
-         isOptional: false,
-         isOptionSelected: false,
+         // fileArray: [],
+         // isOptional: false,
+         // isOptionSelected: false,
 
-         isMultipleChoice: false,
-         isEditableQuantity: false,
-         isDiscount: false,
-         isSubscription: false,
-         isCostPriceMargin: false,
-         costPrice: 0,
-         margin: 20,
+         // isMultipleChoice: false,
+         // isEditableQuantity: false,
+         // isDiscount: false,
+         // isSubscription: false,
+         // isCostPriceMargin: false,
+         // costPrice: 0,
+         // margin: 20,
 
-         itemTotal: 0,  // it should be state
+         // itemTotal: 0,  // it should be state
       }
       this.hiddenFileInput = React.createRef();
       this.settingContainter = React.createRef();
@@ -34,48 +35,44 @@ class PriceItemForm extends Component {
       this.multipleChoiceRef = React.createRef();
    }
    removeImageItem = (url) => {
-      const newFileArray = this.state.fileArray.filter(item => item !== url);
-      this.setState({ fileArray: newFileArray });
+      const newFileArray = this.props.priceItem.files.filter(item => item !== url);
+      const newItem = {
+         category: "priceItem",
+         priceItem: { ... this.props.priceItem, files: newFileArray }
+      };
+      this.props.updateItem(this.props.index, newItem);
    }
    handleClickFileOpen = () => {
       this.hiddenFileInput.current.click();
    }
    uploadMultipleFiles = async (e) => {
-      console.log("uploadMultipleFiles ==>", e.target.files);
       this.fileObj = [];
       this.fileObj.push(e.target.files);
-      // console.log("this.fileObj ==", this.fileObj);
-      // for (let i = 0; i < this.fileObj[0].length; i++) {
-      //    this.fileArray.push(URL.createObjectURL(this.fileObj[0][i]));
-      // }
-      // this.setState({ fileArray: this.fileArray })
-      // console.log("this.fileArray ==>", this.fileArray);
-
-      console.log("e.target.files.length --->", e.target.files.length);
+      this.setState({ uploading: true });
       for (let i = 0; i < this.fileObj[0].length; i++) {
          const formData = new FormData();
          const selectedFile = this.fileObj[0][i];
-         console.log("selectedFile ===>", selectedFile);
          formData.append(
             "image",
             selectedFile
          );
-         console.log("selectedFile --->", selectedFile);
-         console.log("formData --->", formData);
-
          const res = await axios.post("/service/upload-image", formData);
-         console.log(" image upload response -->", res.data.image);
          this.fileArray.push(res.data.image);
       }
+      this.setState({ uploading: false });
 
-      this.setState({ fileArray: this.fileArray });
+      const newItem = {
+         category: "priceItem",
+         priceItem: { ... this.props.priceItem, files: this.fileArray }
+      };
+      this.props.updateItem(this.props.index, newItem);
    }
    onClickOutsideHandle = (ev) => {
       if (this.state.isSettingOpen && !this.settingContainter.current.contains(ev.target)) this.setState({ isSettingOpen: false });
       if (this.state.isAddItemListOpen && !this.addItemOptionContainer.current.contains(ev.target)) this.setState({ isAddItemListOpen: false });
    }
    componentDidUpdate() {
-      this.fileArray = this.state.fileArray;
+      this.fileArray = this.props.priceItem.files;
    }
    componentDidMount() {
       window.addEventListener('click', this.onClickOutsideHandle);
@@ -349,7 +346,8 @@ class PriceItemForm extends Component {
 
                      {/* Images preview section */}
                      <div className={`row no-gutters ${this.props.isViewOnly ? "bg-disabled" : ""}`}>
-                        {(this.state.fileArray || []).map((url, index) => (
+                        {this.state.uploading && <div className="p-2 text-success font-w700">Uploading...</div>}
+                        {(this.props.priceItem.files || []).map((url, index) => (
                            <div className="p-1" key={index}>
                               <img src={url} className="mr-2 image-preview-size" alt="..." />
                               {
