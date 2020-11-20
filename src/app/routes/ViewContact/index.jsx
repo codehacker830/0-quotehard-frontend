@@ -60,6 +60,15 @@ export default class ViewContact extends Component {
          console.error(" failed to un-archive contact ", err);
       });
    }
+   onClickDelete = () => {
+      axios.put(`/contacts/delete/${this.props.match.params.id}`).then(({ data }) => {
+         console.log(" success to archive contact", data);
+         this.props.history.push('/app/c/contacts');
+         toast.success("Contact deleted.", toastSuccessCenterConfig);
+      }).catch((err) => {
+         console.error(" failed to un-archive contact ", err);
+      });
+   }
    render() {
       console.log(" view contact state =>", this.state);
       const linkTo = `/app/c/contacts`;

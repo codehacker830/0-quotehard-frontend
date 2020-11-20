@@ -20,7 +20,7 @@ export const uploadLogo = (e) => {
       console.log("selectedFile --->", selectedFile);
       console.log("formData --->", formData);
 
-      axios.post("/service/upload-logo", formData)
+      axios.post("/service/upload-image", formData)
          .then(({ data }) => {
             console.log(" image upload response -->", data);
             dispatch({ type: FETCH_SUCCESS });
@@ -36,7 +36,7 @@ export const removeLogo = (logo) => {
    console.log("______ logo _______", logo);
    return (dispatch) => {
       dispatch({ type: FETCH_START, payload: LOGO_URL });
-      axios.post("/service/remove-logo", { logo })
+      axios.post("/service/remove-image", { logo })
          .then(({ data }) => {
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: LOGO_URL, payload: null });
