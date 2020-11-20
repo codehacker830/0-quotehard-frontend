@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { toastr } from "react-redux-toastr";
+import {  toast } from 'react-toastify';
 import { Link } from "react-router-dom";
 import { userSignIn } from "../actions/Auth";
 import { toastErrorConfig, toastWarningConfig } from "../util/toastrConfig";

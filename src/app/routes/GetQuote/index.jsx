@@ -5,7 +5,7 @@ import QuoteSettings from "../../../components/QuoteSettings";
 import PriceItemForm from "../../../components/PriceItemForm";
 import TextItemForm from "../../../components/TextItemForm";
 import SubTotal from "../../../components/SubTotal";
-import { toastr } from "react-redux-toastr";
+import { toast } from 'react-toastify';
 import {
    toastWarningConfig,
    toastSuccessConfig,
@@ -37,6 +37,7 @@ class GetQuote extends Component {
    constructor(props) {
       super(props);
       this.state = {
+         loading: false,
          show: false,
          fileArray: [],
          emailTo: "",
@@ -90,27 +91,33 @@ class GetQuote extends Component {
          notes
       };
       if (this.props.match.path === '/app/quote/get' || this.props.match.path === '/app/quote/get/from-template/:id') {
+         this.setState({ loading: true, type: "SAVE_NEXT" });
          axios.post('/quotes', data)
             .then(({ data }) => {
                console.log("res data =>", data);
                toast.success("New Quote was defined.", toastSuccessConfig);
+               this.setState({ loading: false, type: null });
                this.props.history.push(`/q/${data.entoken}`);
             })
             .catch(err => {
                console.error(" error ===>", err);
                toast.error("Quote failed to create", toastErrorConfig);
+               this.setState({ loading: false, type: null });
             });
       } else if (this.props.match.path = "/app/quote/:id") {
          const quoteId = this.props.match.params.id;
+         this.setState({ loading: true, type: "SAVE_NEXT" });
          axios.put(`/quotes/${quoteId}`, data)
             .then(({ data }) => {
                console.log("uuuuuuuuuuuuuuuuu =>", data);
                toast.success("Quote was defined.", toastSuccessConfig);
+               this.setState({ loading: false, type: null });
                this.props.history.push(`/q/${data.entoken}`);
             })
             .catch(err => {
                console.error(" error ===>", err);
                toast.error("Quote failed to update", toastErrorConfig);
+               this.setState({ loading: false, type: null });
             });
       } else {
          console.error("Error !!!!!!!!!!!!!!");
@@ -134,26 +141,31 @@ class GetQuote extends Component {
          notes
       };
       if (this.props.location.pathname === '/app/quote/get' || this.props.match.path === "/app/quote/get/from-template/:id") {
+         this.setState({ loading: true, type: "SAVE" });
          axios.post('/quotes', data)
             .then(({ data }) => {
                console.log("res data =>", data);
                toast.success("New Quote draft was created.", toastSuccessConfig);
+               this.setState({ loading: false, type: null });
                this.props.history.push(`/app/quote/${data.quote._id}`)
             })
             .catch(err => {
                console.error(" error ===>", err);
+               this.setState({ loading: false, type: null });
                toast.error("Quote failed to create", toastErrorConfig);
             });
       } else if (this.props.match.path = "/app/quote/:id") {
          const quoteId = this.props.match.params.id;
+         this.setState({ loading: true, type: "SAVE" });
          axios.put(`/quotes/${quoteId}`, data)
             .then(({ data }) => {
                console.log("uuuuuuuuuuuuuuuuu =>", data);
-               toast.success("Quote draft was updated.", toastSuccessConfig
-               );
+               this.setState({ loading: false, type: null });
+               toast.success("Quote draft was updated.", toastSuccessConfig);
             })
             .catch(err => {
                console.error(" error ===>", err);
+               this.setState({ loading: false, type: null });
                toast.error("Quote failed to update", toastErrorConfig);
             });
       }
@@ -546,14 +558,26 @@ class GetQuote extends Component {
                   <div className="row p-3">
                      <button
                         className="btn btn-lg btn-rounded btn-hero-primary mr-1"
+                        disabled={this.state.loading}
                         onClick={this.handleClickSaveNext}
                      >
+                        {
+                           this.state.loading && this.state.type === "SAVE_NEXT" ?
+                              <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />
+                              : null
+                        }
                         Save, Next...
                      </button>
                      <button
                         className="btn btn-lg btn-rounded btn-hero-secondary mr-1"
+                        disabled={this.state.loading}
                         onClick={this.handleClickSave}
                      >
+                        {
+                           this.state.loading && this.state.type === "SAVE" ?
+                              <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />
+                              : null
+                        }
                         Save
                      </button>
                      <button

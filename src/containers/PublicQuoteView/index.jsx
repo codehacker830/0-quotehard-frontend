@@ -61,14 +61,17 @@ class PublicQuoteView extends Component {
    }
    onClickAccept = () => {
       const { entoken } = this.props.match.params;
+      this.setState({ loading: true });
       axios.post('/quotes/accept', { entoken: entoken })
          .then(({ data }) => {
             console.log("========== res =========", data);
+            this.setState({ loading: false });
             toast.success('Quote was Accepted,', toastSuccessConfig);
             this.props.history.push(`/q/${entoken}/accepted`);
          })
          .catch(err => {
             console.error(" ========== checking public draft error =========", err);
+            this.setState({ loading: false });
             toast.error('Failed during quote acception request.,', toastErrorConfig);
          });
    }
@@ -81,6 +84,7 @@ class PublicQuoteView extends Component {
          })
          .catch(err => {
             console.error(" ========== checking public draft error =========", err);
+            this.setState({ loading: false });
             toast.error('Failed during quote decline request.,', toastErrorConfig);
          });
    }
@@ -107,6 +111,7 @@ class PublicQuoteView extends Component {
             });
          })
          .catch(err => {
+            this.setState({ loading: false });
             console.error("error during submit private note ==>", err);
          });
    }
@@ -133,6 +138,7 @@ class PublicQuoteView extends Component {
             });
          })
          .catch(err => {
+            this.setState({ loading: false });
             console.error("error during submit comment ==>", err);
          });
    }
@@ -154,6 +160,7 @@ class PublicQuoteView extends Component {
             });
          })
          .catch(err => {
+            this.setState({ loading: false });
             console.error("error during submit question ==>", err);
          });
    }
@@ -175,6 +182,7 @@ class PublicQuoteView extends Component {
             });
          })
          .catch(err => {
+            this.setState({ loading: false });
             console.error("error during submit answer ==>", err);
          });
    }
@@ -191,6 +199,7 @@ class PublicQuoteView extends Component {
             });
          })
          .catch(err => {
+            this.setState({ loading: false });
             console.error("error during submit dismiss ==>", err);
          });
    }
@@ -248,7 +257,7 @@ class PublicQuoteView extends Component {
       }
       else return (
          <React.Fragment>
-            <main id="main-container" className="bg-white">
+            <main id="main-container" style={{ backgroundColor: "#fff1f5" }}>
                {
                   this.props.auth && this.props.auth.authUser ?
                      <React.Fragment>
@@ -260,9 +269,9 @@ class PublicQuoteView extends Component {
                      : null
                }
 
-               <div className="content content-full pt-0 h-100" style={{ backgroundColor: "#fff1f5" }}>
+               <div className="content content-full pt-0 h-100">
                   <div className="row no-gutters">
-                     <div className="px-5 pt-5 pb-0 mx-auto w-100 maxWidth-920" style={{ backgroundColor: "white" }}>
+                     <div className="px-5 pt-6 pb-0 mx-auto w-100 maxWidth-920" style={{ backgroundColor: "white" }}>
                         <div className="row no-gutters mb-4">
                            <img title="..." alt="..." src="https://asset.quotientapp.com/file-s/1/logo-v3/38216/e17c79cff88b12263507ecb3f94b9b54" />
                         </div>
