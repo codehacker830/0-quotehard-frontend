@@ -510,7 +510,9 @@ class PriceItemForm extends Component {
                                  priceItem: {
                                     ... this.props.priceItem,
                                     unitPrice: unitPrice,
-                                    margin: unitPrice == 0 ? 0 : (unitPrice - this.props.priceItem.costPrice) / unitPrice * 100,
+                                    margin: unitPrice == 0 ? 0
+                                       : this.props.priceItem.costPrice == 0 ? this.props.priceItem.margin
+                                          : (unitPrice - this.props.priceItem.costPrice) / unitPrice * 100,
                                     itemTotal: unitPrice * this.props.priceItem.quantity * (100 - this.props.priceItem.discount) / 100
                                  }
                               };
