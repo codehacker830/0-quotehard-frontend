@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { toFixedFloat } from '../util';
+import axios from '../util/Api';
 
 class PriceItemForm extends Component {
    fileObj = [];
@@ -39,16 +40,35 @@ class PriceItemForm extends Component {
    handleClickFileOpen = () => {
       this.hiddenFileInput.current.click();
    }
-   uploadMultipleFiles = (e) => {
+   uploadMultipleFiles = async (e) => {
       console.log("uploadMultipleFiles ==>", e.target.files);
       this.fileObj = [];
       this.fileObj.push(e.target.files);
-      console.log("this.fileObj ==", this.fileObj);
+      // console.log("this.fileObj ==", this.fileObj);
+      // for (let i = 0; i < this.fileObj[0].length; i++) {
+      //    this.fileArray.push(URL.createObjectURL(this.fileObj[0][i]));
+      // }
+      // this.setState({ fileArray: this.fileArray })
+      // console.log("this.fileArray ==>", this.fileArray);
+
+      console.log("e.target.files.length --->", e.target.files.length);
       for (let i = 0; i < this.fileObj[0].length; i++) {
-         this.fileArray.push(URL.createObjectURL(this.fileObj[0][i]))
+         const formData = new FormData();
+         const selectedFile = this.fileObj[0][i];
+         console.log("selectedFile ===>", selectedFile);
+         formData.append(
+            "image",
+            selectedFile
+         );
+         console.log("selectedFile --->", selectedFile);
+         console.log("formData --->", formData);
+
+         const res = await axios.post("/service/upload-image", formData);
+         console.log(" image upload response -->", res.data.image);
+         this.fileArray.push(res.data.image);
       }
-      this.setState({ fileArray: this.fileArray })
-      console.log("this.fileArray ==>", this.fileArray);
+
+      this.setState({ fileArray: this.fileArray });
    }
    onClickOutsideHandle = (ev) => {
       if (this.state.isSettingOpen && !this.settingContainter.current.contains(ev.target)) this.setState({ isSettingOpen: false });

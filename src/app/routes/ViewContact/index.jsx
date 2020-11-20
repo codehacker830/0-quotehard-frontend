@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import NavCrump from '../../../components/NavCrump';
 import { personData, companyData, recentActivities } from "../../../constants/Dump";
 import axios from '../../../util/Api';
-import { toastSuccessCenterConfig, toastSuccessConfig } from '../../../util/toastrConfig';
+import { toastSuccessConfig } from '../../../util/toastrConfig';
 import AddressesShow from './AddressesShow';
 import AvatarImg from './AvatarImg';
 import CompanyPeopleList from './CompanyPeopleList';
@@ -46,7 +46,7 @@ export default class ViewContact extends Component {
       axios.put(`/contacts/archive/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to archive contact", data);
          this.setState({ contact: data.contact });
-         toast.success("Archived.", toastSuccessCenterConfig);
+         toast.success("Archived.", toastSuccessConfig);
       }).catch((err) => {
          console.error(" failed to archive contact ", err);
       });
@@ -55,7 +55,7 @@ export default class ViewContact extends Component {
       axios.put(`/contacts/un-archive/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to archive contact", data);
          this.setState({ contact: data.contact });
-         toast.success("Unarchived.", toastSuccessCenterConfig);
+         toast.success("Unarchived.", toastSuccessConfig);
       }).catch((err) => {
          console.error(" failed to un-archive contact ", err);
       });
@@ -64,7 +64,7 @@ export default class ViewContact extends Component {
       axios.put(`/contacts/delete/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to archive contact", data);
          this.props.history.push('/app/c/contacts');
-         toast.success("Contact deleted.", toastSuccessCenterConfig);
+         toast.success("Contact deleted.", toastSuccessConfig);
       }).catch((err) => {
          console.error(" failed to un-archive contact ", err);
       });

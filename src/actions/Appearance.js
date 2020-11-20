@@ -24,7 +24,7 @@ export const uploadLogo = (e) => {
          .then(({ data }) => {
             console.log(" image upload response -->", data);
             dispatch({ type: FETCH_SUCCESS });
-            dispatch({ type: LOGO_URL, payload: data.logo });
+            dispatch({ type: LOGO_URL, payload: data.image });
          })
          .catch((err) => {
             dispatch({ type: FETCH_ERROR });
@@ -32,12 +32,12 @@ export const uploadLogo = (e) => {
          });
    }
 }
-export const removeLogo = (logo) => {
-   console.log("______ logo _______", logo);
+export const removeLogo = (image) => {
+   console.log("______ logo _______", image);
    return (dispatch) => {
       dispatch({ type: FETCH_START, payload: LOGO_URL });
-      axios.post("/service/remove-image", { logo })
-         .then(({ data }) => {
+      axios.post("/service/remove-image", { image: image })
+         .then(() => {
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: LOGO_URL, payload: null });
          })
