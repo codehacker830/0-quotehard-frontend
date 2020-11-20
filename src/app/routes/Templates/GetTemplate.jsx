@@ -305,7 +305,7 @@ export default class GetTemplate extends Component {
                               {
                                  this.state.status === "current" &&
                                  <li>
-                                    <button className="dropdown-item text-dark media py-2" onClick={this.onClickArchive}>
+                                    <button className="dropdown-item media py-2" onClick={this.onClickArchive}>
                                        <div className="mx-3">
                                           <i className="fa fa-fw fa-archive text-secondary" />
                                        </div>
@@ -318,7 +318,7 @@ export default class GetTemplate extends Component {
                               {
                                  this.state.status === "archived" &&
                                  <li>
-                                    <button className="dropdown-item text-dark media py-2" onClick={this.onClickUnArchive}>
+                                    <button className="dropdown-item media py-2" onClick={this.onClickUnArchive}>
                                        <div className="mx-3">
                                           <i className="fa fa-fw fa-archive text-secondary" />
                                        </div>
@@ -331,7 +331,7 @@ export default class GetTemplate extends Component {
                               {
                                  this.state.isDefault ?
                                     <li>
-                                       <button className="dropdown-item text-dark media py-2" onClick={this.onClickUndoDefault}>
+                                       <button className="dropdown-item media py-2" onClick={this.onClickUndoDefault}>
                                           <div className="mx-3">
                                              <i className="fa fa-fw fa-star text-secondary" />
                                           </div>
@@ -341,7 +341,7 @@ export default class GetTemplate extends Component {
                                        </button>
                                     </li>
                                     : <li>
-                                       <button className="dropdown-item text-dark media py-2" onClick={this.onClickDefault}>
+                                       <button className="dropdown-item media py-2" onClick={this.onClickDefault}>
                                           <div className="mx-3">
                                              <i className="fa fa-fw fa-star text-secondary" />
                                           </div>
@@ -354,7 +354,7 @@ export default class GetTemplate extends Component {
 
 
                               <li>
-                                 <button className="dropdown-item text-dark media py-2" onClick={this.onClickCopy}>
+                                 <button className="dropdown-item media py-2" onClick={this.onClickCopy}>
                                     <div className="mx-3">
                                        <i className="fa fa-fw fa-copy text-secondary" />
                                     </div>
@@ -364,7 +364,7 @@ export default class GetTemplate extends Component {
                                  </button>
                               </li>
                               <li>
-                                 <button className="dropdown-item text-dark media py-2" onClick={this.onClickDelete}>
+                                 <button className="dropdown-item media py-2" onClick={this.onClickDelete}>
                                     <div className="mx-3">
                                        <i className="fa fa-fw fa-trash-alt text-secondary" />
                                     </div>

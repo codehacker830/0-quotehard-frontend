@@ -352,7 +352,7 @@ class GetQuote extends Component {
                         <div className={`dropdown-menu dropdown-menu-right p-0 ${this.state.show ? "show" : ""}`} style={{ minWidth: 250 }}>
                            <ul className="nav-items my-0 py-1">
                               <li>
-                                 <button className="dropdown-item text-dark media py-2">
+                                 <button className="dropdown-item media py-2">
                                     <div className="mx-3">
                                        <i className="fa fa-fw fa-arrow-alt-circle-right text-secondary" />
                                     </div>
@@ -362,7 +362,7 @@ class GetQuote extends Component {
                                  </button>
                               </li>
                               <li>
-                                 <button className="dropdown-item text-dark media py-2">
+                                 <button className="dropdown-item media py-2">
                                     <div className="mx-3">
                                        <i className="fa fa-fw fa-copy text-secondary" />
                                     </div>
@@ -372,7 +372,7 @@ class GetQuote extends Component {
                                  </button>
                               </li>
                               <li>
-                                 <button className="dropdown-item text-dark media py-2">
+                                 <button className="dropdown-item media py-2">
                                     <div className="mx-3">
                                        <i className="fa fa-fw fa-plus-circle text-secondary" />
                                     </div>
@@ -382,7 +382,7 @@ class GetQuote extends Component {
                                  </button>
                               </li>
                               <li>
-                                 <button className="dropdown-item text-dark media py-2">
+                                 <button className="dropdown-item media py-2">
                                     <div className="mx-3">
                                        <i className="fa fa-fw fa-trash-alt text-secondary" />
                                     </div>

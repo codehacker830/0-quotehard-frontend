@@ -50,7 +50,16 @@ export const toastErrorConfig = {
    progress: undefined,
 };
 
-
+export const toastSuccessCenterConfig = {
+   className: "toast-center",
+   position: "top-center",
+   autoClose: 5000,
+   hideProgressBar: false,
+   closeOnClick: true,
+   pauseOnHover: true,
+   draggable: true,
+   progress: undefined,
+}
 
 export const toastMessageOptions = {
    timeOut: 3000, // Default value is 0

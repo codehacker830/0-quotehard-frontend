@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import NavCrump from '../../../components/NavCrump';
 import { personData, companyData, recentActivities } from "../../../constants/Dump";
 import axios from '../../../util/Api';
-import { toastSuccessConfig } from '../../../util/toastrConfig';
+import { toastSuccessCenterConfig, toastSuccessConfig } from '../../../util/toastrConfig';
 import AddressesShow from './AddressesShow';
 import AvatarImg from './AvatarImg';
 import CompanyPeopleList from './CompanyPeopleList';
@@ -45,8 +45,8 @@ export default class ViewContact extends Component {
    onClickArchive = () => {
       axios.put(`/contacts/archive/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to archive contact", data);
-         toast.success("Contact was Archived.", toastSuccessConfig);
-         this.props.history.push('/app/c/contacts');
+         this.setState({ contact: data.contact });
+         toast.success("Archived.", toastSuccessCenterConfig);
       }).catch((err) => {
          console.error(" failed to archive contact ", err);
       });
@@ -54,13 +54,14 @@ export default class ViewContact extends Component {
    onClickUnArchive = () => {
       axios.put(`/contacts/un-archive/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to archive contact", data);
-         toast.success("Contact was Undo-Archived.", toastSuccessConfig);
-         this.props.history.push('/app/c/contacts');
+         this.setState({ contact: data.contact });
+         toast.success("Unarchived.", toastSuccessCenterConfig);
       }).catch((err) => {
          console.error(" failed to un-archive contact ", err);
       });
    }
    render() {
+      console.log(" view contact state =>", this.state);
       const linkTo = `/app/c/contacts`;
       const linkName = "Contacts";
       const { contact } = this.state;
@@ -87,7 +88,7 @@ export default class ViewContact extends Component {
                               {
                                  this.state.contact.status === "current" &&
                                  <li>
-                                    <button className="dropdown-item text-dark media py-2" onClick={this.onClickArchive}>
+                                    <button className="dropdown-item media py-2" onClick={this.onClickArchive}>
                                        <div className="mx-3">
                                           <i className="fa fa-fw fa-archive text-secondary" />
                                        </div>
@@ -100,7 +101,7 @@ export default class ViewContact extends Component {
                               {
                                  this.state.contact.status === "archived" &&
                                  <li>
-                                    <button className="dropdown-item text-dark media py-2" onClick={this.onClickUnArchive}>
+                                    <button className="dropdown-item media py-2" onClick={this.onClickUnArchive}>
                                        <div className="mx-3">
                                           <i className="fa fa-fw fa-archive text-secondary" />
                                        </div>
@@ -111,7 +112,7 @@ export default class ViewContact extends Component {
                                  </li>
                               }
                               <li>
-                                 <button className="dropdown-item text-dark media py-2" onClick={this.onClickDelete}>
+                                 <button className="dropdown-item media py-2" onClick={this.onClickDelete}>
                                     <div className="mx-3">
                                        <i className="fa fa-fw fa-trash-alt text-secondary" />
                                     </div>
@@ -138,6 +139,12 @@ export default class ViewContact extends Component {
                            <div className="d-flex">
                               <AvatarImg contact={contact} />
                               <div className="d-block">
+                                 {
+                                    contact.status === "archived" &&
+                                    <div className="mb-2">
+                                       <span className="badge badge-secondary px-3 py-1 text-uppercase">archived</span>
+                                    </div>
+                                 }
                                  <PersonCompany contact={contact} />
                                  <div className="form-group">
                                     <span className="text-gray fa-xs text-uppercase">Quotes</span>
