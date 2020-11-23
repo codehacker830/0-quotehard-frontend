@@ -12,7 +12,10 @@ import { toastErrorConfig, toastSuccessConfig, toastWarningConfig } from '../../
 import QuoteItemTotal from '../../components/QuoteItemTotal';
 import { setInitUrl, userSignOut } from '../../actions/Auth';
 import { getTeammates } from '../../actions/Setting';
-import DeclineCommentShow from './components/DeclineCommentShow';
+import TextareaAutosize from 'react-autosize-textarea/lib';
+import QuoteLogo from './QuoteLogo';
+import QuoteDetail from './QuoteDetail';
+import StatusShowCase from './StatusShowCase';
 
 class PublicQuoteView extends Component {
    mounted = false;
@@ -23,6 +26,7 @@ class PublicQuoteView extends Component {
       this.state = {
          isMounting: true,
          loading: false,
+
          teamMembers: [],
          fileArray: [],
          quote: {},
@@ -258,673 +262,358 @@ class PublicQuoteView extends Component {
       }
       else return (
          <React.Fragment>
-            <main id="main-container" style={{ backgroundColor: "#fff1f5" }}>
+            <main id="main-container">
                {
                   this.props.auth && this.props.auth.authUser ?
                      <React.Fragment>
                         <NavCrump linkTo="/app">
                            Dashboard
                         </NavCrump>
-                        <StatusBanner quote={this.state.quote} />
+                        {/* <StatusBanner quote={this.state.quote} /> */}
                      </React.Fragment>
                      : null
                }
+               <div className="quoteCanvas-bg" style={{ backgroundColor: "#fff1f5" }}>
+                  <input type="hidden" name="_x_antiFooInput" defaultValue="ewvr1abgw47sqk74oun1p" />
+                  <div className="offlineBanner no_print">
+                     <div className="container">
+                        <StatusShowCase />
+                     </div>
+                  </div>
 
-               <div className="content content-full pt-0 h-100">
-                  <div className="row no-gutters">
-                     <div className="px-5 pt-6 pb-0 mx-auto w-100 maxWidth-920" style={{ backgroundColor: "white" }}>
-                        <div className="row no-gutters mb-4">
-                           <img title="..." alt="..." src="https://asset.quotientapp.com/file-s/1/logo-v3/38216/e17c79cff88b12263507ecb3f94b9b54" />
-                        </div>
+                  <div className="container qCustomCss quoteCanvas quoteCanvas-1col">
+                     <div className="quoteCanvas-page">
+                        <QuoteLogo />
+                        <QuoteDetail />
+                        <h1 className="quoteCanvas-title">
+                           Quote title... </h1>
+                        <div id="form_message"> </div>
+                        <div className="clear" />
 
-
-                        <div className="row no-gutters mb-4">
-                           <div className="col-md-4 col-sm-12 border-left px-3 py-1">
-                              <span className="text-gray fa-xs text-uppercase">From</span>
-                              {this.state.quote.settings.userFrom ?
-                                 <React.Fragment>
-                                    <p className="mb-0"> {this.state.quote.settings.userFrom.firstName} {this.state.quote.settings.userFrom.lastName}</p>
-                                    {
-                                       this.state.quote.settings.userFrom.accountCompany ?
-                                          <p className="mb-0">{this.state.quote.settings.userFrom.accountCompany.companyName}</p>
-                                          : null
-                                    }
-                                 </React.Fragment>
-                                 : null
-                              }
-                           </div>
-                           <div className="col-md-4 col-sm-12 border-left px-3 py-1">
-                              {this.state.quote.toPeopleList.map((person, index) => {
-                                 return (
-                                    <React.Fragment key={index}>
-                                       {
-                                          person.company ?
-                                             <div className="mb-1">
-                                                <span className="text-gray fa-xs text-uppercase">For</span>
-                                                <Link className="d-block" to={`/app/c/contacts/view/${person.company._id}`}>{person.company.companyName}</Link>
-                                             </div>
-                                             : null
-                                       }
-                                       <div className="mb-1">
-                                          <span className="text-gray fa-xs text-uppercase">{index === 0 ? `To` : `Copy To`}</span>
-                                          <Link className="d-block" to={`/app/c/contacts/view/${person._id}`}>{person.firstName} {person.lastName}</Link>
-                                       </div>
-                                    </React.Fragment>
-                                 );
-                              })}
-
-                              {/* <div className="mb-1">
-                                 <span className="text-gray fa-xs text-uppercase">Copy To</span>
-                                 <Link className="d-block" to={`/app/c/contacts/view/${person._id}`}>Jack Wang</Link>
-                              </div> */}
-                           </div>
-                           <div className="col-md-4 col-sm-12 border-left px-3 py-1">
-                              <div className="mb-1">
-                                 <span className="text-gray fa-xs text-uppercase">Quote Number</span>
-                                 <p className="mb-0">{this.state.quote.items.length}</p>
-                              </div>
-                              <div className="mb-1">
-                                 <span className="text-gray fa-xs text-uppercase">Date</span>
-                                 <p className="mb-0">{formatDate(this.state.quote.createdAt)}</p>
-                              </div>
-                              <div className="mb-1">
-                                 <span className="text-gray fa-xs text-uppercase">Valid Until</span>
-                                 <p className="mb-0">{formatDate(this.state.quote.settings.validUntil)}</p>
-                              </div>
-                           </div>
-                        </div>
-                        {/* Full Quote detail Wrapper */}
-                        <div className="mb-4">
-
-                           {/* Quote title */}
-                           <div className="row no-gutters border-bottom">
-                              <div className="p-3">
-                                 <h2 className="mb-0">{this.state.quote.title}</h2>
-                              </div>
-                           </div>
-
-                           <div className="quoteItems">
-                              {/* Quote with images */}
-                              {
-                                 this.state.quote.items.map((item, index) => {
-                                    if (item.category === "priceItem") {
-                                       let isSelected = true;
-                                       if (item.priceItem.isMultipleChoice) isSelected = item.priceItem.isChoiceSelected;
-                                       if (item.priceItem.isOptional) isSelected = item.priceItem.isOptionSelected;
-                                       return (
-                                          <div className={`tItem ${isSelected ? "isSelected" : ""}`} key={index}>
-                                             <div className="tItem-desc">
-                                                <div className="tItem-desc-table">
-                                                   {
-                                                      item.priceItem.isMultipleChoice &&
-                                                      <div className="tItem-desc-option">
-                                                         <input type="checkbox"
-                                                            value={item.priceItem.isChoiceSelected}
-                                                            onChange={(ev) => {
-                                                               const newItems = [...this.state.quote.items];
-                                                               newItems[index].priceItem.isChoiceSelected = !item.priceItem.isChoiceSelected;
-                                                               this.setState({ quote: { ...this.state.quote, items: newItems } });
-                                                            }}
-                                                         />
-                                                      </div>
-                                                   }
-                                                   {
-                                                      item.priceItem.isOptional &&
-                                                      <div className="tItem-desc-option">
-                                                         <input type="radio"
-                                                            // name="group"
-                                                            value={item.priceItem.isOptionSelected}
-                                                            onChange={(ev) => {
-                                                               const newItems = [...this.state.quote.items];
-                                                               newItems[index].priceItem.isOptionSelected = !item.priceItem.isOptionSelected;
-                                                               this.setState({ quote: { ...this.state.quote, items: newItems } });
-                                                            }}
-                                                         />
-                                                      </div>
-                                                   }
-                                                   <div className="tItem-desc-cell">
-                                                      <p className="item_code">{item.priceItem.itemCode}</p>
-                                                      <h3>{item.priceItem.productHeading}</h3>
-                                                      <p>{item.priceItem.longDescription}</p>
-                                                      <div className="quoteFile-set">
-                                                         {
-                                                            item.priceItem.files.map((file, ind) => (
-                                                               <div className="quoteFile-image" key={ind}>
-                                                                  <img src={file} alt="..." />
-                                                               </div>
-                                                            ))
-                                                         }
-                                                      </div>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                             <div className="tItem-price">
-                                                {
-                                                   item.priceItem.isCostPriceMargin &&
-                                                   <p className="quote-text-sm text-success">
-                                                      {toFixedFloat(item.priceItem.costPrice)}<br />
-                                                      {item.priceItem.margin}% margin
-                                                   </p>
-                                                }
-
-                                                <p className="quote-text-sm">{item.priceItem.unitPrice}</p>
-                                                {
-                                                   item.priceItem.isEditableQuantity ?
-                                                      <div className="itemPartEditableWrap">
-                                                         <label htmlFor={`chooseQuantity${item._id}`}>
-                                                            x <input
-                                                               className="form-control"
-                                                               type="number"
-                                                               value={item.priceItem.quantity}
-                                                               onChange={(ev) => {
-                                                                  const newItems = [...this.state.quote.items];
-                                                                  newItems[index].priceItem.quantity = ev.target.value;
-                                                                  newItems[index].priceItem.itemTotal = newItems[index].priceItem.unitPrice * newItems[index].priceItem.quantity;
-                                                                  this.setState({ quote: { ...this.state.quote, items: newItems } });
-                                                               }}
-                                                            />
-                                                         </label>
-                                                         <label className="quote-text-sm" htmlFor={`chooseQuantity${item._id}`}>Choose quantity</label>
-                                                      </div>
-                                                      : <p className="quote-text-sm">x {item.priceItem.quantity}</p>
-                                                }
-                                                <p><span className="itemPartItemTotal">{item.priceItem.itemTotal}</span></p>
-                                                <p className="quote-text-sm"><span className="option-text">Not selected</span></p>
-                                             </div>
-                                          </div>
-                                       );
-                                    }
-                                    else if (item.category === "textItem") return (
-                                       <div className="tItem-text" key={index}>
-                                          <h3>{item.textItem.textHeading}</h3>
-                                          <p>{item.textItem.longDescription}</p>
+                        <div className="quoteItems" data-tg-control="QuoteViewTotal">
+                           <div className="tItem vIsLine tItemId-43620285 isSelected">
+                              <div className="tItem-desc">
+                                 <div className="tItem-desc-table">
+                                    <div className="tItem-desc-cell">
+                                       <p className="item_code">ix123</p>
+                                       <h3>service</h3>
+                                       <p>ddd..</p>
+                                       <div className="quoteFile-wrap">
                                           <div className="quoteFile-set">
-                                             {
-                                                item.textItem.files.map((file, ind) => (
-                                                   <div className="quoteFile-image" key={ind}>
-                                                      <img src={file} alt="..." />
-                                                   </div>
-                                                ))
-                                             }
+                                             <div className="quoteFile-image">
+                                                <a data-tg-click="root_lightboxQuote"
+                                                   data-download-original="https://asset.quotientapp.com/file-s/1/quote-v2/39310/c65255299cf0bf369a3b192b204e507d/lg/dn/mascot1.jpeg"
+                                                   className="quoteFile-image-a"
+                                                   href="https://asset.quotientapp.com/file-s/1/quote-v2/39310/c65255299cf0bf369a3b192b204e507d/lg/ds/mascot1.jpeg"
+                                                   title="mascot1.jpeg"><img
+                                                      src="https://asset.quotientapp.com/file-s/1/quote-v2/39310/c65255299cf0bf369a3b192b204e507d/sm/ds/mascot1.jpeg"
+                                                      alt="mascot1.jpeg" /></a>
+                                             </div>
+                                             <div className="quoteFile-image">
+                                                <a data-tg-click="root_lightboxQuote"
+                                                   data-download-original="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1f6d2da2be86c0ca94a2846f6b7b1089/lg/dn/mascot2.jpeg"
+                                                   className="quoteFile-image-a"
+                                                   href="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1f6d2da2be86c0ca94a2846f6b7b1089/lg/ds/mascot2.jpeg"
+                                                   title="mascot2.jpeg"><img
+                                                      src="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1f6d2da2be86c0ca94a2846f6b7b1089/sm/ds/mascot2.jpeg"
+                                                      alt="mascot2.jpeg" /></a>
+                                             </div>
+                                             <div className="quoteFile-image">
+                                                <a data-tg-click="root_lightboxQuote"
+                                                   data-download-original="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1caefa955b2b2f7a478c8c6307043a82/lg/dn/mascot3.jpeg"
+                                                   className="quoteFile-image-a"
+                                                   href="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1caefa955b2b2f7a478c8c6307043a82/lg/ds/mascot3.jpeg"
+                                                   title="mascot3.jpeg"><img
+                                                      src="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1caefa955b2b2f7a478c8c6307043a82/sm/ds/mascot3.jpeg"
+                                                      alt="mascot3.jpeg" /></a>
+                                             </div>
                                           </div>
+                                          <div className="clear" />
                                        </div>
-                                    );
-                                    else if (item.category === "subTotal") return (
-                                       <div className="tItem vSubTotal" key={index}>
-                                          <div className="tItem-desc">
-                                             <p>
-                                                <span className="quote-text-sm">Options selected</span>
-                                                <br />
-                                                Subtotal
-                                             </p>
-                                          </div>
-                                          <div className="tItem-price">
-                                             <p>
-                                                <span className="quote-text-sm">1 of 1</span><br />
-                                                <span>200.00</span>
-                                             </p>
-                                          </div>
-                                       </div>
-                                    );
-                                 })
-                              }
-
-
-
-                              {/* ****************************** */}
-                              {/* Quote subtotal */}
-                              {/* <div className="tItem vSubTotal">
-                                 <div className="tItem-desc">
-                                    <p>Subtotal</p>
+                                    </div>
                                  </div>
-                                 <div className="tItem-price">
-                                    <p>
-                                       <span>100.00</span>
-                                    </p>
-                                 </div>
-                              </div> */}
-                              {/* Quote total */}
-                              <div className="quoteViewTotalWrap pt-3">
-                                 <QuoteItemTotal settings={this.state.quote.settings} items={this.state.quote.items} />
-
-                                 {/* <table className={`quoteTotal hasTerm table table-borderless`}>
+                              </div>
+                              <div className="tItem-price">
+                                 <p className="quote-text-sm">10.00</p>
+                                 <p className="quote-text-sm itemPartQuantity">x 10</p>
+                                 <p>
+                                    <span className="itemPartItemTotal">100.00</span>
+                                 </p>
+                              </div>
+                              <div className="clear" />
+                           </div>
+                           <div className="clear" />
+                           <div className="quoteViewTotalWrap quoteViewTotalWrap-client">
+                              <div>
+                                 <table className="quoteTotal hasNoTerm">
                                     <tbody>
-                                       <tr className="options">
-                                          <td className="total-desc">
-                                             <p className="quote-text-sm">
-                                                <span>Options selected</span>
-                                             </p>
-                                          </td>
-                                          <td className="total-price">
-                                             <p className="quote-text-sm">1 of 1</p>
-                                          </td>
-                                       </tr>
                                        <tr>
                                           <td className="total-desc">Subtotal</td>
                                           <td className="total-price">100.00</td>
                                        </tr>
                                        <tr className="total">
-                                          <td className="total-desc"><span className="quoteTotal-gDesc">Total including tax</span></td>
-                                          <td className="total-price"><span className="quoteTotal-gTotal">$100.00</span>
-                                             <div className="quote-text-sm">per week</div>
-                                             <div className="quote-text-sm">(for 4 weeks)</div>
+                                          <td className="total-desc"><span className="quoteTotal-gDesc">Total USD including tax</span>
                                           </td>
+                                          <td className="total-price"><span className="quoteTotal-gTotal">$100.00</span></td>
                                        </tr>
                                     </tbody>
-                                 </table> */}
-
-                                 {/* Has No Subscription QuoteTotal */}
-                                 {/* <table className="quoteTotal hasNoTerm table table-borderless">
-                                    <tbody>
-                                       <tr className="options">
-                                          <td className="total-desc">
-                                             <p className="quote-text-sm"><span>Options selected</span></p>
-                                          </td>
-                                          <td className="total-price">
-                                             <p className="quote-text-sm">2 of 4</p>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td className="total-desc">Subtotal</td>
-                                          <td className="total-price">900.00</td>
-                                       </tr>
-                                       <tr className={`tProfit`}>
-                                          <td className="total-desc">Total margin 20%</td>
-                                          <td className="total-price">100.00</td>
-                                       </tr>
-                                       <tr>
-                                          <td className="total-desc">Tax 10%</td>
-                                          <td className="total-price">80.00</td>
-                                       </tr>
-                                       <tr className="total">
-                                          <td className="total-desc"><span className="quoteTotal-gDesc">Total including tax</span></td>
-                                          <td className="total-price">
-                                             <span className="quoteTotal-gTotal">$980.00</span>
-                                             <p className="quote-text-sm">per week</p>
-                                             <p className="quote-text-sm">(for 4 weeks)</p>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table> */}
-                                 {/* ******************************* */}
-
-
-
-                                 {/* Here is notes */}
-                                 {
-                                    this.state.quote.notes.map((note, index) => {
-                                       return (
-                                          <div className="tItem-text" key={index}>
-                                             <h3>{note.textItem.textHeading}</h3>
-                                             <p>{note.textItem.longDescription}</p>
-                                             <div className="quoteFile-set">
-                                                {
-                                                   note.textItem.files.map((file, ind) => (
-                                                      <div className="quoteFile-image" key={ind}>
-                                                         <img src={file} alt="..." />
-                                                      </div>
-                                                   ))
-                                                }
-                                             </div>
-                                          </div>
-                                       );
-                                    })
-                                 }
+                                 </table>
                               </div>
-
-
-                              {/* Discussion or Question Section */}
-
-                              {/* show QA records */}
-                              {/* <div className={`mb-4 ${this.state.discussions.length ? "" : "d-none"}`}> */}
-                              <div className={`mb-4 `}>
-                                 <h3 className="py-3 border-bottom mx-4">Questions & Answers</h3>
-                                 {
-                                    this.state.discussions.map((discussion, index) => {
-                                       if (discussion.category === "privateNote") {
-                                          if (this.state.isPrivateEligible) return (
-                                             <div className="discuss-row discuss-form mb-3 d-flex" key={index}>
-                                                <img className="avatar-48 mr-3 mb-2" src={discussion.privateNote.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
-                                                <div className="border-green-left pl-3">
-                                                   <div className="row no-gutters mb-1">
-                                                      <span className="badge badge-success my-auto mr-2 text-uppercase">private</span>
-                                                      <span className="font-w700 text-black mr-2">{discussion.privateNote.author.firstName + " " + discussion.privateNote.author.lastName}</span>
-                                                      <span className="font-w400 text-secondary">{formatDateTime(discussion.privateNote.updatedAt)}</span>
-                                                   </div>
-                                                   <div className="row no-gutters">
-                                                      <span className="text-black">{discussion.privateNote.content}</span>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                          );
-                                       }
-                                       else if (discussion.category === "comment") return (
-                                          <div className="discuss-row discuss-form mb-3 d-flex" key={index}>
-                                             <img className="avatar-48 mr-3 mb-2" src={discussion.comment.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
-                                             <div className="">
-                                                <div className="row no-gutters mb-1">
-                                                   <span className="font-w700 text-black mr-2">{discussion.comment.author.firstName + " " + discussion.comment.author.lastName}</span>
-                                                   <span className="font-w400 text-secondary">{formatDateTime(discussion.comment.updatedAt)}</span>
-                                                </div>
-                                                <div className="row no-gutters">
-                                                   <span className="text-black">{discussion.comment.content}</span>
-                                                </div>
-                                             </div>
-                                          </div>
-                                       );
-                                       else if (discussion.category === "questionAndAnswer") {
-                                          const isAnswerAbleUser = this.props.auth.authUser && this.state.quote && (this.props.auth.authUser._id === this.state.quote.author._id);
-                                          return (
-                                             <React.Fragment key={index}>
-                                                <div className="discuss-row discuss-form mb-3 d-flex">
-                                                   <img className="avatar-48 mr-3 mb-2" src={discussion.questionAndAnswer.question.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
-                                                   <div className="">
-                                                      <div className="row no-gutters mb-1">
-                                                         <span className="font-w700 text-black mr-2">{discussion.questionAndAnswer.question.author.firstName + " " + discussion.questionAndAnswer.question.author.lastName}</span>
-                                                         <span className="font-w400 text-secondary">{formatDateTime(discussion.questionAndAnswer.question.updatedAt)}</span>
-                                                      </div>
-                                                      <div className="row no-gutters">
-                                                         <span className="text-black">{discussion.questionAndAnswer.question.content}</span>
-                                                      </div>
-                                                   </div>
-                                                </div>
-                                                {
-                                                   discussion.questionAndAnswer.answer.status === "answered" &&
-                                                   <div className="discuss-row discuss-form mb-3 d-flex">
-                                                      <img className="avatar-48 mr-3 mb-2" src={discussion.questionAndAnswer.answer.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
-                                                      <div className="">
-                                                         <div className="row no-gutters mb-1">
-                                                            <span className="font-w700 text-black mr-2">{discussion.questionAndAnswer.answer.author.firstName + " " + discussion.questionAndAnswer.answer.author.lastName}</span>
-                                                            <span className="font-w400 text-secondary">{formatDateTime(discussion.questionAndAnswer.answer.updatedAt)}</span>
-                                                         </div>
-                                                         <div className="row no-gutters">
-                                                            <span className="text-black">{discussion.questionAndAnswer.answer.content}</span>
-                                                         </div>
-                                                      </div>
-                                                   </div>
-                                                }
-                                                {
-                                                   discussion.questionAndAnswer.answer.status === "dismissed" && null
-                                                }
-                                                {
-                                                   discussion.questionAndAnswer.answer.status === "pending" && isAnswerAbleUser &&
-                                                   <div className="discuss-row discuss-form">
-                                                      <textarea
-                                                         className="form-control mb-2"
-                                                         name="example-textarea-input"
-                                                         rows={4}
-                                                         state={this.state.answerContent}
-                                                         onChange={(ev) => this.setState({ answerContent: ev.target.value })} />
-
-                                                      {/* Images preview section */}
-                                                      <div className="row m-1">
-                                                         {(this.state.fileArray || []).map((url, index) => (
-                                                            <div className="p-1" key={index}>
-                                                               <img src={url} className="mr-2 image-preview-size" alt="..." />
-                                                               <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)}>
-                                                                  <i className="fa fa-times-circle"></i>
-                                                               </button>
-                                                            </div>
-                                                         ))}
-                                                      </div>
-
-                                                      {/* <ProgressBar percentage={75} /> */}
-                                                      <input type="file"
-                                                         ref={this.hiddenFileInput}
-                                                         onChange={this.uploadMultipleFiles}
-                                                         className="d-none"
-                                                         multiple
-                                                      />
-                                                      <button className="btn btn-hero-sm btn-square btn-outline-warning w-100 p-3"
-                                                         onClick={this.handleClickFileOpen}
-                                                      >
-                                                         <i className="si si-paper-clip fa-fw mr-1"></i>
-                                                      Add Image or File
-                                                      </button>
-                                                      <div className="row no-gutters mt-3">
-                                                         <button className="btn btn-secondary mr-2" disabled={this.state.loading} onClick={() => this.onSubmitAnswer(discussion._id)}>
-                                                            {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
-                                                            Answer Question</button>
-                                                         <button className="btn btn-alt-secondary" disabled={this.state.loading} onClick={() => this.onSubmitDismiss(discussion._id)}>
-                                                            {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
-                                                            Dismiss</button>
-                                                      </div>
-                                                   </div>
-                                                }
-                                             </React.Fragment>
-                                          );
-                                       }
-                                    })
-                                 }
+                           </div>
+                           <div className="quoteViewTotalWrap quoteViewTotalWrap-server isHidden">
+                              <table className="quoteTotal subscribe_zFixedCost hasNoTerm">
+                                 <tbody>
+                                    <tr>
+                                       <td className="total-desc">Subtotal</td>
+                                       <td className="total-price">
+                                          <p>100.00</p>
+                                       </td>
+                                    </tr>
+                                    <tr className="total">
+                                       <td className="total-desc">
+                                          <p className="quoteTotal-gDesc">Total USD including tax</p>
+                                       </td>
+                                       <td className="total-price">
+                                          <p className="quoteTotal-gTotal">$100.00</p>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div className="tItem-text tItemId-43620286">
+                              <h3>tt</h3>
+                              <p>ddd</p>
+                              <div className="quoteFile-wrap">
+                                 <div className="quoteFile-set">
+                                    <div className="quoteFile-image">
+                                       <a data-tg-click="root_lightboxQuote"
+                                          data-download-original="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1f6d2da2be86c0ca94a2846f6b7b1089/lg/dn/mascot2.jpeg"
+                                          className="quoteFile-image-a"
+                                          href="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1f6d2da2be86c0ca94a2846f6b7b1089/lg/ds/mascot2.jpeg"
+                                          title="mascot2.jpeg"><img
+                                             src="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1f6d2da2be86c0ca94a2846f6b7b1089/sm/ds/mascot2.jpeg"
+                                             alt="mascot2.jpeg" /></a>
+                                    </div>
+                                    <div className="quoteFile-image">
+                                       <a data-tg-click="root_lightboxQuote"
+                                          data-download-original="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1caefa955b2b2f7a478c8c6307043a82/lg/dn/mascot3.jpeg"
+                                          className="quoteFile-image-a"
+                                          href="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1caefa955b2b2f7a478c8c6307043a82/lg/ds/mascot3.jpeg"
+                                          title="mascot3.jpeg"><img
+                                             src="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1caefa955b2b2f7a478c8c6307043a82/sm/ds/mascot3.jpeg"
+                                             alt="mascot3.jpeg" /></a>
+                                    </div>
+                                 </div>
+                                 <div className="clear" />
                               </div>
-                              {
-                                 this.props.auth.authUser && this.state.quote && (this.props.auth.authUser._id === this.state.quote.author._id) ?
-                                    <div className="discuss-wrap">
-                                       {/* controller button wrapper  */}
-                                       <div className={`discuss-button-wrap ${this.state.commentShow || this.state.privateNoteShow ? "d-none" : ""}`}>
-                                          <button className="btn btn-sm btn-dark font-size-sm px-2 py-1 mr-2" onClick={() => this.setState({ commentShow: true })}>Comment</button>
-                                          <button className="btn btn-sm btn-success font-size-sm px-2 py-1" onClick={() => this.setState({ privateNoteShow: true })}>Private Note</button>
-                                       </div>
-
-                                       {/* ------------------- comment wraper ----------------------- */}
-                                       <div className={`discuss-row discuss-form ${this.state.commentShow ? "" : "d-none"}`}>
-                                          <p>Send email to:</p>
-                                          <h3>
-                                             {this.state.quote.toPeopleList.map((person, index) => {
-                                                return (
-                                                   <span className="mr-2" key={index}>{person.firstName} {person.lastName},</span>
-                                                );
-                                             })}
-                                          </h3>
-                                          <textarea
-                                             className="form-control mb-2"
-                                             name="comment-content-input"
-                                             rows={4}
-                                             placeholder="Write comment..."
-                                             value={this.state.commentContent}
-                                             onChange={(ev) => this.setState({ commentContent: ev.target.value })}
-                                          />
-
-                                          {/* Images preview section */}
-                                          <div className="row m-1">
-                                             {(this.state.fileArray || []).map((url, index) => (
-                                                <div className="p-1">
-                                                   <img src={url} className="mr-2 image-preview-size" alt="..." />
-                                                   <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)}>
-                                                      <i className="fa fa-times-circle"></i>
-                                                   </button>
-                                                </div>
-                                             ))}
-                                          </div>
-
-                                          {/* <ProgressBar percentage={75} /> */}
-                                          <input type="file"
-                                             ref={this.hiddenFileInput}
-                                             onChange={this.uploadMultipleFiles}
-                                             className="d-none"
-                                             multiple
-                                          />
-                                          <button className="btn btn-hero-sm btn-square btn-outline-warning w-100 p-3"
-                                             onClick={this.handleClickFileOpen}
-                                          >
-                                             <i className="si si-paper-clip fa-fw mr-1"></i>
-                                                Add Image or File
-                                             </button>
-                                          <div className="row no-gutters mt-3">
-                                             <button className="btn btn-secondary mr-2"
-                                                disabled={this.state.loading}
-                                                onClick={this.onSubmitCommemt}>
-                                                {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
-                                             Send Comment</button>
-                                             <button className="btn btn-alt-secondary" onClick={() => this.setState({ commentShow: false, privateNoteShow: false })}>Cancel</button>
-                                          </div>
-                                       </div>
-
-                                       {/* --------------------- private note wraper --------------------------- */}
-                                       <div className={`discuss-row discuss-form ${this.state.privateNoteShow ? "" : "d-none"}`}>
-                                          <h3>Private Note</h3>
-                                          <div className="form-group">
-                                             <label htmlFor="sendMode">Send to:</label>
-                                             <select className="form-control" id="sendMode" name="sendMode"
-                                                value={this.state.toMateAccountId}
-                                                onChange={(ev) => this.setState({ toMateAccountId: ev.target.value })}
-                                             >
-                                                <option value={""}>Add as Private Note only</option>
-                                                {
-                                                   (this.state.teamMembers.length > 0) &&
-                                                   <optgroup label="Send email to:">
-                                                      {
-                                                         this.state.teamMembers.map((mate, index) => {
-                                                            const mateFullName = mate.firstName + " " + mate.lastName;
-                                                            const isMe = mate._id === this.props.auth.authUser._id;
-                                                            return (<option value={mate._id} key={index}>{mateFullName} {isMe ? "- note to self" : ""}</option>);
-                                                         })
-                                                      }
-                                                   </optgroup>
-                                                }
-
-                                             </select>
-                                          </div>
-                                          <textarea
-                                             className="form-control mb-2"
-                                             name="example-textarea-input"
-                                             rows={4}
-                                             placeholder="Write private note..."
-                                             value={this.state.privateNoteContent}
-                                             onChange={(ev) => this.setState({ privateNoteContent: ev.target.value })}
-                                          />
-
-                                          {/* Images preview section */}
-                                          <div className="row m-1">
-                                             {(this.state.fileArray || []).map((url, index) => (
-                                                <div className="p-1" key={index}>
-                                                   <img src={url} className="mr-2 image-preview-size" alt="..." />
-                                                   <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)}>
-                                                      <i className="fa fa-times-circle"></i>
-                                                   </button>
-                                                </div>
-                                             ))}
-                                          </div>
-
-                                          {/* <ProgressBar percentage={75} /> */}
-                                          <input type="file"
-                                             ref={this.hiddenFileInput}
-                                             onChange={this.uploadMultipleFiles}
-                                             className="d-none"
-                                             multiple
-                                          />
-                                          <button className="btn btn-hero-sm btn-square btn-outline-warning w-100 p-3"
-                                             onClick={this.handleClickFileOpen}
-                                          >
-                                             <i className="si si-paper-clip fa-fw mr-1"></i>
-                                                Add Image or File
-                                             </button>
-                                          <div className="row no-gutters my-3">
-                                             <button className="btn btn-success mr-2" disabled={this.state.loading} onClick={this.onClickAddPrivateNote}>
-                                                {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
-                                                Add Private Note</button>
-                                             <button className="btn btn-alt-secondary" onClick={() => this.setState({ commentShow: false, privateNoteShow: false })}>Cancel</button>
-                                          </div>
-                                          <div className="row no-gutters">
-                                             <p>Customers will <strong>not</strong> see Private Notes on Quotes.</p>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    :
-                                    <div className="discuss-wrap">
-                                       <div className="mb-4">
-                                          {/* question button wrapper  */}
-                                          <div className={`discuss-button-wrap ${this.state.questionSectionShow ? "d-none" : ""}`}>
-                                             <button className="btn btn-hero-lg btn-outline-primary mr-1 mb-3" onClick={() => this.setState({ questionSectionShow: true })}>Ask a Question</button>
-                                          </div>
-
-                                          {/* --------------------- question section wraper ------------------------ */}
-                                          <div className={`discuss-row discuss-form ${this.state.questionSectionShow ? "" : "d-none"}`}>
-                                             <textarea
-                                                className="form-control mb-2"
-                                                name="example-textarea-input"
-                                                rows={4}
-                                                value={this.state.questionContent}
-                                                onChange={(ev) => this.setState({ questionContent: ev.target.value })} />
-
-                                             {/* Images preview section */}
-                                             <div className="row m-1">
-                                                {(this.state.fileArray || []).map((url, index) => (
-                                                   <div className="p-1">
-                                                      <img src={url} className="mr-2 image-preview-size" alt="..." />
-                                                      <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)}>
-                                                         <i className="fa fa-times-circle"></i>
-                                                      </button>
-                                                   </div>
-                                                ))}
-                                             </div>
-
-                                             {/* <ProgressBar percentage={75} /> */}
-                                             <input type="file"
-                                                ref={this.hiddenFileInput}
-                                                onChange={this.uploadMultipleFiles}
-                                                className="d-none"
-                                                multiple
-                                             />
-                                             <button className="btn btn-hero-sm btn-square btn-outline-warning w-100 p-3"
-                                                onClick={this.handleClickFileOpen}
-                                             >
-                                                <i className="si si-paper-clip fa-fw mr-1"></i>
-                                                Add Image or File
-                                             </button>
-                                             <div className="row no-gutters mt-3">
-                                                <button className="btn btn-secondary mr-2" disabled={this.state.loading} onClick={this.onSubmitQuestion}>
-                                                   {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
-                                                   Submit Question</button>
-                                                <button className="btn btn-alt-secondary" onClick={() => this.setState({ questionSectionShow: false })}>Cancel</button>
-                                             </div>
-                                          </div>
-                                       </div>
-
-                                       {/* ------------------------- Additional comments and accept/decline section ------------------------------- */}
-                                       {
-                                          this.state.quote.status !== "declined" &&
-                                          <div className="bg-acceptBox px-4 py-5">
-                                             <div className="form-group">
-                                                <label htmlFor="additionalComments">Additional comments</label>
-                                                <div className={`float-right ${this.state.quote.status === "accepted" ? "" : "d-none"}`}>
-                                                   <span className="badge badge-primary px-3 py-1 ml-1 text-uppercase">Accepted</span>
-                                                </div>
-                                                <textarea className="form-control" id="additionalComments" name="additionalComments" rows={4} placeholder="Optional.." defaultValue={""} />
-
-                                             </div>
-                                             <div className="form-group">
-                                                <label htmlFor="referenceNum">Your order/reference number</label>
-                                                <textarea className="form-control" id="referenceNum" name="referenceNum" rows={1} placeholder="Optional.." defaultValue={""} />
-                                             </div>
-                                             <div className={`form-check ${this.state.quote.status === "accepted" ? "d-none" : ""}`}>
-                                                <input className="form-check-input" type="checkbox"
-                                                   checked={this.state.isAgreeChecked}
-                                                   id="agreeCheck" name="agreeCheck"
-                                                   onChange={() => this.setState({ isAgreeChecked: !this.state.isAgreeChecked })}
-                                                />
-                                                <label className="form-check-label" htmlFor="agreeCheck">Yes, I {`my full name`} agree to and accept this quote</label>
-                                             </div>
-                                             <div className={`form-check ${this.state.quote.status === "accepted" ? "" : "d-none"}`}>
-                                                <input className="form-check-input" type="checkbox"
-                                                   defaultChecked
-                                                   id="agreeCheckAccepted" name="agreeCheckAccepted"
-                                                   disabled
-                                                />
-                                                <label className="form-check-label" htmlFor="agreeCheckAccepted">Yes, {`my full name`} I agree to and accept this quote</label>
-                                             </div>
-                                             <div className={`mt-4 ${this.state.quote.status === "awaiting" ? "" : "d-none"}`}>
-                                                <button type="button" className="btn btn-square btn-hero-primary mr-2" disabled={!this.state.isAgreeChecked} onClick={this.onClickAccept}>Accept Quote</button>
-                                                <button type="button" className="btn btn-square btn-hero-secondary" onClick={this.onClickDecline}>Decline</button>
-                                             </div>
-                                          </div>
-                                       }
-
-                                    </div>
-                              }
-                              <DeclineCommentShow quote={this.state.quote} />
                            </div>
                         </div>
+
+                        <div id="discussion" className="discuss-wrap">
+                           <h3 className="quote-discuss-h3">Questions &amp; Answers</h3>
+                           <div className="discuss-row discuss-row-private">
+                              <div className="discuss-bubble">
+                                 <div className="bubble-left avatar-48"
+                                    style={{ backgroundImage: 'url("https://asset.quotientapp.com/file-s/1/avatar-v2/128")' }}>
+                                 </div>
+                                 <div className="bubble-right">
+                                    <div className="discuss-title">
+                                       <span className="label label-green">Private</span>&nbsp;
+                                       <strong className="util-no-wrap">Silver Mind&nbsp;</strong>
+                                       <span className="lighter">
+                                          <span className="util-no-wrap"><span className="dt-time" data-time="[1605898908,1,1]">22 minutes ago</span></span>&nbsp;
+                                          <a className="discuss-edit-a"
+                                             data-tg-click="{&quot;clickDiscussEdit&quot;:{&quot;id&quot;:&quot;2752358&quot;}}"
+                                             href="javascript:void(0)">Edit</a>&nbsp;
+                                       </span>
+                                    </div>
+                                    <div className="clear" />
+                                    <div className="discuss-message">
+                                       <p>test</p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div className="discuss-row discuss-row-private">
+                              <div className="discuss-bubble">
+                                 <div className="bubble-left avatar-48"
+                                    style={{ backgroundImage: 'url("https://asset.quotientapp.com/file-s/1/avatar-v2/128")' }}> </div>
+                                 <div className="bubble-right">
+                                    <div className="discuss-title">
+                                       <span className="label label-green">Private</span>&nbsp; <strong className="util-no-wrap">Silver Mind&nbsp;</strong>→ <strong className="util-no-wrap">Alexey Ryzhkov&nbsp;</strong>
+                                       <span className="lighter">
+                                          <span className="util-no-wrap"><span className="dt-time" data-time="[1605900155,1,1]">1 minute ago</span></span>&nbsp;
+                                          <a className="discuss-edit-a" data-tg-click="{&quot;clickDiscussEdit&quot;:{&quot;id&quot;:&quot;2752392&quot;}}" href="javascript:void(0)">Edit</a>&nbsp;
+                                       </span>
+                                    </div>
+                                    <div className="clear" />
+                                    <div className="discuss-message">
+                                       <p>asdfasdf</p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div className="discuss-row discuss-row-private">
+                              <div className="discuss-bubble">
+                                 <div className="bubble-left avatar-48"
+                                    style={{ backgroundImage: 'url("https://asset.quotientapp.com/file-s/1/avatar-v2/128")' }}> </div>
+                                 <div className="bubble-right">
+                                    <div className="discuss-title">
+                                       <span className="label label-green">Private</span>&nbsp; <strong className="util-no-wrap">Silver Mind&nbsp;</strong>
+                                       <span className="lighter">
+                                          <span className="util-no-wrap"><span className="dt-time" data-time="[1605900167,1,1]">1 minute ago</span></span>&nbsp;– modified <span className="dt-time" data-time="[1605900207,1,1]">moments ago</span>&nbsp; <a
+                                             className="discuss-edit-a"
+                                             data-tg-click="{&quot;clickDiscussEdit&quot;:{&quot;id&quot;:&quot;2752394&quot;}}"
+                                             href="javascript:void(0)">Edit</a>&nbsp;
+                                          </span>
+                                    </div>
+                                    <div className="clear" />
+                                    <div className="discuss-message">
+                                       <p>asdf</p>
+                                       <div className="quoteFile-wrap">
+                                          <div className="quoteFile-set">
+                                             <div className="quoteFile-image">
+                                                <a data-tg-click="root_lightboxQuote"
+                                                   data-download-original="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/c65255299cf0bf369a3b192b204e507d/lg/dn/mascot1.jpeg"
+                                                   className="quoteFile-image-a"
+                                                   href="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/c65255299cf0bf369a3b192b204e507d/lg/ds/mascot1.jpeg"
+                                                   title="mascot1.jpeg"><img
+                                                      src="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/c65255299cf0bf369a3b192b204e507d/sm/ds/mascot1.jpeg"
+                                                      alt="mascot1.jpeg" /></a>
+                                             </div>
+                                             <div className="quoteFile-image">
+                                                <a data-tg-click="root_lightboxQuote"
+                                                   data-download-original="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/1caefa955b2b2f7a478c8c6307043a82/lg/dn/mascot3.jpeg"
+                                                   className="quoteFile-image-a"
+                                                   href="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/1caefa955b2b2f7a478c8c6307043a82/lg/ds/mascot3.jpeg"
+                                                   title="mascot3.jpeg">
+                                                   <img
+                                                      src="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/1caefa955b2b2f7a478c8c6307043a82/sm/ds/mascot3.jpeg"
+                                                      alt="mascot3.jpeg" />
+                                                </a>
+                                             </div>
+                                          </div>
+                                          <div className="clear" />
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div className="discuss-row">
+                              <div className="discuss-bubble">
+                                 <div className="bubble-left avatar-48"
+                                    style={{ backgroundImage: 'url("https://asset.quotientapp.com/file-s/1/avatar-v2/128")' }}> </div>
+                                 <div className="bubble-right">
+                                    <div className="discuss-title">
+                                       <strong className="util-no-wrap">Silver Mind&nbsp;</strong>
+                                       <span className="lighter">
+                                          <span className="util-no-wrap"><span className="dt-time" data-time="[1605900183,1,1]">moments ago</span>
+                                          </span>&nbsp;
+                                       <a className="discuss-edit-a"
+                                             data-tg-click="{&quot;clickDiscussEdit&quot;:{&quot;id&quot;:&quot;2752395&quot;}}"
+                                             href="javascript:void(0)">Edit</a>&nbsp;
+                                    </span>
+                                    </div>
+                                    <div className="clear" />
+                                    <div className="discuss-message">
+                                       <p>test</p>
+                                       <div className="quoteFile-wrap">
+                                          <div className="quoteFile-set">
+                                             <div className="quoteFile-image">
+                                                <a data-tg-click="root_lightboxQuote"
+                                                   data-download-original="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/c65255299cf0bf369a3b192b204e507d/lg/dn/mascot1.jpeg"
+                                                   className="quoteFile-image-a"
+                                                   href="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/c65255299cf0bf369a3b192b204e507d/lg/ds/mascot1.jpeg"
+                                                   title="mascot1.jpeg"><img
+                                                      src="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/c65255299cf0bf369a3b192b204e507d/sm/ds/mascot1.jpeg"
+                                                      alt="mascot1.jpeg" /></a>
+                                             </div>
+                                          </div>
+                                          <div className="clear" />
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div className="clear" />
+                           <div className="no_print u-section-2">
+                              comment private note wrtiing
+                           </div>
+                        </div>
+
+                        {/* Accept Box */}
+                        <div className="acceptBox" style={{ backgroundColor: "#e9f1f9" }}>
+                           <h3 className="quote-box-h3-accept">Accept on behalf</h3>
+                           <div className="acceptSummary">
+                              <p>
+                                 <strong>Quote title...</strong>
+                              </p>
+                              <p className="summaryWrapzFixedCost">
+                                 Total USD including tax $<span className="summaryPartTotal">100.00</span> </p>
+                           </div>
+                           <div className="form-group-half">
+                              <label className="label-light" htmlFor="accept_comment">Additional comments</label>
+                              <TextareaAutosize className="form-control" rows={5} placeholder="Optional" name="accept[comment]" id="accept_comment" defaultValue={""} /> </div>
+                           <div className="form-group-half">
+                              <label className="label-light" htmlFor="accept_reference">Order/reference number</label>
+                              <input className="form-control util-width-1" placeholder="Optional" name="accept[reference]" defaultValue type="text" id="accept_reference" /> </div>
+                           <div className="acceptCb">
+                              <div className="acceptCb-left">
+                                 <label className="acceptCb-label-box" htmlFor="accept_email_notify">
+                                    <input name="accept[email_notify]" defaultValue={1} type="checkbox" className id="accept_email_notify" />
+                                 </label>
+                              </div>
+                              <div className="acceptCb-right">
+                                 <label className="acceptCb-label" htmlFor="accept_email_notify">
+                                    Send email notification to: <strong>Money Owner</strong>
+                                 </label>
+                              </div>
+                           </div>
+                           <div className="clear" />
+                           <input type="hidden" name="@checkbox[accept][email_notify]" defaultValue={2} id="@checkbox_accept_email_notify" />
+                           <div className="quote-box-accept">
+                              <a className="btn btn-save btnAccept quote-btn-lg" href="#trigger:accept_on_behalf">Accept on behalf</a>
+                              <span className="quote-box-decline-wrap">
+                                 <a className="btn btn-lg btn-lg-skinny" data-tg-click="clickCancelOnBehalf" href="javascript:void(0)">Cancel</a>
+                              </span>
+                           </div>
+                        </div>
+
+                        {/* Accepted Show Box */}
+                        <div className="acceptBox" style={{ backgroundColor: "#e9f1f9" }}>
+                           <h3 className="quote-box-h3-accept">Quote title...</h3>
+                           <div className="acceptSummary">
+                              <p className="summaryWrapzFixedCost">
+                                 Total USD including tax $<span className="summaryPartTotal">100.00</span> </p>
+                              <div className="acceptBox-right no_print">
+                                 <span className="label acceptBox-label">Accepted</span>
+                              </div>
+                              <div className="clear" />
+                           </div>
+                           <div className="form-group-half">
+                              <label className="label-light">Additional comments</label>
+                              <div className="accept-input-submitted">
+                                 <p>&nbsp;</p>
+                              </div>
+                           </div>
+                           <div className="form-group">
+                              <label className="label-light">Order/reference number</label>
+                              <div className="accept-input-submitted">
+                                 <p>&nbsp;</p>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div className="acceptBox" style={{ backgroundColor: "#e9f1f9" }}>
+                           <p>
+                              Accepted on behalf of Money Owner by Silver Mind on <span className="dt-time"
+                                 data-time="[1605901913,1,0]">November 20, 2020 at 9:51PM</span> </p>
+                        </div>
+
+                        <div className="clear" />
+                     </div>
+                     <div className="no_print">
+                        <a className="powered-by powered-by-no powered-by-bg" href="https://www.quotientapp.com/" data-sheet="ignore"><img className="powered-by-black" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-black-01.png" alt="Quotient. Simply Smarter Quotes." /><img className="powered-by-white" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-white-01.png" alt="Quotient. Simply Smarter Quotes." /></a>
                      </div>
                   </div>
                </div>
@@ -934,8 +623,8 @@ class PublicQuoteView extends Component {
    }
 }
 
-const mapStateToProps = ({ auth }) => {
-   return { auth };
+const mapStateToProps = ({ auth, appearanceSetting }) => {
+   return { auth, appearanceSetting };
 }
 const mapDispatchToProps = { setInitUrl, userSignOut, getTeammates };
 export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);

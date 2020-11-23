@@ -8,6 +8,7 @@ import App from "./containers/App";
 
 import 'react-toastify/dist/ReactToastify.css';
 import './styles/app.scss';
+import './styles/quotient.scss';
 
 export const store = configureStore();
 

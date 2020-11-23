@@ -1,18 +1,23 @@
 .logo {
-   width: 100px !important;
+   width: 100px;
 }
 .container {
-   max-width: 1350px !important;
+   max-width: 1350px;
 }
 .content {
-   max-width: 1400px !important;
+   max-width: 1400px;
 }
 .bg-dark {
-   background-color: #40474a !important;
+   background-color: #40474a;
 }
 .btn-success {
    background-color: #32b842;
    border-color: #32b842;
+}
+.btn-default {
+   color: #404040;
+   background-color: #f5f5f5;
+   border-color: #ccc;
 }
 .bg-acceptBox {
    background-color: #e9f1f9;
@@ -133,7 +138,7 @@ a.nav-link.active {
 }
 .toast-center {
    width: 200px;
-   padding-left: 50px
+   padding-left: 50px;
 }
 .bg-light-gray {
    background-color: #f5f5f5;
@@ -242,15 +247,16 @@ a.nav-link.active {
       margin-bottom: 10px;
    }
 }
+
 .tItem {
    margin-top: -1px;
+   margin-bottom: 20px;
    display: block;
    float: left;
    width: 100%;
    border-top: 1px solid #dadbdc;
    border-bottom: 1px solid #dadbdc;
 }
-
 .tItem-desc {
    display: block;
    float: left;
@@ -332,9 +338,6 @@ a.nav-link.active {
 
 .hasNoTerm .total-price {
    background-color: #e9f1f9;
-}
-.quoteViewTotalWrap {
-   padding-bottom: 30px;
 }
 .quoteTotal {
    margin-top: 0rem !important;
@@ -722,4 +725,33 @@ a.nav-link.active {
       max-width: 300px;
       max-height: 125px;
    }
+}
+
+.clear {
+   clear: both;
+   display: block;
+   overflow: hidden;
+   visibility: hidden;
+   width: 0;
+   height: 0;
+}
+
+.buttonLink {
+   text-align: center;
+   border: none;
+   background: none;
+   color: #2176c7;
+   outline: none;
+}
+.buttonLink.disabled {
+   color: #99a1a8;
+}
+.buttonLink:hover {
+   color: #0c5191;
+}
+.buttonLink.disabled:hover {
+   color: #99a1a8;
+}
+.buttonLink:focus {
+   outline: none;
 }
