@@ -11,11 +11,18 @@ import { toast } from 'react-toastify';
 import { toastErrorConfig, toastSuccessConfig, toastWarningConfig } from '../../util/toastrConfig';
 import QuoteItemTotal from '../../components/QuoteItemTotal';
 import { setInitUrl, userSignOut } from '../../actions/Auth';
-import { getTeammates } from '../../actions/Setting';
+import { getTeamMembers } from '../../actions/Team';
 import TextareaAutosize from 'react-autosize-textarea/lib';
 import QuoteLogo from './QuoteLogo';
 import QuoteDetail from './QuoteDetail';
 import StatusShowCase from './StatusShowCase';
+import AttachedFilesShowCase from './components/AttachedFilesShowCase';
+import TextItemList from './components/NoteItemList';
+import NoteItemList from './components/NoteItemList';
+import FullWrapper from './components/FullWrapper';
+import QuoteDetailWrapper from './components/QuoteDetailWrapper';
+import QuoteItemWrapper from './components/QuoteItemWrapper';
+import { SwitchQuoteLayoutClass } from '../../util/index';
 
 class PublicQuoteView extends Component {
    mounted = false;
@@ -211,10 +218,11 @@ class PublicQuoteView extends Component {
       this.mounted = true;
       const entoken = this.props.match.params.entoken;
       console.log("***** entoken ***** ", entoken);
+      const { auth } = this.props;
       if (this.mounted) {
          this.setState({ isMounting: true });
 
-         axios.post('/quotes/view-draft', { entoken })
+         axios.post('/quotes/view-public', { entoken })
             .then(({ data }) => {
                console.log("========== Publick overview did mount get quote =========", data);
                this.setState({
@@ -222,11 +230,11 @@ class PublicQuoteView extends Component {
                   quote: data.quote,
                   discussions: data.quote.discussions ? data.quote.discussions : []
                });
-               if (this.props.auth.authUser) {
+               if (auth.authUser) {
                   axios.get('/team-members').then((res) => {
                      console.log("get team-members api response ============>", res.data.teamMembers)
                      this.setState({ teamMembers: res.data.teamMembers });
-                     const me = res.data.teamMembers.find(mate => mate._id === this.props.auth.authUser._id);
+                     const me = res.data.teamMembers.find(mate => mate._id === auth.authUser._id);
                      if (me) {
                         console.log(" this user is Eligible %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
                         this.setState({ isPrivateEligible: true });
@@ -252,6 +260,8 @@ class PublicQuoteView extends Component {
    render() {
       console.log(" ----------- PublicQuoteView state ------", this.state);
       console.log(" ----------- PublicQuoteView props ------", this.props);
+      const { quote } = this.state;
+      const { auth, appearanceSetting } = this.props;
       if (this.state.isMounting) return <div>loading...</div>;
       else if (this.props.match.path === '/q/:entoken/author-discuss') {
          if (!this.state.isPrivateEligible) {
@@ -264,12 +274,12 @@ class PublicQuoteView extends Component {
          <React.Fragment>
             <main id="main-container">
                {
-                  this.props.auth && this.props.auth.authUser ?
+                  auth && auth.authUser ?
                      <React.Fragment>
                         <NavCrump linkTo="/app">
                            Dashboard
                         </NavCrump>
-                        {/* <StatusBanner quote={this.state.quote} /> */}
+                        {/* <StatusBanner quote={quote} /> */}
                      </React.Fragment>
                      : null
                }
@@ -281,336 +291,410 @@ class PublicQuoteView extends Component {
                      </div>
                   </div>
 
-                  <div className="container qCustomCss quoteCanvas quoteCanvas-1col">
+                  <div className={`${SwitchQuoteLayoutClass(appearanceSetting.contactDetailLayout, appearanceSetting.layout)}`}>
                      <div className="quoteCanvas-page">
-                        <QuoteLogo />
-                        <QuoteDetail />
-                        <h1 className="quoteCanvas-title">
-                           Quote title... </h1>
-                        <div id="form_message"> </div>
-                        <div className="clear" />
+                        <FullWrapper>
+                           <QuoteDetailWrapper>
+                              <QuoteLogo />
+                              <QuoteDetail quote={quote} />
+                           </QuoteDetailWrapper>
 
-                        <div className="quoteItems" data-tg-control="QuoteViewTotal">
-                           <div className="tItem vIsLine tItemId-43620285 isSelected">
-                              <div className="tItem-desc">
-                                 <div className="tItem-desc-table">
-                                    <div className="tItem-desc-cell">
-                                       <p className="item_code">ix123</p>
-                                       <h3>service</h3>
-                                       <p>ddd..</p>
-                                       <div className="quoteFile-wrap">
-                                          <div className="quoteFile-set">
-                                             <div className="quoteFile-image">
-                                                <a data-tg-click="root_lightboxQuote"
-                                                   data-download-original="https://asset.quotientapp.com/file-s/1/quote-v2/39310/c65255299cf0bf369a3b192b204e507d/lg/dn/mascot1.jpeg"
-                                                   className="quoteFile-image-a"
-                                                   href="https://asset.quotientapp.com/file-s/1/quote-v2/39310/c65255299cf0bf369a3b192b204e507d/lg/ds/mascot1.jpeg"
-                                                   title="mascot1.jpeg"><img
-                                                      src="https://asset.quotientapp.com/file-s/1/quote-v2/39310/c65255299cf0bf369a3b192b204e507d/sm/ds/mascot1.jpeg"
-                                                      alt="mascot1.jpeg" /></a>
+                           <QuoteItemWrapper>
+                              <h1 className="quoteCanvas-title">{quote.title}</h1>
+                              <div id="form_message" />
+                              <div className="clear" />
+
+                              <div className="quoteItems">
+                                 {
+                                    quote.items.map((item, index) => {
+                                       if (item.category === "priceItem") {
+                                          let isSelected = true;
+                                          if (item.priceItem.isMultipleChoice) isSelected = item.priceItem.isChoiceSelected;
+                                          if (item.priceItem.isOptional) isSelected = item.priceItem.isOptionSelected;
+                                          return (
+                                             <div className={`tItem ${isSelected ? "isSelected" : ""}`} key={index}>
+                                                <div className="tItem-desc">
+                                                   <div className="tItem-desc-table">
+                                                      {
+                                                         item.priceItem.isMultipleChoice &&
+                                                         <div className="tItem-desc-option">
+                                                            <input type="checkbox"
+                                                               value={item.priceItem.isChoiceSelected}
+                                                               onChange={(ev) => {
+                                                                  const newItems = [...quote.items];
+                                                                  newItems[index].priceItem.isChoiceSelected = !item.priceItem.isChoiceSelected;
+                                                                  this.setState({ quote: { ...quote, items: newItems } });
+                                                               }}
+                                                            />
+                                                         </div>
+                                                      }
+                                                      {
+                                                         item.priceItem.isOptional &&
+                                                         <div className="tItem-desc-option">
+                                                            <input type="radio"
+                                                               // name="group"
+                                                               value={item.priceItem.isOptionSelected}
+                                                               onChange={(ev) => {
+                                                                  const newItems = [...quote.items];
+                                                                  newItems[index].priceItem.isOptionSelected = !item.priceItem.isOptionSelected;
+                                                                  this.setState({ quote: { ...quote, items: newItems } });
+                                                               }}
+                                                            />
+                                                         </div>
+                                                      }
+                                                      <div className="tItem-desc-cell">
+                                                         <p className="item_code">{item.priceItem.itemCode}</p>
+                                                         <h3>{item.priceItem.productHeading}</h3>
+                                                         <p>{item.priceItem.longDescription}</p>
+                                                         <AttachedFilesShowCase files={item.priceItem.files} />
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                                <div className="tItem-price">
+                                                   {
+                                                      item.priceItem.isCostPriceMargin &&
+                                                      <p className="quote-text-sm text-success">
+                                                         {toFixedFloat(item.priceItem.costPrice)}
+                                                         <br />
+                                                         {item.priceItem.margin}% margin
+                                                   </p>
+                                                   }
+
+                                                   <p className="quote-text-sm">{item.priceItem.unitPrice}</p>
+                                                   {
+                                                      item.priceItem.isEditableQuantity ?
+                                                         <div className="itemPartEditableWrap">
+                                                            <label htmlFor={`chooseQuantity${item._id}`}>
+                                                               x <input
+                                                                  className="form-control"
+                                                                  type="number"
+                                                                  value={item.priceItem.quantity}
+                                                                  onChange={(ev) => {
+                                                                     const newItems = [...quote.items];
+                                                                     newItems[index].priceItem.quantity = ev.target.value;
+                                                                     newItems[index].priceItem.itemTotal = newItems[index].priceItem.unitPrice * newItems[index].priceItem.quantity;
+                                                                     this.setState({ quote: { ...quote, items: newItems } });
+                                                                  }}
+                                                               />
+                                                            </label>
+                                                            <label className="quote-text-sm" htmlFor={`chooseQuantity${item._id}`}>Choose quantity</label>
+                                                         </div>
+                                                         : <p className="quote-text-sm">x {item.priceItem.quantity}</p>
+                                                   }
+                                                   <p><span className="itemPartItemTotal">{item.priceItem.itemTotal}</span></p>
+                                                   <p className="quote-text-sm"><span className="option-text">Not selected</span></p>
+                                                </div>
                                              </div>
-                                             <div className="quoteFile-image">
-                                                <a data-tg-click="root_lightboxQuote"
-                                                   data-download-original="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1f6d2da2be86c0ca94a2846f6b7b1089/lg/dn/mascot2.jpeg"
-                                                   className="quoteFile-image-a"
-                                                   href="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1f6d2da2be86c0ca94a2846f6b7b1089/lg/ds/mascot2.jpeg"
-                                                   title="mascot2.jpeg"><img
-                                                      src="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1f6d2da2be86c0ca94a2846f6b7b1089/sm/ds/mascot2.jpeg"
-                                                      alt="mascot2.jpeg" /></a>
-                                             </div>
-                                             <div className="quoteFile-image">
-                                                <a data-tg-click="root_lightboxQuote"
-                                                   data-download-original="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1caefa955b2b2f7a478c8c6307043a82/lg/dn/mascot3.jpeg"
-                                                   className="quoteFile-image-a"
-                                                   href="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1caefa955b2b2f7a478c8c6307043a82/lg/ds/mascot3.jpeg"
-                                                   title="mascot3.jpeg"><img
-                                                      src="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1caefa955b2b2f7a478c8c6307043a82/sm/ds/mascot3.jpeg"
-                                                      alt="mascot3.jpeg" /></a>
-                                             </div>
+                                          );
+                                       }
+                                       else if (item.category === "textItem") return (
+                                          <div className="tItem-text" key={index}>
+                                             <h3>{item.textItem.textHeading}</h3>
+                                             <p>{item.textItem.longDescription}</p>
+                                             <AttachedFilesShowCase files={item.textItem.files} />
                                           </div>
-                                          <div className="clear" />
-                                       </div>
+                                       );
+                                       else if (item.category === "subTotal") return (
+                                          <>
+                                             <div className="tItem vSubTotal" key={index}>
+                                                <div className="tItem-desc">
+                                                   <p>
+                                                      <span className="quote-text-sm">Options selected</span>
+                                                      <br />
+                                                Subtotal
+                                             </p>
+                                                </div>
+                                                <div className="tItem-price">
+                                                   <p>
+                                                      <span className="quote-text-sm">1 of 1</span><br />
+                                                      <span>200.00</span>
+                                                   </p>
+                                                </div>
+                                             </div>
+
+                                             {/* <div className="tItem vSubTotal tItemId-43717163">
+                                          <div className="tItem-desc">
+                                             <p>Subtotal</p>
+                                          </div>
+                                          <div className="tItem-price">
+                                             <p>
+                                                <span className="itemPartSubTotal">300.00</span>
+                                             </p>
+                                          </div>
+                                          <div className="clear"> </div>
+                                       </div> */}
+                                          </>
+                                       );
+                                    })
+                                 }
+
+                                 <div className="clear" />
+
+                                 <div className="quoteViewTotalWrap quoteViewTotalWrap-client">
+                                    <div>
+                                       <table className="quoteTotal hasNoTerm">
+                                          <tbody>
+                                             <tr>
+                                                <td className="total-desc">Subtotal</td>
+                                                <td className="total-price">100.00</td>
+                                             </tr>
+                                             <tr className="total">
+                                                <td className="total-desc"><span className="quoteTotal-gDesc">Total USD including tax</span>
+                                                </td>
+                                                <td className="total-price"><span className="quoteTotal-gTotal">$100.00</span></td>
+                                             </tr>
+                                          </tbody>
+                                       </table>
                                     </div>
                                  </div>
+                                 <div className="quoteViewTotalWrap quoteViewTotalWrap-server isHidden">
+                                    <table className="quoteTotal subscribe_zFixedCost hasNoTerm">
+                                       <tbody>
+                                          <tr>
+                                             <td className="total-desc">Subtotal</td>
+                                             <td className="total-price">
+                                                <p>100.00</p>
+                                             </td>
+                                          </tr>
+                                          <tr className="total">
+                                             <td className="total-desc">
+                                                <p className="quoteTotal-gDesc">Total USD including tax</p>
+                                             </td>
+                                             <td className="total-price">
+                                                <p className="quoteTotal-gTotal">$100.00</p>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                                 <NoteItemList noteList={quote.notes} />
                               </div>
-                              <div className="tItem-price">
-                                 <p className="quote-text-sm">10.00</p>
-                                 <p className="quote-text-sm itemPartQuantity">x 10</p>
-                                 <p>
-                                    <span className="itemPartItemTotal">100.00</span>
-                                 </p>
+
+                              <div id="discussion" className="discuss-wrap">
+                                 <h3 className="quote-discuss-h3">Questions &amp; Answers</h3>
+                                 {
+                                    this.state.discussions.map((discussion, index) => {
+                                       if (discussion.category === "privateNote") {
+                                          if (this.state.isPrivateEligible) return (
+                                             <div className="discuss-row discuss-row-private" key={index}>
+                                                <div className="discuss-bubble">
+                                                   <div className="bubble-left avatar-48"
+                                                      style={{ backgroundImage: `url(${discussion.privateNote.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"})` }}> </div>
+                                                   <div className="bubble-right">
+                                                      <div className="discuss-title">
+                                                         <span className="label label-green">Private</span>&nbsp; <strong className="util-no-wrap">{discussion.privateNote.author.firstName + " " + discussion.privateNote.author.lastName}&nbsp;</strong>
+                                                         <span className="lighter">
+                                                            <span className="util-no-wrap">
+                                                               <span className="dt-time" data-time="[1605900167,1,1]">{formatDateTime(discussion.privateNote.updatedAt)}</span></span>&nbsp;
+                                                         {/* <span className="dt-time" data-time="[1605900207,1,1]"> moments ago</span>&nbsp; */}
+                                                            {/* <a className="discuss-edit-a"
+                                                         data-tg-click="{&quot;clickDiscussEdit&quot;:{&quot;id&quot;:&quot;2752394&quot;}}"
+                                                         href="javascript:void(0)">Edit</a>&nbsp; */}
+                                                         </span>
+                                                      </div>
+                                                      <div className="clear" />
+                                                      <div className="discuss-message">
+                                                         <p>{discussion.privateNote.content}</p>
+                                                         <AttachedFilesShowCase files={discussion.privateNote.files} />
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          );
+                                       } else if (discussion.category === "comment") return (
+                                          <div className="discuss-row" key={index}>
+                                             <div className="discuss-bubble">
+                                                <div className="bubble-left avatar-48"
+                                                   style={{ backgroundImage: 'url("https://asset.quotientapp.com/file-s/1/avatar-v2/128")' }}> </div>
+                                                <div className="bubble-right">
+                                                   <div className="discuss-title">
+                                                      <strong className="util-no-wrap">Silver Mind&nbsp;</strong>
+                                                      <span className="lighter">
+                                                         <span className="util-no-wrap"><span className="dt-time" data-time="[1605900183,1,1]">moments ago</span>
+                                                         </span>&nbsp;
+                                             <a className="discuss-edit-a"
+                                                            data-tg-click="{&quot;clickDiscussEdit&quot;:{&quot;id&quot;:&quot;2752395&quot;}}"
+                                                            href="javascript:void(0)">Edit</a>&nbsp;
+                                          </span>
+                                                   </div>
+                                                   <div className="clear" />
+                                                   <div className="discuss-message">
+                                                      <p>test</p>
+                                                      <AttachedFilesShowCase files={discussion.comment.files} />
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       );
+                                       else if (discussion.category === "questionAndAnswer") {
+                                          const isAnswerAbleUser = auth.authUser && quote && (auth.authUser._id === quote.author._id);
+                                          return (
+                                             <React.Fragment key={index}>
+                                                <div className="discuss-row">
+                                                   <div className="discuss-bubble">
+                                                      <div className="bubble-left avatar-48"
+                                                         style={{ backgroundImage: 'url("https://secure.gravatar.com/avatar/5b790291599408b1b231ae1cf4c7a07a?r=g&s=64&d=https%3A%2F%2Fasset.quotientapp.com%2Fimage%2Fcontact%2Fperson1.png")' }}>
+                                                      </div>
+                                                      <div className="bubble-right">
+                                                         <div className="discuss-title">
+                                                            <strong className="util-no-wrap">Money Owner&nbsp;</strong>
+                                                            <span className="lighter">
+                                                               <span className="util-no-wrap"><span className="dt-time" data-time="[1606187569,1,1]">17 minutes ago</span></span>&nbsp;
+                                                         </span>
+                                                         </div>
+                                                         <div className="clear"> </div>
+                                                         <div className="discuss-message">
+                                                            <p>Is this correct calculation?</p>
+                                                            <AttachedFilesShowCase files={discussion.questionAndAnswer.question.files} />
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                                {
+                                                   discussion.questionAndAnswer.answer.status === "answered" &&
+                                                   <div className="discuss-row">
+                                                      <div className="discuss-bubble">
+                                                         <div className="bubble-left avatar-48"
+                                                            style={{ backgroundImage: 'url("https://asset.quotientapp.com/file-s/1/avatar-v2/128/")' }}>
+                                                         </div>
+                                                         <div className="bubble-right">
+                                                            <div className="discuss-title">
+                                                               <strong className="util-no-wrap">Silver Mind&nbsp;</strong>
+                                                               <span className="lighter">
+                                                                  <span className="util-no-wrap">
+                                                                     <span className="dt-time" data-time="[1606188471,1,1]">moments ago</span>
+                                                                  </span>&nbsp;
+                                                            <a className="discuss-edit-a" data-tg-click="{&quot;clickDiscussEdit&quot;:{&quot;id&quot;:&quot;2757442&quot;}}"
+                                                                     href="javascript:void(0)">Edit</a>&nbsp;
+                                                            </span>
+                                                            </div>
+                                                            <div className="clear"> </div>
+                                                            <div className="discuss-message">
+                                                               <p>yes, it's fair deal</p>
+                                                               <AttachedFilesShowCase files={discussion.questionAndAnswer.answer.files} />
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                }
+                                                {
+                                                   discussion.questionAndAnswer.answer.status === "dismissed" && null
+                                                }
+                                                {
+                                                   discussion.questionAndAnswer.answer.status === "pending" && isAnswerAbleUser &&
+                                                   <div className="discuss-row discuss-form discussIsAnswer">
+                                                      <input className="discuss-form-prefix" name="postDiscuss[answerIndex0][_prefix]" defaultValue="answerIndex0"
+                                                         type="hidden" id="postDiscuss_answerIndex0__prefix" />
+                                                      <div className="discuss-bubble">
+                                                         {/*div class="bubble-left avatar-48" style="background-image:
+                                                   url('https://asset.quotientapp.com/file-s/1/avatar-v2/128/');"> </div*/}
+                                                         <div className="bubble-right">
+                                                            <div className="bubble-margin">
+                                                               <textarea className="form-control" rows={3} name="postDiscuss[answerIndex0][discuss_body]"
+                                                                  id="postDiscuss_answerIndex0_discuss_body" style={{ height: 77 }} defaultValue={""} /> </div>
+                                                            <div data-tg-control="FileWrap" className="quoteFile-wrap quoteFile-wrap-edit" />
+                                                            <div className="clear" />
+                                                            <div className="u-file-drop-area">
+                                                               <input className="u-file-hidden" data-tg-change="changeDiscussFile" name="file_input" type="file" multiple />
+                                                               <div className="u-file-wrap">
+                                                                  <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image or File</button>
+                                                               </div>
+                                                            </div>
+                                                            <div className="bubble-buttons">
+                                                               <input name="postDiscuss[answerIndex0][_answerHash]" defaultValue="5557107-2757399" type="hidden" className id="postDiscuss_answerIndex0__answerHash" /><a href="#trigger:triggerAnswer-answerIndex0" className="btn btn-action btn-lg">Answer Question</a>
+                                                               <a className="btn btn-default btn-lg btn-lg-skinny" href="javascript:void(0)" data-tg-click="{&quot;clickPostAction&quot;:[&quot;\/39310\/act-on\/quote-close-question\/5557107-2757399&quot;]}">Dismiss</a>
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                      <div className="clear"> </div>
+                                                   </div>
+                                                }
+                                             </React.Fragment>
+                                          );
+                                       }
+                                    })
+                                 }
+
+
+                                 <div className="clear" />
+                                 <div className="no_print u-section-2">
+                                    comment private note wrtiing
+                                 </div>
                               </div>
-                              <div className="clear" />
-                           </div>
-                           <div className="clear" />
-                           <div className="quoteViewTotalWrap quoteViewTotalWrap-client">
-                              <div>
-                                 <table className="quoteTotal hasNoTerm">
-                                    <tbody>
-                                       <tr>
-                                          <td className="total-desc">Subtotal</td>
-                                          <td className="total-price">100.00</td>
-                                       </tr>
-                                       <tr className="total">
-                                          <td className="total-desc"><span className="quoteTotal-gDesc">Total USD including tax</span>
-                                          </td>
-                                          <td className="total-price"><span className="quoteTotal-gTotal">$100.00</span></td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div>
-                           <div className="quoteViewTotalWrap quoteViewTotalWrap-server isHidden">
-                              <table className="quoteTotal subscribe_zFixedCost hasNoTerm">
-                                 <tbody>
-                                    <tr>
-                                       <td className="total-desc">Subtotal</td>
-                                       <td className="total-price">
-                                          <p>100.00</p>
-                                       </td>
-                                    </tr>
-                                    <tr className="total">
-                                       <td className="total-desc">
-                                          <p className="quoteTotal-gDesc">Total USD including tax</p>
-                                       </td>
-                                       <td className="total-price">
-                                          <p className="quoteTotal-gTotal">$100.00</p>
-                                       </td>
-                                    </tr>
-                                 </tbody>
-                              </table>
-                           </div>
-                           <div className="tItem-text tItemId-43620286">
-                              <h3>tt</h3>
-                              <p>ddd</p>
-                              <div className="quoteFile-wrap">
-                                 <div className="quoteFile-set">
-                                    <div className="quoteFile-image">
-                                       <a data-tg-click="root_lightboxQuote"
-                                          data-download-original="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1f6d2da2be86c0ca94a2846f6b7b1089/lg/dn/mascot2.jpeg"
-                                          className="quoteFile-image-a"
-                                          href="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1f6d2da2be86c0ca94a2846f6b7b1089/lg/ds/mascot2.jpeg"
-                                          title="mascot2.jpeg"><img
-                                             src="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1f6d2da2be86c0ca94a2846f6b7b1089/sm/ds/mascot2.jpeg"
-                                             alt="mascot2.jpeg" /></a>
+
+                              {/* Accept Box */}
+                              <div className="acceptBox" style={{ backgroundColor: "#e9f1f9" }}>
+                                 <h3 className="quote-box-h3-accept">Accept on behalf</h3>
+                                 <div className="acceptSummary">
+                                    <p>
+                                       <strong>Quote title...</strong>
+                                    </p>
+                                    <p className="summaryWrapzFixedCost">
+                                       Total USD including tax $<span className="summaryPartTotal">100.00</span> </p>
+                                 </div>
+                                 <div className="form-group-half">
+                                    <label className="label-light" htmlFor="accept_comment">Additional comments</label>
+                                    <TextareaAutosize className="form-control" rows={5} placeholder="Optional" name="accept[comment]" id="accept_comment" defaultValue={""} /> </div>
+                                 <div className="form-group-half">
+                                    <label className="label-light" htmlFor="accept_reference">Order/reference number</label>
+                                    <input className="form-control util-width-1" placeholder="Optional" name="accept[reference]" defaultValue type="text" id="accept_reference" /> </div>
+                                 <div className="acceptCb">
+                                    <div className="acceptCb-left">
+                                       <label className="acceptCb-label-box" htmlFor="accept_email_notify">
+                                          <input name="accept[email_notify]" defaultValue={1} type="checkbox" id="accept_email_notify" />
+                                       </label>
                                     </div>
-                                    <div className="quoteFile-image">
-                                       <a data-tg-click="root_lightboxQuote"
-                                          data-download-original="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1caefa955b2b2f7a478c8c6307043a82/lg/dn/mascot3.jpeg"
-                                          className="quoteFile-image-a"
-                                          href="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1caefa955b2b2f7a478c8c6307043a82/lg/ds/mascot3.jpeg"
-                                          title="mascot3.jpeg"><img
-                                             src="https://asset.quotientapp.com/file-s/1/quote-v2/39310/1caefa955b2b2f7a478c8c6307043a82/sm/ds/mascot3.jpeg"
-                                             alt="mascot3.jpeg" /></a>
+                                    <div className="acceptCb-right">
+                                       <label className="acceptCb-label" htmlFor="accept_email_notify">
+                                          Send email notification to: <strong>Money Owner</strong>
+                                       </label>
                                     </div>
                                  </div>
                                  <div className="clear" />
-                              </div>
-                           </div>
-                        </div>
-
-                        <div id="discussion" className="discuss-wrap">
-                           <h3 className="quote-discuss-h3">Questions &amp; Answers</h3>
-                           <div className="discuss-row discuss-row-private">
-                              <div className="discuss-bubble">
-                                 <div className="bubble-left avatar-48"
-                                    style={{ backgroundImage: 'url("https://asset.quotientapp.com/file-s/1/avatar-v2/128")' }}>
-                                 </div>
-                                 <div className="bubble-right">
-                                    <div className="discuss-title">
-                                       <span className="label label-green">Private</span>&nbsp;
-                                       <strong className="util-no-wrap">Silver Mind&nbsp;</strong>
-                                       <span className="lighter">
-                                          <span className="util-no-wrap"><span className="dt-time" data-time="[1605898908,1,1]">22 minutes ago</span></span>&nbsp;
-                                          <a className="discuss-edit-a"
-                                             data-tg-click="{&quot;clickDiscussEdit&quot;:{&quot;id&quot;:&quot;2752358&quot;}}"
-                                             href="javascript:void(0)">Edit</a>&nbsp;
-                                       </span>
-                                    </div>
-                                    <div className="clear" />
-                                    <div className="discuss-message">
-                                       <p>test</p>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div className="discuss-row discuss-row-private">
-                              <div className="discuss-bubble">
-                                 <div className="bubble-left avatar-48"
-                                    style={{ backgroundImage: 'url("https://asset.quotientapp.com/file-s/1/avatar-v2/128")' }}> </div>
-                                 <div className="bubble-right">
-                                    <div className="discuss-title">
-                                       <span className="label label-green">Private</span>&nbsp; <strong className="util-no-wrap">Silver Mind&nbsp;</strong>→ <strong className="util-no-wrap">Alexey Ryzhkov&nbsp;</strong>
-                                       <span className="lighter">
-                                          <span className="util-no-wrap"><span className="dt-time" data-time="[1605900155,1,1]">1 minute ago</span></span>&nbsp;
-                                          <a className="discuss-edit-a" data-tg-click="{&quot;clickDiscussEdit&quot;:{&quot;id&quot;:&quot;2752392&quot;}}" href="javascript:void(0)">Edit</a>&nbsp;
-                                       </span>
-                                    </div>
-                                    <div className="clear" />
-                                    <div className="discuss-message">
-                                       <p>asdfasdf</p>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div className="discuss-row discuss-row-private">
-                              <div className="discuss-bubble">
-                                 <div className="bubble-left avatar-48"
-                                    style={{ backgroundImage: 'url("https://asset.quotientapp.com/file-s/1/avatar-v2/128")' }}> </div>
-                                 <div className="bubble-right">
-                                    <div className="discuss-title">
-                                       <span className="label label-green">Private</span>&nbsp; <strong className="util-no-wrap">Silver Mind&nbsp;</strong>
-                                       <span className="lighter">
-                                          <span className="util-no-wrap"><span className="dt-time" data-time="[1605900167,1,1]">1 minute ago</span></span>&nbsp;– modified <span className="dt-time" data-time="[1605900207,1,1]">moments ago</span>&nbsp; <a
-                                             className="discuss-edit-a"
-                                             data-tg-click="{&quot;clickDiscussEdit&quot;:{&quot;id&quot;:&quot;2752394&quot;}}"
-                                             href="javascript:void(0)">Edit</a>&nbsp;
-                                          </span>
-                                    </div>
-                                    <div className="clear" />
-                                    <div className="discuss-message">
-                                       <p>asdf</p>
-                                       <div className="quoteFile-wrap">
-                                          <div className="quoteFile-set">
-                                             <div className="quoteFile-image">
-                                                <a data-tg-click="root_lightboxQuote"
-                                                   data-download-original="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/c65255299cf0bf369a3b192b204e507d/lg/dn/mascot1.jpeg"
-                                                   className="quoteFile-image-a"
-                                                   href="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/c65255299cf0bf369a3b192b204e507d/lg/ds/mascot1.jpeg"
-                                                   title="mascot1.jpeg"><img
-                                                      src="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/c65255299cf0bf369a3b192b204e507d/sm/ds/mascot1.jpeg"
-                                                      alt="mascot1.jpeg" /></a>
-                                             </div>
-                                             <div className="quoteFile-image">
-                                                <a data-tg-click="root_lightboxQuote"
-                                                   data-download-original="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/1caefa955b2b2f7a478c8c6307043a82/lg/dn/mascot3.jpeg"
-                                                   className="quoteFile-image-a"
-                                                   href="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/1caefa955b2b2f7a478c8c6307043a82/lg/ds/mascot3.jpeg"
-                                                   title="mascot3.jpeg">
-                                                   <img
-                                                      src="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/1caefa955b2b2f7a478c8c6307043a82/sm/ds/mascot3.jpeg"
-                                                      alt="mascot3.jpeg" />
-                                                </a>
-                                             </div>
-                                          </div>
-                                          <div className="clear" />
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div className="discuss-row">
-                              <div className="discuss-bubble">
-                                 <div className="bubble-left avatar-48"
-                                    style={{ backgroundImage: 'url("https://asset.quotientapp.com/file-s/1/avatar-v2/128")' }}> </div>
-                                 <div className="bubble-right">
-                                    <div className="discuss-title">
-                                       <strong className="util-no-wrap">Silver Mind&nbsp;</strong>
-                                       <span className="lighter">
-                                          <span className="util-no-wrap"><span className="dt-time" data-time="[1605900183,1,1]">moments ago</span>
-                                          </span>&nbsp;
-                                       <a className="discuss-edit-a"
-                                             data-tg-click="{&quot;clickDiscussEdit&quot;:{&quot;id&quot;:&quot;2752395&quot;}}"
-                                             href="javascript:void(0)">Edit</a>&nbsp;
+                                 <input type="hidden" name="@checkbox[accept][email_notify]" defaultValue={2} id="@checkbox_accept_email_notify" />
+                                 <div className="quote-box-accept">
+                                    <a className="btn btn-save btnAccept quote-btn-lg" href="#trigger:accept_on_behalf">Accept on behalf</a>
+                                    <span className="quote-box-decline-wrap">
+                                       <a className="btn btn-lg btn-lg-skinny" data-tg-click="clickCancelOnBehalf" href="javascript:void(0)">Cancel</a>
                                     </span>
+                                 </div>
+                              </div>
+
+                              {/* Accepted Show Box */}
+                              <div className="acceptBox" style={{ backgroundColor: "#e9f1f9" }}>
+                                 <h3 className="quote-box-h3-accept">Quote title...</h3>
+                                 <div className="acceptSummary">
+                                    <p className="summaryWrapzFixedCost">
+                                       Total USD including tax $<span className="summaryPartTotal">100.00</span> </p>
+                                    <div className="acceptBox-right no_print">
+                                       <span className="label acceptBox-label">Accepted</span>
                                     </div>
                                     <div className="clear" />
-                                    <div className="discuss-message">
-                                       <p>test</p>
-                                       <div className="quoteFile-wrap">
-                                          <div className="quoteFile-set">
-                                             <div className="quoteFile-image">
-                                                <a data-tg-click="root_lightboxQuote"
-                                                   data-download-original="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/c65255299cf0bf369a3b192b204e507d/lg/dn/mascot1.jpeg"
-                                                   className="quoteFile-image-a"
-                                                   href="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/c65255299cf0bf369a3b192b204e507d/lg/ds/mascot1.jpeg"
-                                                   title="mascot1.jpeg"><img
-                                                      src="https://asset.quotientapp.com/file-s/1/discuss-v2/39310/c65255299cf0bf369a3b192b204e507d/sm/ds/mascot1.jpeg"
-                                                      alt="mascot1.jpeg" /></a>
-                                             </div>
-                                          </div>
-                                          <div className="clear" />
-                                       </div>
+                                 </div>
+                                 <div className="form-group-half">
+                                    <label className="label-light">Additional comments</label>
+                                    <div className="accept-input-submitted">
+                                       <p>&nbsp;</p>
+                                    </div>
+                                 </div>
+                                 <div className="form-group">
+                                    <label className="label-light">Order/reference number</label>
+                                    <div className="accept-input-submitted">
+                                       <p>&nbsp;</p>
                                     </div>
                                  </div>
                               </div>
-                           </div>
-                           <div className="clear" />
-                           <div className="no_print u-section-2">
-                              comment private note wrtiing
-                           </div>
-                        </div>
 
-                        {/* Accept Box */}
-                        <div className="acceptBox" style={{ backgroundColor: "#e9f1f9" }}>
-                           <h3 className="quote-box-h3-accept">Accept on behalf</h3>
-                           <div className="acceptSummary">
-                              <p>
-                                 <strong>Quote title...</strong>
-                              </p>
-                              <p className="summaryWrapzFixedCost">
-                                 Total USD including tax $<span className="summaryPartTotal">100.00</span> </p>
-                           </div>
-                           <div className="form-group-half">
-                              <label className="label-light" htmlFor="accept_comment">Additional comments</label>
-                              <TextareaAutosize className="form-control" rows={5} placeholder="Optional" name="accept[comment]" id="accept_comment" defaultValue={""} /> </div>
-                           <div className="form-group-half">
-                              <label className="label-light" htmlFor="accept_reference">Order/reference number</label>
-                              <input className="form-control util-width-1" placeholder="Optional" name="accept[reference]" defaultValue type="text" id="accept_reference" /> </div>
-                           <div className="acceptCb">
-                              <div className="acceptCb-left">
-                                 <label className="acceptCb-label-box" htmlFor="accept_email_notify">
-                                    <input name="accept[email_notify]" defaultValue={1} type="checkbox" className id="accept_email_notify" />
-                                 </label>
+                              <div className="acceptBox" style={{ backgroundColor: "#e9f1f9" }}>
+                                 <p>
+                                    Accepted on behalf of Money Owner by Silver Mind on <span className="dt-time"
+                                       data-time="[1605901913,1,0]">November 20, 2020 at 9:51PM</span>
+                                 </p>
                               </div>
-                              <div className="acceptCb-right">
-                                 <label className="acceptCb-label" htmlFor="accept_email_notify">
-                                    Send email notification to: <strong>Money Owner</strong>
-                                 </label>
-                              </div>
-                           </div>
-                           <div className="clear" />
-                           <input type="hidden" name="@checkbox[accept][email_notify]" defaultValue={2} id="@checkbox_accept_email_notify" />
-                           <div className="quote-box-accept">
-                              <a className="btn btn-save btnAccept quote-btn-lg" href="#trigger:accept_on_behalf">Accept on behalf</a>
-                              <span className="quote-box-decline-wrap">
-                                 <a className="btn btn-lg btn-lg-skinny" data-tg-click="clickCancelOnBehalf" href="javascript:void(0)">Cancel</a>
-                              </span>
-                           </div>
-                        </div>
 
-                        {/* Accepted Show Box */}
-                        <div className="acceptBox" style={{ backgroundColor: "#e9f1f9" }}>
-                           <h3 className="quote-box-h3-accept">Quote title...</h3>
-                           <div className="acceptSummary">
-                              <p className="summaryWrapzFixedCost">
-                                 Total USD including tax $<span className="summaryPartTotal">100.00</span> </p>
-                              <div className="acceptBox-right no_print">
-                                 <span className="label acceptBox-label">Accepted</span>
-                              </div>
                               <div className="clear" />
-                           </div>
-                           <div className="form-group-half">
-                              <label className="label-light">Additional comments</label>
-                              <div className="accept-input-submitted">
-                                 <p>&nbsp;</p>
-                              </div>
-                           </div>
-                           <div className="form-group">
-                              <label className="label-light">Order/reference number</label>
-                              <div className="accept-input-submitted">
-                                 <p>&nbsp;</p>
-                              </div>
-                           </div>
-                        </div>
-
-                        <div className="acceptBox" style={{ backgroundColor: "#e9f1f9" }}>
-                           <p>
-                              Accepted on behalf of Money Owner by Silver Mind on <span className="dt-time"
-                                 data-time="[1605901913,1,0]">November 20, 2020 at 9:51PM</span> </p>
-                        </div>
-
-                        <div className="clear" />
+                           </QuoteItemWrapper>
+                        </FullWrapper>
                      </div>
                      <div className="no_print">
                         <a className="powered-by powered-by-no powered-by-bg" href="https://www.quotientapp.com/" data-sheet="ignore"><img className="powered-by-black" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-black-01.png" alt="Quotient. Simply Smarter Quotes." /><img className="powered-by-white" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-white-01.png" alt="Quotient. Simply Smarter Quotes." /></a>
@@ -626,5 +710,5 @@ class PublicQuoteView extends Component {
 const mapStateToProps = ({ auth, appearanceSetting }) => {
    return { auth, appearanceSetting };
 }
-const mapDispatchToProps = { setInitUrl, userSignOut, getTeammates };
+const mapDispatchToProps = { setInitUrl, userSignOut, getTeamMembers };
 export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);

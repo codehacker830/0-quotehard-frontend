@@ -37,7 +37,7 @@ export default class TextItemForm extends Component {
             selectedFile
          );
 
-         const res = await axios.post("/service/upload-image", formData);
+         const res = await axios.post("/service/upload-file", formData);
          this.fileArray.push(res.data.image);
       }
       this.setState({ uploading: false });

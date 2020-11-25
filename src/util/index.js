@@ -131,3 +131,46 @@ export const switchHeadingFont = (value) => {
          return "Helvetica";
    }
 }
+export const SwitchLogoLayoutClass = (contactDetailLayout, layout) => {
+   if (parseInt(contactDetailLayout) != 2)
+      switch (parseInt(layout)) {
+         case 1:
+            return "quote-logo quote-logo-top quote-logo-center";
+         case 2:
+            return "quote-logo quote-logo-top quote-logo-right";
+         default:
+            return "quote-logo quote-logo-top quote-logo-left";
+      }
+   else return "quote-logo quote-logo-x-legacy  quote-logo-x-legacy-top";
+}
+
+export const SwitchQuoteLayoutClass = (contactDetailLayout, layout) => {
+   if (parseInt(contactDetailLayout) == 0) return "container qCustomCss quoteCanvas quoteCanvas-1col";
+   else if (parseInt(contactDetailLayout) == 1) {
+      switch (parseInt(layout)) {
+         case 0:
+            return "container qCustomCss quoteCanvas quoteCanvas-1col";
+         case 1:
+            return "container qCustomCss quoteCanvas quoteCanvas-1col quote-layout-center";
+         default:
+            return "container qCustomCss quoteCanvas quoteCanvas-1col";
+      };
+   }
+   else {
+      switch (parseInt(layout)) {
+         case 0:
+            return "container qCustomCss quoteCanvas quoteCanvas-2col";
+         case 1:
+            return "container qCustomCss quoteCanvas quoteCanvas-2col quote-layout-center";
+         default:
+            return "container qCustomCss quoteCanvas quoteCanvas-2col";
+      };
+   }
+}
+export const checkIfTeamMember = (authUser, teamMembers) => {
+   if (!authUser) return false;
+   if (teamMembers.length === 0) return false;
+   const fms = teamMembers.filter((member) => member._id === authUser._id);
+   if (fms.length > 0) return true;
+   else return false;
+}

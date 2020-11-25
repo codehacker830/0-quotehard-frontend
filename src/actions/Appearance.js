@@ -20,7 +20,7 @@ export const uploadLogo = (e) => {
       console.log("selectedFile --->", selectedFile);
       console.log("formData --->", formData);
 
-      axios.post("/service/upload-image", formData)
+      axios.post("/service/upload-file", formData)
          .then(({ data }) => {
             console.log(" image upload response -->", data);
             dispatch({ type: FETCH_SUCCESS });

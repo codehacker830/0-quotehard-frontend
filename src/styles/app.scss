@@ -250,7 +250,6 @@ a.nav-link.active {
 
 .tItem {
    margin-top: -1px;
-   margin-bottom: 20px;
    display: block;
    float: left;
    width: 100%;
@@ -338,29 +337,6 @@ a.nav-link.active {
 
 .hasNoTerm .total-price {
    background-color: #e9f1f9;
-}
-.quoteTotal {
-   margin-top: 0rem !important;
-   margin-bottom: 1rem !important;
-   tr:first-child td {
-      padding-top: 15px;
-   }
-   tr:last-child td {
-      padding-bottom: 15px;
-   }
-   td {
-      padding: 0 20px 0 15px;
-      vertical-align: top;
-   }
-   p {
-      margin-bottom: 0px !important;
-   }
-   .total-price {
-      border-left: 3px solid #dadbdc !important;
-   }
-   .tProfit td {
-      color: #2fa700;
-   }
 }
 .itemPartEditableWrap input {
    max-width: 70px;

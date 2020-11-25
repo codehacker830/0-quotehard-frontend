@@ -6,9 +6,7 @@ import {
    USER_SETTINGS,
 
 
-   THEME_COLOR,
-   QUOTE_DEFAULTS,
-   GET_TEAMMATES
+   THEME_COLOR
 } from '../constants/ActionTypes';
 
 export function setThemeColor(color) {
@@ -28,17 +26,3 @@ export const getSettings = () => {
       });
    }
 };
-
-export const getTeammates = () => {
-   return (dispatch) => {
-      dispatch({ type: FETCH_START });
-      axios.get('/team-members').then(({ data }) => {
-         console.log("team-members response : ", data);
-         dispatch({ type: FETCH_SUCCESS });
-         dispatch({ type: GET_TEAMMATES, payload: data.teamMembers });
-      }).catch((err) => {
-         dispatch({ type: FETCH_ERROR, payload: error.message });
-         console.log("Error****:", error.message);
-      })
-   }
-}

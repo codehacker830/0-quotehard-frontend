@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getTeammates } from '../actions/Setting';
+import { getTeamMembers } from '../actions/Team';
 
 class QuoteSettings extends Component {
    constructor(props) {
@@ -11,7 +11,7 @@ class QuoteSettings extends Component {
       };
    }
    componentDidMount() {
-      this.props.getTeammates();
+      this.props.getTeamMembers();
    }
    render() {
       console.log(" this props =>", this.props);
@@ -79,7 +79,7 @@ class QuoteSettings extends Component {
                         value={this.props.userFrom}
                         onChange={(ev) => this.props.updateSettings({ ...settings, userFrom: ev.target.value })}>
                         {
-                           this.props.settings.teamMembers.map((mate, index) => {
+                           this.props.teamSetting.teamMembers.map((mate, index) => {
                               const mateFullName = mate.firstName + " " + mate.lastName;
                               return (<option value={mate._id} key={index}>{mateFullName}</option>);
                            })
@@ -383,9 +383,9 @@ class QuoteSettings extends Component {
    }
 }
 
-const mapStateToProps = ({ auth, settings }) => {
-   return { auth, settings };
+const mapStateToProps = ({ auth, teamSetting }) => {
+   return { auth, teamSetting };
 }
 
-const mapDispatchToProps = { getTeammates };
+const mapDispatchToProps = { getTeamMembers };
 export default connect(mapStateToProps, mapDispatchToProps)(QuoteSettings);

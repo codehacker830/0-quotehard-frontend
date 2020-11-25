@@ -11,10 +11,10 @@ import { toast } from 'react-toastify';
 import { toastErrorConfig, toastSuccessConfig, toastWarningConfig } from '../../util/toastrConfig';
 import QuoteItemTotal from '../../components/QuoteItemTotal';
 import { setInitUrl, userSignOut } from '../../actions/Auth';
-import { getTeammates } from '../../actions/Setting';
-import DeclineCommentShow from './components/DeclineCommentShow_0';
-import ImageShowCase from './components/ImageShowCase_0';
-import LogoShowCase from './components/LogoShowCase_0';
+import { getTeamMembers } from '../../actions/Team';
+import DeclineCommentShow from './components/DeclineCommentShow';
+import ImageShowCase from './components/ImageShowCase';
+import LogoShowCase from './components/LogoShowCase';
 
 class PublicQuoteView extends Component {
    mounted = false;
@@ -913,5 +913,5 @@ class PublicQuoteView extends Component {
 const mapStateToProps = ({ auth, appearanceSetting }) => {
    return { auth, appearanceSetting };
 }
-const mapDispatchToProps = { setInitUrl, userSignOut, getTeammates };
+const mapDispatchToProps = { setInitUrl, userSignOut, getTeamMembers };
 export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);

@@ -1,11 +1,11 @@
 import { APPEARANCE_SETTINGS, LOGO_URL } from "../constants/ActionTypes";
 
 const initialState = {
-   logo: "",
+   logo: "https://asset.quotientapp.com/file-s/1/logo-v3/39310/7ec198e51915c507ba083486a2d9487e",
 
-   contactDetailLayout: 0,
-   isDisplayFullCustomerDetail: false,
-   layout: 0,
+   contactDetailLayout: 1,
+   layout: 1,
+   isDisplayFullCustomerDetail: true,
 
    headingFont: 0,
    bodyText: 0,
@@ -18,7 +18,7 @@ const initialState = {
    isEnabledPrintPDF: false,
    pdfPageSize: 1,
 
-   companyName: "",
+   companyDisplayName: "",
    companyAddress: "",
    companyWebsite: "",
    companyPhone: ""
