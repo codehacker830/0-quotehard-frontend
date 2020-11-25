@@ -170,7 +170,7 @@ export const SwitchQuoteLayoutClass = (contactDetailLayout, layout) => {
 export const checkIfTeamMember = (authUser, teamMembers) => {
    if (!authUser) return false;
    if (teamMembers.length === 0) return false;
-   const fms = teamMembers.filter((member) => member._id === authUser._id);
-   if (fms.length > 0) return true;
+   const val = teamMembers.find((member) => member._id === authUser._id);
+   if (val) return true;
    else return false;
 }

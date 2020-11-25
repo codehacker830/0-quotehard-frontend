@@ -1,10 +1,10 @@
 import React from 'react'
 import { toast } from 'react-toastify';
 import { Link, withRouter } from 'react-router-dom'
-import { allActivities } from '../constants/Dump';
-import { formatDate } from '../util';
-import axios from '../util/Api';
-import { toastErrorConfig, toastSuccessConfig } from '../util/toastrConfig';
+import { allActivities } from '../../constants/Dump';
+import { formatDate } from '../../util';
+import axios from '../../util/Api';
+import { toastErrorConfig, toastSuccessConfig } from '../../util/toastrConfig';
 
 export const StatusBanner = (props) => {
    const [showActivity, setShowActivity] = React.useState(false);

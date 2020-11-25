@@ -898,7 +898,7 @@ class PublicQuoteView extends Component {
 
                                     </div>
                               }
-                              <DeclineCommentShow quote={this.state.quote} />
+                              <DeclineCommentShow />
                            </div>
                         </div>
                      </div>

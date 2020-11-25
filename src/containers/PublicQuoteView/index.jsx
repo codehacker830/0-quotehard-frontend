@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import NavCrump from '../../components/NavCrump'
-import StatusBanner from '../../components/StatusBanner'
+import StatusBanner from './StatusBanner_0'
 import ProgressBar from '../../components/ProgressBar';
 import axios from '../../util/Api';
-import { formatDate, formatDateTime, toFixedFloat } from '../../util';
+import { checkIfTeamMember, formatDate, formatDateTime, toFixedFloat } from '../../util';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -17,24 +17,26 @@ import QuoteLogo from './QuoteLogo';
 import QuoteDetail from './QuoteDetail';
 import StatusShowCase from './StatusShowCase';
 import AttachedFilesShowCase from './components/AttachedFilesShowCase';
-import TextItemList from './components/NoteItemList';
 import NoteItemList from './components/NoteItemList';
 import FullWrapper from './components/FullWrapper';
 import QuoteDetailWrapper from './components/QuoteDetailWrapper';
 import QuoteItemWrapper from './components/QuoteItemWrapper';
 import { SwitchQuoteLayoutClass } from '../../util/index';
+import { getQuote } from '../../actions/PublicView';
+import VisiableOnlyAuthTeamMember from './components/VisiableOnlyAuthTeamMember';
+import DeclineCommentShow from './components/DeclineCommentShow';
 
 class PublicQuoteView extends Component {
    mounted = false;
    fileObj = [];
    fileArray = [];
+
    constructor(props) {
-      super();
+      super(props);
       this.state = {
          isMounting: true,
          loading: false,
 
-         teamMembers: [],
          fileArray: [],
          quote: {},
          commentShow: false,
@@ -42,14 +44,12 @@ class PublicQuoteView extends Component {
          questionSectionShow: false,
          isAgreeChecked: false,
 
-         discussions: [],
          questionContent: "",
          commentContent: "",
          toMateAccountId: "",
          privateNoteContent: "",
          answerContent: "",
 
-         isPrivateEligible: false
       };
       this.hiddenFileInput = React.createRef();
    }
@@ -70,22 +70,7 @@ class PublicQuoteView extends Component {
       const newFileArray = this.state.fileArray.filter(item => item !== url);
       this.setState({ fileArray: newFileArray });
    }
-   onClickAccept = () => {
-      const { entoken } = this.props.match.params;
-      this.setState({ loading: true });
-      axios.post('/quotes/accept', { entoken: entoken })
-         .then(({ data }) => {
-            console.log("========== res =========", data);
-            this.setState({ loading: false });
-            toast.success('Quote was Accepted,', toastSuccessConfig);
-            this.props.history.push(`/q/${entoken}/accepted`);
-         })
-         .catch(err => {
-            console.error(" ========== checking public draft error =========", err);
-            this.setState({ loading: false });
-            toast.error('Failed during quote acception request.,', toastErrorConfig);
-         });
-   }
+
    onClickDecline = () => {
       const { entoken } = this.props.match.params;
       axios.post('/quotes/decline', { entoken: entoken })
@@ -214,57 +199,32 @@ class PublicQuoteView extends Component {
             console.error("error during submit dismiss ==>", err);
          });
    }
-   componentDidMount() {
+   async componentDidMount() {
       this.mounted = true;
       const entoken = this.props.match.params.entoken;
-      console.log("***** entoken ***** ", entoken);
+      localStorage.setItem('entoken', entoken);
       const { auth } = this.props;
       if (this.mounted) {
-         this.setState({ isMounting: true });
-
-         axios.post('/quotes/view-public', { entoken })
-            .then(({ data }) => {
-               console.log("========== Publick overview did mount get quote =========", data);
-               this.setState({
-                  isMounting: false,
-                  quote: data.quote,
-                  discussions: data.quote.discussions ? data.quote.discussions : []
-               });
-               if (auth.authUser) {
-                  axios.get('/team-members').then((res) => {
-                     console.log("get team-members api response ============>", res.data.teamMembers)
-                     this.setState({ teamMembers: res.data.teamMembers });
-                     const me = res.data.teamMembers.find(mate => mate._id === auth.authUser._id);
-                     if (me) {
-                        console.log(" this user is Eligible %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-                        this.setState({ isPrivateEligible: true });
-                     }
-                     else {
-                        this.setState({ isPrivateEligible: false });
-                     }
-                  }).catch(err => {
-                     console.error("error during get teamMembers ==>", err);
-                     this.props.setInitUrl(`/q/${entoken}`);
-                     this.props.userSignOut;
-                  });
-               }
-
-            })
-            .catch(err => {
-               this.setState({ isMounting: false });
-               console.error(" ========== checking public draft error =========", err);
-            });
-
+         await this.props.getQuote();
+         this.setState({ isMounting: false });
+         if (auth.authUser) {
+            this.props.getTeamMembers();
+         }
       }
    }
    render() {
       console.log(" ----------- PublicQuoteView state ------", this.state);
       console.log(" ----------- PublicQuoteView props ------", this.props);
-      const { quote } = this.state;
-      const { auth, appearanceSetting } = this.props;
-      if (this.state.isMounting) return <div>loading...</div>;
+      const { isMounting } = this.state;
+      const { auth, commonData, appearanceSetting, teamSetting, publicView } = this.props;
+      const { authUser } = auth;
+      const { teamMembers } = teamSetting;
+      const { loading, type } = commonData;
+      const { quote, discussions } = publicView;
+
+      if (isMounting) return <div>loading...</div>;
       else if (this.props.match.path === '/q/:entoken/author-discuss') {
-         if (!this.state.isPrivateEligible) {
+         if (checkIfTeamMember(authUser, teamMembers)) {
             this.props.setInitUrl(`/q/${this.props.match.params.entoken}`);
             // this.props.history.push('/sign-in');
             return <Redirect to="/sign-in" />
@@ -273,23 +233,18 @@ class PublicQuoteView extends Component {
       else return (
          <React.Fragment>
             <main id="main-container">
-               {
-                  auth && auth.authUser ?
-                     <React.Fragment>
-                        <NavCrump linkTo="/app">
-                           Dashboard
-                        </NavCrump>
-                        {/* <StatusBanner quote={quote} /> */}
-                     </React.Fragment>
-                     : null
-               }
-               <div className="quoteCanvas-bg" style={{ backgroundColor: "#fff1f5" }}>
-                  <input type="hidden" name="_x_antiFooInput" defaultValue="ewvr1abgw47sqk74oun1p" />
-                  <div className="offlineBanner no_print">
-                     <div className="container">
-                        <StatusShowCase />
-                     </div>
-                  </div>
+               <VisiableOnlyAuthTeamMember>
+                  <React.Fragment>
+                     <NavCrump linkTo="/app">
+                        Dashboard
+                     </NavCrump>
+                  </React.Fragment>
+               </VisiableOnlyAuthTeamMember>
+               <div className="quoteCanvas-bg" style={{ backgroundColor: appearanceSetting.colors.background }}>
+
+                  <VisiableOnlyAuthTeamMember>
+                     <StatusShowCase />
+                  </VisiableOnlyAuthTeamMember>
 
                   <div className={`${SwitchQuoteLayoutClass(appearanceSetting.contactDetailLayout, appearanceSetting.layout)}`}>
                      <div className="quoteCanvas-page">
@@ -473,9 +428,9 @@ class PublicQuoteView extends Component {
                               <div id="discussion" className="discuss-wrap">
                                  <h3 className="quote-discuss-h3">Questions &amp; Answers</h3>
                                  {
-                                    this.state.discussions.map((discussion, index) => {
+                                    discussions.map((discussion, index) => {
                                        if (discussion.category === "privateNote") {
-                                          if (this.state.isPrivateEligible) return (
+                                          if (checkIfTeamMember(authUser, teamMembers)) return (
                                              <div className="discuss-row discuss-row-private" key={index}>
                                                 <div className="discuss-bubble">
                                                    <div className="bubble-left avatar-48"
@@ -527,7 +482,7 @@ class PublicQuoteView extends Component {
                                           </div>
                                        );
                                        else if (discussion.category === "questionAndAnswer") {
-                                          const isAnswerAbleUser = auth.authUser && quote && (auth.authUser._id === quote.author._id);
+                                          const isAnswerAbleUser = authUser && quote && (authUser._id === quote.author._id);
                                           return (
                                              <React.Fragment key={index}>
                                                 <div className="discuss-row">
@@ -693,6 +648,8 @@ class PublicQuoteView extends Component {
                               </div>
 
                               <div className="clear" />
+                              <DeclineCommentShow />
+                              
                            </QuoteItemWrapper>
                         </FullWrapper>
                      </div>
@@ -707,8 +664,8 @@ class PublicQuoteView extends Component {
    }
 }
 
-const mapStateToProps = ({ auth, appearanceSetting }) => {
-   return { auth, appearanceSetting };
+const mapStateToProps = ({ auth, commonData, appearanceSetting, teamSetting, publicView }) => {
+   return { auth, commonData, appearanceSetting, teamSetting, publicView };
 }
-const mapDispatchToProps = { setInitUrl, userSignOut, getTeamMembers };
+const mapDispatchToProps = { setInitUrl, userSignOut, getQuote, getTeamMembers };
 export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import CompanyContactLinkShow from './CompanyContactLinkShow';
-import PersonContactLinkShow from './PersonContactLinkShow';
+import CompanyContactAuthMemberLink from './ContactAuthLink/CompanyContactAuthMemberLink';
+import PersonContactLinkShow from './ContactAuthLink/PersonContactAuthMemberLink';
 
-export default class PreparedFor extends Component {
+export default class PreparedForInline extends Component {
    render() {
       const { firstPerson } = this.props;
       if (firstPerson.company) return (
@@ -10,7 +10,7 @@ export default class PreparedFor extends Component {
             <div>
                <label>Prepared for</label>&nbsp;
                <span className="quote-detail-block">
-                  <CompanyContactLinkShow contact={firstPerson.company} />
+                  <CompanyContactAuthMemberLink contact={firstPerson.company} />
                </span>
             </div>
             <div>

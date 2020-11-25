@@ -30,3 +30,6 @@ export const UPLOAD_IMAGE = 'upload_image';
 export const LOGO_URL = 'logo_url';
 export const APPEARANCE_SETTINGS = 'appearance_settings';
 
+// Public View
+export const GET_QUOTE = 'get_quote';
+export const GET_DISCUSSIONS = 'get_discussions';

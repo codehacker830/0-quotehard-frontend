@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { checkIfTeamMember } from '../../../util';
+import { checkIfTeamMember } from '../../../../util';
 
-class CompanyContactLinkShow extends Component {
+class CompanyContactAuthMemberLink extends Component {
    render() {
       const { auth, teamSetting, contact } = this.props;
       const isTeamMember = checkIfTeamMember(auth.authUser, teamSetting.teamMembers);
@@ -20,4 +20,4 @@ class CompanyContactLinkShow extends Component {
 }
 
 const mapStateToProps = ({ auth, teamSetting }) => ({ auth, teamSetting });
-export default connect(mapStateToProps)(CompanyContactLinkShow);
+export default connect(mapStateToProps)(CompanyContactAuthMemberLink);

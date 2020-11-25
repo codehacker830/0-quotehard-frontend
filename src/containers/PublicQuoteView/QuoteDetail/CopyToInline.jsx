@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import PersonContactLinkShow from './PersonContactLinkShow';
+import PersonContactAuthMemberLink from './ContactAuthLink/PersonContactAuthMemberLink';
 
-export default class CopyTo extends Component {
+export default class CopyToInline extends Component {
    render() {
       const { toPeopleList } = this.props;
       if (toPeopleList.length > 1) return (
@@ -12,7 +12,7 @@ export default class CopyTo extends Component {
                   toPeopleList.map((copyReceiver, index) => {
                      if (index === 0) return null;
                      else return (
-                        <PersonContactLinkShow contact={copyReceiver} />
+                        <PersonContactAuthMemberLink contact={copyReceiver} />
                      );
                   })
                }

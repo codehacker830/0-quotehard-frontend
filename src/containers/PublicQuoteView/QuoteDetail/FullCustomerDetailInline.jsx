@@ -2,14 +2,14 @@ import { first } from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-class FullCustomerDetail extends Component {
+class FullCustomerDetailInline extends Component {
    render() {
       const { isDisplayFullCustomerDetail, firstPerson } = this.props;
       if (isDisplayFullCustomerDetail) return (
-         <>
+         <React.Fragment>
             <div>
                <label>Email</label>&nbsp;
-                  <span className="quote-detail-block"><a href={`mailto:${firstPerson.email}`}>{firstPerson.email}</a></span>
+               <span className="quote-detail-block"><a href={`mailto:${firstPerson.email}`}>{firstPerson.email}</a></span>
             </div>
             {
                firstPerson.addresses.map((address, index) => (
@@ -28,7 +28,7 @@ class FullCustomerDetail extends Component {
                ))
 
             }
-         </>
+         </React.Fragment>
       );
       else return null;
    }
@@ -37,4 +37,4 @@ const mapStateToProps = ({ appearanceSetting }) => {
    const { isDisplayFullCustomerDetail } = appearanceSetting;
    return { isDisplayFullCustomerDetail };
 };
-export default connect(mapStateToProps)(FullCustomerDetail);
+export default connect(mapStateToProps)(FullCustomerDetailInline);
