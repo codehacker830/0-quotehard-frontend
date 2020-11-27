@@ -3359,12 +3359,18 @@ p.description {
    border-radius: 2px;
    background: #f5f5f5 url(/assets/media/avatars/person1.png) no-repeat;
    background-size: cover;
+}.avatar-36 {
+   width: 36px;
 }
+
 .avatar-48 {
    width: 48px;
    height: 48px;
 }
-
+.avatar-64 {
+   width: 64px;
+   height: 64px;
+}
 .qCustomCss h1,
 .qCustomCss h2,
 .qCustomCss h3 {

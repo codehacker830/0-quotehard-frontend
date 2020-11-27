@@ -13,6 +13,9 @@ import ContactName from './ContactName';
 import EditContactBtn from './EditContactBtn';
 import PersonCompany from './PersonCompany';
 import PhonesShow from './PhonesShow';
+import { CONTACTS_PATH } from '../../../constants/PathNames';
+import NavCrumpLeft from '../../../components/NavCrump/NavCrumpLeft';
+import NavCrumpRight from '../../../components/NavCrump/NavCrumpRight';
 
 export default class ViewContact extends Component {
    constructor(props) {
@@ -21,26 +24,17 @@ export default class ViewContact extends Component {
          showActivity: false,
          contact: {}
       };
-      this.actionsContainer = React.createRef();
-   }
-   onClickOutsideHandler = (ev) => {
-      if (!this.actionsContainer.current.contains(ev.target)) {
-         this.setState({ show: false });
-      }
    }
    componentDidMount() {
-      window.addEventListener('click', this.onClickOutsideHandler);
       const contactId = this.props.match.params.id;
       axios.get(`/contacts/id/${contactId}`).then(({ data }) => {
          console.log("API RESPNSE =>", data);
          this.setState({ contact: data.contact });
       }).catch((err) => {
          console.error("GET contact API error ==>", err)
-         props.history.push("/app/c/contacts");
+         props.history.push(CONTACTS_PATH);
+
       })
-   }
-   componentWillUnmount() {
-      window.removeEventListener('click', this.onClickOutsideHandler);
    }
    onClickArchive = () => {
       axios.put(`/contacts/archive/${this.props.match.params.id}`).then(({ data }) => {
@@ -63,7 +57,7 @@ export default class ViewContact extends Component {
    onClickDelete = () => {
       axios.put(`/contacts/delete/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to archive contact", data);
-         this.props.history.push('/app/c/contacts');
+         this.props.history.push(CONTACTS_PATH);
          toast.success("Contact deleted.", toastSuccessConfig);
       }).catch((err) => {
          console.error(" failed to un-archive contact ", err);
@@ -71,74 +65,59 @@ export default class ViewContact extends Component {
    }
    render() {
       console.log(" view contact state =>", this.state);
-      const linkTo = `/app/c/contacts`;
+      const linkTo = CONTACTS_PATH;
       const linkName = "Contacts";
       const { contact } = this.state;
       return (
          <React.Fragment>
-            <div className="bg-body-light border-top border-bottom">
-               <div className="content content-full py-3">
-                  <div className="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
-                     <h1 className="flex-sm-fill font-size-sm text-uppercase font-w700 mt-2 mb-0 mb-sm-2">
-                        <Link to={linkTo}>
-                           <i className="fa fa-arrow-left fa-fw mr-2" />
-                           <span className="text-primary">{linkName}</span>
-                        </Link>
-                     </h1>
-
-                     <div className={`dropdown ${this.props.match.path === "/app/c/contacts/view/:id" ? "d-inline-block" : "d-none"}`} ref={this.actionsContainer}>
-                        <button type="button" className="btn btn-dual" onClick={() => this.setState({ show: !this.state.show })}>
-                           <span className="text-primary">Actions</span>
-                           <i className="fa fa-fw fa-angle-down ml-1 text-primary" />
-                        </button>
-
-                        <div className={`dropdown-menu dropdown-menu-right p-0 ${this.state.show ? "show" : ""}`} style={{ minWidth: 250 }}>
-                           <ul className="nav-items my-0 p-1">
-                              {
-                                 this.state.contact.status === "current" &&
-                                 <li>
-                                    <button className="dropdown-item media py-2" onClick={this.onClickArchive}>
-                                       <div className="mx-3">
-                                          <i className="fa fa-fw fa-archive text-secondary" />
-                                       </div>
-                                       <div className="media-body font-size-sm pr-2">
-                                          <div className="font-w600">Archive</div>
-                                       </div>
-                                    </button>
-                                 </li>
-                              }
-                              {
-                                 this.state.contact.status === "archived" &&
-                                 <li>
-                                    <button className="dropdown-item media py-2" onClick={this.onClickUnArchive}>
-                                       <div className="mx-3">
-                                          <i className="fa fa-fw fa-archive text-secondary" />
-                                       </div>
-                                       <div className="media-body font-size-sm pr-2">
-                                          <div className="font-w600">Archived<i className="fa fa-fw fa-long-arrow-alt-left"></i> Undo</div>
-                                       </div>
-                                    </button>
-                                 </li>
-                              }
-                              <li>
-                                 <button className="dropdown-item media py-2" onClick={this.onClickDelete}>
-                                    <div className="mx-3">
-                                       <i className="fa fa-fw fa-trash-alt text-secondary" />
-                                    </div>
-                                    <div className="media-body font-size-sm pr-2">
-                                       <div className="font-w600">Delete</div>
-                                    </div>
-                                 </button>
-                              </li>
-                           </ul>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            {/* <NavCrump linkTo={`/app/c/contacts`}>
-            Contacts
-         </NavCrump> */}
+            <NavCrump>
+               <NavCrumpLeft linkTo={CONTACTS_PATH}>
+                  Contacts
+               </NavCrumpLeft>
+               {
+                  this.props.match.path === "/app/c/contacts/view/:id" &&
+                  <NavCrumpRight>
+                     <ul className="nav-items my-0 p-1">
+                        {
+                           this.state.contact.status === "current" &&
+                           <li>
+                              <button className="btn-in-action" onClick={this.onClickArchive}>
+                                 <div className="mx-3">
+                                    <i className="fa fa-fw fa-archive text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm font-w600 pr-2">
+                                    <span>Archive</span>
+                                 </div>
+                              </button>
+                           </li>
+                        }
+                        {
+                           this.state.contact.status === "archived" &&
+                           <li>
+                              <button className="btn-in-action" onClick={this.onClickUnArchive}>
+                                 <div className="mx-3">
+                                    <i className="fa fa-fw fa-archive text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm font-w600 pr-2">
+                                    <span>Archive</span><span className="choices-undo"> ← undo</span>
+                                 </div>
+                              </button>
+                           </li>
+                        }
+                        <li>
+                           <button className="btn-in-action" onClick={this.onClickDelete}>
+                              <div className="mx-3">
+                                 <i className="fa fa-fw fa-trash-alt text-secondary" />
+                              </div>
+                              <div className="media-body font-size-sm font-w600 pr-2">
+                                 <span>Delete</span>
+                              </div>
+                           </button>
+                        </li>
+                     </ul>
+                  </NavCrumpRight>
+               }
+            </NavCrump>
             <div className="content">
                <div className="block block-rounded">
                   <div className="block-content p-5">
@@ -151,7 +130,7 @@ export default class ViewContact extends Component {
                                  {
                                     contact.status === "archived" &&
                                     <div className="mb-2">
-                                       <span className="badge badge-secondary px-3 py-1 text-uppercase">archived</span>
+                                       <span className="label">archived</span>
                                     </div>
                                  }
                                  <PersonCompany contact={contact} />

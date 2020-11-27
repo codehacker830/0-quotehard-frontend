@@ -563,7 +563,7 @@ class PublicQuoteView extends Component {
                                                 <img className="avatar-48 mr-3 mb-2" src={discussion.privateNote.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
                                                 <div className="border-green-left pl-3">
                                                    <div className="row no-gutters mb-1">
-                                                      <span className="badge badge-success my-auto mr-2 text-uppercase">private</span>
+                                                      <span className="label-success">private</span>
                                                       <span className="font-w700 text-black mr-2">{discussion.privateNote.author.firstName + " " + discussion.privateNote.author.lastName}</span>
                                                       <span className="font-w400 text-secondary">{formatDateTime(discussion.privateNote.updatedAt)}</span>
                                                    </div>
@@ -864,7 +864,7 @@ class PublicQuoteView extends Component {
                                              <div className="form-group">
                                                 <label htmlFor="additionalComments">Additional comments</label>
                                                 <div className={`float-right ${this.state.quote.status === "accepted" ? "" : "d-none"}`}>
-                                                   <span className="badge badge-primary px-3 py-1 ml-1 text-uppercase">Accepted</span>
+                                                   <span className="label-accepted">Accepted</span>
                                                 </div>
                                                 <textarea className="form-control" id="additionalComments" name="additionalComments" rows={4} placeholder="Optional.." defaultValue={""} />
 

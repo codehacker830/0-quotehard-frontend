@@ -108,11 +108,11 @@ export default class TemplateItems extends Component {
                                                       <Link to={`/app/content/template/${item._id}`}>{item.title}</Link>
                                                       {
                                                          item.status === "archived" &&
-                                                         <span className="badge badge-secondary px-2 py-1 ml-1 text-uppercase">Archived</span>
+                                                         <span className="label">Archived</span>
                                                       }
                                                       {
                                                          this.state.defaultTemplateId === item._id &&
-                                                         <span className="badge badge-success px-2 py-1 ml-1 text-uppercase">Default</span>
+                                                         <span className="label label-success">Default</span>
                                                       }
                                                       <br />
                                                       <small className="text-gray font-size-sm">{formatDate(item.updatedAt)}</small>

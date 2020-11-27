@@ -35,13 +35,13 @@ import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSal
 import NavCrumpLeft from "../../../components/NavCrump/NavCrumpLeft";
 
 import { QUOTE_PAGE_PATH } from "../../../constants/PathNames";
+import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
 
 class GetQuote extends Component {
    constructor(props) {
       super(props);
       this.state = {
          loading: false,
-         show: false,
          fileArray: [],
          emailTo: "",
 
@@ -66,7 +66,6 @@ class GetQuote extends Component {
             }
          ],
       };
-      this.actionsContainer = React.createRef();
    }
    removeImageItem = (url) => {
       const newFileArray = this.state.fileArray.filter((item) => item !== url);
@@ -281,13 +280,7 @@ class GetQuote extends Component {
       else this.setState({ notes: [initTextItem] })
    }
 
-   onClickOutsideHandler = (ev) => {
-      if (!this.actionsContainer.current.contains(ev.target)) {
-         this.setState({ show: false });
-      }
-   }
    async componentDidMount() {
-      window.addEventListener('click', this.onClickOutsideHandler);
       await this.props.getDefaultSalesCategory();
       await this.props.getDefaultSalesTax();
       await this.props.getSalesCategories('current');
@@ -339,9 +332,6 @@ class GetQuote extends Component {
             });
       }
    }
-   componentWillUnmount() {
-      window.removeEventListener('click', this.onClickOutsideHandler);
-   }
    render() {
       console.log(" ^^^^^^^ GET QUOTE state ^^^^^^^^^^ ", this.state);
       console.log(" ^^^^^^^ GET QUOTE props ^^^^^^^^^^ ", this.props);
@@ -351,74 +341,59 @@ class GetQuote extends Component {
       if (location.state && location.state.from === QUOTE_PAGE_PATH) linkName = "Quotes";
       return (
          <React.Fragment>
-            {/* <div className="bg-body-light border-top border-bottom">
-               <div className="content content-full py-3">
-                  <div className="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
-
-
-                     
-                  </div>
-               </div>
-            </div> */}
             <NavCrump>
-               {/* <h1 className="flex-sm-fill font-size-sm text-uppercase font-w700 mt-2 mb-0 mb-sm-2">
-                        <Link to={linkTo}>
-                           <i className="fa fa-arrow-left fa-fw mr-2" />
-                           <span className="text-primary">{linkName}</span>
-                        </Link>
-                     </h1> */}
-               <NavCrumpLeft linkTo={linkTo}>{linkName}</NavCrumpLeft>
-               <div className={`dropdown ${this.props.match.path === "/app/quote/:id" ? "d-inline-block" : "d-none"}`} ref={this.actionsContainer}>
-                  <button type="button" className="btn btn-dual" onClick={() => this.setState({ show: !this.state.show })}>
-                     <span className="text-primary">Actions</span>
-                     <i className="fa fa-fw fa-angle-down ml-1 text-primary" />
-                  </button>
-
-                  <div className={`dropdown-menu dropdown-menu-right p-0 ${this.state.show ? "show" : ""}`} style={{ minWidth: 250 }}>
-                     <ul className="nav-items my-0 py-1">
+               <NavCrumpLeft linkTo={linkTo}>
+                  {linkName}
+               </NavCrumpLeft>
+               {
+                  this.props.match.path === "/app/quote/:id" &&
+                  <NavCrumpRight>
+                     <ul className="choices" style={{ left: 25, top: 10 }}>
                         <li>
-                           <button className="dropdown-item media py-2">
+                           <button className="btn-in-action">
                               <div className="mx-3">
                                  <i className="fa fa-fw fa-arrow-alt-circle-right text-secondary" />
                               </div>
-                              <div className="media-body font-size-sm pr-2">
-                                 <div className="font-w600">Mark as Sent(don't email)</div>
+                              <div className="media-body font-size-sm font-w600 pr-2">
+                                 <span>Mark as Sent(don't email)</span>
                               </div>
                            </button>
                         </li>
+                        <li className="choices-break" />
                         <li>
-                           <button className="dropdown-item media py-2">
+                           <button className="btn-in-action">
                               <div className="mx-3">
                                  <i className="fa fa-fw fa-copy text-secondary" />
                               </div>
-                              <div className="media-body font-size-sm pr-2">
-                                 <div className="font-w600">Copy</div>
+                              <div className="media-body font-size-sm font-w600 pr-2">
+                                 <span>Copy</span>
                               </div>
                            </button>
                         </li>
                         <li>
-                           <button className="dropdown-item media py-2">
+                           <button className="btn-in-action">
                               <div className="mx-3">
                                  <i className="fa fa-fw fa-plus-circle text-secondary" />
                               </div>
-                              <div className="media-body font-size-sm pr-2">
-                                 <div className="font-w600">Copy to Template</div>
+                              <div className="media-body font-size-sm font-w600 pr-2">
+                                 <span>Copy to Template</span>
                               </div>
                            </button>
                         </li>
                         <li>
-                           <button className="dropdown-item media py-2">
+                           <button className="btn-in-action">
                               <div className="mx-3">
                                  <i className="fa fa-fw fa-trash-alt text-secondary" />
                               </div>
-                              <div className="media-body font-size-sm pr-2">
-                                 <div className="font-w600">Delete</div>
+                              <div className="media-body font-size-sm font-w600 pr-2">
+                                 <span>Delete</span>
                               </div>
                            </button>
                         </li>
                      </ul>
-                  </div>
-               </div>
+                  </NavCrumpRight>
+               }
+
             </NavCrump>
             <div className="content bg-custom">
                <div className="mt-6 mb-5">

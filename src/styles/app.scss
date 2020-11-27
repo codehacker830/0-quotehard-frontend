@@ -115,17 +115,6 @@ a.nav-link.active {
    margin: 30px auto 20px;
    text-align: center;
 }
-.avatar-36 {
-   width: 36px;
-}
-.avatar-48 {
-   width: 48px;
-   height: 48px;
-}
-.avatar-64 {
-   width: 64px;
-   height: 64px;
-}
 .bg-custom {
    background: url("/assets/media/images/default-overlay.png") no-repeat top;
 }
@@ -729,5 +718,26 @@ a.nav-link.active {
    color: #99a1a8;
 }
 .buttonLink:focus {
+   outline: none;
+}
+
+.btn-in-action {
+   width: 100%;
+   text-align: left;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   overflow: hidden;
+   padding: 4px 6px;
+   display: flex;
+   color: #404040;
+   cursor: pointer;
+   border: none;
+   background: none;
+   border-radius: 2px;
+}
+.btn-in-action:hover,
+.btn-in-action:active {
+   color: #fff;
+   background-color: #51a5e3;
    outline: none;
 }

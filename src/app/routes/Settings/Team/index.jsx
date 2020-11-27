@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import NavCrump from '../../../components/NavCrump'
+import NavCrump from '../../../../components/NavCrump'
+import { INVITE_FORM_PATH, SETTINGS_PATH } from '../../../../constants/PathNames'
 
 export const Team = (props) => {
    return (
@@ -11,40 +12,8 @@ export const Team = (props) => {
          <div className="content">
             <h1>Team Members</h1>
             <div className="maxWidth-800">
-               <h3 className="text-primary">Invite a New Team Member</h3>
-               <p className="mb-3">
-                  Simply enter the name and email address of your new Team&nbsp;Member.
-                  <br />
-                  They'll receive an email with an 'Accept Invite' link – where they can set their own password.
-               </p>
-               <div className="form-group mb-4">
-                  <div className="row">
-                     <div className="col-md-6 col-sm-12">
-                        <label htmlFor="example-text-input">First Name</label>
-                        <input type="text" className="form-control mr-3" placeholder="First Name" defaultValue />
-                     </div>
-                     <div className="col-md-6 col-sm-12">
-                        <label htmlFor="example-text-input">Last Name</label>
-                        <input type="text" className="form-control" placeholder="Last Name" defaultValue />
-                     </div>
-                  </div>
-                  <div className="row">
-                     <div className="col-12">
-                        <label htmlFor="example-text-input">Email Address</label>
-                        <input type="text" className="form-control mr-3" placeholder="First Name" defaultValue />
-                     </div>
-                  </div>
-               </div>
-
-               <div className="form-check mb-4">
-                  <input className="form-check-input" type="checkbox" defaultValue id="example-checkbox-default1" name="example-checkbox-default1" />
-                  <label className="form-check-label" htmlFor="example-checkbox-default1">
-                     Give Administrator Powers
-                     <p className="text-secondary fa-xs">An administrator may invite, add and remove others</p>
-                  </label>
-               </div>
                <div className="mb-5">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-2">Send Invitation</button>
+                  <Link className="btn btn-lg btn-hero-success" to={INVITE_FORM_PATH}>Send Invitation</Link>
                </div>
 
                <table className="quotient-table mb-5">
@@ -79,12 +48,15 @@ export const Team = (props) => {
                   </tbody>
                </table>
 
-               <div className="text-black">
+               <div className="text-black mb-5">
                   Your plan will be automatically upgraded or downgraded, when adding or removing Team Members. <br />
                   Your current plan allows for <strong>1</strong> Team Member.
                   See <Link to="/app/settings/billing-overview">Billing Overview</Link> for more details.
                </div>
 
+               <div className="mb-5">
+                  <Link className="text-primary" to={SETTINGS_PATH}>← Return to Settings</Link>
+               </div>
             </div>
          </div>
       </React.Fragment>

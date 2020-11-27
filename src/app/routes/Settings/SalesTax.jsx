@@ -6,6 +6,8 @@ import { getSalesCategories } from '../../../actions/Settings';
 import NavCrump from '../../../components/NavCrump'
 import axios from '../../../util/Api';
 import { SALES_TAX_CATEGORIES_PATH, SALES_TAX_CREATE_PATH, SALES_TAX_UPDATE_PATH } from '../../../constants/PathNames';
+import NavCrumpLeft from '../../../components/NavCrump/NavCrumpLeft';
+import NavCrumpRight from '../../../components/NavCrump/NavCrumpRight';
 
 export const SalesTax = (props) => {
    const { id } = props.match.params;
@@ -61,8 +63,37 @@ export const SalesTax = (props) => {
    }, [id]);
    return (
       <React.Fragment>
-         <NavCrump linkTo={SALES_TAX_CATEGORIES_PATH}>
-            Sales Tax
+         <NavCrump >
+            <NavCrumpLeft linkTo={SALES_TAX_CATEGORIES_PATH}>
+               Sales Tax
+            </NavCrumpLeft>
+            {
+               props.match.path === SALES_TAX_UPDATE_PATH &&
+               <NavCrumpRight>
+                  <ul className="choices" style={{ left: 45, top: 10 }}>
+                     <li>
+                        <button className="btn-in-action">
+                           <div className="mx-3">
+                              <i className="fa fa-fw fa-archive text-secondary" />
+                           </div>
+                           <div className="media-body font-size-sm font-w600 pr-2">
+                              <span>Archive</span>
+                           </div>
+                        </button>
+                     </li>
+                     <li>
+                        <button className="btn-in-action">
+                           <div className="mx-3">
+                              <i className="fa fa-fw fa-star text-secondary" />
+                           </div>
+                           <div className="media-body font-size-sm font-w600 pr-2">
+                              <span>Make default</span>
+                           </div>
+                        </button>
+                     </li>
+                  </ul>
+               </NavCrumpRight>
+            }
          </NavCrump>
          <div className="content">
             <div className="mb-5">

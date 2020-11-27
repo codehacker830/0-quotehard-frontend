@@ -101,7 +101,7 @@ export const userSignUp = ({ firstName, lastName, email, password, companyName, 
 
 export const userSignOut = () => {
    return (dispatch) => {
-      localStorage.removeItem("token");
+      localStorage.clear();
       dispatch({ type: SIGNOUT_USER_SUCCESS });
       // dispatch({ type: FETCH_START });
       // axios.get('/account/logout',

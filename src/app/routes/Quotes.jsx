@@ -120,7 +120,7 @@ export default class Quotes extends Component {
                                                 <span className="float-right">
                                                    <small className="text-gray">
                                                       <span className="dt-time">{formatDate(item.createdAt)}</span>
-                                                      <span className="badge badge-primary px-3 py-1 ml-1 text-uppercase">{item.status}</span>
+                                                      <span className="label label-draft">{item.status}</span>
                                                    </small>
                                                 </span>
                                                 <div className="u-ellipsis">
@@ -172,7 +172,7 @@ export default class Quotes extends Component {
                                                 <span className="float-right">
                                                    <small className="text-gray">
                                                       <span className="dt-time">{formatDate(item.createdAt)}</span>
-                                                      <span className="badge badge-primary px-3 py-1 ml-1 text-uppercase">{item.status}</span>
+                                                      <span className="label label-draft">{item.status}</span>
                                                    </small>
                                                 </span>
                                                 <div className="u-ellipsis">

@@ -27,6 +27,9 @@ import VisiableOnlyAuthTeamMember from './components/VisiableOnlyAuthTeamMember'
 import DeclineCommentShow from './components/DeclineCommentShow';
 import QuoteItem from './components/QuoteItem';
 import QuoteViewTotalWrap from './components/QuoteViewTotalWrap';
+import { QUOTE_PAGE_PATH } from '../../constants/PathNames';
+import NavCrumpLeft from '../../components/NavCrump/NavCrumpLeft';
+import NavCrumpRight from '../../components/NavCrump/NavCrumpRight';
 
 class PublicQuoteView extends Component {
    mounted = false;
@@ -241,8 +244,65 @@ class PublicQuoteView extends Component {
          <React.Fragment>
             <main id="main-container">
                <VisiableOnlyAuthTeamMember>
-                  <NavCrump linkTo={linkTo}>
-                     {linkName}
+                  <NavCrump>
+                     <NavCrumpLeft linkTo={linkTo}>
+                        {linkName}
+                     </NavCrumpLeft>
+                     <NavCrumpRight>
+                        <ul className="choices" style={{ left: 45, top: 10 }}>
+                           <li>
+                              <button className="btn-in-action">
+                                 <div className="mx-3">
+                                    <i className="fa fa-fw fa-archive text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm font-w600 pr-2">
+                                    <span>Archive</span>
+                                 </div>
+                              </button>
+                           </li>
+                           <li>
+                              <button className="btn-in-action">
+                                 <div className="mx-3">
+                                    <i className="fa fa-fw fa-check text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm font-w600 pr-2">
+                                    <span>Accepted<span className="choices-undo"> ← undo</span></span>
+                                 </div>
+                              </button>
+                           </li>
+                           <li>
+                              <button className="btn-in-action">
+                                 <div className="mx-3">
+                                    <i className="fa fa-fw fa-ban text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm font-w600 pr-2">
+                                    <span>Withdraw</span>
+                                 </div>
+                              </button>
+                           </li>
+                           <li className="choices-break" />
+                           <li>
+                              <button className="btn-in-action">
+                                 <div className="mx-3">
+                                    <i className="fa fa-fw fa-copy text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm font-w600 pr-2">
+                                    <span>Copy</span>
+                                 </div>
+                              </button>
+                           </li>
+                           <li>
+                              <button className="btn-in-action">
+                                 <div className="mx-3">
+                                    <i className="fa fa-fw fa-plus-circle text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm font-w600 pr-2">
+                                    <span>Copy to Template</span>
+                                 </div>
+                              </button>
+                           </li>
+                        </ul>
+                     </NavCrumpRight>
                   </NavCrump>
                </VisiableOnlyAuthTeamMember>
                <div className="quoteCanvas-bg" style={{ backgroundColor: appearanceSetting.colors.background }}>

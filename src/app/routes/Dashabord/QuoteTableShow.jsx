@@ -32,7 +32,7 @@ class QuoteTableShow extends Component {
                                        <span className="float-right">
                                           <small className="text-gray">
                                              <span className="dt-time">{formatDate(item.createdAt)}</span>
-                                             <span className="badge badge-success px-3 py-1 ml-1 text-uppercase">{item.status}</span>
+                                             <span className="label label-success">{item.status}</span>
                                           </small>
                                        </span>
                                        <div className="u-ellipsis">
@@ -103,7 +103,7 @@ class QuoteTableShow extends Component {
                                                 <span className="float-right">
                                                    <small className="text-gray">
                                                       <span className="dt-time">{formatDate(item.createdAt)}</span>
-                                                      <span className="badge badge-primary px-3 py-1 ml-1 text-uppercase">{item.status}</span>
+                                                      <span className="label label-accepted">{item.status}</span>
                                                    </small>
                                                 </span>
                                                 <div className="u-ellipsis">
@@ -139,7 +139,7 @@ class QuoteTableShow extends Component {
                                                 <span className="float-right">
                                                    <small className="text-gray">
                                                       <span className="dt-time">{formatDate(item.createdAt)}</span>
-                                                      <span className="badge badge-danger px-3 py-1 ml-1 text-uppercase">{item.status}</span>
+                                                      <span className="label label-declined">{item.status}</span>
                                                    </small>
                                                 </span>
                                                 <div className="u-ellipsis">
