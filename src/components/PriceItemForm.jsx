@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { toFixedFloat } from '../util';
 import axios from '../util/Api';
@@ -391,8 +392,8 @@ class PriceItemForm extends Component {
                               };
                               this.props.updateItem(this.props.index, newItem);
                            }}>
-                           <option value={0}>No tax</option>
-                           <option value={10}>10% tax</option>
+                           <option value={"5fb6a26da4b615347887edae"}>No tax</option>
+                           <option value={"5fb6a26da4b615347887edaf"}>10% tax</option>
                         </select>
                      </div>
                   </div>
@@ -588,4 +589,7 @@ class PriceItemForm extends Component {
    }
 }
 
-export default withRouter(PriceItemForm);
+const mapStateToProps = ({ settings }) => {
+   return settings;
+};
+export default connect(mapStateToProps)(withRouter(PriceItemForm));

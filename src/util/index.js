@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const monthNames = ["January", "February", "March", "April", "May", "June",
    "July", "August", "September", "October", "November", "December"
 ];
@@ -144,6 +146,14 @@ export const SwitchLogoLayoutClass = (contactDetailLayout, layout) => {
    else return "quote-logo quote-logo-x-legacy  quote-logo-x-legacy-top";
 }
 
+export const checkIfTeamMember = (authUser, teamMembers) => {
+   if (!authUser) return false;
+   if (teamMembers.length === 0) return false;
+   const val = teamMembers.find((member) => member._id === authUser._id);
+   if (val) return true;
+   else return false;
+}
+
 export const SwitchQuoteLayoutClass = (contactDetailLayout, layout) => {
    if (parseInt(contactDetailLayout) == 0) return "container qCustomCss quoteCanvas quoteCanvas-1col";
    else if (parseInt(contactDetailLayout) == 1) {
@@ -167,10 +177,144 @@ export const SwitchQuoteLayoutClass = (contactDetailLayout, layout) => {
       };
    }
 }
-export const checkIfTeamMember = (authUser, teamMembers) => {
-   if (!authUser) return false;
-   if (teamMembers.length === 0) return false;
-   const val = teamMembers.find((member) => member._id === authUser._id);
-   if (val) return true;
+
+export const SwitchQuoteItemClass = (item) => {
+   let classStr = "";
+   if (item.category === "priceItem") {
+      classStr = "tItem vIsLine";
+      const { priceItem } = item;
+      if (priceItem.isSubscription) classStr += " hasTerm";
+      if (priceItem.isOptional) {
+         if (priceItem.isOptionSelected) classStr += " isSelected";
+      } else if (priceItem.isMultipleChoice) {
+         if (priceItem.isChoiceSelected) classStr += " isSelected";
+      } else classStr += " isSelected";
+   } else if (item.category === "textItem") {
+      classStr = "tItem-text"
+   } else {                                     // item.category === "subTotal" 
+      classStr = "tItem vSubTotal"
+   }
+   return classStr;
+}
+
+export const checkIfHasTerm = (items) => {
+   if (!items.length) return false;
+   const frs = items.filter(item => {
+      if (item.category === "priceItem") {
+         const { isSubscription } = item.priceItem;
+         if (isSubscription) return true;
+         else return false;
+      }
+      else return false;
+   });
+   if (frs.length > 0) return true;
    else return false;
+}
+
+export const numberOfOption = (items) => {
+   if (!items.length) return { total: null, selected: null };
+   else {
+      let total = 0;
+      let selected = 0;
+      items.forEach(item => {
+         if (item.category === "priceItem") {
+            const { priceItem } = item;
+            if (!priceItem.isSubscription && (priceItem.isOptional || priceItem.isMultipleChoice)) {
+               total++;
+               if (priceItem.isOptionSelected || priceItem.isChoiceSelected) selected++;
+            }
+         }
+      });
+      return { total, selected };
+   }
+}
+
+// function onlyUnique(value, index, self) {
+//    return self.indexOf(value) === index;
+// }
+function getUniqueTaxArr(taxArr) {
+   console.error("taxArr -->", taxArr);
+   if (!Array.isArray(taxArr)) return [];
+   const resArr = [];
+   taxArr.forEach((tax) => {
+      const i = resArr.findIndex(x => x._id == tax._id);
+      console.error(" tax ------>", tax);
+      if (i <= -1 && tax.taxRate != 0) {
+         resArr.push(tax);
+      }
+   });
+   return resArr;
+}
+
+function checkIfItemWasSelected(priceItem) {
+   if ((priceItem.isOptional && priceItem.isOptionSelected)
+      || (priceItem.isMultipleChoice && priceItem.isChoiceSelected)) {
+      return true;
+   } else if (!priceItem.isOptional && !priceItem.isMultipleChoice) {
+      return true;
+   }
+   else return false;
+}
+
+export const differentTaxIdArrGroup = (items) => {
+   if (!items.length) return { ArrUniqueTaxHasNoTerm: [], ArrUniqueTaxHasTerm: [] };
+   let ArrUniqueTaxHasNoTerm = [], ArrUniqueTaxHasTerm = [];
+   items.forEach(item => {
+      if (item.category === "priceItem") {
+         const { priceItem } = item;
+         if (!priceItem.isSubscription) {
+            if (checkIfItemWasSelected(priceItem)) {
+               console.error(" +++ priceItem.tax ++ ", priceItem.tax)
+               if (priceItem.tax) ArrUniqueTaxHasNoTerm.push(priceItem.tax);
+            }
+         } else {
+            if (checkIfItemWasSelected(priceItem)) {
+               if (priceItem.tax) ArrUniqueTaxHasTerm.push(priceItem.tax);
+            }
+         }
+      }
+   });
+   console.error("ArrUniqueTaxHasNoTerm", ArrUniqueTaxHasNoTerm);
+   console.error("ArrUniqueTaxHasTerm", ArrUniqueTaxHasTerm);
+   return {
+      ArrUniqueTaxHasNoTerm: getUniqueTaxArr(ArrUniqueTaxHasNoTerm),
+      ArrUniqueTaxHasTerm: getUniqueTaxArr(ArrUniqueTaxHasTerm)
+   };
+}
+
+export const filterItemArrForTaxId = (items, taxId) => {
+   if (!items.length) return { ArrItemFromTaxIdHasNoTerm: [], ArrItemFromTaxIdHasTerm: [] };
+   let ArrItemFromTaxIdHasTerm = [], ArrItemFromTaxIdHasNoTerm = [];
+   items.forEach(item => {
+      if (item.category === "priceItem") {
+         const { priceItem } = item;
+         if (priceItem.tax._id == taxId) {
+            if (!priceItem.isSubscription) {
+               if (checkIfItemWasSelected(priceItem)) ArrItemFromTaxIdHasNoTerm.push(item);
+            } else {
+               if (checkIfItemWasSelected(priceItem)) ArrItemFromTaxIdHasTerm.push(item);
+            }
+         }
+      }
+   });
+   return { ArrItemFromTaxIdHasNoTerm, ArrItemFromTaxIdHasTerm };
+}
+
+export const subTotalHasNoTerm = (items, settings) => {
+   if (!items.length) return 0;
+   let subTotal = 0;
+   items.forEach(item => {
+      if (item.category === "priceItem") {
+         const { priceItem } = item;
+         if (!priceItem.isSubscription) {
+            if (priceItem.isOptional && priceItem.isOptionSelected) {
+
+            }
+            if (priceItem.isMultipleChoice && priceItem.isChoiceSelected) {
+
+            }
+         }
+      }
+   });
+   return subTotal;
 }

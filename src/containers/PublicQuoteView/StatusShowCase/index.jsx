@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ActivityHistoryFull from '../ActivityHistoryFull';
+import ActivityHistoryFull from '../components/ActivityHistoryFull';
 import AuthorBox from './AuthorBox';
 import StatEditTimes from './StatEditTimes';
 import StatOpenTimes from './StatOpenTimes';
 import StatQATimes from './StatQATimes';
 import StatNoteTimes from './StatNoteTimes';
+import { withRouter } from 'react-router-dom';
 
 class StatusShowCase extends Component {
    constructor(props) {
@@ -18,7 +19,7 @@ class StatusShowCase extends Component {
    }
    onClickSend = () => {
       const payload = {
-         quoteId: props.quote._id
+         quoteId: this.props.quote._id
       };
       axios.post('/quotes/send', payload)
          .then(({ data }) => {
@@ -31,7 +32,7 @@ class StatusShowCase extends Component {
          });
    }
    onClickEditDraft = () => {
-      props.history.push(`/app/quote/${props.quote._id}`);
+      this.props.history.push(`/app/quote/${this.props.quote._id}`);
    }
    onClickActivity = () => {
       this.setState({ loading: true });
@@ -99,4 +100,4 @@ const mapStateToProps = ({ publicView }) => {
    const { quote } = publicView;
    return { quote };
 };
-export default connect(mapStateToProps)(StatusShowCase)
+export default connect(mapStateToProps)(withRouter(StatusShowCase))

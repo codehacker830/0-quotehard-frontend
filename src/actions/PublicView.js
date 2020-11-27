@@ -4,7 +4,8 @@ import {
    FETCH_SUCCESS,
    FETCH_ERROR,
    GET_QUOTE,
-   GET_DISCUSSIONS
+   GET_DISCUSSIONS,
+   UPDATE_QUOTE
 } from '../constants/ActionTypes';
 
 export const getQuote = () => {
@@ -22,4 +23,12 @@ export const getQuote = () => {
          console.log("Error****:", err.message);
       }
    }
+}
+
+export const updateQuote = (quote) => {
+   return (dispatch) => dispatch({ type: UPDATE_QUOTE, payload: quote });
+}
+
+export const updateDiscussions = (discussions) => {
+   return (dispatch) => dispatch({ type: UPDATE_QUOTE, payload: discussions });
 }

@@ -1,6 +1,8 @@
 import {
    GET_DISCUSSIONS,
-   GET_QUOTE
+   GET_QUOTE,
+   UPDATE_QUOTE,
+   UPDATE_DISCUSSIONS
 } from '../constants/ActionTypes';
 
 const initialSettings = {
@@ -20,6 +22,16 @@ export default (state = initialSettings, action) => {
             ...state,
             discussions: action.payload
          }
+      case UPDATE_QUOTE:
+         return {
+            ...state,
+            quote: action.payload
+         };
+      case UPDATE_DISCUSSIONS:
+         return {
+            ...state,
+            discussions: action.payload
+         };
       default:
          return state;
    }

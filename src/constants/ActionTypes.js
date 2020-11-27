@@ -19,11 +19,13 @@ export const USER_TOKEN_SET = 'user_token_set';
 
 
 // Settings
-
-export const THEME_COLOR = 'theme_color';
-export const USER_SETTINGS = 'user_settings';
 export const QUOTE_DEFAULTS = 'quote_defaults';
 export const GET_TEAMMATES = 'get_teammates';
+export const GET_SALES_CATEGORIES = 'get_sales_categories';
+export const GET_SALES_TAXES = 'get_sales_taxes';
+
+export const GET_DEFAULT_SALES_CATEGORY = 'get_default_sales_category';
+export const GET_DEFAULT_SALES_TAX = 'get_default_sales_tax';
 
 // Service
 export const UPLOAD_IMAGE = 'upload_image';
@@ -33,3 +35,5 @@ export const APPEARANCE_SETTINGS = 'appearance_settings';
 // Public View
 export const GET_QUOTE = 'get_quote';
 export const GET_DISCUSSIONS = 'get_discussions';
+export const UPDATE_QUOTE = 'update_quote';
+export const UPDATE_DISCUSSIONS = 'update_discussions';

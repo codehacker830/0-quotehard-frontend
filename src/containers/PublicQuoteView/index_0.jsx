@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { toastErrorConfig, toastSuccessConfig, toastWarningConfig } from '../../util/toastrConfig';
-import QuoteItemTotal from '../../components/QuoteItemTotal';
+import QuoteTotal from '../../components/QuoteTotal';
 import { setInitUrl, userSignOut } from '../../actions/Auth';
 import { getTeamMembers } from '../../actions/Team';
 import DeclineCommentShow from './components/DeclineCommentShow';
@@ -469,7 +469,7 @@ class PublicQuoteView extends Component {
                               </div> */}
                               {/* Quote total */}
                               <div className="quoteViewTotalWrap pt-3">
-                                 <QuoteItemTotal settings={this.state.quote.settings} items={this.state.quote.items} />
+                                 <QuoteTotal settings={this.state.quote.settings} items={this.state.quote.items} />
 
                                  {/* <table className={`quoteTotal hasTerm table table-borderless`}>
                                     <tbody>

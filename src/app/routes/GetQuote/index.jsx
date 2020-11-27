@@ -28,9 +28,10 @@ import {
    initSubTotal,
 } from "../../../constants/InitState";
 import AddItemBtn from "../../../components/AddItemBtn";
-import QuoteItemTotal from "../../../components/QuoteItemTotal";
+import QuoteTotal from "../../../components/QuoteTotal";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from "../../../actions/Settings";
 
 
 class GetQuote extends Component {
@@ -283,8 +284,13 @@ class GetQuote extends Component {
          this.setState({ show: false });
       }
    }
-   componentDidMount() {
+   async componentDidMount() {
       window.addEventListener('click', this.onClickOutsideHandler);
+      await this.props.getDefaultSalesCategory();
+      await this.props.getDefaultSalesTax();
+      await this.props.getSalesCategories('current');
+      await this.props.getSalesTaxes('current');
+
       if (this.props.match.path === "/app/quote/:id") {
          // Get quote details with quote ID
          axios.get(`/quotes/get-by-id/${this.props.match.params.id}`).then(({ data }) => {
@@ -320,13 +326,23 @@ class GetQuote extends Component {
          });
       }
    }
+   componentDidUpdate(prevProps, prevState) {
+      if (this.props.defaultSalesTax !== prevProps.defaultSalesTax || this.props.defaultSalesCategory !== prevProps.defaultSalesCategory) {
+         this.setState({
+            items: [{
+               category: "priceItem",
+               priceItem: { ...initPriceItem, tax: this.props.defaultSalesTax, itemCategory: this.props.defaultSalesCategory },
+            }]
+         });
+      }
+   }
    componentWillUnmount() {
       window.removeEventListener('click', this.onClickOutsideHandler);
    }
    render() {
       console.log(" GetQute initSettings ===> ", initQuoteSettings);
-      console.log(" GetQute state => ", this.state);
-      console.log(" GetQute props => ", this.props);
+      console.log(" ^^^^^^^ GET QUOTE state ^^^^^^^^^^ ", this.state);
+      console.log(" ^^^^^^^ GET QUOTE props ^^^^^^^^^^ ", this.props);
       const { location } = this.props;
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
@@ -528,7 +544,9 @@ class GetQuote extends Component {
                      this.setState({ items: [...this.state.items, newItem] })
                   }} />
 
-                  <QuoteItemTotal settings={this.state.settings} items={this.state.items} />
+                  <div className="quote-edit-total-wrap">
+                     <QuoteTotal settings={this.state.settings} items={this.state.items} />
+                  </div>
 
                   {
                      this.state.notes.map((item, index) => {
@@ -593,8 +611,10 @@ class GetQuote extends Component {
       );
    }
 }
-const mapStateToProps = ({ auth }) => {
+const mapStateToProps = ({ auth, settings }) => {
    const { authUser } = auth;
-   return { authUser }
+   const { defaultSalesTax, defaultSalesCategory } = settings;
+   return { authUser, defaultSalesTax, defaultSalesCategory }
 }
-export default connect(mapStateToProps)(GetQuote)
+const mapDispatchToProps = { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes };
+export default connect(mapStateToProps, mapDispatchToProps)(GetQuote)

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { toFixedFloat } from '../util';
+import { checkIfHasTerm, toFixedFloat } from '../../util';
+import QuoteTotalHasNoTerm from './QuoteTotalHasNoTerm';
 
-export default class QuoteItemTotal extends Component {
+export default class QuoteTotal extends Component {
    render() {
-      console.log(" --------- QuoteItemTotal Props ---------> ", this.props);
+      const { settings, items } = this.props;
+      console.log("__________________________________ checkIfHasTerm(items) _____________________", checkIfHasTerm(items));
+      console.log(" --------- QuoteTotal Props ---------> ", this.props);
       const pItems = this.props.items.filter((item, index) => item.category === "priceItem");
       console.log(">>>>>>>>>>>>>> priceItemFiltered >>>>>>", pItems);
 
@@ -33,50 +36,10 @@ export default class QuoteItemTotal extends Component {
       let marginTotal = subTotal - costPriceTotal;
       console.log(">>>>>>>>>>>>>> discountTotal >>>>>>", discountTotal);
       return (
-         <div className="quote-edit-total-wrap">
+         <div>
 
-            {/* subtotal 2 */}
-            <table className="quoteTotal hasNoTerm table table-borderless">
-               <tbody>
 
-                  <tr>
-                     <td className="total-desc">Subtotal{this.props.settings.discount !== "0" ? `, includes discount of ${toFixedFloat(discountTotal)}` : ""}</td>
-                     <td className="total-price">{toFixedFloat(subTotal)}</td>
-                  </tr>
-                  {
-                     isMarginShowEnable &&
-                     <tr className="tProfit">
-                        <td className="total-desc">Total margin {toFixedFloat(marginTotal / subTotal * 100)}%</td>
-                        <td className="total-price">{toFixedFloat(marginTotal)}</td>
-                     </tr>
-                  }
-                  {
-                     isTaxEnable &&
-                     <tr>
-                        <td className="total-desc">Tax {maxTax}%</td>
-                        <td className="total-price">{toFixedFloat(taxTotal)}</td>
-                     </tr>
-                  }
-
-                  <tr className="total">
-                     <td className="total-desc">
-                        <span className="quoteTotal-gDesc">
-                           Total including tax
-                    </span>
-                     </td>
-                     <td className="total-price">
-                        <span className="quoteTotal-gTotal">${toFixedFloat(totalIncludingTax)}</span>
-                        {
-                           isSubscriptionEnable &&
-                           <React.Fragment>
-                              <p className="quote-text-sm">per week</p>
-                              <p className="quote-text-sm">(for 4 weeks)</p>
-                           </React.Fragment>
-                        }
-                     </td>
-                  </tr>
-               </tbody>
-            </table>
+            <QuoteTotalHasNoTerm settings={settings} items={items} />
 
             {/* subtotal 1 */}
             {/* <table className="quoteTotal hasTerm table table-borderless">

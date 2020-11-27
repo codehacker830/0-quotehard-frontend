@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 export default class AttachedFilesShowCase extends Component {
    render() {
-      if (this.props.files.length > 0) return null;
+      if (!this.props.files.length) return null;
       else return (
             <div className="quoteFile-wrap">
                <div className="quoteFile-set">

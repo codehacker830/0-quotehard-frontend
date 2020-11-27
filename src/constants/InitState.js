@@ -29,10 +29,11 @@ export const initTemplateSettings = {
 export const initPriceItem = {
    isOptional: false,
    isOptionSelected: false,
+
    isMultipleChoice: false,
    isChoiceSelected: false,
-   isEditableQuantity: false,
 
+   isEditableQuantity: false,
    isDiscount: false,
    discount: 0,
 
@@ -51,8 +52,8 @@ export const initPriceItem = {
    productHeading: "",
    longDescription: "",
    files: [],
-   itemCategory: "sales",
-   tax: 10,
+   itemCategory: "",
+   tax: "",
 
    unitPrice: 0,
    quantity: 0,

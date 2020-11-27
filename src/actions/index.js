@@ -1,5 +1,5 @@
 export * from './Auth';
 export * from './Common';
-export * from './Setting';
+export * from './Settings';
 export * from './Appearance';
 export * from './Team';

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import AddItemBtn from '../../../components/AddItemBtn';
 import NavCrump from '../../../components/NavCrump';
 import PriceItemForm from '../../../components/PriceItemForm';
-import QuoteItemTotal from '../../../components/QuoteItemTotal';
+import QuoteTotal from '../../../components/QuoteTotal';
 import SubTotal from '../../../components/SubTotal';
 import TemplateSettings from '../../../components/TemplateSettings';
 import TextItemForm from '../../../components/TextItemForm';
@@ -71,7 +71,7 @@ export default class GetTemplate extends Component {
          settings
       };
       console.log("1111111111111111111111 data 1111111111111", data);
-      // axios.put(`/templates/id/${this.props.match.params.id}, data)
+      // axios.put(`/templates/id/${this.props.match.params.id}`, data)
       //    .then(({ data }) => {
       //       console.log("res data ---------------->", data);
       //       toast.success("Template was updated.", toastSuccessConfig);
@@ -461,7 +461,7 @@ export default class GetTemplate extends Component {
                   }} />
 
                   {/* Quote item total show */}
-                  <QuoteItemTotal settings={this.state.settings} items={this.state.items} />
+                  <QuoteTotal settings={this.state.settings} items={this.state.items} />
 
                   {/* Here is notes */}
                   {

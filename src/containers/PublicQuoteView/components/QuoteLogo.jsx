@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SwitchLogoLayoutClass } from '../../util';
+import { SwitchLogoLayoutClass } from '../../../util';
 
 
 class QuoteLogo extends Component {

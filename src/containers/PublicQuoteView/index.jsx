@@ -9,11 +9,11 @@ import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { toastErrorConfig, toastSuccessConfig, toastWarningConfig } from '../../util/toastrConfig';
-import QuoteItemTotal from '../../components/QuoteItemTotal';
+import QuoteTotal from '../../components/QuoteTotal';
 import { setInitUrl, userSignOut } from '../../actions/Auth';
 import { getTeamMembers } from '../../actions/Team';
 import TextareaAutosize from 'react-autosize-textarea/lib';
-import QuoteLogo from './QuoteLogo';
+import QuoteLogo from './components/QuoteLogo';
 import QuoteDetail from './QuoteDetail';
 import StatusShowCase from './StatusShowCase';
 import AttachedFilesShowCase from './components/AttachedFilesShowCase';
@@ -25,6 +25,8 @@ import { SwitchQuoteLayoutClass } from '../../util/index';
 import { getQuote } from '../../actions/PublicView';
 import VisiableOnlyAuthTeamMember from './components/VisiableOnlyAuthTeamMember';
 import DeclineCommentShow from './components/DeclineCommentShow';
+import QuoteItem from './components/QuoteItem';
+import QuoteViewTotalWrap from './components/QuoteViewTotalWrap';
 
 class PublicQuoteView extends Component {
    mounted = false;
@@ -262,166 +264,14 @@ class PublicQuoteView extends Component {
                               <div className="quoteItems">
                                  {
                                     quote.items.map((item, index) => {
-                                       if (item.category === "priceItem") {
-                                          let isSelected = true;
-                                          if (item.priceItem.isMultipleChoice) isSelected = item.priceItem.isChoiceSelected;
-                                          if (item.priceItem.isOptional) isSelected = item.priceItem.isOptionSelected;
-                                          return (
-                                             <div className={`tItem ${isSelected ? "isSelected" : ""}`} key={index}>
-                                                <div className="tItem-desc">
-                                                   <div className="tItem-desc-table">
-                                                      {
-                                                         item.priceItem.isMultipleChoice &&
-                                                         <div className="tItem-desc-option">
-                                                            <input type="checkbox"
-                                                               value={item.priceItem.isChoiceSelected}
-                                                               onChange={(ev) => {
-                                                                  const newItems = [...quote.items];
-                                                                  newItems[index].priceItem.isChoiceSelected = !item.priceItem.isChoiceSelected;
-                                                                  this.setState({ quote: { ...quote, items: newItems } });
-                                                               }}
-                                                            />
-                                                         </div>
-                                                      }
-                                                      {
-                                                         item.priceItem.isOptional &&
-                                                         <div className="tItem-desc-option">
-                                                            <input type="radio"
-                                                               // name="group"
-                                                               value={item.priceItem.isOptionSelected}
-                                                               onChange={(ev) => {
-                                                                  const newItems = [...quote.items];
-                                                                  newItems[index].priceItem.isOptionSelected = !item.priceItem.isOptionSelected;
-                                                                  this.setState({ quote: { ...quote, items: newItems } });
-                                                               }}
-                                                            />
-                                                         </div>
-                                                      }
-                                                      <div className="tItem-desc-cell">
-                                                         <p className="item_code">{item.priceItem.itemCode}</p>
-                                                         <h3>{item.priceItem.productHeading}</h3>
-                                                         <p>{item.priceItem.longDescription}</p>
-                                                         <AttachedFilesShowCase files={item.priceItem.files} />
-                                                      </div>
-                                                   </div>
-                                                </div>
-                                                <div className="tItem-price">
-                                                   {
-                                                      item.priceItem.isCostPriceMargin &&
-                                                      <p className="quote-text-sm text-success">
-                                                         {toFixedFloat(item.priceItem.costPrice)}
-                                                         <br />
-                                                         {item.priceItem.margin}% margin
-                                                   </p>
-                                                   }
-
-                                                   <p className="quote-text-sm">{item.priceItem.unitPrice}</p>
-                                                   {
-                                                      item.priceItem.isEditableQuantity ?
-                                                         <div className="itemPartEditableWrap">
-                                                            <label htmlFor={`chooseQuantity${item._id}`}>
-                                                               x <input
-                                                                  className="form-control"
-                                                                  type="number"
-                                                                  value={item.priceItem.quantity}
-                                                                  onChange={(ev) => {
-                                                                     const newItems = [...quote.items];
-                                                                     newItems[index].priceItem.quantity = ev.target.value;
-                                                                     newItems[index].priceItem.itemTotal = newItems[index].priceItem.unitPrice * newItems[index].priceItem.quantity;
-                                                                     this.setState({ quote: { ...quote, items: newItems } });
-                                                                  }}
-                                                               />
-                                                            </label>
-                                                            <label className="quote-text-sm" htmlFor={`chooseQuantity${item._id}`}>Choose quantity</label>
-                                                         </div>
-                                                         : <p className="quote-text-sm">x {item.priceItem.quantity}</p>
-                                                   }
-                                                   <p><span className="itemPartItemTotal">{item.priceItem.itemTotal}</span></p>
-                                                   <p className="quote-text-sm"><span className="option-text">Not selected</span></p>
-                                                </div>
-                                             </div>
-                                          );
-                                       }
-                                       else if (item.category === "textItem") return (
-                                          <div className="tItem-text" key={index}>
-                                             <h3>{item.textItem.textHeading}</h3>
-                                             <p>{item.textItem.longDescription}</p>
-                                             <AttachedFilesShowCase files={item.textItem.files} />
-                                          </div>
-                                       );
-                                       else if (item.category === "subTotal") return (
-                                          <>
-                                             <div className="tItem vSubTotal" key={index}>
-                                                <div className="tItem-desc">
-                                                   <p>
-                                                      <span className="quote-text-sm">Options selected</span>
-                                                      <br />
-                                                Subtotal
-                                             </p>
-                                                </div>
-                                                <div className="tItem-price">
-                                                   <p>
-                                                      <span className="quote-text-sm">1 of 1</span><br />
-                                                      <span>200.00</span>
-                                                   </p>
-                                                </div>
-                                             </div>
-
-                                             {/* <div className="tItem vSubTotal tItemId-43717163">
-                                          <div className="tItem-desc">
-                                             <p>Subtotal</p>
-                                          </div>
-                                          <div className="tItem-price">
-                                             <p>
-                                                <span className="itemPartSubTotal">300.00</span>
-                                             </p>
-                                          </div>
-                                          <div className="clear"> </div>
-                                       </div> */}
-                                          </>
-                                       );
+                                       return <QuoteItem item={item} key={index} index={index} />
                                     })
                                  }
 
                                  <div className="clear" />
 
-                                 <div className="quoteViewTotalWrap quoteViewTotalWrap-client">
-                                    <div>
-                                       <table className="quoteTotal hasNoTerm">
-                                          <tbody>
-                                             <tr>
-                                                <td className="total-desc">Subtotal</td>
-                                                <td className="total-price">100.00</td>
-                                             </tr>
-                                             <tr className="total">
-                                                <td className="total-desc"><span className="quoteTotal-gDesc">Total USD including tax</span>
-                                                </td>
-                                                <td className="total-price"><span className="quoteTotal-gTotal">$100.00</span></td>
-                                             </tr>
-                                          </tbody>
-                                       </table>
-                                    </div>
-                                 </div>
-                                 <div className="quoteViewTotalWrap quoteViewTotalWrap-server isHidden">
-                                    <table className="quoteTotal subscribe_zFixedCost hasNoTerm">
-                                       <tbody>
-                                          <tr>
-                                             <td className="total-desc">Subtotal</td>
-                                             <td className="total-price">
-                                                <p>100.00</p>
-                                             </td>
-                                          </tr>
-                                          <tr className="total">
-                                             <td className="total-desc">
-                                                <p className="quoteTotal-gDesc">Total USD including tax</p>
-                                             </td>
-                                             <td className="total-price">
-                                                <p className="quoteTotal-gTotal">$100.00</p>
-                                             </td>
-                                          </tr>
-                                       </tbody>
-                                    </table>
-                                 </div>
+                                 <QuoteViewTotalWrap />
+
                                  <NoteItemList noteList={quote.notes} />
                               </div>
 
@@ -546,7 +396,8 @@ class PublicQuoteView extends Component {
                                                          <div className="bubble-right">
                                                             <div className="bubble-margin">
                                                                <textarea className="form-control" rows={3} name="postDiscuss[answerIndex0][discuss_body]"
-                                                                  id="postDiscuss_answerIndex0_discuss_body" style={{ height: 77 }} defaultValue={""} /> </div>
+                                                                  id="postDiscuss_answerIndex0_discuss_body" style={{ height: 77 }} defaultValue={""} />
+                                                            </div>
                                                             <div data-tg-control="FileWrap" className="quoteFile-wrap quoteFile-wrap-edit" />
                                                             <div className="clear" />
                                                             <div className="u-file-drop-area">
@@ -649,7 +500,7 @@ class PublicQuoteView extends Component {
 
                               <div className="clear" />
                               <DeclineCommentShow />
-                              
+
                            </QuoteItemWrapper>
                         </FullWrapper>
                      </div>
