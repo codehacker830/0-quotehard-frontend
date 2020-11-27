@@ -6,32 +6,46 @@ import { userSignIn } from "../actions/Auth";
 
 class SignIn extends Component {
    state = {
-      checked: true,
+      isRemember: true,
       email: "",
-      password: ""
+      password: "",
+
+      _id: "",
+      accountCompany: "",
+      firstName: "",
+      lastName: "",
+      role: false
    };
-   onClickSignIn = (ev) => {
-      const { email, password } = this.state;
+   onClickSignIn = () => {
+      const { email, password, isRemember } = this.state;
       if (email === "" || password === "") {
          toast.warn("Email and password fields are required.");
       }
-      else this.props.userSignIn({ email, password });
+      else this.props.userSignIn({ email, password, isRemember });
    };
 
    componentDidUpdate(prevProps, prevState) {
-      const { authUser, initURL, commonData } = this.props;
-      console.log("sign in this.props --->", this.props);
-      console.log("initURL --->", initURL);
-      
+      const { authUser, initURL, commonData, location } = this.props;
       if (authUser) {
          this.props.history.push(initURL === '' || initURL === '/sign-in' || initURL === '/sign-in/' ? '/app' : initURL);
       } else if (commonData.error !== "") {
          toast.error(commonData.error);
       }
+      if (prevProps.location.state !== this.props.location.state) {
+         const { _id, accountCompany, firstName, lastName, email, role } = this.props.location.state;
+         this.setState({
+            _id, accountCompany, firstName, lastName, email, role
+         });
+      }
    };
    render() {
-      const { checked, email, password } = this.state;
-      const { history } = this.props;
+      console.log(" SIGN IN STATE +++>", this.state);
+      console.log(" SIGN IN PROPS +++>", this.props);
+      const { isRemember, email, password } = this.state;
+      const { history, location } = this.props;
+      const isInvited = !!location.state;
+      console.log("isInvited ---", isInvited);
+
       return (
          <main id="main-container">
             <div className="row no-gutters">
@@ -44,6 +58,12 @@ class SignIn extends Component {
                            <img src="/logo-180.png" className="logo" alt="logo" />
                         </Link>
                         <span className="text-dark font-w700 font-size-h2">Sign in to Quotient</span>
+                        {
+                           true &&
+                           <p className="font-size-h4">
+                              To accept the invite, sign in below or <Link to="/sign-in/invite/create">create a new sign in here…</Link>
+                           </p>
+                        }
                      </div>
                      {/* END Header */}
                      {/* Sign In Form */}
@@ -75,10 +95,10 @@ class SignIn extends Component {
                            </div>
                            <div className="form-group">
                               <div className="d-flex custom-control custom-checkbox custom-control-lg justify-content-center mb-3">
-                                 <input type="checkbox" className="custom-control-input" id="remember-me-checkbox" name="remember-me-checkbox" checked={checked} onChange={() => this.setState({ checked: !checked })} />
+                                 <input type="checkbox" className="custom-control-input" id="remember-me-checkbox" name="remember-me-checkbox" checked={isRemember} onChange={() => this.setState({ isRemember: !this.state.isRemember })} />
                                  <label className="custom-control-label" htmlFor="remember-me-checkbox">Remember me</label>
                               </div>
-                              <button className="btn btn-block btn-hero-lg btn-hero-primary" onClick={this.onClickSignIn}>
+                              <button className="btn btn-block btn-hero-lg btn-hero-primary" onClick={() => this.onClickSignIn()}>
                                  <i className="fa fa-fw fa-sign-in-alt mr-1" /> Sign In
                               </button>
                               <p className="mt-3 mb-0 d-lg-flex justify-content-lg-between">

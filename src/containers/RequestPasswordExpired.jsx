@@ -13,7 +13,7 @@ export default class RequestPasswordExpired extends Component {
                         <div className="col-sm-8 col-xl-6">
                            <div className="py-3">
                               <div className="form-group">
-                                 <h2 className="font-w700">Password change expired.</h2>
+                                 <h1 className="font-w700">Password change expired.</h1>
                                  <p className="font-size-h4">For security reasons the password change request is valid for up to <strong>10 minutes</strong> only.</p>
 
                               </div>

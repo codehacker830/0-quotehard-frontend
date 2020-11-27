@@ -6,6 +6,7 @@ import {
    SHOW_MESSAGE,
    SIGNOUT_USER_SUCCESS,
    USER_DATA,
+   COMPANY_DATA,
    USER_TOKEN_SET
 } from "../constants/ActionTypes";
 import { history } from "../store";
@@ -19,36 +20,31 @@ export const setInitUrl = (url) => {
 };
 
 export const getUser = () => {
-   return (dispatch) => {
+   return async (dispatch) => {
       dispatch({ type: FETCH_START });
-      axios.get('/account').then(({ data }) => {
+      try {
+         const { data } = await axios.get('/account');
          console.log("get User res: ", data);
          if (data.account) {
             dispatch({ type: FETCH_SUCCESS });
-            dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
             dispatch({ type: USER_DATA, payload: data.account });
+            dispatch({ type: COMPANY_DATA, payload: data.accountCompany });
          } else {
             dispatch({ type: FETCH_ERROR, payload: data.error });
             dispatch({ type: SIGNOUT_USER_SUCCESS });
          }
-      }).catch(function (error) {
+      } catch (error) {
          dispatch({ type: FETCH_ERROR, payload: error.message });
-
          console.log("Error****:", error.message);
          dispatch({ type: SIGNOUT_USER_SUCCESS });
-      });
+      }
    }
 };
 
-export const userSignIn = ({ email, password }) => {
+export const userSignIn = ({ email, password, isRemember }) => {
    return (dispatch) => {
       dispatch({ type: FETCH_START });
-      // dispatch({ type: USER_TOKEN_SET, payload: null });
-      // dispatch({ type: USER_DATA, payload: null });
-      axios.post('/account/login', {
-         email: email,
-         password: password,
-      }
+      axios.post('/account/login', { email, password, isRemember }
       ).then(({ data }) => {
          if (data.account) {
             localStorage.setItem("token", JSON.stringify(data.access_token));

@@ -1,16 +1,36 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { getTeamMembers } from '../../../../actions/Team'
 import NavCrump from '../../../../components/NavCrump'
 import { INVITE_FORM_PATH, SETTINGS_PATH } from '../../../../constants/PathNames'
+import axios from '../../../../util/Api'
+import Tr_Member from './components/Tr_Member'
 
 export const Team = (props) => {
-   const dispatch = useDispatch();
+   const [members, setMembers] = useState([]);
    useEffect(() => {
-      dispatch(getTeamMembers());
+      axios.get('/settings/team/all-members').then(({ data }) => {
+         console.log(" members response : ", data);
+         setMembers(data.members);
+      }).catch((err) => {
+         console.error("err ----", err.data);
+      });
       return () => { };
    }, []);
+
+   const onClickDeleteInvite = (id) => {
+      axios.post(`/settings/team/delete-invite/${id}`)
+         .then(() => {
+            const arr = members.filter(member => member._id !== id);
+            setMembers(arr);
+         })
+         .catch(err => {
+            toast.error('Failed to delete invitation.');
+            console.error("delete invitation err =>", err.response.data);
+         });
+   }
    return (
       <React.Fragment>
          <NavCrump linkTo={'/app/settings'}>
@@ -25,33 +45,9 @@ export const Team = (props) => {
 
                <table className="quotient-table mb-5">
                   <tbody className="rowClick">
-                     <tr>
-                        <td>
-                           <img className="avatar-64 float-left mr-2" src={`https://asset.quotientapp.com/file-s/1/avatar-v2/128/`} alt="..." />
-                           <div className="u-ellipsis team-list">
-                              <a href="/38216/settings/team/view/52036">
-                                 <strong>
-                                    A Devom <span className="text-success"> – Hi you!</span>
-                                 </strong>
-                              </a>
-                              <div className="float-right">
-                                 <div className="text-right">
-                                    <div className="text-secondary font-size-sm font-w400 text-right">
-                                       Last activity<br />
-                                       <span className="dt-time" data-time="[1600976335,0,1]">10 minutes ago</span> </div>
-                                 </div>
-                              </div>
-                              <small>
-                                 <br />
-                                 <span className="label label-black">Account Owner</span>
-                                 <span className="font-size-sm font-w400 text-secondary">
-                                    <br />
-                                    honestypassion0615@gmail.com
-                                 </span>
-                              </small>
-                           </div>
-                        </td>
-                     </tr>
+                     {
+                        members.map((member, index) => <Tr_Member member={member} key={index} onClickDeleteInvite={(id) => onClickDeleteInvite(id)} />)
+                     }
                   </tbody>
                </table>
 
@@ -62,7 +58,7 @@ export const Team = (props) => {
                </div>
 
                <div className="mb-5">
-                  <Link className="text-primary" to={SETTINGS_PATH}>← Return to Settings</Link>
+                  <Link className="text-primary font-w600" to={SETTINGS_PATH}>← Return to Settings</Link>
                </div>
             </div>
          </div>

@@ -10,7 +10,7 @@ import { setInitUrl, userSignOut } from './Auth';
 export const getTeamMembers = () => {
    return (dispatch) => {
       dispatch({ type: FETCH_START });
-      axios.get('/team-members').then(({ data }) => {
+      axios.get('/settings/team/real-members').then(({ data }) => {
          console.log("team-members response : ", data);
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: GET_TEAMMATES, payload: data.teamMembers });

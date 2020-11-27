@@ -33,7 +33,7 @@ export default class Highrise extends Component {
                </div>
 
                <div className="mb-4">
-                  <Link className="text-primary font-w600" to={`/app/settings`}><i className="fa fa-fw fa-arrow-left" /> Return to Settings</Link>
+                  <Link className="text-primary font-w600" to={`/app/settings`}>← Return to Settings</Link>
                </div>
             </div>
          </React.Fragment>

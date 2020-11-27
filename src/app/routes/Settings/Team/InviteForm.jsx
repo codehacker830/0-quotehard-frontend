@@ -17,7 +17,7 @@ export const InviteForm = (props) => {
          toast.success('Email address is a required field.');
          return;
       }
-      if (!firstName && !lastName) {
+      if (!firstName || !lastName) {
          toast.success('You\'re missing some required information');
          return;
       }
@@ -27,7 +27,12 @@ export const InviteForm = (props) => {
             props.history.push('/app/settings/team');
          })
          .catch(err => {
-            toast.error('Failed to sent invitation.')
+            const { errors } = err.response.data;
+            const errKeys = Object.keys(errors);
+            errKeys.map(err => {
+               const errMsg = `${err} ${errors[err]}`;
+               toast.error(errMsg.charAt(0).toUpperCase() + errMsg.slice(1))
+            });
          });
    }
    return (

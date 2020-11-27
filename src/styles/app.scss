@@ -741,3 +741,17 @@ a.nav-link.active {
    background-color: #51a5e3;
    outline: none;
 }
+.rowClick-disable {
+   cursor: default;
+   td {
+      color: #7c7c7c;
+      background: #f7f7f7;
+   }
+}
+.team-list {
+   padding-left: 7px;
+}
+.avatar-54 {
+   width: 54px;
+   height: 54px;
+}

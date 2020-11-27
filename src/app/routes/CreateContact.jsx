@@ -91,8 +91,7 @@ export default class CreateContact extends Component {
          console.log("create contact api resopnse ==>", data);
          this.props.history.push(`/app/c/contacts/view/${data.contact._id}`);
       }).catch(err => {
-         toast.error("Break down during request.", toastErrorConfig);
-         console.error("create contact api error ==>", err);
+         console.error("create contact api error ==>", err.response.data);
          toast.error("Failed to create contact.", toastErrorConfig);
          this.props.history.push(`/app/c/contacts`);
       });

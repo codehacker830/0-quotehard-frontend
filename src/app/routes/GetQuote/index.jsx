@@ -117,9 +117,12 @@ class GetQuote extends Component {
                this.props.history.push(`/q/${data.entoken}`);
             })
             .catch(err => {
-               console.error(" error ===>", err);
-               toast.error("Quote failed to update", toastErrorConfig);
-               this.setState({ loading: false, type: null });
+               const { errors } = err.response.data;
+               const errKeys = Object.keys(errors);
+               errKeys.map(err => {
+                  const errMsg = `${err} ${errors[err]}`;
+                  toast.error(errMsg.charAt(0).toUpperCase() + errMsg.slice(1))
+               });
             });
       } else {
          console.error("Error !!!!!!!!!!!!!!");

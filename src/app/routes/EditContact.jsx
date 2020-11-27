@@ -77,7 +77,12 @@ export default class EditContact extends Component {
          toast.success("Contact was updated successfully.", toastSuccessConfig);
          // this.props.history.push(this.goTo);
       }).catch(err => {
-         console.error("err => ", err);
+         const { errors } = err.response.data;
+         const errKeys = Object.keys(errors);
+         errKeys.map(err => {
+            const errMsg = `${err} ${errors[err]}`;
+            toast.error(errMsg.charAt(0).toUpperCase() + errMsg.slice(1))
+         });
       });
    }
 

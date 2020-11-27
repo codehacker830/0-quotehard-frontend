@@ -12,9 +12,8 @@ export default class RequestPasswordSent extends Component {
                         <div className="col-sm-8 col-xl-6">
                            <div className="py-3">
                               <div className="form-group">
-                                 <h2 className="font-w700">We have sent you an email</h2>
+                                 <h1 className="font-w700">We have sent you an email</h1>
                                  <p className="font-size-h4">For security reasons the email link is valid for up to 10 minutes only. If you don't receive your email, try <strong>checking your junk email</strong> folder.</p>
-
                               </div>
                            </div>
                            <div className="form-group text-center">
