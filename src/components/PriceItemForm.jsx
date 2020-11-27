@@ -84,7 +84,7 @@ class PriceItemForm extends Component {
 
    render() {
       console.log(" priceitem props ===== ", this.props);
-
+      const { salesCatgories, salesTaxes } = this.props;
       return (
          <React.Fragment>
             {/* ToolWrapper */}
@@ -377,7 +377,10 @@ class PriceItemForm extends Component {
                               };
                               this.props.updateItem(this.props.index, newItem);
                            }}>
-                           <option value="sales">Sales</option>
+                           {
+                              salesCatgories.map(salesCategory => <option value={salesCategory._id} key={salesCategory._id}>{salesCategory.categoryName}</option>)
+                           }
+
                         </select>
                      </div>
                      <div className="col-6 pl-1">
@@ -392,8 +395,9 @@ class PriceItemForm extends Component {
                               };
                               this.props.updateItem(this.props.index, newItem);
                            }}>
-                           <option value={"5fb6a26da4b615347887edae"}>No tax</option>
-                           <option value={"5fb6a26da4b615347887edaf"}>10% tax</option>
+                           {
+                              salesTaxes.map(salesTax => (<option value={salesTax._id} key={salesTax._id}>{salesTax.taxName}</option>))
+                           }
                         </select>
                      </div>
                   </div>
@@ -590,6 +594,8 @@ class PriceItemForm extends Component {
 }
 
 const mapStateToProps = ({ settings }) => {
-   return settings;
+   const { salesCatgories, salesTaxes } = settings;
+   return { salesCatgories, salesTaxes };
+
 };
 export default connect(mapStateToProps)(withRouter(PriceItemForm));

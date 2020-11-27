@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify';
+import { getSalesCategories } from '../../../actions/Settings';
 import NavCrump from '../../../components/NavCrump'
 import axios from '../../../util/Api';
 
@@ -15,26 +16,46 @@ export const SalesTax = (props) => {
       return { defaultSalesTax };
    })
    const onClickSave = () => {
-      axios.put(`/settings/sales-tax/${id}`, { taxName, taxRate })
-         .then(() => {
-            props.history.push('/app/settings/sales-tax-categories');
-            toast.success('Sales Tax - Saved.')
-         })
-         .catch(err => {
-            toast.error('Sales Tax - Failed to update.');
-         });
+      if(props.match.path === "/app/settings/sales-tax/:id") {
+         axios.put(`/settings/sales-tax/${id}`, { taxName, taxRate })
+            .then(() => {
+               props.history.push('/app/settings/sales-tax-categories');
+               toast.success('Sales Tax - Saved.')
+            })
+            .catch(err => {
+               toast.error('Sales Tax - Failed to update.');
+            });
+      }
+      if (props.match.path ==="/app/settings/sales-tax/create-new") {
+         axios.post(`/settings/sales-tax/create-new`, { taxName, taxRate })
+            .then(() => {
+               props.history.push('/app/settings/sales-tax-categories');
+               toast.success('Sales Tax - Created.')
+            })
+            .catch(err => {
+               toast.error('Sales Tax - Failed to create.');
+            });
+      }
    }
+   
+   const dispatch = useDispatch();
    useEffect(() => {
-      axios.get(`/settings/sales-tax/${id}`)
-         .then(({ data }) => {
-            const { status, taxName, taxRate } = data.salesTax;
-            setStatus(status);
-            setTaxName(taxName);
-            setTaxRate(taxRate);
-         })
-         .catch(err => {
-            toast.error('Sales Tax - Failed to fetch');
-         });
+      dispatch(getSalesCategories("current"));
+   }, []);
+   useEffect(() => {
+      console.log("********** props ", props);
+      if(props.match.path === "/app/settings/sales-tax/:id") {
+         axios.get(`/settings/sales-tax/${id}`)
+            .then(({ data }) => {
+               const { status, taxName, taxRate } = data.salesTax;
+               setStatus(status);
+               setTaxName(taxName);
+               setTaxRate(taxRate);
+            })
+            .catch(err => {
+               toast.error('Sales Tax - Failed to fetch');
+            });
+      }
       return () => { };
    }, [id]);
    return (
@@ -44,7 +65,12 @@ export const SalesTax = (props) => {
          </NavCrump>
          <div className="content">
             <div className="mb-5">
-               <h2>Update Sales Tax</h2>
+               {
+                  props.match.path === "/app/settings/sales-tax/:id" && <h2>Update Sales Tax</h2>
+               }
+               {
+                  props.match.path === "/app/settings/sales-tax/create-new" && <h2>New Sales Tax</h2>
+               }
             </div>
 
             <div>
@@ -68,7 +94,8 @@ export const SalesTax = (props) => {
                <div className="mb-5">
                   <label htmlFor="taxRate">Tax Rate</label>
                   <div className="input-group maxWidth-180">
-                     <input type="text" className="form-control" id="taxRate" name="taxRate" disabled
+                     <input type="text" className="form-control" id="taxRate" name="taxRate" 
+                        disabled={props.match.path === "/settings/sales-category/:id"}
                         value={taxRate}
                         onChange={(ev) => setTaxRate(ev.target.value)}
                      />

@@ -23,7 +23,10 @@ export default class Settings extends Component {
             <Route exact path="/app/settings/account-information" component={asyncComponent(() => import("./AccountInformation"))} />
             <Route exact path="/app/settings/your-data" component={asyncComponent(() => import("./YourData"))} />
 
+            <Route exact path="/app/settings/sales-category/create-new" component={asyncComponent(() => import("./SalesCategory"))} />
             <Route exact path="/app/settings/sales-category/:id" component={asyncComponent(() => import("./SalesCategory"))} />
+            
+            <Route exact path="/app/settings/sales-tax/create-new" component={asyncComponent(() => import("./SalesTax"))} />
             <Route exact path="/app/settings/sales-tax/:id" component={asyncComponent(() => import("./SalesTax"))} />
 
             <Route exact path="/app/settings/payment-details" component={asyncComponent(() => import("./PaymentDetails"))} />

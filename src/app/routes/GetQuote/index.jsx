@@ -328,19 +328,19 @@ class GetQuote extends Component {
    }
    componentDidUpdate(prevProps, prevState) {
       if (this.props.defaultSalesTax !== prevProps.defaultSalesTax || this.props.defaultSalesCategory !== prevProps.defaultSalesCategory) {
-         this.setState({
-            items: [{
-               category: "priceItem",
-               priceItem: { ...initPriceItem, tax: this.props.defaultSalesTax, itemCategory: this.props.defaultSalesCategory },
-            }]
-         });
+         if (this.props.match.path === "/app/quote/get")
+            this.setState({
+               items: [{
+                  category: "priceItem",
+                  priceItem: { ...initPriceItem, tax: this.props.defaultSalesTax, itemCategory: this.props.defaultSalesCategory },
+               }]
+            });
       }
    }
    componentWillUnmount() {
       window.removeEventListener('click', this.onClickOutsideHandler);
    }
    render() {
-      console.log(" GetQute initSettings ===> ", initQuoteSettings);
       console.log(" ^^^^^^^ GET QUOTE state ^^^^^^^^^^ ", this.state);
       console.log(" ^^^^^^^ GET QUOTE props ^^^^^^^^^^ ", this.props);
       const { location } = this.props;
@@ -352,6 +352,7 @@ class GetQuote extends Component {
             <div className="bg-body-light border-top border-bottom">
                <div className="content content-full py-3">
                   <div className="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
+
                      <h1 className="flex-sm-fill font-size-sm text-uppercase font-w700 mt-2 mb-0 mb-sm-2">
                         <Link to={linkTo}>
                            <i className="fa fa-arrow-left fa-fw mr-2" />

@@ -18,7 +18,6 @@ class AppRoot extends Component {
    }
    render() {
       const { match, location } = this.props;
-      console.log("this.props = ", this.props);
 
       let isBgGray = false;
       if (
