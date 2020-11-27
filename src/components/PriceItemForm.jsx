@@ -13,21 +13,7 @@ class PriceItemForm extends Component {
       this.state = {
          uploading: false,
          isSettingOpen: false,
-         isAddItemListOpen: false,
-
-         // fileArray: [],
-         // isOptional: false,
-         // isOptionSelected: false,
-
-         // isMultipleChoice: false,
-         // isEditableQuantity: false,
-         // isDiscount: false,
-         // isSubscription: false,
-         // isCostPriceMargin: false,
-         // costPrice: 0,
-         // margin: 20,
-
-         // itemTotal: 0,  // it should be state
+         isAddItemListOpen: false
       }
       this.hiddenFileInput = React.createRef();
       this.settingContainter = React.createRef();

@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { getSalesCategories } from '../../../actions/Settings';
 import NavCrump from '../../../components/NavCrump'
 import axios from '../../../util/Api';
+import { SALES_TAX_CATEGORIES_PATH, SALES_TAX_CREATE_PATH, SALES_TAX_UPDATE_PATH } from '../../../constants/PathNames';
 
 export const SalesTax = (props) => {
    const { id } = props.match.params;
@@ -16,20 +17,20 @@ export const SalesTax = (props) => {
       return { defaultSalesTax };
    })
    const onClickSave = () => {
-      if(props.match.path === "/app/settings/sales-tax/:id") {
+      if (props.match.path === SALES_TAX_UPDATE_PATH) {
          axios.put(`/settings/sales-tax/${id}`, { taxName, taxRate })
             .then(() => {
-               props.history.push('/app/settings/sales-tax-categories');
+               props.history.push(SALES_TAX_CATEGORIES_PATH);
                toast.success('Sales Tax - Saved.')
             })
             .catch(err => {
                toast.error('Sales Tax - Failed to update.');
             });
       }
-      if (props.match.path ==="/app/settings/sales-tax/create-new") {
+      if (props.match.path === SALES_TAX_CREATE_PATH) {
          axios.post(`/settings/sales-tax/create-new`, { taxName, taxRate })
             .then(() => {
-               props.history.push('/app/settings/sales-tax-categories');
+               props.history.push(SALES_TAX_CATEGORIES_PATH);
                toast.success('Sales Tax - Created.')
             })
             .catch(err => {
@@ -37,14 +38,14 @@ export const SalesTax = (props) => {
             });
       }
    }
-   
+
    const dispatch = useDispatch();
    useEffect(() => {
       dispatch(getSalesCategories("current"));
    }, []);
    useEffect(() => {
       console.log("********** props ", props);
-      if(props.match.path === "/app/settings/sales-tax/:id") {
+      if (props.match.path === SALES_TAX_UPDATE_PATH) {
          axios.get(`/settings/sales-tax/${id}`)
             .then(({ data }) => {
                const { status, taxName, taxRate } = data.salesTax;
@@ -60,16 +61,16 @@ export const SalesTax = (props) => {
    }, [id]);
    return (
       <React.Fragment>
-         <NavCrump linkTo={`/app/settings/sales-tax-categories`}>
+         <NavCrump linkTo={SALES_TAX_CATEGORIES_PATH}>
             Sales Tax
          </NavCrump>
          <div className="content">
             <div className="mb-5">
                {
-                  props.match.path === "/app/settings/sales-tax/:id" && <h2>Update Sales Tax</h2>
+                  props.match.path === SALES_TAX_UPDATE_PATH && <h2>Update Sales Tax</h2>
                }
                {
-                  props.match.path === "/app/settings/sales-tax/create-new" && <h2>New Sales Tax</h2>
+                  props.match.path === SALES_TAX_CREATE_PATH && <h2>New Sales Tax</h2>
                }
             </div>
 
@@ -94,7 +95,7 @@ export const SalesTax = (props) => {
                <div className="mb-5">
                   <label htmlFor="taxRate">Tax Rate</label>
                   <div className="input-group maxWidth-180">
-                     <input type="text" className="form-control" id="taxRate" name="taxRate" 
+                     <input type="text" className="form-control" id="taxRate" name="taxRate"
                         disabled={props.match.path === "/settings/sales-category/:id"}
                         value={taxRate}
                         onChange={(ev) => setTaxRate(ev.target.value)}
@@ -106,7 +107,7 @@ export const SalesTax = (props) => {
                </div>
                <div className="mb-4">
                   <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={onClickSave}>Save</button>
-                  <Link className="btn btn-lg btn-rounded btn-hero-secondary" to="/app/settings/sales-tax-categories">Cancel</Link>
+                  <Link className="btn btn-lg btn-rounded btn-hero-secondary" to={SALES_TAX_CATEGORIES_PATH}>Cancel</Link>
                </div>
             </div>
          </div>

@@ -130,7 +130,12 @@ export default class Quotes extends Component {
                                           </tr>
                                        );
                                        else if (item.status === "awaiting") return (
-                                          <tr className="mod-white" key={index} onClick={() => this.props.history.push(`/q/${item.entoken}`)}>
+                                          <tr className="mod-white" key={index} onClick={() => this.props.history.push({
+                                             pathname: `/q/${item.entoken}`,
+                                             state: {
+                                                from: this.props.location.pathname
+                                             }
+                                          })}>
                                              <td>
                                                 <span className="float-right ml-2">{toFixedFloat(item.quoteTotal)}</span>
                                                 <div className="u-ellipsis">
@@ -153,7 +158,12 @@ export default class Quotes extends Component {
                                           </tr>
                                        );
                                        else return (
-                                          <tr className="mod-blue" key={index} onClick={() => this.props.history.push(`/q/${item.entoken}`)}>
+                                          <tr className="mod-blue" key={index} onClick={() => this.props.history.push({
+                                             pathname: `/q/${item.entoken}`,
+                                             state: {
+                                                from: this.props.location.pathname
+                                             }
+                                          })}>
                                              <td>
                                                 <span className="float-right ml-2">{toFixedFloat(item.quoteTotal)}</span>
                                                 <div className="u-ellipsis">

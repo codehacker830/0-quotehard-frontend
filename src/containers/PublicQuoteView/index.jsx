@@ -224,6 +224,11 @@ class PublicQuoteView extends Component {
       const { loading, type } = commonData;
       const { quote, discussions } = publicView;
 
+      const { location } = this.props;
+      const linkTo = location.state && location.state.from ? location.state.from : "/app";
+      let linkName = "Dashboard";
+      if (location.state && location.state.from === QUOTE_PAGE_PATH) linkName = "Quotes";
+
       if (isMounting) return <div>loading...</div>;
       else if (this.props.match.path === '/q/:entoken/author-discuss') {
          if (checkIfTeamMember(authUser, teamMembers)) {
@@ -236,11 +241,9 @@ class PublicQuoteView extends Component {
          <React.Fragment>
             <main id="main-container">
                <VisiableOnlyAuthTeamMember>
-                  <React.Fragment>
-                     <NavCrump linkTo="/app">
-                        Dashboard
-                     </NavCrump>
-                  </React.Fragment>
+                  <NavCrump linkTo={linkTo}>
+                     {linkName}
+                  </NavCrump>
                </VisiableOnlyAuthTeamMember>
                <div className="quoteCanvas-bg" style={{ backgroundColor: appearanceSetting.colors.background }}>
 
@@ -317,10 +320,10 @@ class PublicQuoteView extends Component {
                                                       <span className="lighter">
                                                          <span className="util-no-wrap"><span className="dt-time" data-time="[1605900183,1,1]">moments ago</span>
                                                          </span>&nbsp;
-                                             <a className="discuss-edit-a"
+                                                         <a className="discuss-edit-a"
                                                             data-tg-click="{&quot;clickDiscussEdit&quot;:{&quot;id&quot;:&quot;2752395&quot;}}"
                                                             href="javascript:void(0)">Edit</a>&nbsp;
-                                          </span>
+                                                      </span>
                                                    </div>
                                                    <div className="clear" />
                                                    <div className="discuss-message">

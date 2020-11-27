@@ -32,7 +32,9 @@ import QuoteTotal from "../../../components/QuoteTotal";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from "../../../actions/Settings";
+import NavCrumpLeft from "../../../components/NavCrump/NavCrumpLeft";
 
+import { QUOTE_PAGE_PATH } from "../../../constants/PathNames";
 
 class GetQuote extends Component {
    constructor(props) {
@@ -346,77 +348,78 @@ class GetQuote extends Component {
       const { location } = this.props;
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
-      if (location.state && location.state.from === "/app/quotes") linkName = "Quotes";
+      if (location.state && location.state.from === QUOTE_PAGE_PATH) linkName = "Quotes";
       return (
          <React.Fragment>
-            <div className="bg-body-light border-top border-bottom">
+            {/* <div className="bg-body-light border-top border-bottom">
                <div className="content content-full py-3">
                   <div className="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
 
-                     <h1 className="flex-sm-fill font-size-sm text-uppercase font-w700 mt-2 mb-0 mb-sm-2">
+
+                     
+                  </div>
+               </div>
+            </div> */}
+            <NavCrump>
+               {/* <h1 className="flex-sm-fill font-size-sm text-uppercase font-w700 mt-2 mb-0 mb-sm-2">
                         <Link to={linkTo}>
                            <i className="fa fa-arrow-left fa-fw mr-2" />
                            <span className="text-primary">{linkName}</span>
                         </Link>
-                     </h1>
+                     </h1> */}
+               <NavCrumpLeft linkTo={linkTo}>{linkName}</NavCrumpLeft>
+               <div className={`dropdown ${this.props.match.path === "/app/quote/:id" ? "d-inline-block" : "d-none"}`} ref={this.actionsContainer}>
+                  <button type="button" className="btn btn-dual" onClick={() => this.setState({ show: !this.state.show })}>
+                     <span className="text-primary">Actions</span>
+                     <i className="fa fa-fw fa-angle-down ml-1 text-primary" />
+                  </button>
 
-                     <div className={`dropdown ${this.props.match.path === "/app/quote/:id" ? "d-inline-block" : "d-none"}`} ref={this.actionsContainer}>
-                        <button type="button" className="btn btn-dual" onClick={() => this.setState({ show: !this.state.show })}>
-                           <span className="text-primary">Actions</span>
-                           <i className="fa fa-fw fa-angle-down ml-1 text-primary" />
-                        </button>
-
-                        <div className={`dropdown-menu dropdown-menu-right p-0 ${this.state.show ? "show" : ""}`} style={{ minWidth: 250 }}>
-                           <ul className="nav-items my-0 py-1">
-                              <li>
-                                 <button className="dropdown-item media py-2">
-                                    <div className="mx-3">
-                                       <i className="fa fa-fw fa-arrow-alt-circle-right text-secondary" />
-                                    </div>
-                                    <div className="media-body font-size-sm pr-2">
-                                       <div className="font-w600">Mark as Sent(don't email)</div>
-                                    </div>
-                                 </button>
-                              </li>
-                              <li>
-                                 <button className="dropdown-item media py-2">
-                                    <div className="mx-3">
-                                       <i className="fa fa-fw fa-copy text-secondary" />
-                                    </div>
-                                    <div className="media-body font-size-sm pr-2">
-                                       <div className="font-w600">Copy</div>
-                                    </div>
-                                 </button>
-                              </li>
-                              <li>
-                                 <button className="dropdown-item media py-2">
-                                    <div className="mx-3">
-                                       <i className="fa fa-fw fa-plus-circle text-secondary" />
-                                    </div>
-                                    <div className="media-body font-size-sm pr-2">
-                                       <div className="font-w600">Copy to Template</div>
-                                    </div>
-                                 </button>
-                              </li>
-                              <li>
-                                 <button className="dropdown-item media py-2">
-                                    <div className="mx-3">
-                                       <i className="fa fa-fw fa-trash-alt text-secondary" />
-                                    </div>
-                                    <div className="media-body font-size-sm pr-2">
-                                       <div className="font-w600">Delete</div>
-                                    </div>
-                                 </button>
-                              </li>
-                           </ul>
-                        </div>
-                     </div>
+                  <div className={`dropdown-menu dropdown-menu-right p-0 ${this.state.show ? "show" : ""}`} style={{ minWidth: 250 }}>
+                     <ul className="nav-items my-0 py-1">
+                        <li>
+                           <button className="dropdown-item media py-2">
+                              <div className="mx-3">
+                                 <i className="fa fa-fw fa-arrow-alt-circle-right text-secondary" />
+                              </div>
+                              <div className="media-body font-size-sm pr-2">
+                                 <div className="font-w600">Mark as Sent(don't email)</div>
+                              </div>
+                           </button>
+                        </li>
+                        <li>
+                           <button className="dropdown-item media py-2">
+                              <div className="mx-3">
+                                 <i className="fa fa-fw fa-copy text-secondary" />
+                              </div>
+                              <div className="media-body font-size-sm pr-2">
+                                 <div className="font-w600">Copy</div>
+                              </div>
+                           </button>
+                        </li>
+                        <li>
+                           <button className="dropdown-item media py-2">
+                              <div className="mx-3">
+                                 <i className="fa fa-fw fa-plus-circle text-secondary" />
+                              </div>
+                              <div className="media-body font-size-sm pr-2">
+                                 <div className="font-w600">Copy to Template</div>
+                              </div>
+                           </button>
+                        </li>
+                        <li>
+                           <button className="dropdown-item media py-2">
+                              <div className="mx-3">
+                                 <i className="fa fa-fw fa-trash-alt text-secondary" />
+                              </div>
+                              <div className="media-body font-size-sm pr-2">
+                                 <div className="font-w600">Delete</div>
+                              </div>
+                           </button>
+                        </li>
+                     </ul>
                   </div>
                </div>
-            </div>
-            {/* <NavCrump linkTo={linkTo}>
-               {linkName}
-            </NavCrump> */}
+            </NavCrump>
             <div className="content bg-custom">
                <div className="mt-6 mb-5">
                   <div className="row">
@@ -601,7 +604,7 @@ class GetQuote extends Component {
                      </button>
                      <button
                         className="btn btn-lg btn-rounded btn-hero-secondary"
-                        onClick={() => this.props.history.push("/app/quotes")}
+                        onClick={() => this.props.history.push(QUOTE_PAGE_PATH)}
                      >
                         Cancel
                      </button>

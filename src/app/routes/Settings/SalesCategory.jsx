@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { getSalesTaxes } from '../../../actions/Settings';
 import NavCrump from '../../../components/NavCrump'
 import axios from '../../../util/Api';
+import { SALES_CATEGORY_CREATE_PATH, SALES_CATEGORY_UPDATE_PATH, SALES_TAX_CATEGORIES_PATH } from '../../../constants/PathNames';
 
 export const SalesCategory = (props) => {
    const { id } = props.match.params;
@@ -12,26 +13,26 @@ export const SalesCategory = (props) => {
    const [categoryName, setCategoryName] = useState("");
    const [description, setDescription] = useState("");
    const [defaultSalesTax, setDefaultSalesTax] = useState("0");
-   
+
    const settings = useSelector(state => {
       const { defaultSalesCategory, salesTaxes } = state.settings;
       return { defaultSalesCategory, salesTaxes };
    });
    const onClickSave = () => {
-      if (props.match.path === "/app/settings/sales-category/:id") {
+      if (props.match.path === SALES_CATEGORY_UPDATE_PATH) {
          axios.put(`/settings/sales-category/${id}`, { categoryName, description, defaultSalesTax })
             .then(() => {
-               props.history.push('/app/settings/sales-tax-categories');
+               props.history.push(SALES_TAX_CATEGORIES_PATH);
                toast.success('Sales Category - Saved.')
             })
             .catch(err => {
                toast.error('Sales Category - Failed to update.');
             });
       }
-      if (props.match.path === "/app/settings/sales-category/create-new") {
+      if (props.match.path === SALES_CATEGORY_CREATE_PATH) {
          axios.post(`/settings/sales-category/create-new`, { categoryName, description, defaultSalesTax })
             .then(() => {
-               props.history.push('/app/settings/sales-tax-categories');
+               props.history.push(SALES_TAX_CATEGORIES_PATH);
                toast.success('Sales Category - Created.')
             })
             .catch(err => {
@@ -45,7 +46,7 @@ export const SalesCategory = (props) => {
       dispatch(getSalesTaxes("current"));
    }, []);
    useEffect(() => {
-      if (props.match.path === "/app/settings/sales-category/:id") {
+      if (props.match.path === SALES_CATEGORY_UPDATE_PATH) {
          axios.get(`/settings/sales-category/${id}`)
             .then(({ data }) => {
                console.log("dataaaa", data);
@@ -64,13 +65,13 @@ export const SalesCategory = (props) => {
 
    return (
       <React.Fragment>
-         <NavCrump linkTo={`/app/settings/sales-tax-categories`}>
+         <NavCrump linkTo={SALES_TAX_CATEGORIES_PATH}>
             Sales Tax
          </NavCrump>
          <div className="content">
             <div className="mb-5">
-               {props.match.path === "/app/settings/sales-category/:id" && <h2>Update Sales Category</h2>}
-               {props.match.path === "/app/settings/sales-category/create-new" && <h2>New Sales Category</h2>}
+               {props.match.path === SALES_CATEGORY_UPDATE_PATH && <h2>Update Sales Category</h2>}
+               {props.match.path === SALES_CATEGORY_CREATE_PATH && <h2>New Sales Category</h2>}
             </div>
 
             <div>
