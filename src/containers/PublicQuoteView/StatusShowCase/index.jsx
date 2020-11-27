@@ -7,6 +7,8 @@ import StatOpenTimes from './StatOpenTimes';
 import StatQATimes from './StatQATimes';
 import StatNoteTimes from './StatNoteTimes';
 import { withRouter } from 'react-router-dom';
+import axios from '../../../util/Api';
+import { toast } from 'react-toastify';
 
 class StatusShowCase extends Component {
    constructor(props) {
@@ -23,12 +25,12 @@ class StatusShowCase extends Component {
       };
       axios.post('/quotes/send', payload)
          .then(({ data }) => {
-            toast.success("Quote email was sent.", toastSuccessConfig);
+            toast.success("Quote email was sent.");
             props.history.push(`/q/${data.entoken}`);
          })
          .catch(err => {
             console.error(" error => ", err);
-            toast.error("Failed to send quote.", toastErrorConfig);
+            toast.error("Failed to send quote.");
          });
    }
    onClickEditDraft = () => {
