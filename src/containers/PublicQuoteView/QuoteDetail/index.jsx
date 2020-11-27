@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getTeamMembers } from '../../../actions/Team';
 import { formatDateTime } from '../../../util';
 import PreparedForInline from './PreparedForInline';
 import FullCustomerDetailInline from './FullCustomerDetailInline';
@@ -168,5 +167,4 @@ class QuoteDetail extends Component {
    }
 }
 const mapStateToProps = ({ auth, appearanceSetting, teamSetting }) => ({ auth, appearanceSetting, teamSetting });
-const mapDispatchToProps = { getTeamMembers };
-export default connect(mapStateToProps, mapDispatchToProps)(QuoteDetail);
+export default connect(mapStateToProps)(QuoteDetail);

@@ -119,7 +119,6 @@ export const userSignOut = () => {
       // });
    }
 };
-
 export const userUpdate = ({ firstName, lastName, email, image, password }) => {
    console.log(firstName, lastName, email, image, password);
    return (dispatch) => {

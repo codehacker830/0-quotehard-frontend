@@ -55,7 +55,7 @@ class App extends Component {
       if (location.pathname === '/') {
          if (token === null) {
             return (<Redirect to={'/sign-in'} />);
-         } else if (initURL === '' || initURL === '/' || initURL === '/sign-in') {
+         } else if (initURL === '' || initURL === '/' || initURL === '/sign-in' || initURL === '/sign-in/') {
             return (<Redirect to={'/app'} />);
          } else {
             return (<Redirect to={initURL} />);
@@ -74,7 +74,7 @@ class App extends Component {
                   <Route exact path='/sign-in' component={SignIn} />
                   <Route exact path='/sign-in/invite/i/already-have-access/:invitationEntoken' component={AlreadyHaveAccess} />
                   <Route exact path='/sign-in/invite/i/:invitationEntoken' component={InviteValidation} />
-                  
+
                   <Route exact path='/new-account' component={SignUp} />
                   <Route exact path='/request-password' component={RequestPassword} />
                   <Route exact path='/request-password/sent' component={RequestPasswordSent} />

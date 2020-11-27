@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { getTeamMembers } from '../../../../actions/Team'
 import NavCrump from '../../../../components/NavCrump'
 import { INVITE_FORM_PATH, SETTINGS_PATH } from '../../../../constants/PathNames'
 
 export const Team = (props) => {
+   const dispatch = useDispatch();
+   useEffect(() => {
+      dispatch(getTeamMembers());
+      return () => { };
+   }, []);
    return (
       <React.Fragment>
          <NavCrump linkTo={'/app/settings'}>

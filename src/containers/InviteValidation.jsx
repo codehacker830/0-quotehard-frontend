@@ -14,11 +14,11 @@ export default class InviteValidation extends Component {
          const { invitationEntoken } = this.props.match.params;
          axios.post('/settings/team/validate-invitation', { invitationEntoken })
             .then(({ data }) => {
-               const { accountCompany, firstName, lastName, email } = data;
+               const { accountCompany, firstName, lastName, email, role } = data;
                this.setState({ loading: false });
                this.props.history.push({
                   pathname: '/sign-in',
-                  state: { accountCompany, firstName, lastName, email }
+                  state: { accountCompany, firstName, lastName, email, role }
                });
             })
             .catch(err => {

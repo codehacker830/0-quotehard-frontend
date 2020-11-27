@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Link } from "react-router-dom";
 import { userSignIn } from "../actions/Auth";
-import { toastErrorConfig, toastWarningConfig } from "../util/toastrConfig";
 
 class SignIn extends Component {
    state = {
@@ -14,16 +13,20 @@ class SignIn extends Component {
    onClickSignIn = (ev) => {
       const { email, password } = this.state;
       if (email === "" || password === "") {
-         toast.warn("Email and password fields are required.", toastWarningConfig);
+         toast.warn("Email and password fields are required.");
       }
       else this.props.userSignIn({ email, password });
    };
 
-   componentWillReceiveProps(nextProps) {
-      if (nextProps.auth.authUser) {
-         this.props.history.push(this.props.auth.initURL === '' || this.props.auth.initURL === '/sign-in' ? '/app' : this.props.auth.initURL);
-      } else if (nextProps.commonData.error !== "") {
-         toast.error(nextProps.commonData.error, toastErrorConfig);
+   componentDidUpdate(prevProps, prevState) {
+      const { authUser, initURL, commonData } = this.props;
+      console.log("sign in this.props --->", this.props);
+      console.log("initURL --->", initURL);
+      
+      if (authUser) {
+         this.props.history.push(initURL === '' || initURL === '/sign-in' || initURL === '/sign-in/' ? '/app' : initURL);
+      } else if (commonData.error !== "") {
+         toast.error(commonData.error);
       }
    };
    render() {
@@ -106,7 +109,9 @@ class SignIn extends Component {
 }
 
 const mapStateToProps = ({ auth, commonData }) => {
-   return { auth, commonData };
+   const { authUser, initURL } = auth;
+
+   return { authUser, initURL, commonData };
 }
 const mapDispatchToProps = { userSignIn };
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

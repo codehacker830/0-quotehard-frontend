@@ -4,6 +4,13 @@ import { Link, Redirect } from 'react-router-dom';
 import { userSignOut } from '../actions/Auth';
 
 class AlreadyHaveAccess extends Component {
+   onHandleClick = () => {
+      this.props.userSignOut();
+      this.props.history.push({
+         pathname: '/sign-in',
+         state: { accountCompany, firstName, lastName, email }
+      });
+   }
    render() {
       const { authUser } = this.props.auth;
       if (authUser) return (
@@ -16,7 +23,7 @@ class AlreadyHaveAccess extends Component {
                         <div className="col-sm-8 col-xl-6">
                            <h1 className="font-w700">You’re signed in currently, as {authUser.email}</h1>
                            <div className="form-group mb-6">
-                              <button className="btn btn-default btn-lg" onClick={this.props.userSignOut}>
+                              <button className="btn btn-default btn-lg" onClick={() => this.onHandleClick()}>
                                  Sign out and create a new sign in
                               </button>
                            </div>
