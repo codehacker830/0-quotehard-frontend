@@ -13,6 +13,7 @@ import Error404 from '../components/Error404';
 import RequestPasswordExpired from './RequestPasswordExpired';
 import ChangePassword from './ChangePassword';
 import AlreadyHaveAccess from './AlreadyHaveAccess';
+import InviteValidation from './InviteValidation';
 
 const RestrictedRoute = ({ component: Component, token, ...rest }) => {
    return (
@@ -72,7 +73,7 @@ class App extends Component {
                   <Route exact path='/q/:entoken' component={asyncComponent(() => import("./PublicQuoteView"))} />
                   <Route exact path='/sign-in' component={SignIn} />
                   <Route exact path='/sign-in/invite/i/already-have-access/:invitationEntoken' component={AlreadyHaveAccess} />
-                  <Route exact path='/sign-in/invite/i/:invitationEntoken' component={SignIn} />
+                  <Route exact path='/sign-in/invite/i/:invitationEntoken' component={InviteValidation} />
                   
                   <Route exact path='/new-account' component={SignUp} />
                   <Route exact path='/request-password' component={RequestPassword} />
