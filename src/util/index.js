@@ -148,7 +148,9 @@ export const SwitchLogoLayoutClass = (contactDetailLayout, layout) => {
 
 export const checkIfTeamMember = (authUser, teamMembers) => {
    if (!authUser) return false;
-   if (teamMembers.length === 0) return false;
+   console.log("teamMembersteamMembers =", teamMembers);
+
+   if (!teamMembers || !teamMembers.length) return false;
    const val = teamMembers.find((member) => member._id === authUser._id);
    if (val) return true;
    else return false;

@@ -5,10 +5,11 @@ import {
    FETCH_ERROR,
    GET_QUOTE,
    GET_DISCUSSIONS,
-   UPDATE_QUOTE
+   UPDATE_QUOTE,
+   GET_TEAMMATES
 } from '../constants/ActionTypes';
 
-export const getQuote = () => {
+export const getPublicDataWithEntoken = () => {
    const entoken = localStorage.getItem('entoken');
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
@@ -18,6 +19,7 @@ export const getQuote = () => {
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: GET_QUOTE, payload: data.quote });
          dispatch({ type: GET_DISCUSSIONS, payload: data.quote.discussions ? data.quote.discussions : [] });
+         dispatch({ type: GET_TEAMMATES, payload: data.teamMembers });
       } catch (err) {
          dispatch({ type: FETCH_ERROR, payload: err.message });
          console.log("Error****:", err.message);

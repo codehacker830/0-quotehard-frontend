@@ -22,7 +22,7 @@ import FullWrapper from './components/FullWrapper';
 import QuoteDetailWrapper from './components/QuoteDetailWrapper';
 import QuoteItemWrapper from './components/QuoteItemWrapper';
 import { SwitchQuoteLayoutClass } from '../../util/index';
-import { getQuote } from '../../actions/PublicView';
+import { getPublicDataWithEntoken } from '../../actions/PublicView';
 import VisiableOnlyAuthTeamMember from './components/VisiableOnlyAuthTeamMember';
 import DeclineCommentShow from './components/DeclineCommentShow';
 import QuoteItem from './components/QuoteItem';
@@ -210,7 +210,7 @@ class PublicQuoteView extends Component {
       localStorage.setItem('entoken', entoken);
       const { auth } = this.props;
       if (this.mounted) {
-         await this.props.getQuote();
+         await this.props.getPublicDataWithEntoken();
          this.setState({ isMounting: false });
          if (auth.authUser) {
             this.props.getTeamMembers();
@@ -581,5 +581,5 @@ class PublicQuoteView extends Component {
 const mapStateToProps = ({ auth, commonData, appearanceSetting, teamSetting, publicView }) => {
    return { auth, commonData, appearanceSetting, teamSetting, publicView };
 }
-const mapDispatchToProps = { setInitUrl, userSignOut, getQuote, getTeamMembers };
+const mapDispatchToProps = { setInitUrl, userSignOut, getPublicDataWithEntoken, getTeamMembers };
 export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);
