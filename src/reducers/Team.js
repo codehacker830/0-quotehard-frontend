@@ -1,5 +1,5 @@
 import {
-   GET_TEAMMATES
+   GET_TEAMMEMBERS
 } from '../constants/ActionTypes';
 
 const initialSettings = {
@@ -8,7 +8,7 @@ const initialSettings = {
 
 export default (state = initialSettings, action) => {
    switch (action.type) {
-      case GET_TEAMMATES:
+      case GET_TEAMMEMBERS:
          return {
             ...state,
             teamMembers: action.payload

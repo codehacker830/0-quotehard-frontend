@@ -21,7 +21,7 @@ export const USER_TOKEN_SET = 'user_token_set';
 
 // Settings
 export const QUOTE_DEFAULTS = 'quote_defaults';
-export const GET_TEAMMATES = 'get_teammates';
+export const GET_TEAMMEMBERS = 'get_teammates';
 export const GET_SALES_CATEGORIES = 'get_sales_categories';
 export const GET_SALES_TAXES = 'get_sales_taxes';
 

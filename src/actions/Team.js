@@ -3,7 +3,7 @@ import {
    FETCH_START,
    FETCH_SUCCESS,
    FETCH_ERROR,
-   GET_TEAMMATES
+   GET_TEAMMEMBERS
 } from '../constants/ActionTypes';
 import { setInitUrl, userSignOut } from './Auth';
 
@@ -13,7 +13,7 @@ export const getTeamMembers = () => {
       axios.get('/settings/team/real-members').then(({ data }) => {
          console.log("team-members response : ", data);
          dispatch({ type: FETCH_SUCCESS });
-         dispatch({ type: GET_TEAMMATES, payload: data.teamMembers });
+         dispatch({ type: GET_TEAMMEMBERS, payload: data.members });
       }).catch((err) => {
          dispatch({ type: FETCH_ERROR, payload: err.message });
          console.log("Error****:", err.message);
@@ -28,7 +28,7 @@ export const getTeamMembers = () => {
 //       axios.post('/entoken/team-members').then(({ data }) => {
 //          console.log("team-members response : ", data);
 //          dispatch({ type: FETCH_SUCCESS });
-//          dispatch({ type: GET_TEAMMATES, payload: data.teamMembers });
+//          dispatch({ type: GET_TEAMMEMBERS, payload: data.teamMembers });
 //       }).catch((err) => {
 //          dispatch({ type: FETCH_ERROR, payload: err.message });
 //          console.log("Error****:", err.message);
