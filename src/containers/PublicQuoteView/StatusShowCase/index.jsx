@@ -26,7 +26,7 @@ class StatusShowCase extends Component {
       axios.post('/quotes/send', payload)
          .then(({ data }) => {
             toast.success("Quote email was sent.");
-            props.history.push(`/q/${data.entoken}`);
+            this.props.history.push(`/q/${data.entoken}`);
          })
          .catch(err => {
             console.error(" error => ", err);

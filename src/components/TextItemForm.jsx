@@ -61,8 +61,8 @@ export default class TextItemForm extends Component {
       window.removeEventListener('click', this.onClickOutsideHandle);
    }
    render() {
-      console.log("TextItemForm State -------", this.state);
-      console.log("TextItemForm Props -------", this.props);
+      console.log("TextItemForm State ______", this.state);
+      console.log("TextItemForm Props ______", this.props);
       return (
          <React.Fragment>
             {/* ToolWrapper */}
@@ -96,7 +96,7 @@ export default class TextItemForm extends Component {
                            style={{
                               position: "absolute",
                               zIndex: 99,
-                              width: "150px",
+                              width: 150,
                               height: this.props.isNote ? 70 : 155
                            }}>
                            {

@@ -5,10 +5,9 @@ import QuoteTotalHasNoTerm from './QuoteTotalHasNoTerm';
 export default class QuoteTotal extends Component {
    render() {
       const { settings, items } = this.props;
-      console.log("__________________________________ checkIfHasTerm(items) _____________________", checkIfHasTerm(items));
+      console.log("_________ checkIfHasTerm(items) ___________", checkIfHasTerm(items));
       console.log(" --------- QuoteTotal Props ---------> ", this.props);
-      const pItems = this.props.items.filter((item, index) => item.category === "priceItem");
-      console.log(">>>>>>>>>>>>>> priceItemFiltered >>>>>>", pItems);
+      const pItems = this.props.items.filter(item => item.category === "priceItem");
 
       let isTaxEnable = false;
       let isSubscriptionEnable = false;

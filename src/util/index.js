@@ -235,12 +235,10 @@ export const numberOfOption = (items) => {
 //    return self.indexOf(value) === index;
 // }
 function getUniqueTaxArr(taxArr) {
-   console.error("taxArr -->", taxArr);
    if (!Array.isArray(taxArr)) return [];
    const resArr = [];
    taxArr.forEach((tax) => {
       const i = resArr.findIndex(x => x._id == tax._id);
-      console.error(" tax ------>", tax);
       if (i <= -1 && tax.taxRate != 0) {
          resArr.push(tax);
       }
@@ -266,7 +264,6 @@ export const differentTaxIdArrGroup = (items) => {
          const { priceItem } = item;
          if (!priceItem.isSubscription) {
             if (checkIfItemWasSelected(priceItem)) {
-               console.error(" +++ priceItem.tax ++ ", priceItem.tax)
                if (priceItem.tax) ArrUniqueTaxHasNoTerm.push(priceItem.tax);
             }
          } else {
@@ -276,8 +273,6 @@ export const differentTaxIdArrGroup = (items) => {
          }
       }
    });
-   console.error("ArrUniqueTaxHasNoTerm", ArrUniqueTaxHasNoTerm);
-   console.error("ArrUniqueTaxHasTerm", ArrUniqueTaxHasTerm);
    return {
       ArrUniqueTaxHasNoTerm: getUniqueTaxArr(ArrUniqueTaxHasNoTerm),
       ArrUniqueTaxHasTerm: getUniqueTaxArr(ArrUniqueTaxHasTerm)

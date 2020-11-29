@@ -69,7 +69,7 @@ class PriceItemForm extends Component {
    }
 
    render() {
-      console.log(" priceitem props ===== ", this.props);
+      console.log(" priceitem props =====> ", this.props);
       const { salesCatgories, salesTaxes } = this.props;
       return (
          <React.Fragment>
