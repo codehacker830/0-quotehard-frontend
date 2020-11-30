@@ -19,8 +19,13 @@ class SignIn extends Component {
    };
    componentDidMount() {
       if (this.props.location.state) {
-         const { _id, firstName, lastName, email } = this.props.location.state;
+         const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = this.props.location.state;
          this.setState({ email });
+         isAlreadyAccepted = (status === "accepted")
+            && (invitationStatus === "accepted")
+            && (accountCompany === invitedBy);
+         if (isAlreadyAccepted) toast.success(`⭐ That invite has previously been accepted.`);
+         
       }
    }
    componentDidUpdate(prevProps, prevState) {
@@ -33,9 +38,16 @@ class SignIn extends Component {
       console.log(" SIGN IN STATE +++>", this.state);
       console.log(" SIGN IN PROPS +++>", this.props);
       const { isRemember, email, password } = this.state;
-      const { history, location } = this.props;
-      const isInvited = !!location.state;
-      console.log("isInvited ---", isInvited);
+      const isInvited = !!this.props.location.state;
+      const isAlreadyAccepted = false;
+      if (isInvited) {
+         const { status, invitationStatus, accountCompany, invitedBy } = this.props.location.state;
+         isAlreadyAccepted = (status === "accepted")
+            && (invitationStatus === "accepted")
+            && (accountCompany === invitedBy);
+      }
+      console.log("isInvited _____________", isInvited);
+      console.log("isAlreadyAccepted Account ______________", isAlreadyAccepted);
 
       return (
          <main id="main-container">
@@ -50,13 +62,14 @@ class SignIn extends Component {
                         </Link>
                         <span className="text-dark font-w700 font-size-h2">Sign in to Quotient</span>
                         {
-                           true &&
-                           <p className="font-size-h4">
-                              To accept the invite, sign in below or <Link to={{
-                                 pathname: '/sign-in/invite/create',
-                                 state: this.props.location.state
-                              }}>create a new sign in here…</Link>
-                           </p>
+                           isInvited && !isAlreadyAccepted ?
+                              <p className="font-size-h4">
+                                 To accept the invite, sign in below or <Link to={{
+                                    pathname: '/sign-in/invite/create',
+                                    state: this.props.location.state
+                                 }}>create a new sign in here…</Link>
+                              </p>
+                              : null
                         }
                      </div>
                      {/* END Header */}

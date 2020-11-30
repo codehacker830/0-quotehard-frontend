@@ -26,7 +26,7 @@ export const InviteValidation = (props) => {
 
          axios.post('/settings/team/validate-invitation', { invitationEntoken })
             .then(({ data }) => {
-               // const { _id, firstName, lastName, email, status, inviationStatus } = data;
+               // const { _id, firstName, lastName, email, status, invitationStatus } = data;
                console.log(" invitation link validated data =>", data);
                setIsLoading(false);
                setAccountInfo(data);
@@ -65,17 +65,18 @@ export const InviteValidation = (props) => {
       <Redirect to={`/sign-in/invite/i/already-have-access/${invitationEntoken}`} />
    );
    else {
-      const { _id, firstName, lastName, email, status, inviationStatus } = accountInfo;
-      if (status === 'pending') return (
-         <Redirect to={{
-            pathname: '/sign-in/invite/create',
-            state: { _id, firstName, lastName, email }
-         }} />
-      );
-      else if (status === 'approved') return (
+      const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = accountInfo;
+      // if(invitationStatus === "pending") 
+      if (status === 'approved') return (
          <Redirect to={{
             pathname: '/sign-in',
-            state: { _id, firstName, lastName, email }
+            state: accountInfo
+         }} />
+      );
+      else return (
+         <Redirect to={{
+            pathname: '/sign-in/invite/create',
+            state: accountInfo
          }} />
       );
    }
