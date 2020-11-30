@@ -25,11 +25,11 @@ class SignIn extends Component {
          isAlreadyAccepted = (status === "approved")
             && (invitationStatus === "accepted")
             && (accountCompany === invitedBy);
-         if (isAlreadyAccepted) toast.success(`⭐ That invite has previously been accepted.`);
+         if (isAlreadyAccepted) toast.success(`⭐ That invite has previously been accepted.`, { autoClose: false });
       }
    }
    componentDidUpdate(prevProps, prevState) {
-      const { authUser, initURL, commonData, location } = this.props;
+      const { authUser, initURL, location } = this.props;
       if (authUser) {
          this.props.history.push(initURL === '' || initURL === '/sign-in' || initURL === '/sign-in/' ? '/app' : initURL);
       }
@@ -138,10 +138,10 @@ class SignIn extends Component {
    }
 }
 
-const mapStateToProps = ({ auth, commonData }) => {
+const mapStateToProps = ({ auth }) => {
    const { authUser, initURL } = auth;
 
-   return { authUser, initURL, commonData };
+   return { authUser, initURL };
 }
 const mapDispatchToProps = { userSignIn };
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
