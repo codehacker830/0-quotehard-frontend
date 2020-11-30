@@ -21,11 +21,11 @@ class SignIn extends Component {
       if (this.props.location.state) {
          const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = this.props.location.state;
          this.setState({ email });
-         isAlreadyAccepted = (status === "accepted")
+
+         isAlreadyAccepted = (status === "approved")
             && (invitationStatus === "accepted")
             && (accountCompany === invitedBy);
          if (isAlreadyAccepted) toast.success(`⭐ That invite has previously been accepted.`);
-         
       }
    }
    componentDidUpdate(prevProps, prevState) {
