@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
+import { userSignUpByInvitation } from '../actions/Auth';
 
-export const CreateWithInvitation = (props) => {
+export const InviteCreate = (props) => {
    const [firstName, setFirstName] = useState("");
    const [lastName, setLastName] = useState("");
    const [email, setEmail] = useState("");
@@ -9,13 +11,20 @@ export const CreateWithInvitation = (props) => {
 
    useEffect(() => {
       const { state } = props.location;
+      console.log(" create with invitation ===> ", props.location)
       if (state) {
-         const { _id, accountCompany, firstName, lastName, email, role } = state;
+         const { _id, firstName, lastName, email } = state;
          setFirstName(firstName);
          setLastName(lastName);
          setEmail(email);
+      } else {
+         props.history.push('/sign-in');
       }
    }, []);
+   const onHandleClick = () => {
+      const { _id } = props.location.state;
+      props.userSignUpByInvitation({ _id, firstName, lastName, email, password, history: props.history });
+   }
    return (
       <main id="main-container">
          <div className="row no-gutters">
@@ -63,14 +72,13 @@ export const CreateWithInvitation = (props) => {
                         </div>
                         <div className="form-group maxWidth-500">
                            <label htmlFor="invitationPassword">Password</label>
-                           <input type="text" className="form-control rounded-0" id="invitationPassword" name="invitationPassword" placeholder=""
+                           <input type="password" className="form-control rounded-0" id="invitationPassword" name="invitationPassword" placeholder=""
                               value={password}
                               onChange={ev => setPassword(ev.target.value)}
                            />
                         </div>
                         <div className="form-group pt-3">
-                           <button type="button" className="btn btn-lg btn-primary">Let's Get Started...</button>
-
+                           <button type="button" className="btn btn-lg btn-primary" onClick={onHandleClick}>Let's Get Started...</button>
                         </div>
                      </div>
                   </div>
@@ -81,5 +89,5 @@ export const CreateWithInvitation = (props) => {
       </main>
    )
 }
-
-export default CreateWithInvitation
+const mapDispatchToProps = { userSignUpByInvitation };
+export default connect(() => ({}), mapDispatchToProps)(InviteCreate);

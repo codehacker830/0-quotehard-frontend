@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { getTeamMembers } from '../../../../actions/Team'
 import NavCrump from '../../../../components/NavCrump'
 import { INVITE_FORM_PATH, SETTINGS_PATH } from '../../../../constants/PathNames'
 import axios from '../../../../util/Api'
@@ -38,9 +36,9 @@ export const Team = (props) => {
          </NavCrump>
          <div className="content">
             <h1>Team Members</h1>
-            <div className="maxWidth-800">
+            <div className="">
                <div className="mb-5">
-                  <Link className="btn btn-lg btn-hero-success" to={INVITE_FORM_PATH}>Send Invitation</Link>
+                  <Link className="btn btn-lg btn-success" to={INVITE_FORM_PATH}>Send Invitation</Link>
                </div>
 
                <table className="quotient-table mb-5">

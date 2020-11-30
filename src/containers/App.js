@@ -14,7 +14,8 @@ import RequestPasswordExpired from './RequestPasswordExpired';
 import ChangePassword from './ChangePassword';
 import AlreadyHaveAccess from './AlreadyHaveAccess';
 import InviteValidation from './InviteValidation';
-import CreateWithInvitation from './CreateWithInvitation';
+import InviteCreate from './InviteCreate';
+import InviteExisting from './InviteExisting';
 
 const RestrictedRoute = ({ component: Component, token, ...rest }) => {
    return (
@@ -44,10 +45,13 @@ class App extends Component {
    }
 
    componentWillReceiveProps(nextProps) {
+      console.error(">> APP nextProps ==>", nextProps);
       if (nextProps.token) {
+         console.error(">> Axios header token set <<")
          axios.defaults.headers.common['Authorization'] = "Bearer " + nextProps.token;
       }
       if (nextProps.token && !nextProps.authUser) {
+         console.error(">> Get ME from Token <<")
          this.props.getUser();
       }
    }
@@ -73,7 +77,8 @@ class App extends Component {
                   <Route exact path='/q/:entoken/accepted' component={asyncComponent(() => import("./ThankyouPage"))} />
                   <Route exact path='/q/:entoken' component={asyncComponent(() => import("./PublicQuoteView"))} />
                   <Route exact path='/sign-in' component={SignIn} />
-                  <Route exact path='/sign-in/invite/create' component={CreateWithInvitation} />
+                  <Route exact path='/sign-in/invite/create' component={InviteCreate} />
+                  <Route exact path='/sign-in/invite/existing' component={InviteExisting} />
                   <Route exact path='/sign-in/invite/i/already-have-access/:invitationEntoken' component={AlreadyHaveAccess} />
                   <Route exact path='/sign-in/invite/i/:invitationEntoken' component={InviteValidation} />
 

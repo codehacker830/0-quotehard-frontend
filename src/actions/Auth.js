@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import {
    FETCH_ERROR,
    FETCH_START,
@@ -58,14 +59,14 @@ export const userSignIn = ({ email, password, isRemember }) => {
          }
       }).catch((error) => {
          // if(error.response.status === 422) dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
-         // else 
-         dispatch({ type: FETCH_ERROR, payload: "Invalid credentials." });
+         toast.error('Email or password is invalid.');
+         dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
          console.log("Error****:", error.message);
       });
    }
 };
 
-export const userSignUp = ({ firstName, lastName, email, password, companyName, location, role, isOwner }) => {
+export const userSignUp = ({ firstName, lastName, email, password, companyName, location }) => {
    return (dispatch) => {
       dispatch({ type: FETCH_START });
       axios.post('/account', {
@@ -74,8 +75,7 @@ export const userSignUp = ({ firstName, lastName, email, password, companyName, 
          email,
          password,
          companyName,
-         location,
-         role, isOwner
+         location
       }
       ).then(({ data }) => {
          if (data.account) {
@@ -84,6 +84,31 @@ export const userSignUp = ({ firstName, lastName, email, password, companyName, 
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
             dispatch({ type: USER_DATA, payload: data.account });
+         } else {
+            console.log("payload: data.error", data.error);
+            dispatch({ type: FETCH_ERROR, payload: "Network Error" });
+         }
+      }).catch(function (error) {
+         dispatch({ type: FETCH_ERROR, payload: error.message });
+         console.log("Error****:", error.message);
+      });
+   }
+};
+
+
+
+export const userSignUpByInvitation = ({ _id, accountCompany, firstName, lastName, email, password, history }) => {
+   return (dispatch) => {
+      dispatch({ type: FETCH_START });
+      axios.post('/invited-account', { _id, accountCompany, firstName, lastName, email, password }
+      ).then(({ data }) => {
+         if (data.account) {
+            localStorage.setItem("token", JSON.stringify(data.access_token));
+            axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
+            dispatch({ type: FETCH_SUCCESS });
+            dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
+            dispatch({ type: USER_DATA, payload: data.account });
+            history.push('/app');
          } else {
             console.log("payload: data.error", data.error);
             dispatch({ type: FETCH_ERROR, payload: "Network Error" });

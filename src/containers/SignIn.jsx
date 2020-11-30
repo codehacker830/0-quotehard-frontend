@@ -8,34 +8,25 @@ class SignIn extends Component {
    state = {
       isRemember: true,
       email: "",
-      password: "",
-
-      _id: "",
-      accountCompany: "",
-      firstName: "",
-      lastName: "",
-      role: false
+      password: ""
    };
    onClickSignIn = () => {
       const { email, password, isRemember } = this.state;
       if (email === "" || password === "") {
-         toast.warn("Email and password fields are required.");
+         toast.success("Email and password fields are required.");
       }
       else this.props.userSignIn({ email, password, isRemember });
    };
-
+   componentDidMount() {
+      if (this.props.location.state) {
+         const { _id, firstName, lastName, email } = this.props.location.state;
+         this.setState({ email });
+      }
+   }
    componentDidUpdate(prevProps, prevState) {
       const { authUser, initURL, commonData, location } = this.props;
       if (authUser) {
          this.props.history.push(initURL === '' || initURL === '/sign-in' || initURL === '/sign-in/' ? '/app' : initURL);
-      } else if (commonData.error !== "") {
-         toast.error(commonData.error);
-      }
-      if (prevProps.location.state !== this.props.location.state) {
-         const { _id, accountCompany, firstName, lastName, email, role } = this.props.location.state;
-         this.setState({
-            _id, accountCompany, firstName, lastName, email, role
-         });
       }
    };
    render() {
@@ -61,7 +52,10 @@ class SignIn extends Component {
                         {
                            true &&
                            <p className="font-size-h4">
-                              To accept the invite, sign in below or <Link to="/sign-in/invite/create">create a new sign in here…</Link>
+                              To accept the invite, sign in below or <Link to={{
+                                 pathname: '/sign-in/invite/create',
+                                 state: this.props.location.state
+                              }}>create a new sign in here…</Link>
                            </p>
                         }
                      </div>
@@ -98,17 +92,20 @@ class SignIn extends Component {
                                  <input type="checkbox" className="custom-control-input" id="remember-me-checkbox" name="remember-me-checkbox" checked={isRemember} onChange={() => this.setState({ isRemember: !this.state.isRemember })} />
                                  <label className="custom-control-label" htmlFor="remember-me-checkbox">Remember me</label>
                               </div>
-                              <button className="btn btn-block btn-hero-lg btn-hero-primary" onClick={() => this.onClickSignIn()}>
+                              <button className="btn btn-block btn-hero-lg btn-hero-primary" onClick={this.onClickSignIn}>
                                  <i className="fa fa-fw fa-sign-in-alt mr-1" /> Sign In
                               </button>
                               <p className="mt-3 mb-0 d-lg-flex justify-content-lg-between">
                                  <Link className="btn btn-sm btn-light d-block d-lg-inline-block mb-1" to="/request-password">
                                     <i className="fa fa-exclamation-triangle text-muted mr-1" />
-                                    Forgot password
+                                    I forgot my password
                                  </Link>
-                                 <Link className="btn btn-sm btn-light d-block d-lg-inline-block mb-1" to="/new-account">
+                                 <Link className="btn btn-sm btn-light d-block d-lg-inline-block mb-1" to={{
+                                    pathname: "/new-account",
+                                    state: this.props.location.state
+                                 }}>
                                     <i className="fa fa-plus text-muted mr-1" />
-                                    New Account
+                                    Create a new Quotient Account
                                  </Link>
                               </p>
                            </div>

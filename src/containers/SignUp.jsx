@@ -10,7 +10,7 @@ class SignUp extends Component {
       email: "",
       password: "",
       companyName: "",
-      location: ""
+      location: "",
    };
    onHandleSubmit = (ev) => {
       ev.preventDefault();
@@ -29,8 +29,11 @@ class SignUp extends Component {
          || password === ""
          || companyName === ""
          || location === ""
-      ) alert("Please fill up all fields.")
-      else  this.props.userSignUp({ ...this.state });
+      ) {
+         alert("Please fill up all fields.");
+         return;
+      }
+      this.props.userSignUp({ ...this.state });
    }
    componentWillReceiveProps(nextProps) {
       console.error(" next props : ", nextProps);

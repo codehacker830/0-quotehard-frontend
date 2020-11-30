@@ -28,7 +28,7 @@ export const Tr_Member = (props) => {
                            <span className="lighter">{member.email}</span>
                            <br />
                            Invite sent&nbsp;
-                           <span className="dt-time">{formatDate(member.invitedAt)}</span> and expires &nbsp;
+                           <span className="dt-time">{formatDate(member.invitedAt)}</span> and expires&nbsp;
                            <span className="dt-time">{formatDate(member.expireAt)}</span>
                         </small>
                      </div>
