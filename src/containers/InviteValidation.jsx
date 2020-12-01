@@ -21,15 +21,14 @@ export const InviteValidation = (props) => {
 
    useEffect(() => {
       if (prevPropsAuthUser !== props.authUser) {
-         // console.error("prevPropsAuthUser --------------------------", prevPropsAuthUser);
-         // console.error("props.authUser --------------------------", props.authUser);
+         console.error("prevPropsAuthUser --------------------------", prevPropsAuthUser);
+         console.error("props.authUser --------------------------", props.authUser);
 
          axios.post('/settings/team/validate-invitation', { invitationEntoken })
             .then(({ data }) => {
-               // const { _id, firstName, lastName, email, status, invitationStatus } = data;
                console.log(" invitation link validated data =>", data);
-               setIsLoading(false);
                setAccountInfo(data);
+               setIsLoading(false);
             })
             .catch(err => {
                setIsLoading(false);
@@ -38,45 +37,20 @@ export const InviteValidation = (props) => {
    }, [props, isLoading, accountInfo]);
 
    if (isLoading) return <>Loading...</>;
-   else if (!accountInfo) return (
-      <main id="main-container">
-         <div className="row no-gutters">
-            {/* Main Section */}
-            <div className="hero-static col-md-12 d-flex align-items-center bg-white">
-               <div className="container p-3 w-100">
-                  <div className="row no-gutters justify-content-center">
-                     <div className="col-sm-8 col-xl-6">
-                        <div className="py-3">
-                           <div className="form-group">
-                              <h1 className="font-w700">Sorry, something went wrong. Perhaps try again later.</h1>
-                              <p className="font-size-h4">Could not find your invite?</p>
-                              <Link to="/sign-in">Visit the Dashboard</Link>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            {/* END Main Section */}
-         </div>
-      </main>
-   );
-   else if (props.authUser) return (
-      <Redirect to={`/sign-in/invite/i/already-have-access/${invitationEntoken}`} />
-   );
+   else if (!accountInfo) return <Redirect to={`/sign-in/invite/i/went-wrong`} />;
+   else if (props.authUser) return <Redirect to={`/sign-in/invite/i/already-have-access/${invitationEntoken}`} />;
    else {
-      const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = accountInfo;
-      // if(invitationStatus === "pending") 
+      // const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = accountInfo;
       if (status === 'approved') return (
          <Redirect to={{
             pathname: '/sign-in',
-            state: accountInfo
+            state: invitationEntoken
          }} />
       );
       else return (
          <Redirect to={{
             pathname: '/sign-in/invite/create',
-            state: accountInfo
+            state: invitationEntoken
          }} />
       );
    }

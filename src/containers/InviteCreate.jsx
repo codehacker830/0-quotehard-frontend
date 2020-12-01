@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { userSignUpByInvitation } from '../actions/Auth';
+import axios from '../util/Api';
 
 export const InviteCreate = (props) => {
    const [firstName, setFirstName] = useState("");
@@ -11,16 +12,33 @@ export const InviteCreate = (props) => {
 
    useEffect(() => {
       const { state } = props.location;
-      console.log(" create with invitation ===> ", props.location)
       if (state) {
-         const { _id, firstName, lastName, email } = state;
-         setFirstName(firstName);
-         setLastName(lastName);
-         setEmail(email);
+         const invitationEntoken = state;
+         axios.post('/settings/team/validate-invitation', { invitationEntoken })
+            .then(({ data }) => {
+               console.log(" invitation link validated data =>", data);
+               const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = data;
+               setFirstName(firstName);
+               setLastName(lastName);
+               setEmail(email);
+
+               const isAlreadyAccepted = (status === "approved")
+                  && (invitationStatus === "accepted")
+                  && (accountCompany === invitedBy);
+
+               if (isAlreadyAccepted) props.history.push({
+                  pathname: '/sign-in',
+                  state: invitationEntoken
+               });
+            })
+            .catch(err => {
+               props.history.push(`/sign-in/invite/i/went-wrong`)
+            });
       } else {
          props.history.push('/sign-in');
       }
-   }, []);
+   }, [props]);
+
    const onHandleClick = () => {
       const { _id } = props.location.state;
       props.userSignUpByInvitation({ _id, firstName, lastName, email, password, history: props.history });

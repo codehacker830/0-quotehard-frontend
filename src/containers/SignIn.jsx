@@ -3,12 +3,16 @@ import { connect } from "react-redux";
 import { toast } from 'react-toastify';
 import { Link } from "react-router-dom";
 import { userSignIn } from "../actions/Auth";
+import axios from "../util/Api";
 
 class SignIn extends Component {
    state = {
       isRemember: true,
       email: "",
-      password: ""
+      password: "",
+
+      isInvited: false,
+      isAlreadyAccepted: false
    };
    onClickSignIn = () => {
       const { email, password, isRemember } = this.state;
@@ -19,13 +23,22 @@ class SignIn extends Component {
    };
    componentDidMount() {
       if (this.props.location.state) {
-         const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = this.props.location.state;
-         this.setState({ email });
+         const invitationEntoken = this.props.location.state;
+         axios.post('/settings/team/validate-invitation', { invitationEntoken })
+            .then(({ data }) => {
+               console.log(" invitation link validated data =>", data);
+               const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = data;
 
-         isAlreadyAccepted = (status === "approved")
-            && (invitationStatus === "accepted")
-            && (accountCompany === invitedBy);
-         if (isAlreadyAccepted) toast.success(`⭐ That invite has previously been accepted.`, { autoClose: false });
+               const isAlreadyAccepted = (status === "approved")
+                  && (invitationStatus === "accepted")
+                  && (accountCompany === invitedBy);
+
+               this.setState({ email, isInvited: true, isAlreadyAccepted });
+               if (isAlreadyAccepted) toast.success(`⭐ That invite has previously been accepted.`, { autoClose: false });
+            })
+            .catch(err => {
+               this.setState({ isInvited: false });
+            });
       }
    }
    componentDidUpdate(prevProps, prevState) {
@@ -37,20 +50,12 @@ class SignIn extends Component {
    render() {
       console.log(" SIGN IN STATE +++>", this.state);
       console.log(" SIGN IN PROPS +++>", this.props);
-      const { isRemember, email, password } = this.state;
-      const isInvited = !!this.props.location.state;
-      const isAlreadyAccepted = false;
-      if (isInvited) {
-         const { status, invitationStatus, accountCompany, invitedBy } = this.props.location.state;
-         isAlreadyAccepted = (status === "accepted")
-            && (invitationStatus === "accepted")
-            && (accountCompany === invitedBy);
-      }
+      const { isRemember, email, password, isInvited, isAlreadyAccepted } = this.state;
       console.log("isInvited _____________", isInvited);
       console.log("isAlreadyAccepted Account ______________", isAlreadyAccepted);
 
       return (
-         <main id="main-container">
+         <main id="main-container" >
             <div className="row no-gutters">
                {/* Main Section */}
                <div className="hero-static col-md-12 d-flex align-items-center bg-white">

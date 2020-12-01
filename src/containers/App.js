@@ -16,6 +16,7 @@ import AlreadyHaveAccess from './AlreadyHaveAccess';
 import InviteValidation from './InviteValidation';
 import InviteCreate from './InviteCreate';
 import InviteExisting from './InviteExisting';
+import InvitationWentWrong from './InvitationWentWrong';
 
 const RestrictedRoute = ({ component: Component, token, ...rest }) => {
    return (
@@ -79,6 +80,7 @@ class App extends Component {
                   <Route exact path='/sign-in' component={SignIn} />
                   <Route exact path='/sign-in/invite/create' component={InviteCreate} />
                   <Route exact path='/sign-in/invite/existing' component={InviteExisting} />
+                  <Route exact path='/sign-in/invite/i/went-wrong' component={InvitationWentWrong} />
                   <Route exact path='/sign-in/invite/i/already-have-access/:invitationEntoken' component={AlreadyHaveAccess} />
                   <Route exact path='/sign-in/invite/i/:invitationEntoken' component={InviteValidation} />
 
