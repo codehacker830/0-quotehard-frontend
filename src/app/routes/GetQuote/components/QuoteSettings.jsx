@@ -14,8 +14,8 @@ class QuoteSettings extends Component {
       this.props.getTeamMembers();
    }
    render() {
-      console.log(" this props =>", this.props);
       const settings = { ... this.props };
+      console.log(" Quote Settings =>", settings);
       return (
          <div className="col-sm-6">
             <div

@@ -1,6 +1,6 @@
 export const initQuoteSettings = {
    validUntil: new Date(Date.now() + 1000 * 3600 * 24 * 60),
-   sentAt: null,
+   sentAt: new Date(),
    userFrom: "",
    // userFrom: {
    //    _id: "",

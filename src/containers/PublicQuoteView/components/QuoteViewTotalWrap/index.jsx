@@ -20,8 +20,8 @@ class QuoteViewTotalWrap extends Component {
       );
    }
 }
-const mapStateToProps = ({ publicView }) => {
-   const { quote } = publicView;
+const mapStateToProps = ({ quoteData }) => {
+   const { quote } = quoteData;
    return { quote };
 };
 export default connect(mapStateToProps)(QuoteViewTotalWrap);

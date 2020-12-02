@@ -6,7 +6,7 @@ class StatNoteTimes extends Component {
       const { quote } = this.props;
       if (!quote.discussions.length) return null;
       else {
-         const pnList = quote.discussions.filter((discussion, index) => discussion.category === "privateNote");
+         const pnList = quote.discussions.filter((discussion) => discussion.category === "privateNote");
          if (!pnList.length) return null;
          else return (
             <div className="author-stat mod-private">
@@ -17,8 +17,8 @@ class StatNoteTimes extends Component {
       }
    }
 }
-const mapStateToProps = ({ publicView }) => {
-   const { quote } = publicView;
+const mapStateToProps = ({ quoteData }) => {
+   const { quote } = quoteData;
    return { quote };
 };
 export default connect(mapStateToProps)(StatNoteTimes);

@@ -761,3 +761,9 @@ a.nav-link.active {
    width: 54px;
    height: 54px;
 }
+
+.validWarning:not(:focus) {
+   box-shadow: 0 0 0 2px #d1e59f;
+   border-color: transparent;
+   background: rgba(209,229,159,.2);
+}

@@ -21,7 +21,7 @@ import FullWrapper from './components/FullWrapper';
 import QuoteDetailWrapper from './components/QuoteDetailWrapper';
 import QuoteItemWrapper from './components/QuoteItemWrapper';
 import { SwitchQuoteLayoutClass } from '../../util/index';
-import { getPublicDataWithEntoken } from '../../actions/PublicView';
+import { getPublicDataWithEntoken } from '../../actions/Quote';
 import VisiableOnlyAuthTeamMember from './components/VisiableOnlyAuthTeamMember';
 import DeclineCommentShow from './components/DeclineCommentShow';
 import QuoteItem from './components/QuoteItem';
@@ -220,12 +220,12 @@ class PublicQuoteView extends Component {
       console.log(" ----------- PublicQuoteView state ------", this.state);
       console.log(" ----------- PublicQuoteView props ------", this.props);
       const { isMounting } = this.state;
-      const { auth, commonData, appearanceSetting, teamSetting, publicView } = this.props;
-      const { authUser } = auth;
-      const { teamMembers } = teamSetting;
-      const { loading, type } = commonData;
-      const { quote, discussions } = publicView;
-
+      const { appearanceSetting } = this.props;
+      const { authUser } = this.props.auth;
+      const { teamMembers } = this.props.teamSetting;
+      const { loading, type } = this.props.commonData;
+      const { quote } = this.props.quoteData;
+      const { discussions } = quote;
       const { location } = this.props;
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
@@ -577,8 +577,8 @@ class PublicQuoteView extends Component {
    }
 }
 
-const mapStateToProps = ({ auth, commonData, appearanceSetting, teamSetting, publicView }) => {
-   return { auth, commonData, appearanceSetting, teamSetting, publicView };
+const mapStateToProps = ({ auth, commonData, appearanceSetting, teamSetting, quote }) => {
+   return { auth, commonData, appearanceSetting, teamSetting, quote };
 }
 const mapDispatchToProps = { setInitUrl, userSignOut, getPublicDataWithEntoken, getTeamMembers };
 export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateQuote } from '../../../../actions/PublicView';
+import { updateQuote } from '../../../../actions/Quote';
 import { SwitchQuoteItemClass, toFixedFloat } from '../../../../util';
 import AttachedFilesShowCase from '../AttachedFilesShowCase';
 
@@ -86,8 +86,8 @@ class QuotePriceItem extends Component {
       );
    }
 }
-const mapStateToProps = ({ publicView }) => {
-   const { quote } = publicView;
+const mapStateToProps = ({ quoteData }) => {
+   const { quote } = quoteData;
    return { quote };
 };
 const mapDispatchToProps = { updateQuote };
