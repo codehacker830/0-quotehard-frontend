@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import AccountAndBilling from './components/AccountAndBilling';
 import AddOns from './components/AddOns';
@@ -7,11 +8,12 @@ import ConnectWithOtherApps from './components/ConnectWithOtherApps';
 import SettingQuote from './components/SettingQuote';
 
 export const Settings = (props) => {
+   const { authUser, accountCompany } = props;
    return (
       <div className="content py-5" >
          <div className="row">
             <div className="col-md-6 col-sm-12">
-               <h1 className="pt-5 px-2 mb-5">CodeNetflix </h1>
+               <h1 className="pt-5 px-2 mb-5">{accountCompany.companyName} </h1>
 
                <SettingQuote />
 
@@ -30,7 +32,7 @@ export const Settings = (props) => {
                      <img className="img-avatar img-avatar96 img-avatar-thumb border border-primary rounded-0 m-0" src="/assets/media/avatars/avatar8.jpg" alt="..." />
                   </Link>
                   <div className="row no-gutters mt-3">
-                     <span className="text-black font-size-h5 font-w700">Raffale C</span>
+                     <span className="text-black font-size-h5 font-w700">{authUser.firstName + " " + authUser.lastName}</span>
                   </div>
                   <div className="row no-gutters mt-3">
                      <Link to="/app/settings/profile">Edit Your Profile</Link>
@@ -59,5 +61,5 @@ export const Settings = (props) => {
       </div>
    );
 }
-
-export default Settings;
+const mapStateToProps = ({ auth }) => ({ authUser: auth.authUser, accountCompany: auth.accountCompany });
+export default connect(mapStateToProps)(Settings)
