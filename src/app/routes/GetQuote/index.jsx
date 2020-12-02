@@ -37,6 +37,7 @@ import NavCrumpLeft from "../../../components/NavCrump/NavCrumpLeft";
 
 import { QUOTE_PAGE_PATH } from "../../../constants/PathNames";
 import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
+import TextareaAutosize from "react-autosize-textarea/lib";
 
 class GetQuote extends Component {
    constructor(props) {
@@ -460,13 +461,13 @@ class GetQuote extends Component {
                   {/* Template Title */}
                   <div className="row">
                      <div className="col-12">
-                        <textarea
+                        <TextareaAutosize
                            className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2 my-4"
                            rows={1}
                            placeholder="Title of Quote"
                            value={this.state.title}
                            onChange={(ev) => this.setState({ title: ev.target.value })}
-                        ></textarea>
+                        ></TextareaAutosize>
                      </div>
                   </div>
 

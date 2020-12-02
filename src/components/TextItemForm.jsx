@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import TextareaAutosize from 'react-autosize-textarea/lib';
 import axios from '../util/Api';
 
 export default class TextItemForm extends Component {
@@ -136,7 +137,7 @@ export default class TextItemForm extends Component {
             <div className="row">
                <div className="col-sm-12 col-md-10 col-lg-8">
                   <div className={`w-100 border p-2 mb-2 ${this.props.isViewOnly ? "bg-disabled" : ""}`}>
-                     <textarea className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2"
+                     <TextareaAutosize className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2"
                         rows={1} placeholder="Text Heading"
                         disabled={!!this.props.isViewOnly}
                         value={this.props.textItem.textHeading}
@@ -148,8 +149,8 @@ export default class TextItemForm extends Component {
                            this.props.updateItem(this.props.index, newItem);
                         }}
                      >
-                     </textarea>
-                     <textarea className="form-control border-0 rounded-0 mt-1 p-2"
+                     </TextareaAutosize>
+                     <TextareaAutosize className="form-control border-0 rounded-0 mt-1 p-2"
                         rows={1} placeholder="Long description, terms of trade or compelling sales text"
                         value={this.props.textItem.longDescription}
                         disabled={!!this.props.isViewOnly}
@@ -161,7 +162,7 @@ export default class TextItemForm extends Component {
                            this.props.updateItem(this.props.index, newItem);
                         }}
                      >
-                     </textarea>
+                     </TextareaAutosize>
 
                      {/* Images preview section */}
                      <div className="row m-1">

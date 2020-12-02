@@ -36,7 +36,7 @@ export const alterTypeVariableStr = (str) => {
 export const parseDate = (dtObj) => {
    if (isValidDateObj(dtObj)) {
       const year = dtObj.getFullYear();
-      const month = dtObj.getMonth();
+      const month = dtObj.getMonth() + 1;
       const day = dtObj.getDate();
       console.log("dtObj =>", dtObj)
       console.log("year =>", year);
