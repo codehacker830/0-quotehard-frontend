@@ -184,11 +184,11 @@ export const userResetPassword = ({ entoken, password }, ownProps) => {
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
             dispatch({ type: USER_DATA, payload: data.account });
-            ownProps.push('/app');
+            ownProps.history.push('/app');
          } else {
             console.log(" User Reset password error ========> ", data);
             dispatch({ type: FETCH_ERROR, payload: data.message });
-            ownProps.push('/request-password/new/expired');
+            ownProps.history.push('/request-password/new/expired');
          }
       }).catch((err) => {
          console.log("User Reset password Error****:", err.message);

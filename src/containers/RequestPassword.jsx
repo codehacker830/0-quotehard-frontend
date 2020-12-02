@@ -19,14 +19,14 @@ export default class RequestPassword extends Component {
       axios.post("/request-password", { email: this.state.email }).then(({ data }) => {
          this.setState({ loading: false });
          if (!data.success) {
-            toast.success(`We can’t find an account by ${this.state.email}.`);
+            toast.error(`We can’t find an account by ${this.state.email}.`);
             return;
          }
          this.props.history.push('/request-password/sent');
       }).catch(err => {
          this.setState({ loading: false });
          console.error("error during request password change :", err);
-         toast.success(`Try again later.`);
+         toast.error(`Try again later.`);
       });
    }
    render() {

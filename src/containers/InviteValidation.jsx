@@ -44,13 +44,13 @@ export const InviteValidation = (props) => {
       if (status === 'approved') return (
          <Redirect to={{
             pathname: '/sign-in',
-            state: invitationEntoken
+            state: { invitationEntoken }
          }} />
       );
       else return (
          <Redirect to={{
             pathname: '/sign-in/invite/create',
-            state: invitationEntoken
+            state: { invitationEntoken }
          }} />
       );
    }

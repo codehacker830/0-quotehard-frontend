@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getTeamMembers } from '../actions/Team';
+import { getTeamMembers } from '../../../../actions/Team';
 
 class QuoteSettings extends Component {
    constructor(props) {

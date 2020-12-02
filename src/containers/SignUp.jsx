@@ -377,9 +377,14 @@ class SignUp extends Component {
                               </div>
                            </div>
                            <div className="form-group">
-                              <button type="submit" className="btn btn-block btn-hero-lg btn-hero-primary" onClick={this.onHandleSubmit}>
-                                 <i className="fa fa-fw fa-plus mr-1" /> Create Account
-                                       </button>
+                              <button type="submit" className="btn btn-block btn-hero-lg btn-hero-primary" disabled={this.props.loading} onClick={this.onHandleSubmit}>
+                                 {
+                                    this.props.loading ?
+                                       <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />
+                                       : <i className="fa fa-fw fa-plus mr-1" />
+                                 }
+                                 Create Account
+                              </button>
                               <p className="mt-4 mb-0 d-lg-flex justify-content-center">
                                  By creating an account, you agree to Quotient’s
                                  <a href="https://www.quotientapp.com/terms" className="px-1">Terms of Service.</a>

@@ -29,7 +29,7 @@ export const Settings = (props) => {
             <div className="col-md-6 col-sm-12">
                <div className="px-3 py-5">
                   <Link to="/app/settings/profile">
-                     <img className="img-avatar img-avatar96 img-avatar-thumb border border-primary rounded-0 m-0" src="/assets/media/avatars/avatar8.jpg" alt="..." />
+                     <img className="img-avatar img-avatar96 img-avatar-thumb border border-primary rounded-0 m-0" src={authUser.image} alt={authUser.firstName + "-avatar"} />
                   </Link>
                   <div className="row no-gutters mt-3">
                      <span className="text-black font-size-h5 font-w700">{authUser.firstName + " " + authUser.lastName}</span>

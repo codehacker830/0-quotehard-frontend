@@ -22,8 +22,10 @@ class SignIn extends Component {
       else this.props.userSignIn({ email, password, isRemember });
    };
    componentDidMount() {
-      if (this.props.location.state) {
-         const invitationEntoken = this.props.location.state;
+      const { invitationEntoken } = this.props.location.state;
+      console.log("__________ this.props... _____________", this.props);
+      console.log("__________ invitationEntoken... _____________", invitationEntoken);
+      if (invitationEntoken) {
          axios.post('/settings/team/validate-invitation', { invitationEntoken })
             .then(({ data }) => {
                console.log(" invitation link validated data =>", data);
@@ -110,8 +112,13 @@ class SignIn extends Component {
                                  <input type="checkbox" className="custom-control-input" id="remember-me-checkbox" name="remember-me-checkbox" checked={isRemember} onChange={() => this.setState({ isRemember: !this.state.isRemember })} />
                                  <label className="custom-control-label" htmlFor="remember-me-checkbox">Remember me</label>
                               </div>
-                              <button className="btn btn-block btn-hero-lg btn-hero-primary" onClick={this.onClickSignIn}>
-                                 <i className="fa fa-fw fa-sign-in-alt mr-1" /> Sign In
+                              <button className="btn btn-block btn-hero-lg btn-hero-primary" disabled={this.props.loading} onClick={this.onClickSignIn}>
+                                 {
+                                    this.props.loading ?
+                                       <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />
+                                       : <i className="fa fa-fw fa-sign-in-alt mr-1" />
+                                 }
+                                 Sign In
                               </button>
                               <p className="mt-3 mb-0 d-lg-flex justify-content-lg-between">
                                  <Link className="btn btn-sm btn-light d-block d-lg-inline-block mb-1" to="/request-password">
@@ -143,10 +150,10 @@ class SignIn extends Component {
    }
 }
 
-const mapStateToProps = ({ auth }) => {
+const mapStateToProps = ({ auth, commonData }) => {
    const { authUser, initURL } = auth;
-
-   return { authUser, initURL };
+   const { loading } = commonData;
+   return { authUser, initURL, loading };
 }
 const mapDispatchToProps = { userSignIn };
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

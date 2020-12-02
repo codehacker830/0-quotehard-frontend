@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import NavCrump from "../../../components/NavCrump";
 import QuoteToPeopleList from "./components/QuoteToPeopleList";
-import QuoteSettings from "../../../components/QuoteSettings";
+import QuoteSettings from "./components/QuoteSettings";
 import PriceItemForm from "../../../components/PriceItemForm";
 import TextItemForm from "../../../components/TextItemForm";
 import SubTotal from "../../../components/SubTotal";
