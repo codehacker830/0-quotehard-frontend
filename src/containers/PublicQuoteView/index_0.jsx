@@ -11,7 +11,6 @@ import { toast } from 'react-toastify';
 import { toastErrorConfig, toastSuccessConfig, toastWarningConfig } from '../../util/toastrConfig';
 import QuoteTotal from '../../components/QuoteTotal';
 import { setInitUrl, userSignOut } from '../../actions/Auth';
-import { getTeamMembers } from '../../actions/Team';
 import DeclineCommentShow from './components/DeclineCommentShow';
 import ImageShowCase from './components/ImageShowCase';
 import LogoShowCase from './components/LogoShowCase';
@@ -913,5 +912,5 @@ class PublicQuoteView extends Component {
 const mapStateToProps = ({ auth, appearanceSetting }) => {
    return { auth, appearanceSetting };
 }
-const mapDispatchToProps = { setInitUrl, userSignOut, getTeamMembers };
+const mapDispatchToProps = { setInitUrl, userSignOut };
 export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);

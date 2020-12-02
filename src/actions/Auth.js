@@ -8,9 +8,11 @@ import {
    SIGNOUT_USER_SUCCESS,
    USER_DATA,
    COMPANY_DATA,
-   USER_TOKEN_SET
+   USER_TOKEN_SET,
+
 } from "../constants/ActionTypes";
 import { history } from "../store";
+import { ToastErrorNotification } from "../util";
 import axios from '../util/Api'
 
 export const setInitUrl = (url) => {
@@ -34,10 +36,12 @@ export const getUser = () => {
             dispatch({ type: FETCH_ERROR, payload: data.error });
             dispatch({ type: SIGNOUT_USER_SUCCESS });
          }
-      } catch (error) {
-         dispatch({ type: FETCH_ERROR, payload: error.message });
-         console.log("Error****:", error.message);
+      } catch (err) {
+         console.log("Error****:", err.message);
          dispatch({ type: SIGNOUT_USER_SUCCESS });
+         dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
+         const { errors } = err.response.data;
+         ToastErrorNotification(errors);
       }
    }
 };
@@ -57,11 +61,13 @@ export const userSignIn = ({ email, password, isRemember }) => {
             console.log(" User Sign In error ========> ", data);
             dispatch({ type: FETCH_ERROR, payload: data.error });
          }
-      }).catch((error) => {
+      }).catch((err) => {
          // if(error.response.status === 422) dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
-         toast.error('Email or password is invalid.');
+         // toast.error('Email or password is invalid.');
+         // console.log("Error****:", err.message);
+         const { errors } = err.response.data;
          dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
-         console.log("Error****:", error.message);
+         ToastErrorNotification(errors);
       });
    }
 };
@@ -76,21 +82,16 @@ export const userSignUp = ({ firstName, lastName, email, password, companyName, 
          password,
          companyName,
          location
-      }
-      ).then(({ data }) => {
-         if (data.account) {
-            localStorage.setItem("token", JSON.stringify(data.access_token));
-            axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
-            dispatch({ type: FETCH_SUCCESS });
-            dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
-            dispatch({ type: USER_DATA, payload: data.account });
-         } else {
-            console.log("payload: data.error", data.error);
-            dispatch({ type: FETCH_ERROR, payload: "Network Error" });
-         }
-      }).catch(function (error) {
-         dispatch({ type: FETCH_ERROR, payload: error.message });
-         console.log("Error****:", error.message);
+      }).then(({ data }) => {
+         localStorage.setItem("token", JSON.stringify(data.access_token));
+         axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
+         dispatch({ type: FETCH_SUCCESS });
+         dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
+         dispatch({ type: USER_DATA, payload: data.account });
+      }).catch((err) => {
+         console.log("Error****:", err.response.data);
+         dispatch({ type: FETCH_ERROR, payload: err.response.data });
+
       });
    }
 };
@@ -113,9 +114,13 @@ export const userSignUpByInvitation = ({ _id, accountCompany, firstName, lastNam
             console.log("payload: data.error", data.error);
             dispatch({ type: FETCH_ERROR, payload: "Network Error" });
          }
-      }).catch(function (error) {
-         dispatch({ type: FETCH_ERROR, payload: error.message });
-         console.log("Error****:", error.message);
+      }).catch(function (err) {
+         dispatch({ type: FETCH_ERROR, payload: err.message });
+         console.log("Error****:", err.message);
+         const { errors } = err.response.data;
+         console.log("Error****:", err.response.data);
+         dispatch({ type: FETCH_ERROR, payload: err.response.data });
+         ToastErrorNotification(errors);
       });
    }
 };
@@ -155,14 +160,18 @@ export const userUpdate = ({ firstName, lastName, email, image, password }) => {
             console.log("payload: data.error", data.error);
             dispatch({ type: FETCH_ERROR, payload: "Network Error" });
          }
-      }).catch(function (error) {
-         dispatch({ type: FETCH_ERROR, payload: error.message });
-         console.log("Error****:", error.message);
+      }).catch(function (err) {
+         console.log("Error****:", err.message);
+         dispatch({ type: FETCH_ERROR, payload: err.message });
+         const { errors } = err.response.data;
+         console.log("Error****:", err.response.data);
+         dispatch({ type: FETCH_ERROR, payload: err.response.data });
+         ToastErrorNotification(errors);
       });
    }
 };
 
-export const userResetPassword = ({ entoken, password }) => {
+export const userResetPassword = ({ entoken, password }, ownProps) => {
    return (dispatch) => {
       dispatch({ type: FETCH_START });
       // dispatch({ type: USER_TOKEN_SET, payload: null });
@@ -175,17 +184,34 @@ export const userResetPassword = ({ entoken, password }) => {
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
             dispatch({ type: USER_DATA, payload: data.account });
-            location.replace('/app');
-
+            ownProps.push('/app');
          } else {
             console.log(" User Reset password error ========> ", data);
             dispatch({ type: FETCH_ERROR, payload: data.message });
-            location.replace('/request-password/new/expired');
+            ownProps.push('/request-password/new/expired');
          }
-      }).catch((error) => {
-         dispatch({ type: FETCH_ERROR, payload: "Your password needs to be at least 6 characters long." });
-         dispatch({ type: SHOW_MESSAGE, payload: error.message })
-         console.log("User Reset password Error****:", error.message);
+      }).catch((err) => {
+         console.log("User Reset password Error****:", err.message);
+         const { errors } = err.response.data;
+         console.log("Error****:", err.response.data);
+         dispatch({ type: FETCH_ERROR, payload: err.response.data });
+         ToastErrorNotification(errors);
       });
+   }
+}
+
+export const updateAccountInfo = (accountCompany, ownProps) => {
+   return async (dispatch) => {
+      dispatch({ type: FETCH_START });
+      try {
+         const { data } = await axios.put('/account-company', accountCompany);
+         dispatch({ type: FETCH_SUCCESS });
+         dispatch({ type: COMPANY_DATA, payload: data.accountCompany });
+         ownProps.history.push('/app/settings');
+      } catch (err) {
+         console.log("Error****:", err.response.data);
+         dispatch({ type: FETCH_ERROR, payload: err.response.data });
+         toast.error('Failed to update account.');
+      }
    }
 }

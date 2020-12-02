@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
+import { getTeamMembers } from '../../../actions/Team';
 import asyncComponent from '../../../util/asyncComponent';
- 
-export default class Settings extends Component {
+
+class Settings extends Component {
+   componentDidMount() {
+      this.props.getTeamMembers();
+   }
    render() {
       return (
          <Switch>
@@ -21,7 +26,7 @@ export default class Settings extends Component {
             <Route exact path="/app/settings/team" component={asyncComponent(() => import("./Team"))} />
             <Route exact path="/app/settings/team/invite-form" component={asyncComponent(() => import("./Team/InviteForm"))} />
             <Route exact path="/app/settings/team/view/:id" component={asyncComponent(() => import("./Team/MemberView"))} />
-            
+
 
             <Route exact path="/app/settings/billing-overview" component={asyncComponent(() => import("./BillingOverview"))} />
             <Route exact path="/app/settings/account-information" component={asyncComponent(() => import("./AccountInformation"))} />
@@ -29,7 +34,7 @@ export default class Settings extends Component {
 
             <Route exact path="/app/settings/sales-category/create-new" component={asyncComponent(() => import("./SalesCategory"))} />
             <Route exact path="/app/settings/sales-category/:id" component={asyncComponent(() => import("./SalesCategory"))} />
-            
+
             <Route exact path="/app/settings/sales-tax/create-new" component={asyncComponent(() => import("./SalesTax"))} />
             <Route exact path="/app/settings/sales-tax/:id" component={asyncComponent(() => import("./SalesTax"))} />
 
@@ -38,3 +43,6 @@ export default class Settings extends Component {
       );
    }
 }
+
+const mapDispatchToProps = { getTeamMembers };
+export default connect(() => ({}), mapDispatchToProps)(Settings)

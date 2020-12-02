@@ -1,4 +1,10 @@
-import { COMPANY_DATA, INIT_URL, SIGNOUT_USER_SUCCESS, USER_DATA, USER_TOKEN_SET } from "../constants/ActionTypes";
+import {
+   COMPANY_DATA,
+   INIT_URL,
+   SIGNOUT_USER_SUCCESS,
+   USER_DATA,
+   USER_TOKEN_SET
+} from "../constants/ActionTypes";
 
 const INIT_STATE = {
    token: JSON.parse(localStorage.getItem('token')),
@@ -40,7 +46,6 @@ export default (state = INIT_STATE, action) => {
             token: action.payload,
          };
       }
-
       default:
          return state;
    }

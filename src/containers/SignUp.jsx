@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { userSignUp } from '../actions/Auth';
 
 class SignUp extends Component {
@@ -10,7 +11,7 @@ class SignUp extends Component {
       email: "",
       password: "",
       companyName: "",
-      location: "",
+      location: "232",
    };
    onHandleSubmit = (ev) => {
       ev.preventDefault();
@@ -30,7 +31,7 @@ class SignUp extends Component {
          || companyName === ""
          || location === ""
       ) {
-         alert("Please fill up all fields.");
+         toast.error("Please fill up all fields.", { autoClose: false });
          return;
       }
       this.props.userSignUp({ ...this.state });
@@ -94,7 +95,7 @@ class SignUp extends Component {
                                  <input type="text" className="form-control" placeholder="Name of Company or Organisation" value={companyName} onChange={(ev) => this.setState({ companyName: ev.target.value })} />
                               </div>
                               <div className="form-group">
-                                 <select className="custom-select form-control" defaultValue={232} value={location} onChange={(ev) => this.setState({ location: ev.target.value })}>
+                                 <select className="custom-select form-control" value={location} onChange={(ev) => this.setState({ location: ev.target.value })}>
                                     <optgroup label="––––––––––––––––––––––– " />
                                     <option value={14}>Australia</option>
                                     <option value={39}>Canada</option>

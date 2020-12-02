@@ -18,7 +18,6 @@ export const COMPANY_DATA = 'company_data';
 export const USER_TOKEN_SET = 'user_token_set';
 
 
-
 // Settings
 export const QUOTE_DEFAULTS = 'quote_defaults';
 export const GET_TEAMMEMBERS = 'get_teammates';

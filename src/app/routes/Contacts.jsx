@@ -20,7 +20,6 @@ export default class Contacts extends Component {
    }
    componentDidMount() {
       axios.get('/contacts').then(({ data }) => {
-         console.error("data =", data);
          // const filteredContacts = this.filterContacts(data.contacts)
          this.setState({
             isLoading: false,

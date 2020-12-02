@@ -20,6 +20,7 @@ import {
    parseTime,
    isValidDateTimeFormat,
    convertStrIntoDateObj,
+   ToastErrorNotification,
 } from "../../../util";
 import {
    initQuoteSettings,
@@ -118,11 +119,7 @@ class GetQuote extends Component {
             })
             .catch(err => {
                const { errors } = err.response.data;
-               const errKeys = Object.keys(errors);
-               errKeys.map(err => {
-                  const errMsg = `${err} ${errors[err]}`;
-                  toast.error(errMsg.charAt(0).toUpperCase() + errMsg.slice(1))
-               });
+               ToastErrorNotification(errors);
             });
       } else {
          console.error("Error !!!!!!!!!!!!!!");

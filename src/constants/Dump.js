@@ -120,29 +120,29 @@ export const recentActivities = [
 ];
 
 
-export const allActivities = [
-   {
-      date: "52 minutes ago",
-      content: "Opened via direct link"
-   },
-   {
-      date: "September 23, 2020 at 6:57PM",
-      content: "Opened via direct link"
-   },
-   {
-      date: "September 7, 2020 at 12:11PM",
-      content: "Opened by Danil Zolo"
-   },
-   {
-      date: "September 7, 2020 at 12:04PM",
-      content: "New Quote sent by A Devom"
-   },
-   {
-      date: "September 7, 2020 at 12:04PM",
-      content: "Created by A Devom"
-   }
+// export const allActivities = [
+//    {
+//       date: "52 minutes ago",
+//       content: "Opened via direct link"
+//    },
+//    {
+//       date: "September 23, 2020 at 6:57PM",
+//       content: "Opened via direct link"
+//    },
+//    {
+//       date: "September 7, 2020 at 12:11PM",
+//       content: "Opened by Danil Zolo"
+//    },
+//    {
+//       date: "September 7, 2020 at 12:04PM",
+//       content: "New Quote sent by A Devom"
+//    },
+//    {
+//       date: "September 7, 2020 at 12:04PM",
+//       content: "Created by A Devom"
+//    }
 
-];
+// ];
 
 export const peopleContacts = [
    {

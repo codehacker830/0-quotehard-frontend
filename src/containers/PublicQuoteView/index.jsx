@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import NavCrump from '../../components/NavCrump'
-import StatusBanner from './StatusBanner_0'
+import NavCrump from '../../components/NavCrump';
 import ProgressBar from '../../components/ProgressBar';
 import axios from '../../util/Api';
 import { checkIfTeamMember, formatDate, formatDateTime, toFixedFloat } from '../../util';

@@ -1,7 +1,28 @@
-import React from 'react'
-import NavCrump from '../../../components/NavCrump'
+import React, { useEffect, useState } from 'react'
+import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
+import { updateAccountInfo } from '../../../actions/Auth';
+import NavCrump from '../../../components/NavCrump';
 
 export const AccountInformation = (props) => {
+   const [accountCompany, setAccountCompany] = useState(props.accountCompany);
+   const onHandleSave = () => {
+      const {
+         companyName,
+         owner,
+         location,
+         timeZone,
+         dateFormat } = accountCompany;
+      if (companyName === "") {
+         toast.error(" Please enter an Account Name", { autoClose: false });
+         return;
+      }
+      props.updateAccountInfo(accountCompany);
+   }
+   useEffect(() => {
+      const { accountCompany } = props;
+      setAccountCompany(accountCompany);
+   }, [props]);
    return (
       <React.Fragment>
          <NavCrump linkTo={`/app/settings`}>
@@ -12,8 +33,14 @@ export const AccountInformation = (props) => {
                <h1>Account Information</h1>
 
                <div className="mb-4">
-                  <label htmlFor="example-text-input">Quotient Account Name</label>
-                  <input type="text" className="form-control font-size-h4 font-w700" id="example-text-input" name="example-text-input" placeholder="CodeNetflix" />
+                  <label htmlFor="quotientAccountName">Quotient Account Name</label>
+                  <input type="text" className="form-control rounded-0 font-size-h4 font-w700" id="quotientAccountName" name="quotientAccountName"
+                     value={accountCompany.companyName}
+                     onChange={(ev) => {
+                        const dt = { ...accountCompany, companyName: ev.target.value }
+                        setAccountCompany(dt);
+                     }}
+                  />
                   <div className="font-size-sm text-sendary mb-2">
                      To change your company name as displayed on your quotes, see:
                      <br />
@@ -22,9 +49,19 @@ export const AccountInformation = (props) => {
                </div>
 
                <div className="mb-5">
-                  <label htmlFor="example-select">Account Owner</label>
-                  <select className="form-control maxWidth-550" id="example-select" name="example-select">
-                     <option value={52036} selected="selected">A Devom</option>
+                  <label htmlFor="accountOwner">Account Owner</label>
+                  <select className="form-control rounded-0 maxWidth-550" id="accountOwner" name="accountOwner"
+                     value={accountCompany.owner}
+                     onChange={(ev) => {
+                        const dt = { ...accountCompany, owner: ev.target.value }
+                        setAccountCompany(dt);
+                     }}
+                  >
+                     {
+                        props.teamMembers.map((member, index) => {
+                           return <option value={member._id} key={index}>A Devom</option>
+                        })
+                     }
                   </select>
                   <div className="font-size-sm text-sendary mb-2">
                      To qualify for the Multi-Account 20% Discount, accounts must have the same Account Owner.
@@ -34,8 +71,14 @@ export const AccountInformation = (props) => {
                <h3 className="mb-4">Account Defaults</h3>
 
                <div className="mb-4">
-                  <label htmlFor="example-select">Country</label>
-                  <select className="form-control maxWidth-550" id="example-select" name="example-select">
+                  <label htmlFor="countryCode">Country</label>
+                  <select className="form-control rounded-0 maxWidth-550" id="countryCode" name="countryCode"
+                     value={accountCompany.location}
+                     onChange={(ev) => {
+                        const dt = { ...accountCompany, location: ev.target.value }
+                        setAccountCompany(dt);
+                     }}
+                  >
                      <optgroup label="––––––––––––––––––––––– " />
                      <option value={14}>Australia</option>
                      <option value={39}>Canada</option>
@@ -317,8 +360,14 @@ export const AccountInformation = (props) => {
                </div>
 
                <div className="mb-4">
-                  <label htmlFor="example-select">Country</label>
-                  <select className="form-control maxWidth-550" id="example-select" name="example-select">
+                  <label htmlFor="timeZone">Time Zone</label>
+                  <select className="form-control rounded-0 maxWidth-550" id="timeZone" name="timeZone"
+                     value={accountCompany.timeZone}
+                     onChange={(ev) => {
+                        const dt = { ...accountCompany, timeZone: ev.target.value }
+                        setAccountCompany(dt);
+                     }}
+                  >
                      <optgroup label=" –––––– US & Canada">
                         <option value={10001}>Hawaii (GMT-10:00)</option>
                         <option value={20001}>Alaska (GMT-09:00)</option>
@@ -326,7 +375,7 @@ export const AccountInformation = (props) => {
                         <option value={40000}>Mountain Time (GMT-07:00 / US &amp; Canada)</option>
                         <option value={40002}>Arizona (GMT-07:00)</option>
                         <option value={50003}>Central Time (GMT-06:00 / US &amp; Canada)</option>
-                        <option value={60000} selected="selected">Eastern Time (GMT-05:00 / US &amp; Canada)</option>
+                        <option value={60000}>Eastern Time (GMT-05:00 / US &amp; Canada)</option>
                         <option value={60003}>Indiana (GMT-05:00 / East)</option>
                      </optgroup>
                      <optgroup label=" –––––– United Kingdom">
@@ -449,15 +498,21 @@ export const AccountInformation = (props) => {
                </div>
 
                <div className="mb-5">
-                  <label htmlFor="example-select">Country</label>
-                  <select className="form-control maxWidth-550" id="example-select" name="example-select">
+                  <label htmlFor="dateFormat">Date Format</label>
+                  <select className="form-control rounded-0 maxWidth-550" id="dateFormat" name="dateFormat"
+                     value={accountCompany.dateFormat}
+                     onChange={(ev) => {
+                        const dt = { ...accountCompany, dateFormat: ev.target.value }
+                        setAccountCompany(dt);
+                     }}
+                  >
                      <option value={0}>5 January 2020</option>
-                     <option value={1} selected="selected">January 5, 2020</option>
+                     <option value={1}>January 5, 2020</option>
                   </select>
                </div>
-               
+
                <div className="mb-4">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-2">Save</button>
+                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={onHandleSave}>Save</button>
                   <button className="btn btn-lg btn-rounded btn-hero-secondary">Cancel</button>
                </div>
             </div>
@@ -466,4 +521,15 @@ export const AccountInformation = (props) => {
    )
 }
 
-export default AccountInformation
+const mapStateToProps = ({ auth, teamSetting }) => {
+   const { accountCompany } = auth;
+   const { teamMembers } = teamSetting;
+   return { accountCompany, teamMembers };
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+   return {
+      updateAccountInfo: accountCompany => dispatch(updateAccountInfo(accountCompany, ownProps)),
+   };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(AccountInformation)

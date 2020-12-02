@@ -116,11 +116,11 @@ const mapStateToProps = ({ auth, commonData }) => {
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
    return {
-      fetchStart: () => { dispatch(fetchStart) },
-      fetchSuccess: () => { dispatch(fetchSuccess) },
-      fetchError: () => { dispatch(fetchError) },
-      showMessage: () => { dispatch(showMessage) },
-      userResetPassword: ({ entoken, password }) => { dispatch(userResetPassword({ entoken, password })) }
+      fetchStart: () => dispatch(fetchStart),
+      fetchSuccess: () => dispatch(fetchSuccess),
+      fetchError: () => dispatch(fetchError),
+      showMessage: () => dispatch(showMessage),
+      userResetPassword: ({ entoken, password }) => dispatch(userResetPassword({ entoken, password }, ownProps))
    }
 }
 

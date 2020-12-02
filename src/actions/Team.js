@@ -20,21 +20,3 @@ export const getTeamMembers = () => {
       });
    }
 }
-
-// export const getTeamMembersWithEntoken = () => {
-//    const entoken = localStorage.getItem('entoken');
-//    return (dispatch) => {
-//       dispatch({ type: FETCH_START });
-//       axios.post('/entoken/team-members').then(({ data }) => {
-//          console.log("team-members response : ", data);
-//          dispatch({ type: FETCH_SUCCESS });
-//          dispatch({ type: GET_TEAMMEMBERS, payload: data.teamMembers });
-//       }).catch((err) => {
-//          dispatch({ type: FETCH_ERROR, payload: err.message });
-//          console.log("Error****:", err.message);
-//          dispatch(setInitUrl(`/q/${entoken}`));
-//          dispatch(userSignOut());
-//       });
-//    }
-// }
-

@@ -13,7 +13,6 @@ class Header extends Component {
    }
    onClickOutsideHandler = (ev) => {
       if (this.state.isOpen && !this.toggleContainer.current.contains(ev.target)) {
-         console.log(" onClickOutsideHandler ");
          this.setState({ isOpen: false });
       }
    }
@@ -25,9 +24,8 @@ class Header extends Component {
    }
    render() {
       const { isOpen } = this.state;
-      const { history, location } = this.props;
-      const { authUser } = this.props;
-      console.log("~~ authUser ~~", authUser);
+      const { location } = this.props;
+      const { authUser, accountCompany } = this.props;
       let show = false;
       if (
          location.pathname === "/app"
@@ -73,7 +71,7 @@ class Header extends Component {
                   <div className="dropdown d-inline-block" ref={this.toggleContainer}>
                      <button type="button" className="btn btn-dark dropdown-toggle" onClick={() => this.setState({ isOpen: !isOpen })}>
                         <img className="img-avatar img-avatar32 img-avatar-thumb" src={authUser && `${authUser.image}`} alt="avatar" />
-                        <span className="d-none d-sm-inline ml-1">{authUser && `${authUser.companyName}`}</span>
+                        <span className="d-none d-sm-inline ml-1">{accountCompany && `${accountCompany.companyName}`}</span>
                      </button>
                      {/* Toggle Dropdown */}
                      <div className={`dropdown-menu dropdown-menu-right dropdown-menu-lg p-0 ${isOpen ? "show" : ""}`}>
@@ -140,8 +138,8 @@ class Header extends Component {
 }
 
 const mapStateToProps = ({ auth }) => {
-   const { authUser } = auth;
-   return { authUser }
+   const { authUser, accountCompany } = auth;
+   return { authUser, accountCompany }
 };
 const mapDispatchToProps = { userSignOut };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

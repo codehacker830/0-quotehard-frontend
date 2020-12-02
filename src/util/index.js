@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { toast } from 'react-toastify';
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
    "July", "August", "September", "October", "November", "December"
@@ -314,4 +314,12 @@ export const subTotalHasNoTerm = (items, settings) => {
       }
    });
    return subTotal;
+}
+
+export const ToastErrorNotification = (errors) => {
+   const errKeys = Object.keys(errors);
+   errKeys.map(err => {
+      const errMsg = `${err} ${errors[err]}`;
+      toast.error(errMsg.charAt(0).toUpperCase() + errMsg.slice(1))
+   });
 }

@@ -11,6 +11,7 @@ import {
 } from "../../constants/Dump";
 import axios from '../../util/Api';
 import { toastSuccessConfig } from '../../util/toastrConfig';
+import { ToastErrorNotification } from '../../util';
 
 export default class EditContact extends Component {
    constructor(props) {
@@ -40,7 +41,7 @@ export default class EditContact extends Component {
       else if (ev.target.name === "postCode") newAddresses[index].postCode = ev.target.value;
       else if (ev.target.name === "country") newAddresses[index].country = ev.target.value;
 
-      console.error(" newAddresses ===>", newAddresses);
+      console.log(" newAddresses ===>", newAddresses);
       this.setState({ addresses: newAddresses });
    }
 
@@ -78,11 +79,7 @@ export default class EditContact extends Component {
          // this.props.history.push(this.goTo);
       }).catch(err => {
          const { errors } = err.response.data;
-         const errKeys = Object.keys(errors);
-         errKeys.map(err => {
-            const errMsg = `${err} ${errors[err]}`;
-            toast.error(errMsg.charAt(0).toUpperCase() + errMsg.slice(1))
-         });
+         ToastErrorNotification(errors);
       });
    }
 

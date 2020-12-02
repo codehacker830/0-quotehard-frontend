@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import NavCrump from '../../../../components/NavCrump';
 import { TEAM_PATH, SETTINGS_PATH } from '../../../../constants/PathNames';
+import { ToastErrorNotification } from '../../../../util';
 import axios from '../../../../util/Api';
 
 export const InviteForm = (props) => {
@@ -28,11 +29,7 @@ export const InviteForm = (props) => {
          })
          .catch(err => {
             const { errors } = err.response.data;
-            const errKeys = Object.keys(errors);
-            errKeys.map(err => {
-               const errMsg = `${err} ${errors[err]}`;
-               toast.error(errMsg.charAt(0).toUpperCase() + errMsg.slice(1))
-            });
+            ToastErrorNotification(errors);
          });
    }
    return (

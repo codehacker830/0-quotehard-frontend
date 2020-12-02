@@ -46,13 +46,13 @@ class App extends Component {
    }
 
    componentWillReceiveProps(nextProps) {
-      console.error(">> APP nextProps ==>", nextProps);
+      console.error(">>>>>> APP nextProps ---->", nextProps);
       if (nextProps.token) {
-         console.error(">> Axios header token set <<")
+         console.error(">>>>>> Axios header token set ---->")
          axios.defaults.headers.common['Authorization'] = "Bearer " + nextProps.token;
       }
       if (nextProps.token && !nextProps.authUser) {
-         console.error(">> Get ME from Token <<")
+         console.error(">>>>>> Get ME from Token ---->")
          this.props.getUser();
       }
    }

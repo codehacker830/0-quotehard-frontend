@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import NavCrump from '../../../../components/NavCrump'
 import { INVITE_FORM_PATH, SETTINGS_PATH } from '../../../../constants/PathNames'
+import { ToastErrorNotification } from '../../../../util'
 import axios from '../../../../util/Api'
 import Tr_Member from './components/Tr_Member'
 
@@ -25,8 +26,10 @@ export const Team = (props) => {
             setMembers(arr);
          })
          .catch(err => {
-            toast.error('Failed to delete invitation.');
-            console.error("delete invitation err =>", err.response.data);
+            // toast.error('Failed to delete invitation.');
+            // console.error("delete invitation err =>", err.response.data);
+            const { errors } = err.response.data;
+            ToastErrorNotification(errors);
          });
    }
    return (
