@@ -57,7 +57,7 @@ export const parseTime = (dtObj) => {
 
 export const convertStrIntoDateObj = (date, time) => {
    const dObj = new Date(date + " " + time);
-   if (isValidDate) return dObj;
+   if (isValidDateObj(dObj)) return dObj;
    return null;
 }
 export const isValidDateTimeFormat = (date, time) => {

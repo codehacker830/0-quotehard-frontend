@@ -5,10 +5,11 @@ import { userSignOut } from '../actions/Auth';
 
 class InviteExisting extends Component {
    onHandleClick = () => {
+      const { invitationEntoken } = this.props.match.params;
       this.props.userSignOut();
       this.props.history.push({
          pathname: '/sign-in',
-         state: { accountCompany, firstName, lastName, email }
+         state: { invitationEntoken }
       });
    }
    render() {

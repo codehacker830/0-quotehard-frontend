@@ -165,7 +165,7 @@ class PublicQuoteView extends Component {
             console.error("error during submit question ==>", err);
          });
    }
-   onSubmitAnswer = (qaId) => {
+   submitAnswer = (qaId) => {
       const { answerContent } = this.state;
       const { entoken } = this.props.match.params;
       if (answerContent === "") {
@@ -187,7 +187,7 @@ class PublicQuoteView extends Component {
             console.error("error during submit answer ==>", err);
          });
    }
-   onSubmitDismiss = (qaId) => {
+   submitDismiss = (qaId) => {
       const { entoken } = this.props.match.params;
       this.setState({ loading: true });
       axios.post('/quotes/dismiss', { entoken, qaId })
@@ -657,10 +657,10 @@ class PublicQuoteView extends Component {
                                                       Add Image or File
                                                       </button>
                                                       <div className="row no-gutters mt-3">
-                                                         <button className="btn btn-secondary mr-2" disabled={this.state.loading} onClick={() => this.onSubmitAnswer(discussion._id)}>
+                                                         <button className="btn btn-secondary mr-2" disabled={this.state.loading} onClick={() => this.submitAnswer(discussion._id)}>
                                                             {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
                                                             Answer Question</button>
-                                                         <button className="btn btn-alt-secondary" disabled={this.state.loading} onClick={() => this.onSubmitDismiss(discussion._id)}>
+                                                         <button className="btn btn-alt-secondary" disabled={this.state.loading} onClick={() => this.submitDismiss(discussion._id)}>
                                                             {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
                                                             Dismiss</button>
                                                       </div>

@@ -60,17 +60,17 @@ export default class EditContact extends Component {
       const data = { category, firstName, lastName, companyName, companyId, email, phones, addresses };
       console.log("edit contact request payload =", data);
       if (category === "person" && (firstName === "" || email === "")) {
-         toast.warn('First Name is required.', toastWarningConfig);
+         toast.warn('First Name is required.');
          return;
       }
       if (category === "company" && companyName === "" && email === "") {
-         toast.warn('You need to enter a company name or email.', toastWarningConfig);
+         toast.warn('You need to enter a company name or email.');
          return;
       }
       const { match } = this.props;
       const contactId = match.params.id;
       if (!contactId) {
-         toast.warn("Contact can't be catched.", toastWarningConfig);
+         toast.warn("Contact can't be catched.");
          return;
       }
       axios.put(`/contacts/${contactId}`, data).then((res) => {

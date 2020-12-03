@@ -22,10 +22,10 @@ class SignIn extends Component {
       else this.props.userSignIn({ email, password, isRemember });
    };
    componentDidMount() {
-      const { invitationEntoken } = this.props.location.state;
-      console.log("__________ this.props... _____________", this.props);
-      console.log("__________ invitationEntoken... _____________", invitationEntoken);
-      if (invitationEntoken) {
+      if (this.props.location.state) {
+         const { invitationEntoken } = this.props.location.state;
+         console.log("__________ this.props... _____________", this.props);
+         console.log("__________ invitationEntoken... _____________", invitationEntoken);
          axios.post('/settings/team/validate-invitation', { invitationEntoken })
             .then(({ data }) => {
                console.log(" invitation link validated data =>", data);

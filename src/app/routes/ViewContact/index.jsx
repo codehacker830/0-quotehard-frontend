@@ -32,7 +32,7 @@ export default class ViewContact extends Component {
          this.setState({ contact: data.contact });
       }).catch((err) => {
          console.error("GET contact API error ==>", err)
-         props.history.push(CONTACTS_PATH);
+         this.props.history.push(CONTACTS_PATH);
 
       })
    }

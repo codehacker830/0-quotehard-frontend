@@ -18,7 +18,6 @@ export const getDefaultSalesCategory = () => {
          dispatch({ type: FETCH_SUCCESS });
          const { defaultSalesCategory } = data;
          dispatch({ type: GET_DEFAULT_SALES_CATEGORY, payload: defaultSalesCategory });
-         dispatch({ type: GET_DEFAULT_SALES_TAX, payload: defaultSalesTax });
       } catch (error) {
          dispatch({ type: FETCH_ERROR, payload: error.message });
          console.log("Error****:", error.message);

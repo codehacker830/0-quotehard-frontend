@@ -45,7 +45,7 @@ export default class GetTemplate extends Component {
    }
    onClickCreate = () => {
       const { title, settings, items, notes } = this.state;
-      if (title === "") { toast.info("You are missing a Template Title.", toastInfoConfig); return; }
+      if (title === "") { toast.info("You are missing a Template Title."); return; }
       const data = {
          title,
          settings,
@@ -65,7 +65,7 @@ export default class GetTemplate extends Component {
    }
    onClickUpdate = () => {
       const { title, settings, items, notes } = this.state;
-      if (title === "") { toast.info("Missing a Template Title.", toastInfoConfig); return; }
+      if (title === "") { toast.info("Missing a Template Title."); return; }
       const data = {
          title,
          settings

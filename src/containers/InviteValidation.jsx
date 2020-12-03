@@ -26,7 +26,7 @@ export const InviteValidation = (props) => {
 
          axios.post('/settings/team/validate-invitation', { invitationEntoken })
             .then(({ data }) => {
-               console.log(" invitation link validated data =>", data);
+               console.log(" account information from invitation link =>", data);
                setAccountInfo(data);
                setIsLoading(false);
             })
@@ -40,7 +40,7 @@ export const InviteValidation = (props) => {
    else if (!accountInfo) return <Redirect to={`/sign-in/invite/i/went-wrong`} />;
    else if (props.authUser) return <Redirect to={`/sign-in/invite/i/already-have-access/${invitationEntoken}`} />;
    else {
-      // const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = accountInfo;
+      const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = accountInfo;
       if (status === 'approved') return (
          <Redirect to={{
             pathname: '/sign-in',

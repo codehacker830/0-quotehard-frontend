@@ -164,7 +164,7 @@ class PublicQuoteView extends Component {
             console.error("error during submit question ==>", err);
          });
    }
-   onSubmitAnswer = (qaId) => {
+   submitAnswer = (qaId) => {
       const { answerContent } = this.state;
       const { entoken } = this.props.match.params;
       if (answerContent === "") {
@@ -186,23 +186,7 @@ class PublicQuoteView extends Component {
             console.error("error during submit answer ==>", err);
          });
    }
-   onSubmitDismiss = (qaId) => {
-      const { entoken } = this.props.match.params;
-      this.setState({ loading: true });
-      axios.post('/quotes/dismiss', { entoken, qaId })
-         .then(({ data }) => {
-            toast.success("Answer was Dismissed.", toastSuccessConfig);
-            this.setState({
-               loading: false,
-               discussions: data.discussions,
-               answerContent: ""
-            });
-         })
-         .catch(err => {
-            this.setState({ loading: false });
-            console.error("error during submit dismiss ==>", err);
-         });
-   }
+
    async componentDidMount() {
       this.mounted = true;
       const entoken = this.props.match.params.entoken;

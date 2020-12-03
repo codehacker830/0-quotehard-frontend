@@ -58,13 +58,13 @@ class GetQuote extends Component {
          items: [
             {
                category: "priceItem",
-               priceItem: initPriceItem,
+               priceItem: {...initPriceItem},
             },
          ],
          notes: [
             {
                category: "textItem",
-               textItem: initTextItem
+               textItem: {...initTextItem}
             }
          ],
       };
