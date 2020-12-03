@@ -1,7 +1,9 @@
 
 
 export const QUOTE_PAGE_PATH = "/app/quotes";
-
+export const GET_QUOTE_PATH = '/app/quote/get';
+export const GET_QUOTE_BY_ID_PATH = '/app/quote/:id';
+export const GET_QUOTE_FROM_TEMPLATE_PATH = '/app/quote/get/from-template/:id';
 
 export const SETTINGS_PATH = "/app/settings";
 export const CONTACTS_PATH = "/app/c/contacts";

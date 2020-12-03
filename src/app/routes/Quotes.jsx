@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import InlineHelp from '../../components/InlineHelp';
 import TotalLabelFor from '../../components/TotalLabelFor';
+import { GET_QUOTE_PATH } from '../../constants/PathNames';
 import { formatDate, toFixedFloat } from '../../util';
 import axios from '../../util/Api';
 
@@ -87,7 +88,7 @@ export default class Quotes extends Component {
                      <div className="col-md-5 col-sm-12">
                         <div className="row no-gutters mb-2 px-1">
                            <button className="btn btn-success ml-auto" onClick={() => this.props.history.push({
-                              pathname: '/app/quote/get',
+                              pathname: GET_QUOTE_PATH,
                               state: { from: this.props.location.pathname }
                            })}>New Quote</button>
                         </div>

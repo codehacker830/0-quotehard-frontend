@@ -35,9 +35,10 @@ import { Link } from "react-router-dom";
 import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from "../../../actions/Settings";
 import NavCrumpLeft from "../../../components/NavCrump/NavCrumpLeft";
 
-import { QUOTE_PAGE_PATH } from "../../../constants/PathNames";
+import { GET_QUOTE_FROM_TEMPLATE_PATH, GET_QUOTE_PATH, GET_QUOTE_BY_ID_PATH, QUOTE_PAGE_PATH } from "../../../constants/PathNames";
 import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
 import TextareaAutosize from "react-autosize-textarea/lib";
+import { getQuoteDataById, getTemplateQuoteDataById } from "../../../actions/Data";
 
 class GetQuote extends Component {
    constructor(props) {
@@ -52,21 +53,21 @@ class GetQuote extends Component {
          sentDate: parseDate(initQuoteSettings.sentAt),
          sentTime: parseTime(initQuoteSettings.sentAt),
 
-         toPeopleList: [],
-         title: "",
-         settings: { ...initQuoteSettings, userFrom: this.props.authUser._id },
-         items: [
-            {
-               category: "priceItem",
-               priceItem: {...initPriceItem},
-            },
-         ],
-         notes: [
-            {
-               category: "textItem",
-               textItem: {...initTextItem}
-            }
-         ],
+         // toPeopleList: [],
+         // title: "",
+         // settings: { ...initQuoteSettings, userFrom: this.props.authUser._id },
+         // items: [
+         //    {
+         //       category: "priceItem",
+         //       priceItem: { ...initPriceItem },
+         //    },
+         // ],
+         // notes: [
+         //    {
+         //       category: "textItem",
+         //       textItem: { ...initTextItem }
+         //    }
+         // ],
       };
    }
    removeImageItem = (url) => {
@@ -78,7 +79,7 @@ class GetQuote extends Component {
       console.log(this.state.fileArray);
    };
    handleClickSaveNext = () => {
-      const { toPeopleList, title, settings, items, notes } = this.state;
+      const { toPeopleList, title, settings, items, notes } = this.props.quote;
       if (toPeopleList.length === 0) { toast.info("You must add at least one contact.", toastInfoConfig); return; }
       if (title === "") { toast.info("You are missing a Quote Title.", toastInfoConfig); return; }
       const toPeopleIdList = [];
@@ -94,7 +95,7 @@ class GetQuote extends Component {
          items,
          notes
       };
-      if (this.props.match.path === '/app/quote/get' || this.props.match.path === '/app/quote/get/from-template/:id') {
+      if (this.props.match.path === GET_QUOTE_PATH || this.props.match.path === GET_QUOTE_FROM_TEMPLATE_PATH) {
          this.setState({ loading: true, type: "SAVE_NEXT" });
          axios.post('/quotes', data)
             .then(({ data }) => {
@@ -108,7 +109,7 @@ class GetQuote extends Component {
                toast.error("Quote failed to create", toastErrorConfig);
                this.setState({ loading: false, type: null });
             });
-      } else if (this.props.match.path = "/app/quote/:id") {
+      } else if (this.props.match.path = GET_QUOTE_BY_ID_PATH) {
          const quoteId = this.props.match.params.id;
          this.setState({ loading: true, type: "SAVE_NEXT" });
          axios.put(`/quotes/${quoteId}`, data)
@@ -128,7 +129,7 @@ class GetQuote extends Component {
       }
    };
    handleClickSave = () => {
-      const { toPeopleList, title, settings, items, notes } = this.state;
+      const { toPeopleList, title, settings, items, notes } = this.props.quote;
       if (title === "") { toast.info("Missing a Quote Title.", toastInfoConfig); return; }
       const toPeopleIdList = [];
       for (let i = 0; i < toPeopleList.length; i++) {
@@ -143,7 +144,7 @@ class GetQuote extends Component {
          items,
          notes
       };
-      if (this.props.location.pathname === '/app/quote/get' || this.props.match.path === "/app/quote/get/from-template/:id") {
+      if (this.props.location.pathname === GET_QUOTE_PATH || this.props.match.path === GET_QUOTE_FROM_TEMPLATE_PATH) {
          this.setState({ loading: true, type: "SAVE" });
          axios.post('/quotes', data)
             .then(({ data }) => {
@@ -157,7 +158,7 @@ class GetQuote extends Component {
                this.setState({ loading: false, type: null });
                toast.error("Quote failed to create", toastErrorConfig);
             });
-      } else if (this.props.match.path = "/app/quote/:id") {
+      } else if (this.props.match.path = GET_QUOTE_BY_ID_PATH) {
          const quoteId = this.props.match.params.id;
          this.setState({ loading: true, type: "SAVE" });
          axios.put(`/quotes/${quoteId}`, data)
@@ -287,56 +288,33 @@ class GetQuote extends Component {
       await this.props.getSalesCategories('current');
       await this.props.getSalesTaxes('current');
 
-      if (this.props.match.path === "/app/quote/:id") {
+      if (this.props.match.path === GET_QUOTE_BY_ID_PATH) {
          // Get quote details with quote ID
-         axios.get(`/quotes/get-by-id/${this.props.match.params.id}`).then(({ data }) => {
-            console.log(" ressssssssssssssssssss  =>", data);
-            const { quote } = data;
-            this.setState({
-               title: quote.title,
-               toPeopleList: quote.toPeopleList,
-               settings: quote.settings,
-               items: quote.items,
-               notes: quote.notes
-            });
-         }).catch(err => {
-            console.error("get quote detail api error =>", err);
-         });
-      } else if (this.props.match.path === "/app/quote/get/from-template/:id") {
+
+         await this.props.getQuoteDataById(this.props.match.params.id);
+      } else if (this.props.match.path === GET_QUOTE_FROM_TEMPLATE_PATH) {
          // get template detials with id
-         axios.get(`/templates/id/${this.props.match.params.id}`).then(({ data }) => {
-            const { template } = data;
-            console.log("DDDDDDDDDDDDDDDDDDDDDAAAAAAAAAAAAATTTTTTTTTTT", data);
-            console.log("template", template);
-            console.log("initQuoteSettings", initQuoteSettings);
-            console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", { ...initQuoteSettings, ...template.settings });
-            this.setState({
-               title: template.title,
-               toPeopleList: [],
-               settings: { ...initQuoteSettings, ...template.settings, userFrom: this.props.authUser._id },
-               items: template.items,
-               notes: template.notes
-            });
-         }).catch(err => {
-            console.error("get tempate detail api error =>", err);
-         });
+         await this.props.getTemplateQuoteDataById(this.props.match.params.id);
       }
    }
    componentDidUpdate(prevProps, prevState) {
       if (this.props.defaultSalesTax !== prevProps.defaultSalesTax || this.props.defaultSalesCategory !== prevProps.defaultSalesCategory) {
-         if (this.props.match.path === "/app/quote/get")
-            this.setState({
-               items: [{
-                  category: "priceItem",
-                  priceItem: { ...initPriceItem, tax: this.props.defaultSalesTax, itemCategory: this.props.defaultSalesCategory },
-               }]
-            });
+         if (this.props.match.path === GET_QUOTE_PATH)
+            // Upate all tax and item category in items
+
+            // this.setState({
+            //    items: [{
+            //       category: "priceItem",
+            //       priceItem: { ...initPriceItem, tax: this.props.defaultSalesTax, itemCategory: this.props.defaultSalesCategory },
+            //    }]
+            // });
       }
    }
    render() {
       console.log(" ^^^^^^^ GET QUOTE state ^^^^^^^^^^ ", this.state);
       console.log(" ^^^^^^^ GET QUOTE props ^^^^^^^^^^ ", this.props);
       const { location } = this.props;
+      const { title, toPeopleList } = this.props.quote;
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
       if (location.state && location.state.from === QUOTE_PAGE_PATH) linkName = "Quotes";
@@ -347,7 +325,7 @@ class GetQuote extends Component {
                   {linkName}
                </NavCrumpLeft>
                {
-                  this.props.match.path === "/app/quote/:id" &&
+                  this.props.match.path === GET_QUOTE_BY_ID_PATH &&
                   <NavCrumpRight>
                      <ul className="choices" style={{ left: 25, top: 10 }}>
                         <li>
@@ -465,7 +443,7 @@ class GetQuote extends Component {
                            className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2 my-4"
                            rows={1}
                            placeholder="Title of Quote"
-                           value={this.state.title}
+                           value={title}
                            onChange={(ev) => this.setState({ title: ev.target.value })}
                         ></TextareaAutosize>
                      </div>
@@ -591,10 +569,11 @@ class GetQuote extends Component {
       );
    }
 }
-const mapStateToProps = ({ auth, settings }) => {
+const mapStateToProps = ({ auth, settings, mainData }) => {
    const { authUser } = auth;
+   const { quote } = mainData;
    const { defaultSalesTax, defaultSalesCategory } = settings;
-   return { authUser, defaultSalesTax, defaultSalesCategory }
+   return { authUser, quote, defaultSalesTax, defaultSalesCategory }
 }
-const mapDispatchToProps = { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes };
+const mapDispatchToProps = { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes, getQuoteDataById, getTemplateQuoteDataById };
 export default connect(mapStateToProps, mapDispatchToProps)(GetQuote)

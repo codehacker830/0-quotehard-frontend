@@ -5,7 +5,7 @@ import Common from './Common';
 import Settings from './Settings';
 import Appearance from './Appearance';
 import Team from './Team';
-import Quote from './Quote';
+import Data from './Data';
 
 
 export default (history) => combineReducers({
@@ -15,5 +15,5 @@ export default (history) => combineReducers({
    settings: Settings,
    appearanceSetting: Appearance,
    teamSetting: Team,
-   quoteData: Quote,
+   mainData: Data,
 });

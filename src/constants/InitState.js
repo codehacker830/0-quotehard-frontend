@@ -2,15 +2,6 @@ export const initQuoteSettings = {
    validUntil: new Date(Date.now() + 1000 * 3600 * 24 * 60),
    sentAt: new Date(),
    userFrom: "",
-   // userFrom: {
-   //    _id: "",
-   //    firstName: "",
-   //    lastName: "",
-   //    email: "",
-   //    companyName: "",
-   //    location: "",
-   // },
-
    discount: 0,
    currency: "156",
    taxMode: "no_tax",

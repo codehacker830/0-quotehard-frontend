@@ -34,7 +34,6 @@ export const APPEARANCE_SETTINGS = 'appearance_settings';
 
 // Public View
 export const GET_QUOTE = 'get_quote';
-export const UPDATE_QUOTE = 'update_quote';
 export const UPDATE_DISCUSSIONS = 'update_discussions';
 
 
