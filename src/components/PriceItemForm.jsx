@@ -295,8 +295,8 @@ class PriceItemForm extends Component {
                                     };
                                     this.updateItem(this.props.index, newItem);
                                  }}
-                                 id="editable-quantity" name="editable-quantity" />
-                              <label className="form-check-label font-w400 font-size-sm" htmlFor="editable-quantity">Editable Quantity</label>
+                                 id={`editable-quantity-${this.props.index}`} name={`editable-quantity-${this.props.index}`} />
+                              <label className="form-check-label font-w400 font-size-sm" htmlFor={`editable-quantity-${this.props.index}`}>Editable Quantity</label>
                            </div>
                            <div className="form-check pb-1">
                               <input className="form-check-input"
@@ -309,8 +309,8 @@ class PriceItemForm extends Component {
                                     };
                                     this.updateItem(this.props.index, newItem);
                                  }}
-                                 id="discount-percent" name="discount-percent" />
-                              <label className="form-check-label font-w400 font-size-sm" htmlFor="discount-percent">Discount %</label>
+                                 id={`discount-percent-${this.props.index}`} name={`discount-percent-${this.props.index}`} />
+                              <label className="form-check-label font-w400 font-size-sm" htmlFor={`discount-percent-${this.props.index}`}>Discount %</label>
                            </div>
                            <div className="form-check pb-1">
                               <input className="form-check-input"
@@ -323,8 +323,8 @@ class PriceItemForm extends Component {
                                     };
                                     this.updateItem(this.props.index, newItem);
                                  }}
-                                 id="subscription" name="subscription" />
-                              <label className="form-check-label font-w400 font-size-sm" htmlFor="subscription">Subscription - Repeating Cost</label>
+                                 id={`subscription-${this.props.index}`} name={`subscription-${this.props.index}`} />
+                              <label className="form-check-label font-w400 font-size-sm" htmlFor={`subscription-${this.props.index}`}>Subscription - Repeating Cost</label>
                            </div>
                            <div className="form-check pb-1">
                               <input className="form-check-input"
@@ -337,8 +337,8 @@ class PriceItemForm extends Component {
                                     };
                                     this.updateItem(this.props.index, newItem);
                                  }}
-                                 id="cost-margin" name="cost-margin" />
-                              <label className="form-check-label font-w400 font-size-sm" htmlFor="cost-margin">Cost Price & Margin</label>
+                                 id={`cost-margin-${this.props.index}`} name={`cost-margin-${this.props.index}`} />
+                              <label className="form-check-label font-w400 font-size-sm" htmlFor={`cost-margin-${this.props.index}`}>Cost Price & Margin</label>
                            </div>
                         </div>
                      </div>
