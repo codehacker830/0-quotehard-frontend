@@ -24,15 +24,15 @@ const initialState = {
    isEnabledPrintPDF: false,
    pdfPageSize: 1,
 
-   // companyDisplayName: "",
-   // companyAddress: "",
-   // companyWebsite: "",
-   // companyPhone: "",
+   companyDisplayName: "",
+   companyAddress: "",
+   companyWebsite: "",
+   companyPhone: "",
 
-   companyDisplayName: "companyDisplayName",
-   companyAddress: "companyAddress",
-   companyWebsite: "www.example.com",
-   companyPhone: "companyPhone-123",
+   // companyDisplayName: "companyDisplayName",
+   // companyAddress: "companyAddress",
+   // companyWebsite: "www.example.com",
+   // companyPhone: "companyPhone-123",
 };
 
 export default (state = initialState, action) => {
@@ -43,10 +43,7 @@ export default (state = initialState, action) => {
             logo: action.payload
          };
       case APPEARANCE_SETTINGS:
-         return {
-            ...state,
-            ...action.payload
-         }
+         return action.payload
       default:
          return state;
    }

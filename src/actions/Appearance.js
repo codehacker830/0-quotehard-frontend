@@ -47,16 +47,50 @@ export const removeLogo = (image) => {
    }
 }
 
-export const getAppearanceSettings = () => {
-   return (dispatch) => {
+export const getAppearanceSetting = () => {
+   return async (dispatch) => {
       dispatch({ type: FETCH_START, payload: APPEARANCE_SETTINGS });
-      axios.get("/settings/appearance")
-         .then(({ data }) => {
-            dispatch({ type: FETCH_SUCCESS });
-            dispatch({ type: APPEARANCE_SETTINGS, payload: { ...data } });
-         })
-         .catch((err) => {
-            dispatch({ type: FETCH_ERROR });
-         })
+      try {
+         const { data } = await axios.get("/settings/appearance");
+         console.log('get appearance setting data', data)
+         dispatch({ type: FETCH_SUCCESS });
+         dispatch({ type: APPEARANCE_SETTINGS, payload: data.appearanceSetting });
+      } catch (err) {
+         dispatch({ type: FETCH_ERROR });
+      }
+   }
+}
+
+export const getPublicAppearanceWithEntoken = () => {
+   const entoken = localStorage.getItem('entoken');
+   return async (dispatch) => {
+      dispatch({ type: FETCH_START });
+      try {
+         const { data } = await axios.post('/quotes/view-public/appearance', { entoken });
+         dispatch({ type: FETCH_SUCCESS });
+         dispatch({ type: APPEARANCE_SETTINGS, payload: data.appearanceSetting });
+      } catch (err) {
+         dispatch({ type: FETCH_ERROR, payload: err.message });
+         console.log("Error****:", err.message);
+      }
+   }
+}
+
+export const updateAppearanceSetting = (setting) => {
+   return (dispatch) => dispatch({ type: APPEARANCE_SETTINGS, payload: setting });
+}
+
+export const publishAppearanceSettings = (setting) => {
+   return async (dispatch) => {
+      dispatch({ type: FETCH_START });
+      try {
+         const { data } = await axios.put("/settings/appearance", { setting });
+         console.log('publish response appearanceSetting data :', data)
+         dispatch({ type: FETCH_SUCCESS });
+         dispatch({ type: APPEARANCE_SETTINGS, payload: data.appearanceSetting });
+      } catch (err) {
+         console.error("err during publish appearanceSetting.")
+         dispatch({ type: FETCH_ERROR });
+      }
    }
 }

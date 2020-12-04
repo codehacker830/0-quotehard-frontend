@@ -740,8 +740,10 @@ a.nav-link.active {
    border: none;
    background: none;
    border-radius: 2px;
+   outline: none;
 }
 .btn-in-action:hover,
+.btn-in-action:focus,
 .btn-in-action:active {
    color: #fff;
    background-color: #51a5e3;

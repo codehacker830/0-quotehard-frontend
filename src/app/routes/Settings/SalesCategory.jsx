@@ -16,8 +16,8 @@ export const SalesCategory = (props) => {
    const [description, setDescription] = useState("");
    const [defaultSalesTax, setDefaultSalesTax] = useState("0");
 
-   const settings = useSelector(state => {
-      const { defaultSalesCategory, salesTaxes } = state.settings;
+   const globalSettings = useSelector(state => {
+      const { defaultSalesCategory, salesTaxes } = state.globalSettings;
       return { defaultSalesCategory, salesTaxes };
    });
    const onClickSave = () => {
@@ -65,6 +65,7 @@ export const SalesCategory = (props) => {
       return () => { };
    }, [id]);
 
+   const { defaultSalesCategory, salesTaxes } = globalSettings;
    return (
       <React.Fragment>
          <NavCrump>
@@ -113,7 +114,7 @@ export const SalesCategory = (props) => {
                   </div>
                }
                {
-                  settings.defaultSalesCategory == id &&
+                  defaultSalesCategory == id &&
                   <div className="mb-3">
                      <span className="label label-success">Default</span>
                   </div>
@@ -138,7 +139,7 @@ export const SalesCategory = (props) => {
                   >
                      <option value="0">No default sales tax</option>
                      {
-                        settings.salesTaxes.map((salesTax, index) => <option value={salesTax._id} key={index}>{salesTax.taxName}</option>)
+                        salesTaxes.map((salesTax, index) => <option value={salesTax._id} key={index}>{salesTax.taxName}</option>)
                      }
                   </select>
                </div>

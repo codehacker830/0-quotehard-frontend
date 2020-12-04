@@ -13,12 +13,12 @@ import {
 } from '../constants/ActionTypes';
 import { toast } from 'react-toastify';
 
-export const getPublicDataWithEntoken = () => {
+export const getPublicQuoteWithEntoken = () => {
    const entoken = localStorage.getItem('entoken');
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
-         const { data } = await axios.post('/quotes/view-public', { entoken });
+         const { data } = await axios.post('/quotes/view-public/quote', { entoken });
          console.log("========== Publick overview did mount get quote =========", data);
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: GET_QUOTE, payload: data.quote });
@@ -28,6 +28,7 @@ export const getPublicDataWithEntoken = () => {
       }
    }
 }
+
 export const getQuoteDataById = (quoteId) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
