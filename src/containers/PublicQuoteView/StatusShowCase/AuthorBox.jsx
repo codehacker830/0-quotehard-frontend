@@ -32,8 +32,8 @@ class AuthorBox extends Component {
       );
    }
 }
-const mapStateToProps = ({ quoteData }) => {
-   const { quote } = quoteData;
+const mapStateToProps = ({ mainData }) => {
+   const { quote } = mainData;
    return { quote };
 };
 

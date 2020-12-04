@@ -208,9 +208,9 @@ class PublicQuoteView extends Component {
       const { auth, commonData, appearanceSetting, teamSetting, mainData } = this.props;
       const { authUser } = auth;
       const { teamMembers } = teamSetting;
-      console.log('quote_____', quote)
       const { quote } = mainData;
       const { discussions } = quote;
+      console.log('quote_____', quote)
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
       if (location.state && location.state.from === QUOTES_PATH) linkName = "Quotes";

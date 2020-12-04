@@ -13,8 +13,8 @@ class StatEditTimes extends Component {
       );
    }
 }
-const mapStateToProps = ({ quoteData }) => {
-   const { quote } = quoteData;
+const mapStateToProps = ({ mainData }) => {
+   const { quote } = mainData;
    return { quote };
 };
 export default connect(mapStateToProps)(StatEditTimes);
