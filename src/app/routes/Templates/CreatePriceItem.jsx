@@ -46,9 +46,9 @@ export default class CreatePriceItem extends Component {
          productHeading,
          longDescription,
          files,
-         itemCategory,
+         salesCategory,
 
-         tax,
+         salesTax,
          unitPrice,
          quantity,
          itemTotal,
@@ -74,9 +74,9 @@ export default class CreatePriceItem extends Component {
          productHeading,
          longDescription,
          files,
-         itemCategory,
+         salesCategory,
 
-         tax,
+         salesTax,
          unitPrice,
          quantity,
          itemTotal,

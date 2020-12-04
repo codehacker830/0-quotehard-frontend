@@ -432,11 +432,11 @@ class PriceItemForm extends Component {
                      <div className="col-6 pr-0">
                         <select className="custom-select rounded-0"
                            disabled={!!this.props.isViewOnly}
-                           value={this.props.priceItem.itemCategory}
+                           value={this.props.priceItem.salesCategory}
                            onChange={(ev) => {
                               const newItem = {
                                  category: "priceItem",
-                                 priceItem: { ... this.props.priceItem, itemCategory: ev.target.value }
+                                 priceItem: { ... this.props.priceItem, salesCategory: ev.target.value }
                               };
                               this.updateItem(this.props.index, newItem);
                            }}>
@@ -449,11 +449,11 @@ class PriceItemForm extends Component {
                      <div className="col-6 pl-1">
                         <select className="custom-select rounded-0"
                            disabled={!!this.props.isViewOnly}
-                           value={this.props.priceItem.tax}
+                           value={this.props.priceItem.salesTax}
                            onChange={(ev) => {
                               const newItem = {
                                  category: "priceItem",
-                                 priceItem: { ... this.props.priceItem, tax: ev.target.value }
+                                 priceItem: { ... this.props.priceItem, salesTax: ev.target.value }
                               };
                               this.updateItem(this.props.index, newItem);
                            }}>

@@ -43,8 +43,8 @@ export const initPriceItem = {
    productHeading: "",
    longDescription: "",
    files: [],
-   itemCategory: "",
-   tax: "",
+   salesCategory: "",
+   salesTax: "",
 
    unitPrice: 0,
    quantity: 0,

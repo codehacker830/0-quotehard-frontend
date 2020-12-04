@@ -237,10 +237,10 @@ export const numberOfOption = (items) => {
 function getUniqueTaxArr(taxArr) {
    if (!Array.isArray(taxArr)) return [];
    const resArr = [];
-   taxArr.forEach((tax) => {
-      const i = resArr.findIndex(x => x._id == tax._id);
-      if (i <= -1 && tax.taxRate != 0) {
-         resArr.push(tax);
+   taxArr.forEach((salesTax) => {
+      const i = resArr.findIndex(x => x._id == salesTax._id);
+      if (i <= -1 && salesTax.taxRate != 0) {
+         resArr.push(salesTax);
       }
    });
    return resArr;
@@ -263,7 +263,7 @@ export const differentTaxIdArrGroup = (items) => {
       if (item.category === "priceItem") {
          const { priceItem } = item;
          if (checkIfItemWasSelected(priceItem)) {
-            if (priceItem.tax) resArr.push(priceItem.tax);
+            if (priceItem.salesTax) resArr.push(priceItem.salesTax);
          }
       }
    });
@@ -276,7 +276,7 @@ export const filterItemArrForTaxId = (items, taxId) => {
    items.forEach(item => {
       if (item.category === "priceItem") {
          const { priceItem } = item;
-         if (priceItem.tax._id == taxId) {
+         if (priceItem.salesTax._id == taxId) {
             if (checkIfItemWasSelected(priceItem)) resArr.push(item);
          }
       }

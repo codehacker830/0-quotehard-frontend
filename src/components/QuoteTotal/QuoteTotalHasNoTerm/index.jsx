@@ -35,7 +35,7 @@ class QuoteTotalHasNoTerm extends Component {
                      console.log(" ###########  ItemArrFromTaxId ########### ", ItemArrFromTaxId);
 
                      return (
-                        <Tr_tax items={ItemArrFromTaxId} settings={settings} tax={uniqueTax} key={index} />
+                        <Tr_tax items={ItemArrFromTaxId} settings={settings} salesTax={uniqueTax} key={index} />
                      );
                   })
                }

@@ -20,16 +20,16 @@ class QuoteTotal extends Component {
       let taxTotal = 0;
       let costPriceTotal = 0;
       for (let i = 0; i < pItems.length; i++) {
-         if (parseFloat(pItems[i].priceItem.tax) > maxTax) maxTax = parseFloat(pItems[i].priceItem.tax);
+         if (parseFloat(pItems[i].priceItem.salesTax) > maxTax) maxTax = parseFloat(pItems[i].priceItem.salesTax);
          const itemDiscount = pItems[i].priceItem.itemTotal * parseFloat(this.props.settings.discount) / 100;
          discountTotal += itemDiscount;
 
-         isTaxEnable = !!pItems[i].priceItem.tax;
+         isTaxEnable = !!pItems[i].priceItem.salesTax;
          isSubscriptionEnable = pItems[i].priceItem.isSubscription;
          isMarginShowEnable = pItems[i].priceItem.isCostPriceMargin;
 
          subTotal += (pItems[i].priceItem.itemTotal - itemDiscount);
-         taxTotal += (pItems[i].priceItem.itemTotal - itemDiscount) * parseFloat(pItems[i].priceItem.tax) / 100;
+         taxTotal += (pItems[i].priceItem.itemTotal - itemDiscount) * parseFloat(pItems[i].priceItem.salesTax) / 100;
          costPriceTotal += pItems[i].priceItem.costPrice * pItems[i].priceItem.quantity;
       }
       let totalIncludingTax = subTotal + taxTotal;
@@ -37,8 +37,6 @@ class QuoteTotal extends Component {
       console.log(">>>>>>>>>>>>>> discountTotal >>>>>>", discountTotal);
       return (
          <div>
-
-
             <QuoteTotalHasNoTerm />
 
             {/* subtotal 1 */}
