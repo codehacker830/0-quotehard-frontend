@@ -204,13 +204,13 @@ class PublicQuoteView extends Component {
       console.log(" ----------- PublicQuoteView state ------", this.state);
       console.log(" ----------- PublicQuoteView props ------", this.props);
       const { isMounting } = this.state;
-      const { appearanceSetting } = this.props;
-      const { authUser } = this.props.auth;
-      const { teamMembers } = this.props.teamSetting;
-      const { loading, type } = this.props.commonData;
-      const { quote } = this.props.quoteData;
-      const { discussions } = quote;
       const { location } = this.props;
+      const { auth, commonData, appearanceSetting, teamSetting, mainData } = this.props;
+      const { authUser } = auth;
+      const { teamMembers } = teamSetting;
+      console.log('quote_____', quote)
+      const { quote } = mainData;
+      const { discussions } = quote;
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
       if (location.state && location.state.from === QUOTES_PATH) linkName = "Quotes";
@@ -561,8 +561,8 @@ class PublicQuoteView extends Component {
    }
 }
 
-const mapStateToProps = ({ auth, commonData, appearanceSetting, teamSetting, quote }) => {
-   return { auth, commonData, appearanceSetting, teamSetting, quote };
+const mapStateToProps = ({ auth, commonData, appearanceSetting, teamSetting, mainData }) => {
+   return { auth, commonData, appearanceSetting, teamSetting, mainData };
 }
 const mapDispatchToProps = { setInitUrl, userSignOut, getPublicDataWithEntoken, getTeamMembers };
 export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);

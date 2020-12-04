@@ -10,7 +10,8 @@ class AddPriceItemBtn extends Component {
          priceItem: {
             ...initPriceItem,
             salesCategory: this.props.defaultSalesCategory,
-            salesTax: this.props.defaultSalesTax
+            salesTax: this.props.defaultSalesTax,
+            files: []
          }
       }
       this.props.updateQuoteItems([...this.props.items, newItem])

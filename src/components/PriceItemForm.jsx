@@ -111,7 +111,8 @@ class PriceItemForm extends Component {
          priceItem: {
             ...initPriceItem,
             salesCategory: this.props.defaultSalesCategory,
-            salesTax: this.props.defaultSalesTax
+            salesTax: this.props.defaultSalesTax,
+            files: []
          },
       });
       else if (category === "textItem") newItems.splice(ind + 1, 0, {
