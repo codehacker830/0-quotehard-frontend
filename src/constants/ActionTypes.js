@@ -32,10 +32,11 @@ export const UPLOAD_IMAGE = 'upload_image';
 export const LOGO_URL = 'logo_url';
 export const APPEARANCE_SETTINGS = 'appearance_settings';
 
-// Public View
-export const GET_QUOTE = 'get_quote';
-export const UPDATE_DISCUSSIONS = 'update_discussions';
-
-
 // Quote
-export const SET_QUOTE = 'set_quote';
+export const GET_QUOTE = 'get_quote';
+export const UPDATE_QUOTE_TOPEOPLELIST = 'update_quote_topeoplelist';
+export const UPDATE_QUOTE_TITLE = 'update_quote_title';
+export const UPDATE_QUOTE_SETTINGS = 'update_quote_settings';
+export const UPDATE_QUOTE_ITEMS = 'update_quote_items';
+export const UPDATE_QUOTE_NOTES = 'update_quote_notes';
+export const UPDATE_QUOTE_DISCUSSIONS = 'update_quote_discussions';

@@ -143,27 +143,3 @@ export const recentActivities = [
 //    }
 
 // ];
-
-export const peopleContacts = [
-   {
-      _id: "12345",
-      firstName: "Raffale",
-      lastName: "Cantatore",
-      email: "honestypassion0615@gmail.com",
-      company: "Raff Company",
-   },
-   {
-      _id: "13452",
-      firstName: "Danil",
-      lastName: "Zolo",
-      email: "danilo@gmail.com",
-      company: "Danil Company"
-   },
-   {
-      _id: "248318",
-      firstName: "Radoje",
-      lastName: "Cofallo",
-      email: "cofallo@gmail.com",
-      company: "AllOver"
-   }
-];

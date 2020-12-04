@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from "react-redux"; import { toFixedFloat } from '../../../../util';
+import { connect } from "react-redux";
+import { toFixedFloat } from '../../../../util';
 import AttachedFilesShowCase from '../AttachedFilesShowCase';
 import QuotePriceItem from './QuotePriceItem';
 import QuoteSubTotal from './QuoteSubTotal';

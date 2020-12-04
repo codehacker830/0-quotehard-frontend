@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateQuote } from '../../../../actions/Quote';
+import { updateQuote } from '../../../../actions/Data';
 import { SwitchQuoteItemClass, toFixedFloat } from '../../../../util';
 import AttachedFilesShowCase from '../AttachedFilesShowCase';
 

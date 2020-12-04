@@ -1,6 +1,11 @@
 import {
    GET_QUOTE,
-   UPDATE_DISCUSSIONS
+   UPDATE_QUOTE_TOPEOPLELIST,
+   UPDATE_QUOTE_TITLE,
+   UPDATE_QUOTE_SETTINGS,
+   UPDATE_QUOTE_ITEMS,
+   UPDATE_QUOTE_NOTES,
+   UPDATE_QUOTE_DISCUSSIONS,
 } from '../constants/ActionTypes';
 import { initPriceItem, initQuoteSettings, initTextItem } from '../constants/InitState';
 
@@ -32,7 +37,48 @@ export default (state = initialSettings, action) => {
             ...state,
             quote: action.payload
          };
-      case UPDATE_DISCUSSIONS:
+      case UPDATE_QUOTE_TOPEOPLELIST:
+         return {
+            ...state,
+            quote: {
+               ...state.quote,
+               toPeopleList: action.payload
+            }
+         };
+      case UPDATE_QUOTE_TITLE:
+         return {
+            ...state,
+            quote: {
+               ...state.quote,
+               title: action.payload
+            }
+         };
+      case UPDATE_QUOTE_SETTINGS:
+         return {
+            ...state,
+            quote: {
+               ...state.quote,
+               settings: action.payload
+            }
+         };
+
+      case UPDATE_QUOTE_ITEMS:
+         return {
+            ...state,
+            quote: {
+               ...state.quote,
+               items: action.payload
+            }
+         };
+      case UPDATE_QUOTE_NOTES:
+         return {
+            ...state,
+            quote: {
+               ...state.quote,
+               notes: action.payload
+            }
+         };
+      case UPDATE_QUOTE_DISCUSSIONS:
          return {
             ...state,
             quote: {

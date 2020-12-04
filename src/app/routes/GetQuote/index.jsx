@@ -38,7 +38,7 @@ import NavCrumpLeft from "../../../components/NavCrump/NavCrumpLeft";
 import { GET_QUOTE_FROM_TEMPLATE_PATH, GET_QUOTE_PATH, GET_QUOTE_BY_ID_PATH, QUOTE_PAGE_PATH } from "../../../constants/PathNames";
 import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
 import TextareaAutosize from "react-autosize-textarea/lib";
-import { getQuoteDataById, getTemplateQuoteDataById } from "../../../actions/Data";
+import { getQuoteDataById, getTemplateQuoteDataById, updateQuoteToPeopleList } from "../../../actions/Data";
 
 class GetQuote extends Component {
    constructor(props) {
@@ -48,10 +48,7 @@ class GetQuote extends Component {
          fileArray: [],
          emailTo: "",
 
-         validDate: parseDate(initQuoteSettings.validUntil),
-         validTime: parseTime(initQuoteSettings.validUntil),
-         sentDate: parseDate(initQuoteSettings.sentAt),
-         sentTime: parseTime(initQuoteSettings.sentAt),
+
 
          // toPeopleList: [],
          // title: "",
@@ -190,13 +187,15 @@ class GetQuote extends Component {
 
    updateItem = (ind, item) => {
       // console.log("adfasdf ", ind, item);
-      let newItems = [...this.state.items];
+      const { items } = this.props.quote;
+      let newItems = [...items];
       newItems[ind] = item;
       console.log("adfasdf ", ind, newItems);
       this.setState({ items: newItems });
    }
    addItem = (ind, category) => {
-      let newItems = [...this.state.items];
+      const { items } = this.props.quote;
+      let newItems = [...items];
       if (category === "priceItem") newItems.splice(ind + 1, 0, {
          category: category,
          priceItem: initPriceItem,
@@ -212,19 +211,22 @@ class GetQuote extends Component {
       this.setState({ items: newItems });
    }
    orderUpItem = (ind) => {
-      let newItems = [...this.state.items];
+      const { items } = this.props.quote;
+      let newItems = [...items];
       const [dIt,] = newItems.splice(ind, 1);
       newItems.splice(Math.max(ind - 1, 0), 0, dIt);
       this.setState({ items: newItems });
    }
    orderDownItem = (ind) => {
-      let newItems = [...this.state.items];
+      const { items } = this.props.quote;
+      let newItems = [...items];
       const [dIt,] = newItems.splice(ind, 1);
-      newItems.splice(Math.min(ind + 1, this.state.items.length), 0, dIt);
+      newItems.splice(Math.min(ind + 1, items.length), 0, dIt);
       this.setState({ items: newItems });
    }
    removeItem = (ind) => {
-      let newItems = [...this.state.items];
+      const { items } = this.props.quote;
+      let newItems = [...items];
       if (newItems.length > 2) {
          newItems.splice(ind, 1);
          this.setState({ items: newItems });
@@ -249,12 +251,14 @@ class GetQuote extends Component {
       });
    }
    updateNote = (ind, note) => {
-      let newNotes = [...this.state.notes];
+      const { notes } = this.props.quote;
+      let newNotes = [...notes];
       newNotes[ind] = note;
       this.setState({ notes: newNotes });
    }
    addNote = (ind, category) => {
-      let newNotes = [...this.state.notes];
+      const { notes } = this.props.quote;
+      let newNotes = [...notes];
       newNotes.splice(ind + 1, 0, {
          category: "textItem",
          textItem: initTextItem,
@@ -262,19 +266,22 @@ class GetQuote extends Component {
       this.setState({ notes: newNotes });
    }
    orderUpNote = (ind) => {
-      let newNotes = [...this.state.notes];
+      const { notes } = this.props.quote;
+      let newNotes = [...notes];
       const [dIt,] = newNotes.splice(ind, 1);
       newNotes.splice(Math.max(ind - 1, 0), 0, dIt);
       this.setState({ notes: newNotes });
    }
    orderDownNote = (ind) => {
-      let newNotes = [...this.state.notes];
+      const { notes } = this.props.quote;
+      let newNotes = [...notes];
       const [dIt,] = newNotes.splice(ind, 1);
-      newNotes.splice(Math.min(ind + 1, this.state.notes.length), 0, dIt);
+      newNotes.splice(Math.min(ind + 1, notes.length), 0, dIt);
       this.setState({ notes: newNotes });
    }
    removeNote = (ind) => {
-      let newNotes = [...this.state.notes];
+      const { notes } = this.props.quote;
+      let newNotes = [...notes];
       if (newNotes.length > 1) {
          newNotes.splice(ind, 1);
          this.setState({ notes: newNotes });
@@ -290,7 +297,6 @@ class GetQuote extends Component {
 
       if (this.props.match.path === GET_QUOTE_BY_ID_PATH) {
          // Get quote details with quote ID
-
          await this.props.getQuoteDataById(this.props.match.params.id);
       } else if (this.props.match.path === GET_QUOTE_FROM_TEMPLATE_PATH) {
          // get template detials with id
@@ -299,22 +305,28 @@ class GetQuote extends Component {
    }
    componentDidUpdate(prevProps, prevState) {
       if (this.props.defaultSalesTax !== prevProps.defaultSalesTax || this.props.defaultSalesCategory !== prevProps.defaultSalesCategory) {
-         if (this.props.match.path === GET_QUOTE_PATH)
-            // Upate all tax and item category in items
+         // if (this.props.match.path === GET_QUOTE_PATH)
+         //    Upate all tax and item category in items
 
-            // this.setState({
-            //    items: [{
-            //       category: "priceItem",
-            //       priceItem: { ...initPriceItem, tax: this.props.defaultSalesTax, itemCategory: this.props.defaultSalesCategory },
-            //    }]
-            // });
+         //    this.setState({
+         //       items: [{
+         //          category: "priceItem",
+         //          priceItem: { ...initPriceItem, tax: this.props.defaultSalesTax, itemCategory: this.props.defaultSalesCategory },
+         //       }]
+         //    });
       }
    }
    render() {
       console.log(" ^^^^^^^ GET QUOTE state ^^^^^^^^^^ ", this.state);
       console.log(" ^^^^^^^ GET QUOTE props ^^^^^^^^^^ ", this.props);
       const { location } = this.props;
-      const { title, toPeopleList } = this.props.quote;
+      const {
+         toPeopleList,
+         title,
+         settings,
+         items,
+         notes
+      } = this.props.quote;
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
       if (location.state && location.state.from === QUOTE_PAGE_PATH) linkName = "Quotes";
@@ -384,9 +396,9 @@ class GetQuote extends Component {
                            <div className="p-1 w-100 maxWidth-550">
                               <div className="row no-gutters">
                                  <QuoteToPeopleList
-                                    toPeopleList={this.state.toPeopleList}
+                                    toPeopleList={toPeopleList}
                                     removeContact={(ind) => {
-                                       const newCL = this.state.toPeopleList.filter((it, index) => index !== ind);
+                                       const newCL = toPeopleList.filter((it, index) => index !== ind);
                                        this.setState({ toPeopleList: newCL });
                                     }}
                                  />
@@ -406,33 +418,33 @@ class GetQuote extends Component {
                                  <CompleterContact
                                     emailTo={this.state.emailTo}
                                     addContact={(contact) => {
-                                       if (this.state.toPeopleList.find((it) => it._id === contact._id)) this.setState({ emailTo: "" });
-                                       else this.setState({
-                                          toPeopleList: [
-                                             ...this.state.toPeopleList,
-                                             contact,
-                                          ],
-                                          emailTo: "",
-                                       });
+                                       if (toPeopleList.find((it) => it._id === contact._id)) this.setState({ emailTo: "" });
+                                       else {
+                                          this.props.updateQuoteToPeopleList([
+                                             ...toPeopleList,
+                                             contact
+                                          ]);
+                                          this.setState({ emailTo: "" });
+                                       }
                                     }}
                                  />
-                                 <LableFor toPeopleList={this.state.toPeopleList} />
+                                 <LableFor />
                               </div>
                            </div>
                         </div>
                      </div>
                      {/* Quote Setting */}
                      <QuoteSettings
-                        {...this.state.settings}
-                        validDate={this.state.validDate}
-                        validTime={this.state.validTime}
-                        sentDate={this.state.sentDate}
-                        sentTime={this.state.sentTime}
-                        updateValidDate={(val) => this.setState({ validDate: val })}
-                        updateValidTime={(val) => this.setState({ validTime: val })}
-                        updateSentDate={(val) => this.setState({ sentDate: val })}
-                        updateSentTime={(val) => this.setState({ sentTime: val })}
-                        updateSettings={(settings) => this.setState({ settings: settings })}
+                        // {...settings}
+                        // validDate={this.state.validDate}
+                        // validTime={this.state.validTime}
+                        // sentDate={this.state.sentDate}
+                        // sentTime={this.state.sentTime}
+                        // updateValidDate={(val) => this.setState({ validDate: val })}
+                        // updateValidTime={(val) => this.setState({ validTime: val })}
+                        // updateSentDate={(val) => this.setState({ sentDate: val })}
+                        // updateSentTime={(val) => this.setState({ sentTime: val })}
+                        // updateSettings={(settings) => this.setState({ settings: settings })}
                      />
                   </div>
 
@@ -452,7 +464,7 @@ class GetQuote extends Component {
                   {/* Controller button group */}
 
                   {
-                     this.state.items.map((item, index) => {
+                     items.map((item, index) => {
                         if (item.category === "priceItem") return <PriceItemForm
                            key={index}
                            index={index}
@@ -499,15 +511,15 @@ class GetQuote extends Component {
                         category: "priceItem",
                         priceItem: initPriceItem
                      }
-                     this.setState({ items: [...this.state.items, newItem] })
+                     this.setState({ items: [...items, newItem] })
                   }} />
 
                   <div className="quote-edit-total-wrap">
-                     <QuoteTotal settings={this.state.settings} items={this.state.items} />
+                     <QuoteTotal settings={settings} items={items} />
                   </div>
 
                   {
-                     this.state.notes.map((item, index) => {
+                     notes.map((item, index) => {
                         return <TextItemForm
                            key={index}
                            index={index}
@@ -528,7 +540,7 @@ class GetQuote extends Component {
                      })
                   }
 
-                  <AddItemBtn onClickAdd={() => this.setState({ notes: [...this.state.notes, { category: "textItem", textItem: initTextItem }] })} />
+                  <AddItemBtn onClickAdd={() => this.setState({ notes: [...notes, { category: "textItem", textItem: initTextItem }] })} />
 
                   {/* Footer action button group */}
                   <div className="row p-3">
@@ -575,5 +587,5 @@ const mapStateToProps = ({ auth, settings, mainData }) => {
    const { defaultSalesTax, defaultSalesCategory } = settings;
    return { authUser, quote, defaultSalesTax, defaultSalesCategory }
 }
-const mapDispatchToProps = { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes, getQuoteDataById, getTemplateQuoteDataById };
-export default connect(mapStateToProps, mapDispatchToProps)(GetQuote)
+const mapDispatchToProps = { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes, getQuoteDataById, getTemplateQuoteDataById, updateQuoteToPeopleList };
+export default connect(mapStateToProps, mapDispatchToProps)(GetQuote);

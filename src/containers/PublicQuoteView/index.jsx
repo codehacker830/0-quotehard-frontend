@@ -21,7 +21,7 @@ import FullWrapper from './components/FullWrapper';
 import QuoteDetailWrapper from './components/QuoteDetailWrapper';
 import QuoteItemWrapper from './components/QuoteItemWrapper';
 import { SwitchQuoteLayoutClass } from '../../util/index';
-import { getPublicDataWithEntoken } from '../../actions/Quote';
+import { getPublicDataWithEntoken } from '../../actions/Data';
 import VisiableOnlyAuthTeamMember from './components/VisiableOnlyAuthTeamMember';
 import DeclineCommentShow from './components/DeclineCommentShow';
 import QuoteItem from './components/QuoteItem';

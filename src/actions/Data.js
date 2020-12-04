@@ -4,7 +4,12 @@ import {
    FETCH_SUCCESS,
    FETCH_ERROR,
    GET_QUOTE,
-   UPDATE_DISCUSSIONS
+   UPDATE_QUOTE_DISCUSSIONS,
+   UPDATE_QUOTE_TOPEOPLELIST,
+   UPDATE_QUOTE_SETTINGS,
+   UPDATE_QUOTE_TITLE,
+   UPDATE_QUOTE_ITEMS,
+   UPDATE_QUOTE_NOTES
 } from '../constants/ActionTypes';
 import { toast } from 'react-toastify';
 
@@ -55,11 +60,32 @@ export const getTemplateQuoteDataById = (quoteTemplateId) => {
 
 export const updateQuote = (quote) => {
    return (dispatch) => dispatch({ type: GET_QUOTE, payload: quote });
-}
+};
 
-export const updateDiscussions = (discussions) => {
-   return (dispatch) => dispatch({ type: UPDATE_DISCUSSIONS, payload: discussions });
-}
+export const updateQuoteToPeopleList = (toPeopleList) => {
+   return (dispatch) => dispatch({ type: UPDATE_QUOTE_TOPEOPLELIST, payload: toPeopleList });
+};
+
+export const updateQuoteSettings = (settings) => {
+   return (dispatch) => dispatch({ type: UPDATE_QUOTE_SETTINGS, payload: settings });
+};
+
+export const updateQuoteTitle = (title) => {
+   return (dispatch) => dispatch({ type: UPDATE_QUOTE_TITLE, payload: title });
+};
+
+export const updateQuotItems = (items) => {
+   return (dispatch) => dispatch({ type: UPDATE_QUOTE_ITEMS, payload: items });
+};
+
+export const updateQuotNotes = (notes) => {
+   return (dispatch) => dispatch({ type: UPDATE_QUOTE_NOTES, payload: notes });
+};
+
+export const updateQuoteDiscussions = (discussions) => {
+   return (dispatch) => dispatch({ type: UPDATE_QUOTE_DISCUSSIONS, payload: discussions });
+};
+
 
 export const submitDismiss = (qaId) => {
    const entoken = localStorage.getItem('entoken');
@@ -70,7 +96,7 @@ export const submitDismiss = (qaId) => {
          toast.success("Answer was Dismissed.");
          console.log("========== Publick overview did mount get quote =========", data);
          dispatch({ type: FETCH_SUCCESS });
-         dispatch({ type: UPDATE_DISCUSSIONS, payload: data.discussions });
+         dispatch({ type: UPDATE_QUOTE_DISCUSSIONS, payload: data.discussions });
       } catch (err) {
          dispatch({ type: FETCH_ERROR, payload: err.message });
          console.log("Error****:", err.message);

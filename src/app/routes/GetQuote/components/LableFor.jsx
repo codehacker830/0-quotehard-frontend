@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 export const LableFor = (props) => {
    return (
@@ -11,5 +12,8 @@ export const LableFor = (props) => {
       </>
    )
 }
-
-export default LableFor
+const mapStateToProps = ({ mainData }) => {
+   const { toPeopleList } = mainData.quote;
+   return { toPeopleList };
+};
+export default connect(mapStateToProps)(LableFor);

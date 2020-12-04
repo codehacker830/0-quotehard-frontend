@@ -1,20 +1,47 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { updateQuoteSettings } from '../../../../actions/Data';
 import { getTeamMembers } from '../../../../actions/Team';
+import { parseDate, parseTime } from '../../../../util';
 
 class QuoteSettings extends Component {
    constructor(props) {
       super(props);
       this.state = {
          show: false,
-         teamMembers: []
+         teamMembers: [],
+
+         validDate: parseDate(this.props.settings.validUntil),
+         validTime: parseTime(this.props.settings.validUntil),
+         sentDate: parseDate(this.props.settings.sentAt),
+         sentTime: parseTime(this.props.settings.sentAt),
       };
+   }
+   componentDidUpdate(prevProps, prevState) {
+
    }
    componentDidMount() {
       this.props.getTeamMembers();
    }
+   
+   updateValidDate = (val) => this.setState({ validDate: val });
+   updateValidTime = (val) => this.setState({ validTime: val });
+   updateSentDate = (val) => this.setState({ sentDate: val });
+   updateSentTime = (val) => this.setState({ sentTime: val });
+   
    render() {
-      const settings = { ... this.props };
+      const { auth, teamSetting, settings } = this.props;
+      const {
+         validUntil,
+         sentAt,
+         userFrom,
+         discount,
+         currency,
+         taxMode,
+         pricingDisplayLevel,
+         displayItemCode
+      } = settings;
+
       console.log(" Quote Settings =>", settings);
       return (
          <div className="col-sm-6">
@@ -30,8 +57,8 @@ class QuoteSettings extends Component {
                         <input type="text"
                            id="_expiry_date_date"
                            className="form-control mr-2 rounded-0"
-                           value={this.props.validDate}
-                           onChange={(ev) => this.props.updateValidDate(ev.target.value)}
+                           value={this.state.validDate}
+                           onChange={(ev) => this.updateValidDate(ev.target.value)}
                         />
                         <label htmlFor="_expiry_date_date" className="text-info fa-xs">YYYY/MM/DD</label>
                      </div>
@@ -39,8 +66,8 @@ class QuoteSettings extends Component {
                         <input type="text"
                            id="_expiry_date_time"
                            className="form-control rounded-0"
-                           value={this.props.validTime}
-                           onChange={(ev) => this.props.updateValidTime(ev.target.value)}
+                           value={this.state.validTime}
+                           onChange={(ev) => this.updateValidTime(ev.target.value)}
                         />
                         <label htmlFor="_expiry_date_time" className="text-info fa-xs">HH:mm</label>
                      </div>
@@ -54,8 +81,8 @@ class QuoteSettings extends Component {
                            <input type="text"
                               id="_sent_when_date"
                               className="form-control mr-2 rounded-0"
-                              value={this.props.sentDate}
-                              onChange={(ev) => this.props.updateSentDate(ev.target.value)}
+                              value={this.state.sentDate}
+                              onChange={(ev) => this.updateSentDate(ev.target.value)}
                            />
                            <label htmlFor="_sent_when_date" className="text-info fa-xs">YYYY/MM/DD</label>
                         </div>
@@ -63,8 +90,8 @@ class QuoteSettings extends Component {
                            <input type="text"
                               id="_sent_when_time"
                               className="form-control rounded-0"
-                              value={this.props.sentTime}
-                              onChange={(ev) => this.props.updateSentTime(ev.target.value)} />
+                              value={this.state.sentTime}
+                              onChange={(ev) => this.updateSentTime(ev.target.value)} />
                            <label htmlFor="_sent_when_time" className="text-info fa-xs">HH:mm</label>
                         </div>
                      </div>
@@ -76,10 +103,10 @@ class QuoteSettings extends Component {
                   <div className="pb-2">
                      <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">FROM</label>
                      <select className="custom-select rounded-0"
-                        value={this.props.userFrom}
-                        onChange={(ev) => this.props.updateSettings({ ...settings, userFrom: ev.target.value })}>
+                        value={userFrom}
+                        onChange={(ev) => this.props.updateQuoteSettings({ ...settings, userFrom: ev.target.value })}>
                         {
-                           this.props.teamSetting.teamMembers.map((mate, index) => {
+                           teamSetting.teamMembers.map((mate, index) => {
                               const mateFullName = mate.firstName + " " + mate.lastName;
                               return (<option value={mate._id} key={index}>{mateFullName}</option>);
                            })
@@ -92,10 +119,10 @@ class QuoteSettings extends Component {
                      <input type="number"
                         id="quote_discount_overall"
                         className="form-control rounded-0 maxWidth-180"
-                        value={this.props.discount}
+                        value={discount}
                         onChange={(ev) => {
-                           const discount = ev.target.value === "" ? 0 : ev.target.value;
-                           this.props.updateSettings({ ...settings, discount })
+                           const newDiscount = ev.target.value === "" ? 0 : ev.target.value;
+                           this.props.updateQuoteSettings({ ...settings, newDiscount })
                         }}
                      />
                   </div>
@@ -103,8 +130,8 @@ class QuoteSettings extends Component {
                      <label htmlFor="quote_currency_id" className="text-gray fa-xs text-uppercase">CURRENCY</label>
                      <select className="custom-select rounded-0"
                         id="quote_currency_id"
-                        value={this.props.currency}
-                        onChange={(ev) => this.props.updateSettings({ ...settings, currency: ev.target.value })}
+                        value={currency}
+                        onChange={(ev) => this.props.updateQuoteSettings({ ...settings, currency: ev.target.value })}
                      >
                         <optgroup label="––––––––––––––––––––––– " />
                         <option value={8}>Australia Dollar</option>
@@ -307,8 +334,8 @@ class QuoteSettings extends Component {
                   <div className="pb-2">
                      <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">AMOUNTS ARE</label>
                      <select className="custom-select rounded-0"
-                        value={this.props.taxMode}
-                        onChange={(ev) => this.props.updateSettings({ ...settings, taxMode: ev.target.value })}>
+                        value={taxMode}
+                        onChange={(ev) => this.props.updateQuoteSettings({ ...settings, taxMode: ev.target.value })}>
                         <option value="exclusive_including">Tax Exclusive (Inclusive Total)</option>
                         <option value="exclusive_excluding">Tax Exclusive</option>
                         <option value="inclusive">Tax Inclusive</option>
@@ -324,8 +351,8 @@ class QuoteSettings extends Component {
                            id="pricing-display-level1"
                            name="pricing-display-level"
                            value="itemQuantityAndTotal"
-                           checked={this.props.pricingDisplayLevel === "itemQuantityAndTotal"}
-                           onChange={(ev) => this.props.updateSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
+                           checked={pricingDisplayLevel === "itemQuantityAndTotal"}
+                           onChange={(ev) => this.props.updateQuoteSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
                         />
                         <label className="custom-control-label" htmlFor="pricing-display-level1">Item Quantity & Total</label>
                      </div>
@@ -335,8 +362,8 @@ class QuoteSettings extends Component {
                            id="price-display-level2"
                            name="pricing-display-level"
                            value="itemQuantity"
-                           checked={this.props.pricingDisplayLevel === "itemQuantity"}
-                           onChange={(ev) => this.props.updateSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
+                           checked={pricingDisplayLevel === "itemQuantity"}
+                           onChange={(ev) => this.props.updateQuoteSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
                         />
                         <label className="custom-control-label" htmlFor="price-display-level2">Item Quantity</label>
                      </div>
@@ -346,8 +373,8 @@ class QuoteSettings extends Component {
                            id="pricing-display-level3"
                            name="pricing-display-level"
                            value="itemTotal"
-                           checked={this.props.pricingDisplayLevel === "itemTotal"}
-                           onChange={(ev) => this.props.updateSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
+                           checked={pricingDisplayLevel === "itemTotal"}
+                           onChange={(ev) => this.props.updateQuoteSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
                         />
                         <label className="custom-control-label" htmlFor="pricing-display-level3">Item Total</label>
                      </div>
@@ -357,8 +384,8 @@ class QuoteSettings extends Component {
                            id="pricing-display-level4"
                            name="pricing-display-level"
                            value="hideAll"
-                           checked={this.props.pricingDisplayLevel === "hideAll"}
-                           onChange={(ev) => this.props.updateSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
+                           checked={pricingDisplayLevel === "hideAll"}
+                           onChange={(ev) => this.props.updateQuoteSettings({ ...settings, pricingDisplayLevel: ev.target.value })}
                         />
                         <label className="custom-control-label" htmlFor="pricing-display-level4">Hide All</label>
                      </div>
@@ -368,8 +395,8 @@ class QuoteSettings extends Component {
                            id="display-item-code"
                            className="custom-control-input"
                            name="display-item-code"
-                           checked={this.props.displayItemCode}
-                           onChange={(ev) => this.props.updateSettings({ ...settings, displayItemCode: !this.props.displayItemCode })}
+                           checked={displayItemCode}
+                           onChange={(ev) => this.props.updateQuoteSettings({ ...settings, displayItemCode: !displayItemCode })}
                         />
                         <label className="custom-control-label" htmlFor="display-item-code">Display Item Code Always</label>
                      </div>
@@ -383,9 +410,10 @@ class QuoteSettings extends Component {
    }
 }
 
-const mapStateToProps = ({ auth, teamSetting }) => {
-   return { auth, teamSetting };
+const mapStateToProps = ({ auth, teamSetting, mainData }) => {
+   const { settings } = mainData.quote;
+   return { auth, teamSetting, settings };
 }
 
-const mapDispatchToProps = { getTeamMembers };
+const mapDispatchToProps = { getTeamMembers, updateQuoteSettings };
 export default connect(mapStateToProps, mapDispatchToProps)(QuoteSettings);
