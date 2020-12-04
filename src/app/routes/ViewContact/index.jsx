@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import NavCrump from '../../../components/NavCrump';
-import { personData, companyData, recentActivities } from "../../../constants/Dump";
+import { recentActivities } from "../../../constants/Dump";
 import axios from '../../../util/Api';
 import { toastSuccessConfig } from '../../../util/toastrConfig';
 import AddressesShow from './AddressesShow';

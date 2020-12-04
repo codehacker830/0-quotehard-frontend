@@ -19,7 +19,7 @@ const initialState = {
 
    describeTaxAs: 4,
    displayCurrencySymbolInTotal: true,
-   displayCurrencyCodeInTotal: false,
+   displayCurrencyCodeInTotal: true,
 
    isEnabledPrintPDF: false,
    pdfPageSize: 1,

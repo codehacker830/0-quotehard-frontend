@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import { allCurrencyArr } from '../constants/Dump';
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
    "July", "August", "September", "October", "November", "December"
@@ -86,6 +87,12 @@ export const countDecimals = (num) => {
 
 export const caculateTotalTax = (items, taxRate, settings) => {
    if (!items.length) return 0;
+   const { taxMode } = settings;
+   if (taxRate == 0 ||
+      taxMode === "exclusive_excluding" ||
+      taxMode === "no_tax"
+   ) return 0;
+
    let total = 0;
    for (let i = 0; i < items.length; i++) {
       if (items[i].category === "priceItem") {
@@ -102,7 +109,9 @@ export const caculateTotalTax = (items, taxRate, settings) => {
          }
       }
    }
-   return total;
+   if (taxMode === "exclusive_including") return total * taxRate / 100;
+   else if (taxMode === "inclusive") return total / (100 + taxRate) * taxRate;
+   return 0;
 }
 
 export const formatDate = (date) => {
@@ -300,27 +309,6 @@ export const filterItemArrForTaxId = (items, taxId) => {
    return resArr;
 }
 
-export const quoteSubTotal = (items, settings) => {
-   if (!items.length) return 0;
-   let total = 0;
-   items.forEach(item => {
-      if (item.category === "priceItem") {
-         const { priceItem } = item;
-         if (priceItem.isOptional || priceItem.isOptional) {
-            if (priceItem.isOptional && priceItem.isOptionSelected) {
-               total += priceItem.itemTotal;
-            }
-            if (priceItem.isMultipleChoice && priceItem.isChoiceSelected) {
-               total += priceItem.itemTotal;
-            }
-         } else {
-            total += priceItem.itemTotal;
-         }
-      }
-   });
-   return total;
-}
-
 export const ToastErrorNotification = (errors) => {
    const errKeys = Object.keys(errors);
    errKeys.map(err => {
@@ -378,7 +366,37 @@ export const FilterSeqItemsForPartSubTotal = (items, ind) => {
    return resArr;
 }
 
-export const calculateTotalForItems = (items) => {
+export const getTaxRateFromId = (salesTaxId, salesTaxes) => {
+   const taxObj = salesTaxes.find(item => item._id === salesTaxId);
+   const taxRate = taxObj && taxObj.taxRate ? taxObj.taxRate : 0;
+   return taxRate;
+}
+
+export const calculateQuoteTotal = (items, settings, salesTaxes) => {
+   if (!items.length) return 0;
+   let total = 0;
+   items.forEach(item => {
+      if (item.category === "priceItem") {
+         const { priceItem } = item;
+         if (priceItem.isOptional || priceItem.isOptional) {
+            if (priceItem.isOptional && priceItem.isOptionSelected) {
+               if (settings.taxMode === "exclusive_including") total += priceItem.itemTotal + priceItem.itemTotal * getTaxRateFromId(priceItem.salesTax, salesTaxes) / 100;
+               else total += priceItem.itemTotal;
+            }
+            if (priceItem.isMultipleChoice && priceItem.isChoiceSelected) {
+               if (settings.taxMode === "exclusive_including") total += priceItem.itemTotal + priceItem.itemTotal * getTaxRateFromId(priceItem.salesTax, salesTaxes) / 100;
+               else total += priceItem.itemTotal;
+            }
+         } else {
+            if (settings.taxMode === "exclusive_including") total += priceItem.itemTotal + priceItem.itemTotal * getTaxRateFromId(priceItem.salesTax, salesTaxes) / 100;
+            else total += priceItem.itemTotal;
+         }
+      }
+   });
+   return total;
+}
+
+export const calculateSubTotal = (items) => {
    if (!items.length) return 0;
    let total = 0;
    for (let i = 0; i < items.length; i++) {
@@ -386,10 +404,43 @@ export const calculateTotalForItems = (items) => {
          const { priceItem } = items[i];
          if (priceItem.isOptional || priceItem.isMultipleChoice) {
             if (priceItem.isOptional && priceItem.isOptionSelected) total += items[i].priceItem.itemTotal;
-            else if (priceItem.isMultipleChoice && priceItem.isChoiceSelected) total += items[i].priceItem.itemTotal;
+            if (priceItem.isMultipleChoice && priceItem.isChoiceSelected) total += items[i].priceItem.itemTotal;
          }
          else total += items[i].priceItem.itemTotal;
       }
    }
    return total;
+}
+
+/////////  For Quote total ///////
+export const swichDescribeTaxAs = (key) => {
+   switch (parseInt(key)) {
+      case 1:
+         return "GST"
+      case 2:
+         return "HST";
+      case 7:
+         return "IVA";
+      case 4:
+         return "Tax";
+      case 5:
+         return "VAT";
+      case 6:
+         return "VAT/NHIL";
+      default:
+         return "Tax";
+   }
+}
+export const switchAmountAreDes = (str) => {
+   switch (str) {
+      case "exclusive_excluding":
+         return "excluding"
+      default:
+         return "including"
+   }
+}
+
+export const showCurrencyCode = (displayCurrencyCodeInTotal, currencyInd) => {
+   if (displayCurrencyCodeInTotal) return allCurrencyArr[currencyInd - 1];
+   else return "";
 }

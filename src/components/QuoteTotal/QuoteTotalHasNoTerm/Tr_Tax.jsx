@@ -1,25 +1,36 @@
+import { set } from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { caculateTotalTax } from '../../../util';
+import { caculateTotalTax, swichDescribeTaxAs, toFixedFloat, getTaxRateFromId } from '../../../util';
 
 class Tr_tax extends Component {
    render() {
-      const { items, salesTax, settings, salesTaxes } = this.props;
-      const taxObj = salesTaxes.find(item => item._id === salesTax);
-      const taxRate = taxObj && taxObj.taxRate ? taxObj.taxRate : 0;
+      const { items, salesTax } = this.props;
+      const { settings, salesTaxes, describeTaxAs } = this.props;
+      const taxRate = getTaxRateFromId(salesTax, salesTaxes);
       console.log('taxRate', taxRate)
-      if (taxRate == 0) return null;
+      const { taxMode } = settings;
+      if (taxRate == 0 ||
+         taxMode === "exclusive_excluding" ||
+         taxMode === "no_tax"
+      ) return null;
       return (
          <tr>
-            <td className="total-desc">Tax {taxRate}%</td>
-            <td className="total-price">{caculateTotalTax(items, taxRate, settings)}</td>
+            <td className="total-desc">{swichDescribeTaxAs(describeTaxAs)} {taxRate}%</td>
+            <td className="total-price">{toFixedFloat(caculateTotalTax(items, taxRate, settings))}</td>
          </tr>
       );
    }
 }
-const mapStateToProps = ({ mainData, settings }) => {
+const mapStateToProps = ({ mainData, settings, appearanceSetting }) => {
    const { quote } = mainData;
    const { salesTaxes } = settings;
-   return { settings: quote.settings, salesTaxes };
+   const {
+      describeTaxAs
+   } = appearanceSetting;
+   return {
+      settings: quote.settings, salesTaxes, describeTaxAs
+   };
 };
+
 export default connect(mapStateToProps)(Tr_tax);

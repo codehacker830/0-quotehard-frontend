@@ -1,108 +1,169 @@
-
-/* eslint-disable */
-export const personData = {
-   category: "person",
-   firstName: "Adolfo",
-   lastName: "Bianchi",
-   email: "adolfo@email.com",
-   companyName: "ITGLOBAL",
-
-   phones: [
-      {
-         category: "primaryPhone",
-         content: "0392 0618215"
-      },
-      // {
-      //    category: "workPhone",
-      //    content: "0342 0816518"
-      // },
-      // {
-      //    category: "mobile",
-      //    content: "0344 5162513"
-      // },
-      // {
-      //    category: "homePhone",
-      //    content: "0344 5162513"
-      // },
-      // {
-      //    category: "website",
-      //    content: "https://mysite.com"
-      // },
-      // {
-      //    category: "skype",
-      //    content: "live:myskype_id"
-      // },
-      // {
-      //    category: "twitter",
-      //    content: "https://twitter.com"
-      // },
-      // {
-      //    category: "fax",
-      //    content: "39 516 2513"
-      // },
-   ],
-   addresses: [
-      {
-         category: "priamryAddress",
-         street: "Piazza Mercato 102",
-         city: "Scoglitti",
-         stateOrRegion: "Ragusa",
-         postCode: "97010",
-         country: "Italy"
-      },
-      // {
-      //    category: "postalAddress",
-      //    street: "Piazza Mercato 102",
-      //    city: "Scoglitti",
-      //    stateOrRegion: "Ragusa",
-      //    postCode: "97010",
-      //    country: "Italy"
-      // },
-      // {
-      //    category: "physicalAddress",
-      //    street: "Via San Pietro Ad Aram 87",
-      //    city: "Cadignano",
-      //    stateOrRegion: "Modena",
-      //    postCode: "41023",
-      //    country: "Italy"
-      // }
-   ],
-};
-
-export const companyData = {
-   category: "company",
-   email: "support@itglobal.com",
-   companyName: "ITGLOBAL",
-
-   phones: [
-      {
-         category: "primaryPhone",
-         content: "0392 0618215"
-      },
-      // {
-      //    category: "workPhone",
-      //    content: "0342 0816518"
-      // },
-   ],
-   addresses: [
-      {
-         category: "primaryAddress",
-         street: "Piazza Mercato 102",
-         city: "Scoglitti",
-         stateOrRegion: "Ragusa",
-         postCode: "97010",
-         country: "Italy"
-      },
-      // {
-      //    category: "physicalAddress",
-      //    street: "Via San Pietro Ad Aram 87",
-      //    city: "Cadignano",
-      //    stateOrRegion: "Modena",
-      //    postCode: "41023",
-      //    country: "Italy"
-      // }
-   ],
-};
+export const allCurrencyArr = [
+   "AFN",
+   "ALL",
+   "DZD",
+   "AOA",
+   "ARS",
+   "AMD",
+   "AWG",
+   "AUD",
+   "AZN",   //--
+   "BSD",
+   "BHD",
+   "BDT",
+   "BBD",
+   "BYR",
+   "BZD",
+   "BMD",
+   "BTN",
+   "BTC",
+   "BOB",
+   "BAM",
+   "BWP",
+   "BRL",
+   "BND",
+   "BGN",
+   "BIF", //--
+   "KHR",
+   "CAD",
+   "CVE",
+   "KYD",
+   "XAF",
+   "XPF",
+   "CLP",
+   "CNY",
+   "COP",
+   "KMF",
+   "CDF",
+   "CRC",
+   "HRK",
+   "CUP",
+   "CUC",
+   "CZK", //--
+   "DKK",
+   "DJF",
+   "DOP", //--
+   "XCD",
+   "EGP",
+   "SVC",
+   "ERN",
+   "EEK",
+   "ETB",
+   "EUR", //--
+   "FKP",
+   "FJD", //--
+   "GMD",
+   "GEL",
+   "GHS",
+   "GIP",
+   "GTQ",
+   "GGP",
+   "GNF",
+   "GYD", //--
+   "HTG",
+   "HNL",
+   "HKD",
+   "HUF", //--
+   "ISK",
+   "INR",
+   "IDR",
+   "IRR",
+   "IQD",
+   "IMP",
+   "ILS", //--
+   "JMD",
+   "JPY",
+   "JEP",
+   "JOD", //--
+   "KZT",
+   "KES",
+   "KPW",
+   "KRW",
+   "KWD",
+   "KGS", //--
+   "LAK",
+   "LVL",
+   "LBP",
+   "LSL",
+   "LRD",
+   "LYD",
+   "LTL", //--
+   "MOP",
+   "MKD",
+   "MGA",
+   "MWK",
+   "MYR",
+   "MVR",
+   "MRO",
+   "MUR",
+   "MXN",
+   "MDL",
+   "MNT",
+   "MAD",
+   "MZN",
+   "MMK", //--
+   "NAD",
+   "NPR",
+   "ANG",
+   "NZD",
+   "NIO",
+   "NGN",
+   "NOK", //--
+   "OMR", //--
+   "PKR",
+   "PAB",
+   "PGK",
+   "PYG",
+   "PEN",
+   "PHP",
+   "PLN", //--
+   "QAR",
+   "RON",
+   "RUB",
+   "RWF", //--
+   "SHP",
+   "WST",
+   "STD",
+   "SAR",
+   "RSD",
+   "SCR",
+   "SLL",
+   "SGD",
+   "SKK",
+   "SBD",
+   "SOS",
+   "ZAR",
+   "LKR",
+   "SDG",
+   "SRD",
+   "SZL",
+   "SEK",
+   "CHF",
+   "SYP", //--
+   "TWD",
+   "TJS",
+   "TZS",
+   "THB",
+   "TOP",
+   "TTD",
+   "TND",
+   "TRY",
+   "TMT",
+   "TVD", //--
+   "UGX",
+   "UAH",
+   "AED",
+   "GBP",
+   "USD",
+   "UYU",
+   "UZS", //--
+   "VEF",
+   "VND", //--
+   "XOF", //--
+   "YER", //--
+   "ZMW",
+   "ZWD",  //-- 165
+];
 
 export const recentActivities = [
    {
@@ -118,28 +179,3 @@ export const recentActivities = [
       content: "Created by A Devom"
    }
 ];
-
-
-// export const allActivities = [
-//    {
-//       date: "52 minutes ago",
-//       content: "Opened via direct link"
-//    },
-//    {
-//       date: "September 23, 2020 at 6:57PM",
-//       content: "Opened via direct link"
-//    },
-//    {
-//       date: "September 7, 2020 at 12:11PM",
-//       content: "Opened by Danil Zolo"
-//    },
-//    {
-//       date: "September 7, 2020 at 12:04PM",
-//       content: "New Quote sent by A Devom"
-//    },
-//    {
-//       date: "September 7, 2020 at 12:04PM",
-//       content: "Created by A Devom"
-//    }
-
-// ];

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Tr_OptionSelected from './Tr_OptionSelected';
 import Tr_tax from './Tr_Tax';
-import { differentTaxIdArrGroup, filterItemArrForTaxId, quoteSubTotal } from '../../../util';
+import { calculateSubTotal, differentTaxIdArrGroup, filterItemArrForTaxId } from '../../../util';
 import { connect } from 'react-redux';
+import Tr_TotalUSD from './Tr_TotalUSD';
 
 class QuoteTotalHasNoTerm extends Component {
    render() {
@@ -20,31 +21,26 @@ class QuoteTotalHasNoTerm extends Component {
          return false;
       });
       const uniqueTaxIdArr = differentTaxIdArrGroup(nonSubcriptionItems);
-      console.log(" ~~~~~~~~  uniqueTaxIdArr ~~~~~~~~", uniqueTaxIdArr);
       return (
          <table className="quoteTotal hasNoTerm">
             <tbody>
                <Tr_OptionSelected items={items} />
-               <tr>
-                  <td className="total-desc">Subtotal</td>
-                  <td className="total-price">{quoteSubTotal(nonSubcriptionItems, settings)}</td>
-               </tr>
+               {
+                  settings.taxMode === "exclusive_including" &&
+                  <tr>
+                     <td className="total-desc">Subtotal</td>
+                     <td className="total-price">{calculateSubTotal(nonSubcriptionItems)}</td>
+                  </tr>
+               }
                {
                   uniqueTaxIdArr.map((uniqueTaxId, index) => {
-                     console.log(" ###########  uniqueTaxId ########### ", uniqueTaxId);
-                     console.log(" ###########  nonSubcriptionItems ########### ", nonSubcriptionItems);
                      const ItemArrFromTaxId = filterItemArrForTaxId(nonSubcriptionItems, uniqueTaxId);
-                     console.log(" ###########  ItemArrFromTaxId ########### ", ItemArrFromTaxId);
-
                      return (
                         <Tr_tax items={ItemArrFromTaxId} salesTax={uniqueTaxId} key={index} />
                      );
                   })
                }
-               <tr className="total">
-                  <td className="total-desc"><span className="quoteTotal-gDesc">Total USD including tax</span></td>
-                  <td className="total-price"><span className="quoteTotal-gTotal" style={{}}>$300.00</span></td>
-               </tr>
+               <Tr_TotalUSD items={nonSubcriptionItems} settings={settings} />
             </tbody>
          </table>
       );

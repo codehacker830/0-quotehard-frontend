@@ -6,9 +6,6 @@ import AddAddressBtn from '../../components/Contact/AddAddressBtn';
 import AddPhoneBtn from '../../components/Contact/AddPhoneBtn';
 import CompleterCompany from '../../components/Contact/CompleterCompany';
 import NavCrump from '../../components/NavCrump';
-import {
-   companyData
-} from "../../constants/Dump";
 import axios from '../../util/Api';
 import { toastSuccessConfig } from '../../util/toastrConfig';
 import { ToastErrorNotification } from '../../util';

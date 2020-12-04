@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import { Link, Redirect } from 'react-router-dom';
 import NavCrump from '../../components/NavCrump';
-import {
-   companyData
-} from "../../constants/Dump";
 import axios from '../../util/Api';
 import { toastErrorConfig, toastSuccessConfig, toastWarningConfig } from '../../util/toastrConfig';
 import AddressForm from '../../components/Contact/AddressForm';
