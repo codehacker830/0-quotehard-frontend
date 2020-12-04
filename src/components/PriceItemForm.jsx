@@ -451,10 +451,9 @@ class PriceItemForm extends Component {
                            disabled={!!this.props.isViewOnly}
                            value={this.props.priceItem.tax}
                            onChange={(ev) => {
-                              const tax = ev.target.value === "" ? 0 : ev.target.value;
                               const newItem = {
                                  category: "priceItem",
-                                 priceItem: { ... this.props.priceItem, tax }
+                                 priceItem: { ... this.props.priceItem, tax: ev.target.value }
                               };
                               this.updateItem(this.props.index, newItem);
                            }}>

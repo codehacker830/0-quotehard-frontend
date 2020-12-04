@@ -39,7 +39,7 @@ class QuoteTotal extends Component {
          <div>
 
 
-            <QuoteTotalHasNoTerm settings={settings} items={items} />
+            <QuoteTotalHasNoTerm />
 
             {/* subtotal 1 */}
             {/* <table className="quoteTotal hasTerm table table-borderless">

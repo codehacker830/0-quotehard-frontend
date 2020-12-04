@@ -257,44 +257,31 @@ function checkIfItemWasSelected(priceItem) {
 }
 
 export const differentTaxIdArrGroup = (items) => {
-   if (!items.length) return { ArrUniqueTaxHasNoTerm: [], ArrUniqueTaxHasTerm: [] };
-   let ArrUniqueTaxHasNoTerm = [], ArrUniqueTaxHasTerm = [];
+   if (!items.length) return [];
+   let resArr = [];
    items.forEach(item => {
       if (item.category === "priceItem") {
          const { priceItem } = item;
-         if (!priceItem.isSubscription) {
-            if (checkIfItemWasSelected(priceItem)) {
-               if (priceItem.tax) ArrUniqueTaxHasNoTerm.push(priceItem.tax);
-            }
-         } else {
-            if (checkIfItemWasSelected(priceItem)) {
-               if (priceItem.tax) ArrUniqueTaxHasTerm.push(priceItem.tax);
-            }
+         if (checkIfItemWasSelected(priceItem)) {
+            if (priceItem.tax) resArr.push(priceItem.tax);
          }
       }
    });
-   return {
-      ArrUniqueTaxHasNoTerm: getUniqueTaxArr(ArrUniqueTaxHasNoTerm),
-      ArrUniqueTaxHasTerm: getUniqueTaxArr(ArrUniqueTaxHasTerm)
-   };
+   return getUniqueTaxArr(resArr);
 }
 
 export const filterItemArrForTaxId = (items, taxId) => {
-   if (!items.length) return { ArrItemFromTaxIdHasNoTerm: [], ArrItemFromTaxIdHasTerm: [] };
-   let ArrItemFromTaxIdHasTerm = [], ArrItemFromTaxIdHasNoTerm = [];
+   if (!items.length) return [];
+   let resArr = [];
    items.forEach(item => {
       if (item.category === "priceItem") {
          const { priceItem } = item;
          if (priceItem.tax._id == taxId) {
-            if (!priceItem.isSubscription) {
-               if (checkIfItemWasSelected(priceItem)) ArrItemFromTaxIdHasNoTerm.push(item);
-            } else {
-               if (checkIfItemWasSelected(priceItem)) ArrItemFromTaxIdHasTerm.push(item);
-            }
+            if (checkIfItemWasSelected(priceItem)) resArr.push(item);
          }
       }
    });
-   return { ArrItemFromTaxIdHasNoTerm, ArrItemFromTaxIdHasTerm };
+   return resArr;
 }
 
 export const subTotalHasNoTerm = (items, settings) => {
@@ -322,4 +309,69 @@ export const ToastErrorNotification = (errors) => {
       const errMsg = `${err} ${errors[err]}`;
       toast.error(errMsg.charAt(0).toUpperCase() + errMsg.slice(1))
    });
+}
+
+
+
+////////  for SubTotal
+
+export const FilterSeqItemsForPartSubTotal = (items, ind) => {
+   console.log('items', items)
+   if (ind < 1) return [];
+   let startInd = null;
+   for (let i = ind - 1; i >= 0; i--) {
+      if (items[i].category === "subTotal") break;
+      if (items[i].category === "priceItem") {
+         startInd = i;
+         break;
+      }
+   }
+   console.log('startInd', startInd)
+   if (startInd === null) return [];
+
+   const firstPriceItem = items[startInd];
+   console.log('firstPriceItem', firstPriceItem)
+
+   const {
+      isSubscription,
+      per,
+      every,
+      period,
+   } = firstPriceItem.priceItem;
+   let resArr = [];
+   let seq = true;
+   for (let i = startInd; i >= 0; i--) {
+      if (seq === false) break;
+      if (items[i].category === "subTotal") break;
+      if (items[i].category === "priceItem") {
+         const { priceItem } = items[i];
+         if (isSubscription) {
+            if (true == priceItem.isSubscription
+               && per == priceItem.per
+               && every == priceItem.every
+               && period == priceItem.period) resArr.push({ ...items[i] });
+            else seq = false;
+         } else {
+            if (false == priceItem.isSubscription) resArr.push({ ...items[i] });
+            else seq = false;
+         }
+      }
+   }
+   return resArr;
+}
+
+export const calculateTotalForItems = (items) => {
+   if (!items.length) return 0;
+   let total = 0;
+   for (let i = 0; i < items.length; i++) {
+      if (items[i].category === "priceItem") {
+         const { priceItem } = items[i];
+         if (priceItem.isOptional || priceItem.isMultipleChoice) {
+            if (priceItem.isOptional && priceItem.isOptionSelected) total += items[i].priceItem.itemTotal;
+            else if (priceItem.isMultipleChoice && priceItem.isChoiceSelected) total += items[i].priceItem.itemTotal;
+         }
+         else total += items[i].priceItem.itemTotal;
+      }
+   }
+   return total;
 }
