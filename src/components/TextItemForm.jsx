@@ -303,11 +303,11 @@ class TextItemForm extends Component {
       );
    }
 }
-const mapStateToProps = ({ mainData, settings }) => {
+const mapStateToProps = ({ mainData, globalSettings }) => {
    const {
       defaultSalesCategory,
       defaultSalesTax
-   } = settings;
+   } = globalSettings;
    const { quote } = mainData;
    return { quote, defaultSalesCategory, defaultSalesTax }
 };

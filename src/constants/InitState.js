@@ -4,7 +4,7 @@ export const initQuoteSettings = {
    userFrom: "",
    discount: 0,
    currency: "156",
-   taxMode: "no_tax",
+   taxMode: "exclusive_including",
    pricingDisplayLevel: "itemQuantityAndTotal",
    displayItemCode: true,
 };

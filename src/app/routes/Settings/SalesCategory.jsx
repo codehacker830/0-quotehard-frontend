@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify';
-import { getSalesTaxes } from '../../../actions/Settings';
+import { getSalesTaxes } from '../../../actions/GlobalSettings';
 import NavCrump from '../../../components/NavCrump'
 import axios from '../../../util/Api';
 import { SALES_CATEGORY_CREATE_PATH, SALES_CATEGORY_UPDATE_PATH, SALES_TAX_CATEGORIES_PATH } from '../../../constants/PathNames';

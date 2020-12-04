@@ -17,7 +17,7 @@ import {
 import axios from '../../../util/Api';
 import { toastErrorConfig, toastSuccessConfig } from '../../../util/toastrConfig';
 import AddPriceItemBtn from '../../../components/AddPriceItemBtn';
-import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../actions/Settings';
+import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../actions/GlobalSettings';
 import { getTemplateQuoteDataById } from '../../../actions/Data';
 import { connect } from 'react-redux';
 import { CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_GET_PATH } from '../../../constants/PathNames';
@@ -384,10 +384,10 @@ class GetTemplate extends Component {
    }
 }
 
-const mapStateToProps = ({ auth, settings, mainData }) => {
+const mapStateToProps = ({ auth, globalSettings, mainData }) => {
    const { authUser } = auth;
    const { quote } = mainData;
-   const { defaultSalesTax, defaultSalesCategory } = settings;
+   const { defaultSalesTax, defaultSalesCategory } = globalSettings;
    return { authUser, quote, defaultSalesTax, defaultSalesCategory }
 }
 

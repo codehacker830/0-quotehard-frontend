@@ -32,7 +32,7 @@ import AddNoteBtn from "../../../components/AddNoteBtn";
 import QuoteTotal from "../../../components/QuoteTotal";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from "../../../actions/Settings";
+import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from "../../../actions/GlobalSettings";
 import NavCrumpLeft from "../../../components/NavCrump/NavCrumpLeft";
 
 import { QUOTE_GET_FROM_TEMPLATE_PATH, QUOTE_GET_PATH, QUOTE_BY_ID_PATH, QUOTES_PATH } from "../../../constants/PathNames";
@@ -403,10 +403,10 @@ class GetQuote extends Component {
       );
    }
 }
-const mapStateToProps = ({ auth, settings, mainData }) => {
+const mapStateToProps = ({ auth, globalSettings, mainData }) => {
    const { authUser } = auth;
    const { quote } = mainData;
-   const { defaultSalesTax, defaultSalesCategory } = settings;
+   const { defaultSalesTax, defaultSalesCategory } = globalSettings;
    return { authUser, quote, defaultSalesTax, defaultSalesCategory }
 }
 

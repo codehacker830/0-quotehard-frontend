@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify';
-import { getSalesCategories } from '../../../actions/Settings';
+import { getSalesCategories } from '../../../actions/GlobalSettings';
 import NavCrump from '../../../components/NavCrump'
 import axios from '../../../util/Api';
 import { SALES_TAX_CATEGORIES_PATH, SALES_TAX_CREATE_PATH, SALES_TAX_UPDATE_PATH } from '../../../constants/PathNames';
@@ -14,8 +14,8 @@ export const SalesTax = (props) => {
    const [status, setStatus] = useState("");
    const [taxName, setTaxName] = useState("");
    const [taxRate, setTaxRate] = useState("");
-   const settings = useSelector(state => {
-      const { defaultSalesTax } = state.settings;
+   const globalSettings = useSelector(state => {
+      const { defaultSalesTax } = state.globalSettings;
       return { defaultSalesTax };
    })
    const onClickSave = () => {
@@ -61,6 +61,7 @@ export const SalesTax = (props) => {
       }
       return () => { };
    }, [id]);
+   const { defaultSalesTax } = globalSettings;
    return (
       <React.Fragment>
          <NavCrump >
@@ -114,7 +115,7 @@ export const SalesTax = (props) => {
                      </div>
                   }
                   {
-                     settings.defaultSalesTax == id &&
+                     defaultSalesTax == id &&
                      <span className="label success">Default</span>
                   }
                   <label htmlFor="taxName">Tax Name</label>

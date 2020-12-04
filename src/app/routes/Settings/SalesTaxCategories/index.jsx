@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
-import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../../actions/Settings';
+import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../../actions/GlobalSettings';
 import NavCrump from '../../../../components/NavCrump'
 import SalesCategoryTable from './SalesCategoryTable';
 import SalesTaxTable from './SalesTaxTable';
 
 export const SalesTaxCategories = (props) => {
    const [status, setStatus] = useState("current");
-   const settings = useSelector(state => {
-      const { salesCatgories, salesTaxes, defaultSalesCategory, defaultSalesTax } = state.settings;
+   const globalSettings = useSelector(state => {
+      const { salesCatgories, salesTaxes, defaultSalesCategory, defaultSalesTax } = state.globalSettings;
       return { salesCatgories, salesTaxes, defaultSalesCategory, defaultSalesTax };
    });
    const dispatch = useDispatch();
@@ -22,8 +22,8 @@ export const SalesTaxCategories = (props) => {
       dispatch(getSalesTaxes(status));
    }, [status]);
 
-   const { salesCatgories, salesTaxes, defaultSalesCategory, defaultSalesTax } = settings;
-   console.log("SETTTINGS   ->", settings);
+   const { salesCatgories, salesTaxes, defaultSalesCategory, defaultSalesTax } = globalSettings;
+   console.log("SETTTINGS   ->", globalSettings);
    console.log("status   ->", status);
    return (
       <React.Fragment>
@@ -49,7 +49,7 @@ export const SalesTaxCategories = (props) => {
             <div className="row">
                <div className="col-sm-6">
                   <h3>Sales Tax</h3>
-                  <SalesTaxTable salesTaxes={salesTaxes} defaultSalesTax={defaultSalesTax}/>
+                  <SalesTaxTable salesTaxes={salesTaxes} defaultSalesTax={defaultSalesTax} />
                   <div className="mb-4">
                      <Link className="btn btn-success" to="/app/settings/sales-tax/create-new">New Sales Tax</Link>
                   </div>
