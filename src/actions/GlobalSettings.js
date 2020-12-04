@@ -8,6 +8,7 @@ import {
    GET_DEFAULT_SALES_CATEGORY,
    GET_DEFAULT_SALES_TAX
 } from '../constants/ActionTypes';
+import { toast } from 'react-toastify';
 
 export const getDefaultSalesCategory = () => {
    return async (dispatch) => {
@@ -30,13 +31,48 @@ export const getDefaultSalesTax = () => {
       dispatch({ type: FETCH_START });
       try {
          const { data } = await axios.get('/settings/default/sales-tax');
-         console.log(" sales default salestax api res : ", data);
+         console.log(" get default sales Category api res : ", data);
          dispatch({ type: FETCH_SUCCESS });
-         const { defaultSalesTax } = data;
-         dispatch({ type: GET_DEFAULT_SALES_TAX, payload: defaultSalesTax });
+         dispatch({ type: GET_DEFAULT_SALES_TAX, payload: data.defaultSalesTax });
       } catch (error) {
          dispatch({ type: FETCH_ERROR, payload: error.message });
          console.log("Error****:", error.message);
+
+      }
+   }
+}
+
+export const updateDefaultSalesCategory = (id) => {
+   return async (dispatch) => {
+      dispatch({ type: FETCH_START });
+      try {
+         const { data } = await axios.put('/settings/default/sales-category', { salesCategoryId: id });
+         console.log("make default salescategory api res : ", data);
+         dispatch({ type: FETCH_SUCCESS });
+         dispatch({ type: GET_DEFAULT_SALES_CATEGORY, payload: data.defaultSalesCategory });
+         toast.success('Sales Category – made default.');
+      } catch (error) {
+         dispatch({ type: FETCH_ERROR, payload: error.message });
+         console.log("Error****:", error.message);
+         toast.success('Failed to make default sales category.');
+
+      }
+   }
+}
+
+export const updateDefaultSalesTax = (id) => {
+   return async (dispatch) => {
+      dispatch({ type: FETCH_START });
+      try {
+         const { data } = await axios.put('/settings/default/sales-tax', { salesTaxId: id });
+         console.log(" make default sales Tax api res : ", data);
+         dispatch({ type: FETCH_SUCCESS });
+         dispatch({ type: GET_DEFAULT_SALES_TAX, payload: data.defaultSalesTax });
+         toast.success('Sales Tax – made default.');
+      } catch (error) {
+         dispatch({ type: FETCH_ERROR, payload: error.message });
+         console.log("Error****:", error.message);
+         toast.success('Failed to make default.');
 
       }
    }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify';
-import { getSalesTaxes } from '../../../actions/GlobalSettings';
+import { getDefaultSalesCategory, getSalesTaxes, updateDefaultSalesCategory } from '../../../actions/GlobalSettings';
 import NavCrump from '../../../components/NavCrump'
 import axios from '../../../util/Api';
 import { SALES_CATEGORY_CREATE_PATH, SALES_CATEGORY_UPDATE_PATH, SALES_TAX_CATEGORIES_PATH } from '../../../constants/PathNames';
@@ -42,10 +42,11 @@ export const SalesCategory = (props) => {
             });
       }
    }
-
+   const { defaultSalesCategory, salesTaxes } = globalSettings;
    const dispatch = useDispatch();
    useEffect(() => {
       dispatch(getSalesTaxes("current"));
+      dispatch(getDefaultSalesCategory());
    }, []);
    useEffect(() => {
       if (props.match.path === SALES_CATEGORY_UPDATE_PATH) {
@@ -64,8 +65,48 @@ export const SalesCategory = (props) => {
       }
       return () => { };
    }, [id]);
-
-   const { defaultSalesCategory, salesTaxes } = globalSettings;
+   const onClickArchive = () => {
+      if (status === "current") {
+         if (defaultSalesCategory === id) {
+            toast.success('You may not archive the default category. Make another the default first.');
+            return;
+         }
+         axios.get(`/settings/archive/sales-category/${id}`)
+            .then(({ data }) => {
+               console.log("archive sales cateogry res __", data);
+               const { status, categoryName, description, defaultSalesTax } = data.salesCategory;
+               setStatus(status);
+               setCategoryName(categoryName);
+               setDescription(description);
+               if (defaultSalesTax) setDefaultSalesTax(defaultSalesTax);
+               toast.success('Sales Category - archived.');
+            })
+            .catch(err => {
+               toast.success('Failed to archive.');
+            });
+      } else {
+         axios.get(`/settings/un-archive/sales-category/${id}`)
+            .then(({ data }) => {
+               console.log("dataaaa", data);
+               const { status, categoryName, description, defaultSalesTax } = data.salesCategory;
+               setStatus(status);
+               setCategoryName(categoryName);
+               setDescription(description);
+               if (defaultSalesTax) setDefaultSalesTax(defaultSalesTax);
+               toast.success('Sales Category - unarchived.');
+            })
+            .catch(err => {
+               toast.success('Failed to undo-archive.');
+            });
+      }
+   }
+   const onClickDefault = () => {
+      if (status === "current") {
+         dispatch(updateDefaultSalesCategory(id));
+      } else {
+         toast.success('You may not make the archived one as default.');
+      }
+   }
    return (
       <React.Fragment>
          <NavCrump>
@@ -77,17 +118,19 @@ export const SalesCategory = (props) => {
                <NavCrumpRight>
                   <ul className="choices" style={{ left: 45, top: 10 }}>
                      <li>
-                        <button className="btn-in-action">
+                        <button className="btn-in-action" onClick={onClickArchive}>
                            <div className="mx-3">
                               <i className="fa fa-fw fa-archive text-secondary" />
                            </div>
                            <div className="media-body font-size-sm font-w600 pr-2">
-                              <span>Archive</span>
+                              <span>Archive
+                              {status === "archived" && <span className="choices-undo"> ← undo</span>}
+                              </span>
                            </div>
                         </button>
                      </li>
                      <li>
-                        <button className="btn-in-action">
+                        <button className="btn-in-action" onClick={onClickDefault}>
                            <div className="mx-3">
                               <i className="fa fa-fw fa-star text-secondary" />
                            </div>

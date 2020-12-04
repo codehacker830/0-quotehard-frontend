@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify';
-import { getSalesCategories } from '../../../actions/GlobalSettings';
+import { getDefaultSalesTax, getSalesCategories, updateDefaultSalesTax } from '../../../actions/GlobalSettings';
 import NavCrump from '../../../components/NavCrump'
 import axios from '../../../util/Api';
 import { SALES_TAX_CATEGORIES_PATH, SALES_TAX_CREATE_PATH, SALES_TAX_UPDATE_PATH } from '../../../constants/PathNames';
@@ -40,10 +40,12 @@ export const SalesTax = (props) => {
             });
       }
    }
+   const { defaultSalesTax } = globalSettings;
 
    const dispatch = useDispatch();
    useEffect(() => {
       dispatch(getSalesCategories("current"));
+      dispatch(getDefaultSalesTax());
    }, []);
    useEffect(() => {
       console.log("********** props ", props);
@@ -61,7 +63,46 @@ export const SalesTax = (props) => {
       }
       return () => { };
    }, [id]);
-   const { defaultSalesTax } = globalSettings;
+   const onClickArchive = () => {
+      if (status === "current") {
+         if (defaultSalesTax === id) {
+            toast.success('You may not archive the default tax. Make another the default first.');
+            return;
+         }
+         axios.get(`/settings/archive/sales-tax/${id}`)
+            .then(({ data }) => {
+               const { status, taxName, taxRate } = data.salesTax;
+               setStatus(status);
+               setTaxName(taxName);
+               setTaxRate(taxRate);
+               toast.success('Sales Tax - archived.');
+            })
+            .catch(err => {
+               toast.success('Failed to archive.');
+            });
+      } else {
+         axios.get(`/settings/un-archive/sales-tax/${id}`)
+            .then(({ data }) => {
+               console.log("dataaaa", data);
+               const { status, taxName, taxRate } = data.salesTax;
+               setStatus(status);
+               setTaxName(taxName);
+               setTaxRate(taxRate);
+               toast.success('Sales Tax - unarchived.');
+            })
+            .catch(err => {
+               toast.success('Failed to undo-archive.');
+            });
+      }
+   }
+   const onClickDefault = () => {
+      if (status === "current") {
+         dispatch(updateDefaultSalesTax(id));
+      } else {
+         toast.success('You may not make the archived one as default.');
+      }
+   }
+
    return (
       <React.Fragment>
          <NavCrump >
@@ -73,17 +114,19 @@ export const SalesTax = (props) => {
                <NavCrumpRight>
                   <ul className="choices" style={{ left: 45, top: 10 }}>
                      <li>
-                        <button className="btn-in-action">
+                        <button className="btn-in-action" onClick={onClickArchive}>
                            <div className="mx-3">
                               <i className="fa fa-fw fa-archive text-secondary" />
                            </div>
                            <div className="media-body font-size-sm font-w600 pr-2">
-                              <span>Archive</span>
+                              <span>Archive
+                              {status === "archived" && <span className="choices-undo"> ← undo</span>}
+                              </span>
                            </div>
                         </button>
                      </li>
                      <li>
-                        <button className="btn-in-action">
+                        <button className="btn-in-action" onClick={onClickDefault}>
                            <div className="mx-3">
                               <i className="fa fa-fw fa-star text-secondary" />
                            </div>
@@ -116,7 +159,9 @@ export const SalesTax = (props) => {
                   }
                   {
                      defaultSalesTax == id &&
-                     <span className="label success">Default</span>
+                     <div className="mb-3">
+                        <span className="label label-success">Default</span>
+                     </div>
                   }
                   <label htmlFor="taxName">Tax Name</label>
                   <input type="text" className="form-control font-w700 maxWidth-200" id="taxName" name="taxName" placeholder=""
