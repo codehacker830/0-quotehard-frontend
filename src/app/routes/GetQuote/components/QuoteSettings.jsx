@@ -18,7 +18,10 @@ class QuoteSettings extends Component {
       };
    }
    componentDidUpdate(prevProps, prevState) {
-
+      const { authUser, settings } = this.props;
+      if (authUser && !settings.userFrom) {
+         this.props.updateQuoteSettings({ ...settings, userFrom: authUser._id })
+      }
    }
    componentDidMount() {
       this.props.getTeamMembers();

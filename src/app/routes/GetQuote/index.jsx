@@ -183,20 +183,6 @@ class GetQuote extends Component {
          await this.props.getTemplateQuoteDataById(this.props.match.params.id);
       }
    }
-   componentDidUpdate(prevProps, prevState) {
-      if (this.props.defaultSalesTax !== prevProps.defaultSalesTax || this.props.defaultSalesCategory !== prevProps.defaultSalesCategory) {
-         // if (this.props.match.path === QUOTE_GET_PATH)
-         //    Upate all salesTax and item category in items
-
-         //    this.setState({
-         //       items: [{
-         //          category: "priceItem",
-         //          priceItem: { ...initPriceItem, salesTax: this.props.defaultSalesTax, salesCategory: this.props.defaultSalesCategory },
-         //       }]
-         //    });
-
-      }
-   }
    render() {
       console.log(" ^^^^^^^ GET QUOTE state ^^^^^^^^^^ ", this.state);
       console.log(" ^^^^^^^ GET QUOTE props ^^^^^^^^^^ ", this.props);

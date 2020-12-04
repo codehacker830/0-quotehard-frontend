@@ -61,8 +61,29 @@ class PriceItemForm extends Component {
       if (this.state.isSettingOpen && !this.settingContainter.current.contains(ev.target)) this.setState({ isSettingOpen: false });
       if (this.state.isAddItemListOpen && !this.addItemOptionContainer.current.contains(ev.target)) this.setState({ isAddItemListOpen: false });
    }
-   componentDidUpdate() {
+   componentDidUpdate(prevProps, prevState) {
       this.fileArray = this.props.priceItem.files;
+      const { defaultSalesCategory, defaultSalesTax } = this.props;
+      if (!this.props.priceItem.salesCategory && defaultSalesCategory) {
+         const newItem = {
+            category: "priceItem",
+            priceItem: {
+               ... this.props.priceItem,
+               salesCategory: defaultSalesCategory
+            }
+         };
+         this.updateItem(this.props.index, newItem);
+      }
+      if (!this.props.priceItem.salesTax && defaultSalesTax) {
+         const newItem = {
+            category: "priceItem",
+            priceItem: {
+               ... this.props.priceItem,
+               salesTax: defaultSalesTax
+            }
+         };
+         this.updateItem(this.props.index, newItem);
+      }
    }
    componentDidMount() {
       window.addEventListener('click', this.onClickOutsideHandle);
@@ -657,10 +678,14 @@ class PriceItemForm extends Component {
 }
 
 const mapStateToProps = ({ settings, mainData }) => {
-   const { salesCatgories, salesTaxes } = settings;
+   const {
+      salesCatgories,
+      salesTaxes,
+      defaultSalesCategory,
+      defaultSalesTax
+   } = settings;
    const { quote } = mainData;
-   return { salesCatgories, salesTaxes, quote };
-
+   return { salesCatgories, salesTaxes, defaultSalesCategory, defaultSalesTax, quote };
 };
 const mapDispatchToProps = {
    updateQuoteItems
