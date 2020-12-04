@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import TextareaAutosize from 'react-autosize-textarea/lib';
+import { connect } from 'react-redux';
+import { updateQuoteItems } from '../actions/Data';
+import { initPriceItem, initTextItem } from '../constants/InitState';
 import axios from '../util/Api';
 
-export default class TextItemForm extends Component {
+class TextItemForm extends Component {
    fileObj = [];
    fileArray = [];
    constructor(props) {
@@ -20,7 +23,7 @@ export default class TextItemForm extends Component {
          category: "textItem",
          textItem: { ... this.props.textItem, files: newFileArray }
       };
-      this.props.updateItem(this.props.index, newItem);
+      this.updateItem(this.props.index, newItem);
    }
 
    handleClickFileOpen = () => {
@@ -47,7 +50,7 @@ export default class TextItemForm extends Component {
          category: "textItem",
          textItem: { ... this.props.textItem, files: this.fileArray }
       };
-      this.props.updateItem(this.props.index, newItem);
+      this.updateItem(this.props.index, newItem);
    }
    onClickOutsideHandle = (ev) => {
       if (this.state.isAddItemListOpen && !this.addItemOptionContainer.current.contains(ev.target)) this.setState({ isAddItemListOpen: false });
@@ -61,6 +64,73 @@ export default class TextItemForm extends Component {
    componentWillUnmount() {
       window.removeEventListener('click', this.onClickOutsideHandle);
    }
+
+   updateItem = (ind, item) => {
+      // console.log("adfasdf ", ind, item);
+      const { items } = this.props.quote;
+      let newItems = [...items];
+      newItems[ind] = item;
+      this.props.updateQuoteItems(newItems);
+   }
+
+   addItem = (ind, category) => {
+      const { items } = this.props.quote;
+      let newItems = [...items];
+      if (category === "priceItem") newItems.splice(ind + 1, 0, {
+         category: category,
+         priceItem: initPriceItem,
+      });
+      else if (category === "textItem") newItems.splice(ind + 1, 0, {
+         category: category,
+         textItem: initTextItem,
+      });
+      else newItems.splice(ind + 1, 0, {
+         category: category,
+         subTotal: null
+      });
+      this.props.updateQuoteItems(newItems);
+   }
+
+   orderUpItem = (ind) => {
+      const { items } = this.props.quote;
+      let newItems = [...items];
+      const [dIt,] = newItems.splice(ind, 1);
+      newItems.splice(Math.max(ind - 1, 0), 0, dIt);
+      this.props.updateQuoteItems(newItems);
+   }
+
+   orderDownItem = (ind) => {
+      const { items } = this.props.quote;
+      let newItems = [...items];
+      const [dIt,] = newItems.splice(ind, 1);
+      newItems.splice(Math.min(ind + 1, items.length), 0, dIt);
+      this.props.updateQuoteItems(newItems);
+   }
+
+   removeItem = (ind) => {
+      const { items } = this.props.quote;
+      console.error("items ------- >", items);
+      let newItems = [...items];
+      if (newItems.length > 2) {
+         newItems.splice(ind, 1);
+         this.props.updateQuoteItems(newItems);
+      } else if (newItems.length === 2) {
+         newItems.splice(ind, 1);
+         if (newItems[0].category === "subTotal") this.props.updateQuoteItems([
+            {
+               category: "priceItem",
+               priceItem: initPriceItem,
+            },
+         ]);
+         else this.props.updateQuoteItems(newItems);
+      } else this.props.updateQuoteItems([
+         {
+            category: "priceItem",
+            priceItem: initPriceItem,
+         },
+      ]);
+   }
+
    render() {
       console.log("TextItemForm State ______", this.state);
       console.log("TextItemForm Props ______", this.props);
@@ -103,29 +173,29 @@ export default class TextItemForm extends Component {
                            {
                               !this.props.isNote &&
                               <>
-                                 <button className="btn btn-light width-115 text-left mb-1" onClick={() => this.props.addItem(this.props.index, "subTotal")}>
+                                 <button className="btn btn-light width-115 text-left mb-1" onClick={() => this.addItem(this.props.index, "subTotal")}>
                                     <i className="fa fa-plus mr-2"></i>
                                     <span className="font-w400 font-size-sm" htmlFor="optional">Subtotal</span>
                                  </button>
-                                 <button className="btn btn-light width-115 text-left mb-1" onClick={() => this.props.addItem(this.props.index, "priceItem")}>
+                                 <button className="btn btn-light width-115 text-left mb-1" onClick={() => this.addItem(this.props.index, "priceItem")}>
                                     <i className="fa fa-plus mr-2"></i>
                                     <span className="font-w400 font-size-sm" htmlFor="optional">Price Item</span>
                                  </button>
                               </>
                            }
-                           <button className="btn btn-light width-115 text-left mb-1" onClick={() => this.props.addItem(this.props.index, "textItem")}>
+                           <button className="btn btn-light width-115 text-left mb-1" onClick={() => this.addItem(this.props.index, "textItem")}>
                               <i className="fa fa-plus mr-2"></i>
                               <span className="font-w400 font-size-sm" htmlFor="optional">Text Item</span>
                            </button>
                         </div>
                      </div>
-                     <button className="btn btn-light mr-1" disabled={this.props.isOrderUpDisabled} onClick={() => this.props.orderUpItem(this.props.index)}>
+                     <button className="btn btn-light mr-1" disabled={this.props.isOrderUpDisabled} onClick={() => this.orderUpItem(this.props.index)}>
                         <i className="fa fa-long-arrow-alt-up"></i>
                      </button>
-                     <button className="btn btn-light mr-1" disabled={this.props.isOrderDownDisabled} onClick={() => this.props.orderDownItem(this.props.index)}>
+                     <button className="btn btn-light mr-1" disabled={this.props.isOrderDownDisabled} onClick={() => this.orderDownItem(this.props.index)}>
                         <i className="fa fa-long-arrow-alt-down"></i>
                      </button>
-                     <button className="btn btn-light" disabled={this.props.isRemoveDisabled} onClick={() => this.props.removeItem(this.props.index)}>
+                     <button className="btn btn-light" disabled={this.props.isRemoveDisabled} onClick={() => this.removeItem(this.props.index)}>
                         <i className="fa fa-trash-alt"></i>
                      </button>
                   </div>
@@ -146,7 +216,7 @@ export default class TextItemForm extends Component {
                               category: "textItem",
                               textItem: { ... this.props.textItem, textHeading: ev.target.value }
                            };
-                           this.props.updateItem(this.props.index, newItem);
+                           this.updateItem(this.props.index, newItem);
                         }}
                      >
                      </TextareaAutosize>
@@ -159,7 +229,7 @@ export default class TextItemForm extends Component {
                               category: "textItem",
                               textItem: { ... this.props.textItem, longDescription: ev.target.value }
                            };
-                           this.props.updateItem(this.props.index, newItem);
+                           this.updateItem(this.props.index, newItem);
                         }}
                      >
                      </TextareaAutosize>
@@ -183,3 +253,10 @@ export default class TextItemForm extends Component {
       );
    }
 }
+const mapStateToProps = ({ mainData }) => ({
+   quote: mainData.quote
+})
+const mapDispatchToProps = {
+   updateQuoteItems
+}
+export default connect(mapStateToProps, mapDispatchToProps)(TextItemForm);

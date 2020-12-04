@@ -23,14 +23,14 @@ class QuoteSettings extends Component {
    componentDidMount() {
       this.props.getTeamMembers();
    }
-   
+
    updateValidDate = (val) => this.setState({ validDate: val });
    updateValidTime = (val) => this.setState({ validTime: val });
    updateSentDate = (val) => this.setState({ sentDate: val });
    updateSentTime = (val) => this.setState({ sentTime: val });
-   
+
    render() {
-      const { auth, teamSetting, settings } = this.props;
+      const { authUser, teamSetting, settings } = this.props;
       const {
          validUntil,
          sentAt,
@@ -41,8 +41,8 @@ class QuoteSettings extends Component {
          pricingDisplayLevel,
          displayItemCode
       } = settings;
-
-      console.log(" Quote Settings =>", settings);
+      console.log(" Quote Settings =>", this.props.settings);
+      console.log(" authUser =>", authUser);
       return (
          <div className="col-sm-6">
             <div
@@ -103,7 +103,7 @@ class QuoteSettings extends Component {
                   <div className="pb-2">
                      <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">FROM</label>
                      <select className="custom-select rounded-0"
-                        value={userFrom}
+                        value={userFrom ? userFrom : authUser._id}
                         onChange={(ev) => this.props.updateQuoteSettings({ ...settings, userFrom: ev.target.value })}>
                         {
                            teamSetting.teamMembers.map((mate, index) => {
@@ -111,7 +111,6 @@ class QuoteSettings extends Component {
                               return (<option value={mate._id} key={index}>{mateFullName}</option>);
                            })
                         }
-
                      </select>
                   </div>
                   <div className="pb-2">
@@ -122,7 +121,7 @@ class QuoteSettings extends Component {
                         value={discount}
                         onChange={(ev) => {
                            const newDiscount = ev.target.value === "" ? 0 : ev.target.value;
-                           this.props.updateQuoteSettings({ ...settings, newDiscount })
+                           this.props.updateQuoteSettings({ ...settings, discount: newDiscount })
                         }}
                      />
                   </div>
@@ -412,7 +411,8 @@ class QuoteSettings extends Component {
 
 const mapStateToProps = ({ auth, teamSetting, mainData }) => {
    const { settings } = mainData.quote;
-   return { auth, teamSetting, settings };
+   const { authUser } = auth;
+   return { authUser, teamSetting, settings };
 }
 
 const mapDispatchToProps = { getTeamMembers, updateQuoteSettings };

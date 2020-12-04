@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import TextareaAutosize from 'react-autosize-textarea/lib';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { updateQuoteItems } from '../actions/Data';
+import { initPriceItem, initTextItem } from '../constants/InitState';
 import { toFixedFloat } from '../util';
 import axios from '../util/Api';
 
@@ -28,7 +30,7 @@ class PriceItemForm extends Component {
          category: "priceItem",
          priceItem: { ... this.props.priceItem, files: newFileArray }
       };
-      this.props.updateItem(this.props.index, newItem);
+      this.updateItem(this.props.index, newItem);
    }
    handleClickFileOpen = () => {
       this.hiddenFileInput.current.click();
@@ -53,7 +55,7 @@ class PriceItemForm extends Component {
          category: "priceItem",
          priceItem: { ... this.props.priceItem, files: this.fileArray }
       };
-      this.props.updateItem(this.props.index, newItem);
+      this.updateItem(this.props.index, newItem);
    }
    onClickOutsideHandle = (ev) => {
       if (this.state.isSettingOpen && !this.settingContainter.current.contains(ev.target)) this.setState({ isSettingOpen: false });
@@ -69,6 +71,71 @@ class PriceItemForm extends Component {
       window.removeEventListener('click', this.onClickOutsideHandle);
    }
 
+   updateItem = (ind, item) => {
+      // console.log("adfasdf ", ind, item);
+      const { items } = this.props.quote;
+      let newItems = [...items];
+      newItems[ind] = item;
+      this.props.updateQuoteItems(newItems);
+   }
+
+   addItem = (ind, category) => {
+      const { items } = this.props.quote;
+      let newItems = [...items];
+      if (category === "priceItem") newItems.splice(ind + 1, 0, {
+         category: category,
+         priceItem: initPriceItem,
+      });
+      else if (category === "textItem") newItems.splice(ind + 1, 0, {
+         category: category,
+         textItem: initTextItem,
+      });
+      else newItems.splice(ind + 1, 0, {
+         category: category,
+         subTotal: null
+      });
+      this.props.updateQuoteItems(newItems);
+   }
+
+   orderUpItem = (ind) => {
+      const { items } = this.props.quote;
+      let newItems = [...items];
+      const [dIt,] = newItems.splice(ind, 1);
+      newItems.splice(Math.max(ind - 1, 0), 0, dIt);
+      this.props.updateQuoteItems(newItems);
+   }
+
+   orderDownItem = (ind) => {
+      const { items } = this.props.quote;
+      let newItems = [...items];
+      const [dIt,] = newItems.splice(ind, 1);
+      newItems.splice(Math.min(ind + 1, items.length), 0, dIt);
+      this.props.updateQuoteItems(newItems);
+   }
+
+   removeItem = (ind) => {
+      const { items } = this.props.quote;
+      console.error("items ------- >", items);
+      let newItems = [...items];
+      if (newItems.length > 2) {
+         newItems.splice(ind, 1);
+         this.props.updateQuoteItems(newItems);
+      } else if (newItems.length === 2) {
+         newItems.splice(ind, 1);
+         if (newItems[0].category === "subTotal") this.props.updateQuoteItems([
+            {
+               category: "priceItem",
+               priceItem: initPriceItem,
+            },
+         ]);
+         else this.props.updateQuoteItems(newItems);
+      } else this.props.updateQuoteItems([
+         {
+            category: "priceItem",
+            priceItem: initPriceItem,
+         },
+      ]);
+   }
    render() {
       console.log(" priceitem props =====> ", this.props);
       const { salesCatgories, salesTaxes } = this.props;
@@ -106,7 +173,7 @@ class PriceItemForm extends Component {
                                     isChoiceSelected: !this.props.priceItem.isChoiceSelected
                                  }
                               };
-                              this.props.updateItem(this.props.index, newItem);
+                              this.updateItem(this.props.index, newItem);
                            }}
                         />
                         <label className="form-check-label">1 of 1 Selected</label>
@@ -154,7 +221,7 @@ class PriceItemForm extends Component {
                                           isMultipleChoice: false
                                        }
                                     };
-                                    this.props.updateItem(this.props.index, newItem);
+                                    this.updateItem(this.props.index, newItem);
                                  }}
                                  id="optional" name="optional" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="optional">Optional Item</label>
@@ -174,7 +241,7 @@ class PriceItemForm extends Component {
                                           isOptional: false
                                        }
                                     };
-                                    this.props.updateItem(this.props.index, newItem);
+                                    this.updateItem(this.props.index, newItem);
                                  }}
                                  id="multiple" name="multiple" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="multiple">Multiple Choice</label>
@@ -189,7 +256,7 @@ class PriceItemForm extends Component {
                                        category: "priceItem",
                                        priceItem: { ... this.props.priceItem, isEditableQuantity: !this.props.priceItem.isEditableQuantity }
                                     };
-                                    this.props.updateItem(this.props.index, newItem);
+                                    this.updateItem(this.props.index, newItem);
                                  }}
                                  id="editable-quantity" name="editable-quantity" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="editable-quantity">Editable Quantity</label>
@@ -203,7 +270,7 @@ class PriceItemForm extends Component {
                                        category: "priceItem",
                                        priceItem: { ... this.props.priceItem, isDiscount: !this.props.priceItem.isDiscount }
                                     };
-                                    this.props.updateItem(this.props.index, newItem);
+                                    this.updateItem(this.props.index, newItem);
                                  }}
                                  id="discount-percent" name="discount-percent" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="discount-percent">Discount %</label>
@@ -217,7 +284,7 @@ class PriceItemForm extends Component {
                                        category: "priceItem",
                                        priceItem: { ... this.props.priceItem, isSubscription: !this.props.priceItem.isSubscription }
                                     };
-                                    this.props.updateItem(this.props.index, newItem);
+                                    this.updateItem(this.props.index, newItem);
                                  }}
                                  id="subscription" name="subscription" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="subscription">Subscription - Repeating Cost</label>
@@ -231,7 +298,7 @@ class PriceItemForm extends Component {
                                        category: "priceItem",
                                        priceItem: { ... this.props.priceItem, isCostPriceMargin: !this.props.priceItem.isCostPriceMargin }
                                     };
-                                    this.props.updateItem(this.props.index, newItem);
+                                    this.updateItem(this.props.index, newItem);
                                  }}
                                  id="cost-margin" name="cost-margin" />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor="cost-margin">Cost Price & Margin</label>
@@ -251,27 +318,27 @@ class PriceItemForm extends Component {
                               width: "150px",
                               height: "155px"
                            }}>
-                           <button className="btn btn-light width-115 text-left mb-1" onClick={() => this.props.addItem(this.props.index, "subTotal")}>
+                           <button className="btn btn-light width-115 text-left mb-1" onClick={() => this.addItem(this.props.index, "subTotal")}>
                               <i className="fa fa-plus mr-2"></i>
                               <span className="font-w400 font-size-sm" htmlFor="optional">Subtotal</span>
                            </button>
-                           <button className="btn btn-light width-115 text-left mb-1" onClick={() => this.props.addItem(this.props.index, "priceItem")}>
+                           <button className="btn btn-light width-115 text-left mb-1" onClick={() => this.addItem(this.props.index, "priceItem")}>
                               <i className="fa fa-plus mr-2"></i>
                               <span className="font-w400 font-size-sm" htmlFor="optional">Price Item</span>
                            </button>
-                           <button className="btn btn-light width-115 text-left mb-1" onClick={() => this.props.addItem(this.props.index, "textItem")}>
+                           <button className="btn btn-light width-115 text-left mb-1" onClick={() => this.addItem(this.props.index, "textItem")}>
                               <i className="fa fa-plus mr-2"></i>
                               <span className="font-w400 font-size-sm" htmlFor="optional">Text Item</span>
                            </button>
                         </div>
                      </div>
-                     <button className="btn btn-light mr-1" disabled={this.props.isOrderUpDisabled} onClick={() => this.props.orderUpItem(this.props.index)}>
+                     <button className="btn btn-light mr-1" disabled={this.props.isOrderUpDisabled} onClick={() => this.orderUpItem(this.props.index)}>
                         <i className="fa fa-long-arrow-alt-up"></i>
                      </button>
-                     <button className="btn btn-light mr-1" disabled={this.props.isOrderDownDisabled} onClick={() => this.props.orderDownItem(this.props.index)}>
+                     <button className="btn btn-light mr-1" disabled={this.props.isOrderDownDisabled} onClick={() => this.orderDownItem(this.props.index)}>
                         <i className="fa fa-long-arrow-alt-down"></i>
                      </button>
-                     <button className="btn btn-light mr-1" disabled={this.props.isRemoveDisabled} onClick={() => this.props.removeItem(this.props.index)}>
+                     <button className="btn btn-light mr-1" disabled={this.props.isRemoveDisabled} onClick={() => this.removeItem(this.props.index)}>
                         <i className="fa fa-trash-alt"></i>
                      </button>
                      {
@@ -303,7 +370,7 @@ class PriceItemForm extends Component {
                               category: "priceItem",
                               priceItem: { ... this.props.priceItem, itemCode: ev.target.value }
                            };
-                           this.props.updateItem(this.props.index, newItem);
+                           this.updateItem(this.props.index, newItem);
                         }}
                      />
                      <TextareaAutosize className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2"
@@ -315,7 +382,7 @@ class PriceItemForm extends Component {
                               category: "priceItem",
                               priceItem: { ... this.props.priceItem, productHeading: ev.target.value }
                            };
-                           this.props.updateItem(this.props.index, newItem);
+                           this.updateItem(this.props.index, newItem);
                         }}
                      >
                      </TextareaAutosize>
@@ -327,7 +394,7 @@ class PriceItemForm extends Component {
                               category: "priceItem",
                               priceItem: { ... this.props.priceItem, longDescription: ev.target.value }
                            };
-                           this.props.updateItem(this.props.index, newItem);
+                           this.updateItem(this.props.index, newItem);
                         }}
                      >
                      </TextareaAutosize>
@@ -362,7 +429,7 @@ class PriceItemForm extends Component {
                                  category: "priceItem",
                                  priceItem: { ... this.props.priceItem, itemCategory: ev.target.value }
                               };
-                              this.props.updateItem(this.props.index, newItem);
+                              this.updateItem(this.props.index, newItem);
                            }}>
                            {
                               salesCatgories.map(salesCategory => <option value={salesCategory._id} key={salesCategory._id}>{salesCategory.categoryName}</option>)
@@ -380,7 +447,7 @@ class PriceItemForm extends Component {
                                  category: "priceItem",
                                  priceItem: { ... this.props.priceItem, tax }
                               };
-                              this.props.updateItem(this.props.index, newItem);
+                              this.updateItem(this.props.index, newItem);
                            }}>
                            {
                               salesTaxes.map(salesTax => (<option value={salesTax._id} key={salesTax._id}>{salesTax.taxName}</option>))
@@ -409,7 +476,7 @@ class PriceItemForm extends Component {
                                              itemTotal: this.props.priceItem.itemTotal * (100 - discount) / 100
                                           }
                                        };
-                                       this.props.updateItem(this.props.index, newItem);
+                                       this.updateItem(this.props.index, newItem);
                                     }}
                                  />
                               </div>
@@ -435,7 +502,7 @@ class PriceItemForm extends Component {
                                        category: "priceItem",
                                        priceItem: { ... this.props.priceItem, per }
                                     };
-                                    this.props.updateItem(this.props.index, newItem);
+                                    this.updateItem(this.props.index, newItem);
                                  }}
                               />
                               <select className="form-control rounded-0"
@@ -446,7 +513,7 @@ class PriceItemForm extends Component {
                                        category: "priceItem",
                                        priceItem: { ... this.props.priceItem, every: ev.target.value }
                                     };
-                                    this.props.updateItem(this.props.index, newItem);
+                                    this.updateItem(this.props.index, newItem);
                                  }}>
                                  <option value={`week`}>week</option>
                                  <option value={`month`}>month</option>
@@ -463,7 +530,7 @@ class PriceItemForm extends Component {
                                        category: "priceItem",
                                        priceItem: { ... this.props.priceItem, period: ev.target.value }
                                     };
-                                    this.props.updateItem(this.props.index, newItem);
+                                    this.updateItem(this.props.index, newItem);
                                  }}
                               />
                               <span className="text-secondary text-uppercase mx-2 my-auto">{this.props.priceItem.every}</span>
@@ -496,7 +563,7 @@ class PriceItemForm extends Component {
                                                 : costPrice / (100 - this.props.priceItem.margin) * this.props.priceItem.quantity * (100 - this.props.priceItem.discount)
                                           }
                                        };
-                                       this.props.updateItem(this.props.index, newItem);
+                                       this.updateItem(this.props.index, newItem);
                                     }}
                                  />
                               </div>
@@ -526,7 +593,7 @@ class PriceItemForm extends Component {
                                     itemTotal: unitPrice * this.props.priceItem.quantity * (100 - this.props.priceItem.discount) / 100
                                  }
                               };
-                              this.props.updateItem(this.props.index, newItem);
+                              this.updateItem(this.props.index, newItem);
                            }}
                         />
                         <label htmlFor="unit" className="text-gray fa-xs text-uppercase">Unit Price</label>
@@ -545,7 +612,7 @@ class PriceItemForm extends Component {
                                     itemTotal: this.props.priceItem.unitPrice * quantity * (100 - this.props.priceItem.discount) / 100
                                  }
                               };
-                              this.props.updateItem(this.props.index, newItem);
+                              this.updateItem(this.props.index, newItem);
                            }}
                         />
                         <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">
@@ -567,7 +634,7 @@ class PriceItemForm extends Component {
                                     unitPrice: this.props.priceItem.quantity !== "0" ? itemTotal / this.props.priceItem.quantity : this.props.priceItem.quantity
                                  }
                               };
-                              this.props.updateItem(this.props.index, newItem);
+                              this.updateItem(this.props.index, newItem);
                            }}
                         />
                         <label htmlFor="total" className="text-gray fa-xs text-uppercase">Item Total</label>
@@ -580,9 +647,14 @@ class PriceItemForm extends Component {
    }
 }
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings, mainData }) => {
    const { salesCatgories, salesTaxes } = settings;
-   return { salesCatgories, salesTaxes };
+   const { quote } = mainData;
+   return { salesCatgories, salesTaxes, quote };
 
 };
-export default connect(mapStateToProps)(withRouter(PriceItemForm));
+const mapDispatchToProps = {
+   updateQuoteItems
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PriceItemForm));

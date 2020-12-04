@@ -74,7 +74,7 @@ export const updateQuoteTitle = (title) => {
    return (dispatch) => dispatch({ type: UPDATE_QUOTE_TITLE, payload: title });
 };
 
-export const updateQuotItems = (items) => {
+export const updateQuoteItems = (items) => {
    return (dispatch) => dispatch({ type: UPDATE_QUOTE_ITEMS, payload: items });
 };
 
