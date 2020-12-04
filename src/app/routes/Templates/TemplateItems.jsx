@@ -6,6 +6,7 @@ import TotalLabelFor from '../../../components/TotalLabelFor';
 import { formatDate } from '../../../util';
 import axios from '../../../util/Api';
 import { toastErrorConfig, toastSuccessConfig } from '../../../util/toastrConfig';
+import { CONTENT_TEMPLATE_GET_PATH } from '../../../constants/PathNames';
 
 export default class TemplateItems extends Component {
    mounted = false;
@@ -80,7 +81,7 @@ export default class TemplateItems extends Component {
                      </div>
                      <div className="col-md-6">
                         <div className="row mb-2">
-                           <Link to="/app/content/template/get" className="btn btn-success ml-auto">New Template</Link>
+                           <Link to={CONTENT_TEMPLATE_GET_PATH} className="btn btn-success ml-auto">New Template</Link>
                         </div>
                      </div>
                   </div>

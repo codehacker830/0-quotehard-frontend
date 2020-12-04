@@ -468,7 +468,7 @@ class PublicQuoteView extends Component {
                               </div> */}
                               {/* Quote total */}
                               <div className="quoteViewTotalWrap pt-3">
-                                 <QuoteTotal settings={this.state.quote.settings} items={this.state.quote.items} />
+                                 <QuoteTotal />
 
                                  {/* <table className={`quoteTotal hasTerm table table-borderless`}>
                                     <tbody>

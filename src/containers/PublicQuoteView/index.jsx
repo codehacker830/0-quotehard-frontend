@@ -26,7 +26,7 @@ import VisiableOnlyAuthTeamMember from './components/VisiableOnlyAuthTeamMember'
 import DeclineCommentShow from './components/DeclineCommentShow';
 import QuoteItem from './components/QuoteItem';
 import QuoteViewTotalWrap from './components/QuoteViewTotalWrap';
-import { QUOTE_PAGE_PATH } from '../../constants/PathNames';
+import { QUOTES_PATH } from '../../constants/PathNames';
 import NavCrumpLeft from '../../components/NavCrump/NavCrumpLeft';
 import NavCrumpRight from '../../components/NavCrump/NavCrumpRight';
 
@@ -213,7 +213,7 @@ class PublicQuoteView extends Component {
       const { location } = this.props;
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
-      if (location.state && location.state.from === QUOTE_PAGE_PATH) linkName = "Quotes";
+      if (location.state && location.state.from === QUOTES_PATH) linkName = "Quotes";
 
       if (isMounting) return <div>loading...</div>;
       else if (this.props.match.path === '/q/:entoken/author-discuss') {

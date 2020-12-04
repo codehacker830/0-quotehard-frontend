@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import AddItemBtn from '../../../components/AddItemBtn';
+import AddNoteBtn from '../../../components/AddNoteBtn';
 import NavCrump from '../../../components/NavCrump';
 import PriceItemForm from '../../../components/PriceItemForm';
 import QuoteTotal from '../../../components/QuoteTotal';
@@ -16,8 +16,13 @@ import {
 } from '../../../constants/InitState';
 import axios from '../../../util/Api';
 import { toastErrorConfig, toastSuccessConfig } from '../../../util/toastrConfig';
+import AddPriceItemBtn from '../../../components/AddPriceItemBtn';
+import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../actions/Settings';
+import { getTemplateQuoteDataById } from '../../../actions/Data';
+import { connect } from 'react-redux';
+import { CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_GET_PATH } from '../../../constants/PathNames';
 
-export default class GetTemplate extends Component {
+class GetTemplate extends Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -26,20 +31,6 @@ export default class GetTemplate extends Component {
 
          status: "",
          isDefault: false,
-         title: "",
-         settings: initTemplateSettings,
-         items: [
-            {
-               category: "priceItem",
-               priceItem: initPriceItem,
-            }
-         ],
-         notes: [
-            {
-               category: "textItem",
-               textItem: initTextItem
-            }
-         ]
       }
       this.actionsContainer = React.createRef();
    }
@@ -95,102 +86,6 @@ export default class GetTemplate extends Component {
       console.log(this.state.fileArray)
    }
 
-   updateItem = (ind, item) => {
-      // console.log("adfasdf ", ind, item);
-      let newItems = [...this.state.items];
-      newItems[ind] = item;
-      console.log("adfasdf ", ind, newItems);
-      this.setState({ items: newItems });
-   }
-   addItem = (ind, category) => {
-      let newItems = [...this.state.items];
-      if (category === "priceItem") newItems.splice(ind + 1, 0, {
-         category: category,
-         priceItem: initPriceItem,
-      });
-      else if (category === "textItem") newItems.splice(ind + 1, 0, {
-         category: category,
-         textItem: initTextItem,
-      });
-      else newItems.splice(ind + 1, 0, {
-         category: category,
-         subTotal: null
-      });
-      this.setState({ items: newItems });
-   }
-   orderUpItem = (ind) => {
-      let newItems = [...this.state.items];
-      const [dIt,] = newItems.splice(ind, 1);
-      newItems.splice(Math.max(ind - 1, 0), 0, dIt);
-      this.setState({ items: newItems });
-   }
-   orderDownItem = (ind) => {
-      let newItems = [...this.state.items];
-      const [dIt,] = newItems.splice(ind, 1);
-      newItems.splice(Math.min(ind + 1, this.state.items.length), 0, dIt);
-      this.setState({ items: newItems });
-   }
-   removeItem = (ind) => {
-      let newItems = [...this.state.items];
-      if (newItems.length > 2) {
-         newItems.splice(ind, 1);
-         this.setState({ items: newItems });
-      } else if (newItems.length === 2) {
-         newItems.splice(ind, 1);
-         if (newItems[0].category === "subTotal") this.setState({
-            items: [
-               {
-                  category: "priceItem",
-                  priceItem: initPriceItem,
-               },
-            ]
-         });
-         else this.setState({ items: newItems });
-      } else this.setState({
-         items: [
-            {
-               category: "priceItem",
-               priceItem: initPriceItem,
-            },
-         ]
-      });
-   }
-   updateNote = (ind, note) => {
-      let newNotes = [...this.state.notes];
-      newNotes[ind] = note;
-      this.setState({ notes: newNotes });
-   }
-   addNote = (ind, category) => {
-      let newNotes = [...this.state.notes];
-      newNotes.splice(ind + 1, 0, {
-         category: "textItem",
-         textItem: initTextItem,
-      });
-      this.setState({ notes: newNotes });
-   }
-   orderUpNote = (ind) => {
-      console.log("index  ===", ind)
-      let newNotes = [...this.state.notes];
-      const [dIt,] = newNotes.splice(ind, 1);
-      newNotes.splice(Math.max(ind - 1, 0), 0, dIt);
-
-      this.setState({ notes: newNotes });
-   }
-   orderDownNote = (ind) => {
-      let newNotes = [...this.state.notes];
-      const [dIt,] = newNotes.splice(ind, 1);
-      newNotes.splice(Math.min(ind + 1, this.state.notes.length), 0, dIt);
-      this.setState({ notes: newNotes });
-   }
-   removeNote = (ind) => {
-      let newNotes = [...this.state.notes];
-      if (newNotes.length > 1) {
-         newNotes.splice(ind, 1);
-         this.setState({ notes: newNotes });
-      }
-      else this.setState({ notes: [initTextItem] })
-   }
-
    onClickOutsideHandler = (ev) => {
       if (!this.actionsContainer.current.contains(ev.target)) {
          this.setState({ show: false });
@@ -198,7 +93,7 @@ export default class GetTemplate extends Component {
    }
    componentDidMount() {
       window.addEventListener('click', this.onClickOutsideHandler);
-      if (this.props.match.path === "/app/content/template/:id") {
+      if (this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH) {
          console.log("---------- this.props.match.params.id ----------------", this.props.match.params.id);
          const Promise1 = axios.get(`/templates/id/${this.props.match.params.id}`)
          // .then(({ data }) => {
@@ -281,7 +176,8 @@ export default class GetTemplate extends Component {
       console.log(" Get Template props  ===>", this.props)
       const linkTo = "/app/content/templates";
       const linkName = "Templates";
-      const isViewOnly = this.props.match.path === "/app/content/template/:id";
+      const isViewOnly = this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH;
+      const { title, settings, items, notes } = this.props.quote;
       return (
          <React.Fragment>
             <div className="bg-body-light border-top border-bottom">
@@ -294,7 +190,7 @@ export default class GetTemplate extends Component {
                         </Link>
                      </h1>
 
-                     <div className={`dropdown ${this.props.match.path === "/app/content/template/:id" ? "d-inline-block" : "d-none"}`} ref={this.actionsContainer}>
+                     <div className={`dropdown ${this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH ? "d-inline-block" : "d-none"}`} ref={this.actionsContainer}>
                         <button type="button" className="btn btn-dual" onClick={() => this.setState({ show: !this.state.show })}>
                            <span className="text-primary">Actions</span>
                            <i className="fa fa-fw fa-angle-down ml-1 text-primary" />
@@ -399,7 +295,7 @@ export default class GetTemplate extends Component {
                      <div className="col-12">
                         <textarea className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2 my-4"
                            rows={1} placeholder="Title of Template"
-                           value={this.state.title}
+                           value={title}
                            onChange={(ev) => this.setState({ title: ev.target.value })}
                         >
                         </textarea>
@@ -408,7 +304,7 @@ export default class GetTemplate extends Component {
 
                   {/* items */}
                   {
-                     this.state.items.map((item, index) => {
+                     items.map((item, index) => {
                         if (item.category === "priceItem") return <PriceItemForm
                            key={index}
                            index={index}
@@ -420,11 +316,6 @@ export default class GetTemplate extends Component {
                            isOrderDownDisabled={false}
                            isRemoveDisabled={false}
                            {...item}
-                           updateItem={this.updateItem}
-                           addItem={this.addItem}
-                           orderUpItem={this.orderUpItem}
-                           orderDownItem={this.orderDownItem}
-                           removeItem={this.removeItem}
                         />
                         else if (item.category === "textItem") return <TextItemForm
                            key={index}
@@ -438,11 +329,6 @@ export default class GetTemplate extends Component {
                            isOrderDownDisabled={false}
                            isRemoveDisabled={false}
                            {...item}
-                           updateItem={this.updateItem}
-                           addItem={this.addItem}
-                           orderUpItem={this.orderUpItem}
-                           orderDownItem={this.orderDownItem}
-                           removeItem={this.removeItem}
                         />
                         else return <SubTotal
                            key={index}
@@ -452,20 +338,14 @@ export default class GetTemplate extends Component {
                      })
                   }
 
-                  <AddItemBtn onClickAdd={() => {
-                     const newItem = {
-                        category: "priceItem",
-                        priceItem: initPriceItem
-                     }
-                     this.setState({ items: [...this.state.items, newItem] })
-                  }} />
+                  <AddPriceItemBtn />
 
                   {/* Quote item total show */}
-                  <QuoteTotal settings={this.state.settings} items={this.state.items} />
+                  <QuoteTotal />
 
                   {/* Here is notes */}
                   {
-                     this.state.notes.map((item, index) => {
+                     notes.map((item, index) => {
                         return <TextItemForm
                            key={index}
                            index={index}
@@ -478,26 +358,21 @@ export default class GetTemplate extends Component {
                            isOrderDownDisabled={false}
                            isRemoveDisabled={false}
                            {...item}
-                           updateItem={this.updateNote}
-                           addItem={this.addNote}
-                           orderUpItem={this.orderUpNote}
-                           orderDownItem={this.orderDownNote}
-                           removeItem={this.removeNote}
                         />
                      })
                   }
 
-                  <AddItemBtn onClickAdd={() => this.setState({ notes: [...this.state.notes, { category: "textItem", textItem: initTextItem }] })} />
+                  <AddNoteBtn />
 
                   {/* Footer action button group */}
                   <div className="row p-3">
                      {
-                        this.props.match.path === "/app/content/template/:id" &&
+                        this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH &&
                         <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={this.onClickUpdate}>Update</button>
 
                      }
                      {
-                        this.props.match.path === "/app/content/template/get" &&
+                        this.props.match.path === CONTENT_TEMPLATE_GET_PATH &&
                         <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={this.onClickCreate}>Create</button>
                      }
                      <button className="btn btn-lg btn-rounded btn-hero-secondary" onClick={this.onClickCancel}>Cancel</button>
@@ -508,3 +383,14 @@ export default class GetTemplate extends Component {
       );
    }
 }
+
+const mapStateToProps = ({ auth, settings, mainData }) => {
+   const { authUser } = auth;
+   const { quote } = mainData;
+   const { defaultSalesTax, defaultSalesCategory } = settings;
+   return { authUser, quote, defaultSalesTax, defaultSalesCategory }
+}
+
+const mapDispatchToProps = { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes, getTemplateQuoteDataById };
+
+export default connect(mapStateToProps, mapDispatchToProps)(GetTemplate);

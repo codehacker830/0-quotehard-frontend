@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { checkIfHasTerm, toFixedFloat } from '../../util';
 import QuoteTotalHasNoTerm from './QuoteTotalHasNoTerm';
 
-export default class QuoteTotal extends Component {
+class QuoteTotal extends Component {
    render() {
       const { settings, items } = this.props;
       console.log("_________ checkIfHasTerm(items) ___________", checkIfHasTerm(items));
@@ -136,3 +137,8 @@ export default class QuoteTotal extends Component {
       );
    }
 }
+const mapStateToProps = ({ mainData }) => {
+   const { settings, items } = mainData.quote;
+   return { settings, items }
+};
+export default connect(mapStateToProps)(QuoteTotal)

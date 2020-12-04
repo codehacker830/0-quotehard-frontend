@@ -28,17 +28,18 @@ import {
    initTextItem,
    initSubTotal,
 } from "../../../constants/InitState";
-import AddItemBtn from "../../../components/AddItemBtn";
+import AddNoteBtn from "../../../components/AddNoteBtn";
 import QuoteTotal from "../../../components/QuoteTotal";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from "../../../actions/Settings";
 import NavCrumpLeft from "../../../components/NavCrump/NavCrumpLeft";
 
-import { GET_QUOTE_FROM_TEMPLATE_PATH, GET_QUOTE_PATH, GET_QUOTE_BY_ID_PATH, QUOTE_PAGE_PATH } from "../../../constants/PathNames";
+import { QUOTE_GET_FROM_TEMPLATE_PATH, QUOTE_GET_PATH, QUOTE_BY_ID_PATH, QUOTES_PATH } from "../../../constants/PathNames";
 import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
 import { getQuoteDataById, getTemplateQuoteDataById, updateQuoteToPeopleList } from "../../../actions/Data";
 import QuoteTitle from "./components/QuoteTitle";
+import AddPriceItemBtn from "../../../components/AddPriceItemBtn";
 
 class GetQuote extends Component {
    constructor(props) {
@@ -46,25 +47,7 @@ class GetQuote extends Component {
       this.state = {
          loading: false,
          fileArray: [],
-         emailTo: "",
-
-
-
-         // toPeopleList: [],
-         // title: "",
-         // settings: { ...initQuoteSettings, userFrom: this.props.authUser._id },
-         // items: [
-         //    {
-         //       category: "priceItem",
-         //       priceItem: { ...initPriceItem },
-         //    },
-         // ],
-         // notes: [
-         //    {
-         //       category: "textItem",
-         //       textItem: { ...initTextItem }
-         //    }
-         // ],
+         emailTo: ""
       };
    }
    removeImageItem = (url) => {
@@ -93,7 +76,7 @@ class GetQuote extends Component {
          notes
       };
       console.log(" Quote save data ===> ", data);
-      if (this.props.match.path === GET_QUOTE_PATH || this.props.match.path === GET_QUOTE_FROM_TEMPLATE_PATH) {
+      if (this.props.match.path === QUOTE_GET_PATH || this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH) {
          this.setState({ loading: true, type: "SAVE_NEXT" });
          axios.post('/quotes', data)
             .then(({ data }) => {
@@ -107,7 +90,7 @@ class GetQuote extends Component {
                toast.error("Quote failed to create", toastErrorConfig);
                this.setState({ loading: false, type: null });
             });
-      } else if (this.props.match.path = GET_QUOTE_BY_ID_PATH) {
+      } else if (this.props.match.path = QUOTE_BY_ID_PATH) {
          const quoteId = this.props.match.params.id;
          this.setState({ loading: true, type: "SAVE_NEXT" });
          axios.put(`/quotes/${quoteId}`, data)
@@ -142,7 +125,7 @@ class GetQuote extends Component {
          items,
          notes
       };
-      if (this.props.location.pathname === GET_QUOTE_PATH || this.props.match.path === GET_QUOTE_FROM_TEMPLATE_PATH) {
+      if (this.props.location.pathname === QUOTE_GET_PATH || this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH) {
          this.setState({ loading: true, type: "SAVE" });
          axios.post('/quotes', data)
             .then(({ data }) => {
@@ -156,7 +139,7 @@ class GetQuote extends Component {
                this.setState({ loading: false, type: null });
                toast.error("Quote failed to create", toastErrorConfig);
             });
-      } else if (this.props.match.path = GET_QUOTE_BY_ID_PATH) {
+      } else if (this.props.match.path = QUOTE_BY_ID_PATH) {
          const quoteId = this.props.match.params.id;
          this.setState({ loading: true, type: "SAVE" });
          axios.put(`/quotes/${quoteId}`, data)
@@ -186,129 +169,23 @@ class GetQuote extends Component {
       console.log(this.state.fileArray)
    }
 
-   // updateItem = (ind, item) => {
-   //    // console.log("adfasdf ", ind, item);
-   //    const { items } = this.props.quote;
-   //    let newItems = [...items];
-   //    newItems[ind] = item;
-   //    console.log("adfasdf ", ind, newItems);
-   //    this.setState({ items: newItems });
-   // }
-
-   // addItem = (ind, category) => {
-   //    const { items } = this.props.quote;
-   //    let newItems = [...items];
-   //    if (category === "priceItem") newItems.splice(ind + 1, 0, {
-   //       category: category,
-   //       priceItem: initPriceItem,
-   //    });
-   //    else if (category === "textItem") newItems.splice(ind + 1, 0, {
-   //       category: category,
-   //       textItem: initTextItem,
-   //    });
-   //    else newItems.splice(ind + 1, 0, {
-   //       category: category,
-   //       subTotal: null
-   //    });
-   //    this.setState({ items: newItems });
-   // }
-   
-   orderUpItem = (ind) => {
-      const { items } = this.props.quote;
-      let newItems = [...items];
-      const [dIt,] = newItems.splice(ind, 1);
-      newItems.splice(Math.max(ind - 1, 0), 0, dIt);
-      this.setState({ items: newItems });
-   }
-   orderDownItem = (ind) => {
-      const { items } = this.props.quote;
-      let newItems = [...items];
-      const [dIt,] = newItems.splice(ind, 1);
-      newItems.splice(Math.min(ind + 1, items.length), 0, dIt);
-      this.setState({ items: newItems });
-   }
-   removeItem = (ind) => {
-      const { items } = this.props.quote;
-      let newItems = [...items];
-      if (newItems.length > 2) {
-         newItems.splice(ind, 1);
-         this.setState({ items: newItems });
-      } else if (newItems.length === 2) {
-         newItems.splice(ind, 1);
-         if (newItems[0].category === "subTotal") this.setState({
-            items: [
-               {
-                  category: "priceItem",
-                  priceItem: initPriceItem,
-               },
-            ]
-         });
-         else this.setState({ items: newItems });
-      } else this.setState({
-         items: [
-            {
-               category: "priceItem",
-               priceItem: initPriceItem,
-            },
-         ]
-      });
-   }
-   updateNote = (ind, note) => {
-      const { notes } = this.props.quote;
-      let newNotes = [...notes];
-      newNotes[ind] = note;
-      this.setState({ notes: newNotes });
-   }
-   addNote = (ind, category) => {
-      const { notes } = this.props.quote;
-      let newNotes = [...notes];
-      newNotes.splice(ind + 1, 0, {
-         category: "textItem",
-         textItem: initTextItem,
-      });
-      this.setState({ notes: newNotes });
-   }
-   orderUpNote = (ind) => {
-      const { notes } = this.props.quote;
-      let newNotes = [...notes];
-      const [dIt,] = newNotes.splice(ind, 1);
-      newNotes.splice(Math.max(ind - 1, 0), 0, dIt);
-      this.setState({ notes: newNotes });
-   }
-   orderDownNote = (ind) => {
-      const { notes } = this.props.quote;
-      let newNotes = [...notes];
-      const [dIt,] = newNotes.splice(ind, 1);
-      newNotes.splice(Math.min(ind + 1, notes.length), 0, dIt);
-      this.setState({ notes: newNotes });
-   }
-   removeNote = (ind) => {
-      const { notes } = this.props.quote;
-      let newNotes = [...notes];
-      if (newNotes.length > 1) {
-         newNotes.splice(ind, 1);
-         this.setState({ notes: newNotes });
-      }
-      else this.setState({ notes: [initTextItem] })
-   }
-
    async componentDidMount() {
       await this.props.getDefaultSalesCategory();
       await this.props.getDefaultSalesTax();
       await this.props.getSalesCategories('current');
       await this.props.getSalesTaxes('current');
 
-      if (this.props.match.path === GET_QUOTE_BY_ID_PATH) {
+      if (this.props.match.path === QUOTE_BY_ID_PATH) {
          // Get quote details with quote ID
          await this.props.getQuoteDataById(this.props.match.params.id);
-      } else if (this.props.match.path === GET_QUOTE_FROM_TEMPLATE_PATH) {
+      } else if (this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH) {
          // get template detials with id
          await this.props.getTemplateQuoteDataById(this.props.match.params.id);
       }
    }
    componentDidUpdate(prevProps, prevState) {
       if (this.props.defaultSalesTax !== prevProps.defaultSalesTax || this.props.defaultSalesCategory !== prevProps.defaultSalesCategory) {
-         // if (this.props.match.path === GET_QUOTE_PATH)
+         // if (this.props.match.path === QUOTE_GET_PATH)
          //    Upate all tax and item category in items
 
          //    this.setState({
@@ -332,7 +209,7 @@ class GetQuote extends Component {
       } = this.props.quote;
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
-      if (location.state && location.state.from === QUOTE_PAGE_PATH) linkName = "Quotes";
+      if (location.state && location.state.from === QUOTES_PATH) linkName = "Quotes";
       return (
          <React.Fragment>
             <NavCrump>
@@ -340,7 +217,7 @@ class GetQuote extends Component {
                   {linkName}
                </NavCrumpLeft>
                {
-                  this.props.match.path === GET_QUOTE_BY_ID_PATH &&
+                  this.props.match.path === QUOTE_BY_ID_PATH &&
                   <NavCrumpRight>
                      <ul className="choices" style={{ left: 25, top: 10 }}>
                         <li>
@@ -455,11 +332,6 @@ class GetQuote extends Component {
                            isOrderDownDisabled={false}
                            isRemoveDisabled={false}
                            {...item}
-                           // updateItem={this.updateItem}
-                           // addItem={this.addItem}
-                           // orderUpItem={this.orderUpItem}
-                           // orderDownItem={this.orderDownItem}
-                           // removeItem={this.removeItem}
                         />
                         else if (item.category === "textItem") return <TextItemForm
                            key={index}
@@ -472,11 +344,6 @@ class GetQuote extends Component {
                            isOrderDownDisabled={false}
                            isRemoveDisabled={false}
                            {...item}
-                           updateItem={this.updateItem}
-                           addItem={this.addItem}
-                           orderUpItem={this.orderUpItem}
-                           orderDownItem={this.orderDownItem}
-                           removeItem={this.removeItem}
                         />
                         else return <SubTotal
                            key={index}
@@ -486,16 +353,10 @@ class GetQuote extends Component {
                      })
                   }
 
-                  <AddItemBtn onClickAdd={() => {
-                     const newItem = {
-                        category: "priceItem",
-                        priceItem: initPriceItem
-                     }
-                     this.setState({ items: [...items, newItem] })
-                  }} />
+                  <AddPriceItemBtn />
 
                   <div className="quote-edit-total-wrap">
-                     <QuoteTotal settings={settings} items={items} />
+                     <QuoteTotal />
                   </div>
 
                   {
@@ -505,22 +366,17 @@ class GetQuote extends Component {
                            index={index}
                            isNote={true}
                            isPaperClipDisabled={false}
-                           // isSettingDisabled={true}
+                           isSettingDisabled={true}
                            isAddItemDisabled={false}
                            isOrderUpDisabled={false}
                            isOrderDownDisabled={false}
                            isRemoveDisabled={false}
                            {...item}
-                           updateItem={this.updateNote}
-                           addItem={this.addNote}
-                           orderUpItem={this.orderUpNote}
-                           orderDownItem={this.orderDownNote}
-                           removeItem={this.removeNote}
                         />
                      })
                   }
 
-                  <AddItemBtn onClickAdd={() => this.setState({ notes: [...notes, { category: "textItem", textItem: initTextItem }] })} />
+                  <AddNoteBtn />
 
                   {/* Footer action button group */}
                   <div className="row p-3">
@@ -550,7 +406,7 @@ class GetQuote extends Component {
                      </button>
                      <button
                         className="btn btn-lg btn-rounded btn-hero-secondary"
-                        onClick={() => this.props.history.push(QUOTE_PAGE_PATH)}
+                        onClick={() => this.props.history.push(QUOTES_PATH)}
                      >
                         Cancel
                      </button>

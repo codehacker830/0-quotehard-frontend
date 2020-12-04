@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from '../../../util/Api';
 import QuoteTableShow from './QuoteTableShow';
 import QuoteOverview from './QuoteOverview';
-import { GET_QUOTE_PATH } from '../../../constants/PathNames';
+import { QUOTE_GET_PATH } from '../../../constants/PathNames';
 
 export default class Dashboard extends Component {
    constructor(props) {
@@ -57,7 +57,7 @@ export default class Dashboard extends Component {
                            onClick={() => {
                               if (templateList.length === 0) {
                                  this.props.history.push({
-                                    pathname: GET_QUOTE_PATH,
+                                    pathname: QUOTE_GET_PATH,
                                     state: {
                                        from: this.props.location.pathname
                                     }
@@ -81,7 +81,7 @@ export default class Dashboard extends Component {
                               }
                               <div role="separator" className="dropdown-divider" />
                               <Link className="dropdown-item" to={{
-                                 pathname: GET_QUOTE_PATH,
+                                 pathname: QUOTE_GET_PATH,
                                  state: {
                                     from: this.props.location.pathname
                                  }

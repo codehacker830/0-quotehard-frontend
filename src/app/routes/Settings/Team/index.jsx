@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import NavCrump from '../../../../components/NavCrump'
-import { INVITE_FORM_PATH, SETTINGS_PATH } from '../../../../constants/PathNames'
+import { SETTINGS_TEAM_INVITEFORM_PATH, SETTINGS_PATH } from '../../../../constants/PathNames'
 import { ToastErrorNotification } from '../../../../util'
 import axios from '../../../../util/Api'
 import Tr_Member from './components/Tr_Member'
@@ -41,7 +41,7 @@ export const Team = (props) => {
             <h1>Team Members</h1>
             <div className="">
                <div className="mb-5">
-                  <Link className="btn btn-lg btn-success" to={INVITE_FORM_PATH}>Send Invitation</Link>
+                  <Link className="btn btn-lg btn-success" to={SETTINGS_TEAM_INVITEFORM_PATH}>Send Invitation</Link>
                </div>
 
                <table className="quotient-table mb-5">

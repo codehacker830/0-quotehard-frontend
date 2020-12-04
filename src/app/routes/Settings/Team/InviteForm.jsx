@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import NavCrump from '../../../../components/NavCrump';
-import { TEAM_PATH, SETTINGS_PATH } from '../../../../constants/PathNames';
+import { SETTINGS_TEAM_PATH, SETTINGS_PATH } from '../../../../constants/PathNames';
 import { ToastErrorNotification } from '../../../../util';
 import axios from '../../../../util/Api';
 
@@ -34,7 +34,7 @@ export const InviteForm = (props) => {
    }
    return (
       <React.Fragment>
-         <NavCrump linkTo={TEAM_PATH}>
+         <NavCrump linkTo={SETTINGS_TEAM_PATH}>
             Team Members
          </NavCrump>
          <div className="content">
@@ -82,7 +82,7 @@ export const InviteForm = (props) => {
                </div>
                <div className="mb-5">
                   <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={onClickSend}>Send Invitation</button>
-                  <Link className="btn btn-lg btn-rounded btn-hero-secondary" to={TEAM_PATH}>Cancel</Link>
+                  <Link className="btn btn-lg btn-rounded btn-hero-secondary" to={SETTINGS_TEAM_PATH}>Cancel</Link>
                </div>
             </div>
          </div>

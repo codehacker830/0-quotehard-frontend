@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TextareaAutosize from 'react-autosize-textarea/lib';
 import { connect } from 'react-redux';
-import { updateQuoteItems } from '../actions/Data';
+import { updateQuoteItems, updateQuoteNotes } from '../actions/Data';
 import { initPriceItem, initTextItem } from '../constants/InitState';
 import axios from '../util/Api';
 
@@ -67,70 +67,116 @@ class TextItemForm extends Component {
 
    updateItem = (ind, item) => {
       // console.log("adfasdf ", ind, item);
-      const { items } = this.props.quote;
-      let newItems = [...items];
-      newItems[ind] = item;
-      this.props.updateQuoteItems(newItems);
+      if (this.props.isNote) {
+         const { notes } = this.props.quote;
+         let newNotes = [...notes];
+         newNotes[ind] = item;
+         this.props.updateQuoteNotes(newNotes);
+      } else {
+         const { items } = this.props.quote;
+         let newItems = [...items];
+         newItems[ind] = item;
+         this.props.updateQuoteItems(newItems);
+      }
    }
 
    addItem = (ind, category) => {
-      const { items } = this.props.quote;
-      let newItems = [...items];
-      if (category === "priceItem") newItems.splice(ind + 1, 0, {
-         category: category,
-         priceItem: initPriceItem,
-      });
-      else if (category === "textItem") newItems.splice(ind + 1, 0, {
-         category: category,
-         textItem: initTextItem,
-      });
-      else newItems.splice(ind + 1, 0, {
-         category: category,
-         subTotal: null
-      });
-      this.props.updateQuoteItems(newItems);
+      if (this.props.isNote) {
+         const { notes } = this.props.quote;
+         let newNotes = [...notes];
+         newNotes.splice(ind + 1, 0, {
+            category: "textItem",
+            textItem: initTextItem,
+         });
+         this.props.updateQuoteNotes(newNotes);
+      }
+      else {
+         const { items } = this.props.quote;
+         let newItems = [...items];
+         if (category === "priceItem") newItems.splice(ind + 1, 0, {
+            category: category,
+            priceItem: initPriceItem,
+         });
+         else if (category === "textItem") newItems.splice(ind + 1, 0, {
+            category: category,
+            textItem: initTextItem,
+         });
+         else newItems.splice(ind + 1, 0, {
+            category: category,
+            subTotal: null
+         });
+         this.props.updateQuoteItems(newItems);
+      }
    }
 
    orderUpItem = (ind) => {
-      const { items } = this.props.quote;
-      let newItems = [...items];
-      const [dIt,] = newItems.splice(ind, 1);
-      newItems.splice(Math.max(ind - 1, 0), 0, dIt);
-      this.props.updateQuoteItems(newItems);
+      if (this.props.isNote) {
+         const { notes } = this.props.quote;
+         let newNotes = [...notes];
+         const [dIt,] = newNotes.splice(ind, 1);
+         newNotes.splice(Math.max(ind - 1, 0), 0, dIt);
+         this.props.updateQuoteNotes(newNotes);
+      } else {
+         const { items } = this.props.quote;
+         let newItems = [...items];
+         const [dIt,] = newItems.splice(ind, 1);
+         newItems.splice(Math.max(ind - 1, 0), 0, dIt);
+         this.props.updateQuoteItems(newItems);
+      }
    }
 
    orderDownItem = (ind) => {
-      const { items } = this.props.quote;
-      let newItems = [...items];
-      const [dIt,] = newItems.splice(ind, 1);
-      newItems.splice(Math.min(ind + 1, items.length), 0, dIt);
-      this.props.updateQuoteItems(newItems);
+      if (this.props.isNote) {
+         const { notes } = this.props.quote;
+         let newNotes = [...notes];
+         const [dIt,] = newNotes.splice(ind, 1);
+         newNotes.splice(Math.min(ind + 1, notes.length), 0, dIt);
+         this.props.updateQuoteNotes(newNotes);
+      } else {
+         const { items } = this.props.quote;
+         let newItems = [...items];
+         const [dIt,] = newItems.splice(ind, 1);
+         newItems.splice(Math.min(ind + 1, items.length), 0, dIt);
+         this.props.updateQuoteItems(newItems);
+      }
    }
 
    removeItem = (ind) => {
-      const { items } = this.props.quote;
-      console.error("items ------- >", items);
-      let newItems = [...items];
-      if (newItems.length > 2) {
-         newItems.splice(ind, 1);
-         this.props.updateQuoteItems(newItems);
-      } else if (newItems.length === 2) {
-         newItems.splice(ind, 1);
-         if (newItems[0].category === "subTotal") this.props.updateQuoteItems([
+      if (this.props.isNote) {
+         const { notes } = this.props.quote;
+         let newNotes = [...notes];
+         if (newNotes.length > 1) {
+            newNotes.splice(ind, 1);
+            this.props.updateQuoteNotes(newNotes);
+         }
+         else this.props.updateQuoteNotes([{
+            category: "textItem",
+            textItem: { ...initTextItem }
+         }]);
+      } else {
+         const { items } = this.props.quote;
+         console.error("items ------- >", items);
+         let newItems = [...items];
+         if (newItems.length > 2) {
+            newItems.splice(ind, 1);
+            this.props.updateQuoteItems(newItems);
+         } else if (newItems.length === 2) {
+            newItems.splice(ind, 1);
+            if (newItems[0].category === "subTotal") this.props.updateQuoteItems([
+               {
+                  category: "priceItem",
+                  priceItem: initPriceItem,
+               },
+            ]);
+            else this.props.updateQuoteItems(newItems);
+         } else this.props.updateQuoteItems([
             {
                category: "priceItem",
                priceItem: initPriceItem,
             },
          ]);
-         else this.props.updateQuoteItems(newItems);
-      } else this.props.updateQuoteItems([
-         {
-            category: "priceItem",
-            priceItem: initPriceItem,
-         },
-      ]);
+      }
    }
-
    render() {
       console.log("TextItemForm State ______", this.state);
       console.log("TextItemForm Props ______", this.props);
@@ -257,6 +303,7 @@ const mapStateToProps = ({ mainData }) => ({
    quote: mainData.quote
 })
 const mapDispatchToProps = {
-   updateQuoteItems
+   updateQuoteItems,
+   updateQuoteNotes
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TextItemForm);
