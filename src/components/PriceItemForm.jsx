@@ -150,11 +150,20 @@ class PriceItemForm extends Component {
                         <input type="checkbox"
                            className="form-check-input"
                            name="option-checkbox"
-                           checked={this.state.isOptionSelected}
-                           onChange={() => this.setState({ isOptionSelected: !this.state.isOptionSelected })}
+                           checked={this.props.priceItem.isOptionSelected}
+                           onChange={() => {
+                              const newItem = {
+                                 category: "priceItem",
+                                 priceItem: {
+                                    ... this.props.priceItem,
+                                    isOptionSelected: !this.props.priceItem.isOptionSelected
+                                 }
+                              };
+                              this.updateItem(this.props.index, newItem);
+                           }}
                         />
                         <label className="form-check-label">
-                           Option {this.state.isOptionSelected ? "Selected" : ""}
+                           Option {this.props.priceItem.isOptionSelected ? "Selected" : ""}
                         </label>
                      </div>
                   }
@@ -176,7 +185,7 @@ class PriceItemForm extends Component {
                               this.updateItem(this.props.index, newItem);
                            }}
                         />
-                        <label className="form-check-label">1 of 1 Selected</label>
+                        <label className="form-check-label">1 of 1 {this.props.priceItem.isChoiceSelected ? "Selected" : ""}</label>
                      </div>
                   }
                   <div className="row no-gutters w-100 justify-content-center">
@@ -497,7 +506,7 @@ class PriceItemForm extends Component {
                                  disabled={!!this.props.isViewOnly}
                                  value={this.props.priceItem.per == 0 ? "" : this.props.priceItem.per}
                                  onChange={(ev) => {
-                                    const per = ev.target.value === "" ? 1 : ev.target.value;
+                                    const per = ev.target.value == 0 ? 0 : ev.target.value;
                                     const newItem = {
                                        category: "priceItem",
                                        priceItem: { ... this.props.priceItem, per }
@@ -526,9 +535,10 @@ class PriceItemForm extends Component {
                                  disabled={!!this.props.isViewOnly}
                                  value={this.props.priceItem.period == 0 ? "" : this.props.priceItem.period}
                                  onChange={(ev) => {
+                                    const period = ev.target.value == 0 ? 0 : ev.target.value;
                                     const newItem = {
                                        category: "priceItem",
-                                       priceItem: { ... this.props.priceItem, period: ev.target.value }
+                                       priceItem: { ... this.props.priceItem, period }
                                     };
                                     this.updateItem(this.props.index, newItem);
                                  }}
@@ -551,7 +561,7 @@ class PriceItemForm extends Component {
                                     disabled={!!this.props.isViewOnly}
                                     value={this.props.priceItem.costPrice == 0 ? "" : this.props.priceItem.costPrice}
                                     onChange={(ev) => {
-                                       const costPrice = ev.target.value == 0 ? 0 : ev.target.value;
+                                       const costPrice = ev.target.value == 0 ? 1 : ev.target.value;
                                        const newItem = {
                                           category: "priceItem",
                                           priceItem: {
@@ -599,7 +609,7 @@ class PriceItemForm extends Component {
                         <label htmlFor="unit" className="text-gray fa-xs text-uppercase">Unit Price</label>
                      </div>
                      <div className="col-4 pl-1 pr-0">
-                        <input type="number" id="quantity" className={`form-control rounded-0 ${this.state.isEditableQuantity ? "border-primary" : ""}`}
+                        <input type="number" id="quantity" className={`form-control rounded-0 ${this.props.priceItem.isEditableQuantity ? "border-primary" : ""}`}
                            disabled={!!this.props.isViewOnly}
                            value={this.props.priceItem.quantity == 0 ? "" : this.props.priceItem.quantity}
                            onChange={(ev) => {

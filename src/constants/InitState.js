@@ -31,7 +31,7 @@ export const initPriceItem = {
    isSubscription: false,
 
    per: 1,
-   every: "week",
+   every: "month",
    period: 0,
 
    isCostPriceMargin: false,

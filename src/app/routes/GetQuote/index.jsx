@@ -348,7 +348,6 @@ class GetQuote extends Component {
                         else return <SubTotal
                            key={index}
                            index={index}
-                           removeItem={this.removeItem}
                         />
                      })
                   }

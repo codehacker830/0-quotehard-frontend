@@ -221,7 +221,7 @@ export const numberOfOption = (items) => {
       items.forEach(item => {
          if (item.category === "priceItem") {
             const { priceItem } = item;
-            if (!priceItem.isSubscription && (priceItem.isOptional || priceItem.isMultipleChoice)) {
+            if (priceItem.isOptional || priceItem.isMultipleChoice) {
                total++;
                if (priceItem.isOptionSelected || priceItem.isChoiceSelected) selected++;
             }

@@ -4,7 +4,8 @@ import { numberOfOption } from "../../../util";
 export default class Tr_OptionSelected extends Component {
    render() {
       const { items } = this.props;
-      if (!numberOfOption(items).total) return null;
+      const filterdItems = items; // should fileter subscription
+      if (!numberOfOption(filterdItems).total) return null;
       else return (
          <tr className="options">
             <td className="total-desc">

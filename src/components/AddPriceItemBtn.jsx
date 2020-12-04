@@ -9,7 +9,7 @@ class AddPriceItemBtn extends Component {
          category: "priceItem",
          priceItem: initPriceItem
       }
-      this.updateQuoteItems([...this.props.items, newItem])
+      this.props.updateQuoteItems([...this.props.items, newItem])
    }
    render() {
       return (
