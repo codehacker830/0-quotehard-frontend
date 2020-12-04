@@ -7,7 +7,11 @@ class AddPriceItemBtn extends Component {
    onClickAdd = () => {
       const newItem = {
          category: "priceItem",
-         priceItem: initPriceItem
+         priceItem: {
+            ...initPriceItem,
+            salesCategory: this.props.defaultSalesCategory,
+            salesTax: this.props.defaultSalesTax
+         }
       }
       this.props.updateQuoteItems([...this.props.items, newItem])
    }
@@ -24,9 +28,13 @@ class AddPriceItemBtn extends Component {
       );
    }
 }
-const mapStateToProps = ({ mainData }) => {
+const mapStateToProps = ({ mainData, settings }) => {
    const { items } = mainData.quote;
-   return { items }
+   const {
+      defaultSalesCategory,
+      defaultSalesTax
+   } = settings;
+   return { items, defaultSalesCategory, defaultSalesTax }
 }
 const mapDispatchToProps = {
    updateQuoteItems

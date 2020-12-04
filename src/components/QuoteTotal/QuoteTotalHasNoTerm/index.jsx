@@ -1,41 +1,43 @@
 import React, { Component } from 'react';
 import Tr_OptionSelected from './Tr_OptionSelected';
 import Tr_tax from './Tr_Tax';
-import { differentTaxIdArrGroup, filterItemArrForTaxId } from '../../../util';
+import { differentTaxIdArrGroup, filterItemArrForTaxId, quoteSubTotal } from '../../../util';
 import { connect } from 'react-redux';
 
 class QuoteTotalHasNoTerm extends Component {
    render() {
       const { items, settings } = this.props;
-      const subcriptionItems = items.filter(item => {
-         if (item.category === "priceItem") {
-            return item.priceItem.isSubscription === true;
-         }
-         return false;
-      });
-      // const nonSubcriptionItems = items.filter(item => {
+      // const subcriptionItems = items.filter(item => {
       //    if (item.category === "priceItem") {
-      //       return item.priceItem.isSubscription === false;
+      //       return item.priceItem.isSubscription === true;
       //    }
       //    return false;
       // });
-      const uniqueTaxArr = differentTaxIdArrGroup(subcriptionItems);
-      console.log(" ~~~~~~~~  uniqueTaxArr ~~~~~~~~", uniqueTaxArr);
+      const nonSubcriptionItems = items.filter(item => {
+         if (item.category === "priceItem") {
+            return item.priceItem.isSubscription === false;
+         }
+         return false;
+      });
+      const uniqueTaxIdArr = differentTaxIdArrGroup(nonSubcriptionItems);
+      console.log(" ~~~~~~~~  uniqueTaxIdArr ~~~~~~~~", uniqueTaxIdArr);
       return (
          <table className="quoteTotal hasNoTerm">
             <tbody>
                <Tr_OptionSelected items={items} />
                <tr>
                   <td className="total-desc">Subtotal</td>
-                  <td className="total-price">{`200`}</td>
+                  <td className="total-price">{quoteSubTotal(nonSubcriptionItems, settings)}</td>
                </tr>
                {
-                  uniqueTaxArr.map((uniqueTax, index) => {
-                     const { ItemArrFromTaxId } = filterItemArrForTaxId(items, uniqueTax._id);
+                  uniqueTaxIdArr.map((uniqueTaxId, index) => {
+                     console.log(" ###########  uniqueTaxId ########### ", uniqueTaxId);
+                     console.log(" ###########  nonSubcriptionItems ########### ", nonSubcriptionItems);
+                     const ItemArrFromTaxId = filterItemArrForTaxId(nonSubcriptionItems, uniqueTaxId);
                      console.log(" ###########  ItemArrFromTaxId ########### ", ItemArrFromTaxId);
 
                      return (
-                        <Tr_tax items={ItemArrFromTaxId} settings={settings} salesTax={uniqueTax} key={index} />
+                        <Tr_tax items={ItemArrFromTaxId} salesTax={uniqueTaxId} key={index} />
                      );
                   })
                }

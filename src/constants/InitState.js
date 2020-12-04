@@ -12,7 +12,7 @@ export const initQuoteSettings = {
 export const initTemplateSettings = {
    discount: 0,
    currency: "156",
-   taxMode: "no_tax",
+   taxMode: "exclusive_including",
    pricingDisplayLevel: "itemQuantityAndTotal",
    displayItemCode: true,
 };
@@ -59,3 +59,6 @@ export const initTextItem = {
 export const initSubTotal = {
    subTotal: null,
 };
+
+
+console.log('~~~~~~~~~~~~~~~~ initPriceItem ~~~~~~~~~~~~~~~~', initPriceItem)

@@ -95,11 +95,15 @@ class TextItemForm extends Component {
          let newItems = [...items];
          if (category === "priceItem") newItems.splice(ind + 1, 0, {
             category: category,
-            priceItem: initPriceItem,
+            priceItem: {
+               ...initPriceItem,
+               salesCategory: this.props.defaultSalesCategory,
+               salesTax: this.props.defaultSalesTax
+            },
          });
          else if (category === "textItem") newItems.splice(ind + 1, 0, {
             category: category,
-            textItem: initTextItem,
+            textItem: { ...initTextItem },
          });
          else newItems.splice(ind + 1, 0, {
             category: category,
@@ -299,9 +303,14 @@ class TextItemForm extends Component {
       );
    }
 }
-const mapStateToProps = ({ mainData }) => ({
-   quote: mainData.quote
-})
+const mapStateToProps = ({ mainData, settings }) => {
+   const {
+      defaultSalesCategory,
+      defaultSalesTax
+   } = settings;
+   const { quote } = mainData;
+   return { quote, defaultSalesCategory, defaultSalesTax }
+};
 const mapDispatchToProps = {
    updateQuoteItems,
    updateQuoteNotes

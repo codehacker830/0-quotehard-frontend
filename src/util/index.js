@@ -84,9 +84,25 @@ export const countDecimals = (num) => {
    return num.toString().split(".")[1];
 }
 
-export const caculateTotalTax = (pItemArr) => {
-   let totalTax = 0;
-   return totalTax;
+export const caculateTotalTax = (items, taxRate, settings) => {
+   if (!items.length) return 0;
+   let total = 0;
+   for (let i = 0; i < items.length; i++) {
+      if (items[i].category === "priceItem") {
+         const { priceItem } = items[i];
+         if (priceItem.isOptional || priceItem.isOptional) {
+            if (priceItem.isOptional && priceItem.isOptionSelected) {
+               total += priceItem.itemTotal;
+            }
+            if (priceItem.isMultipleChoice && priceItem.isChoiceSelected) {
+               total += priceItem.itemTotal;
+            }
+         } else {
+            total += priceItem.itemTotal;
+         }
+      }
+   }
+   return total;
 }
 
 export const formatDate = (date) => {
@@ -276,7 +292,7 @@ export const filterItemArrForTaxId = (items, taxId) => {
    items.forEach(item => {
       if (item.category === "priceItem") {
          const { priceItem } = item;
-         if (priceItem.salesTax._id == taxId) {
+         if (priceItem.salesTax === taxId) {
             if (checkIfItemWasSelected(priceItem)) resArr.push(item);
          }
       }
@@ -284,23 +300,25 @@ export const filterItemArrForTaxId = (items, taxId) => {
    return resArr;
 }
 
-export const subTotalHasNoTerm = (items, settings) => {
+export const quoteSubTotal = (items, settings) => {
    if (!items.length) return 0;
-   let subTotal = 0;
+   let total = 0;
    items.forEach(item => {
       if (item.category === "priceItem") {
          const { priceItem } = item;
-         if (!priceItem.isSubscription) {
+         if (priceItem.isOptional || priceItem.isOptional) {
             if (priceItem.isOptional && priceItem.isOptionSelected) {
-
+               total += priceItem.itemTotal;
             }
             if (priceItem.isMultipleChoice && priceItem.isChoiceSelected) {
-
+               total += priceItem.itemTotal;
             }
+         } else {
+            total += priceItem.itemTotal;
          }
       }
    });
-   return subTotal;
+   return total;
 }
 
 export const ToastErrorNotification = (errors) => {

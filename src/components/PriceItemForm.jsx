@@ -64,6 +64,9 @@ class PriceItemForm extends Component {
    componentDidUpdate(prevProps, prevState) {
       this.fileArray = this.props.priceItem.files;
       const { defaultSalesCategory, defaultSalesTax } = this.props;
+      console.log("Priceitemform prevProps", prevProps);
+      console.log("priceitemform this.props", this.props);
+      console.log("defaultSalesCategory", defaultSalesCategory);
       if (!this.props.priceItem.salesCategory && defaultSalesCategory) {
          const newItem = {
             category: "priceItem",
@@ -105,11 +108,15 @@ class PriceItemForm extends Component {
       let newItems = [...items];
       if (category === "priceItem") newItems.splice(ind + 1, 0, {
          category: category,
-         priceItem: initPriceItem,
+         priceItem: {
+            ...initPriceItem,
+            salesCategory: this.props.defaultSalesCategory,
+            salesTax: this.props.defaultSalesTax
+         },
       });
       else if (category === "textItem") newItems.splice(ind + 1, 0, {
          category: category,
-         textItem: initTextItem,
+         textItem: { ...initTextItem },
       });
       else newItems.splice(ind + 1, 0, {
          category: category,
