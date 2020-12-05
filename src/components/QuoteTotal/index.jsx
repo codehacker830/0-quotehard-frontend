@@ -36,9 +36,8 @@ class QuoteTotal extends Component {
       let marginTotal = subTotal - costPriceTotal;
       console.log(">>>>>>>>>>>>>> discountTotal >>>>>>", discountTotal);
       return (
-         <div>
+         <div className="quote-edit-total-wrap">
             <QuoteTotalHasNoTerm />
-
             {/* subtotal 1 */}
             {/* <table className="quoteTotal hasTerm table table-borderless">
                <tbody>
@@ -130,7 +129,6 @@ class QuoteTotal extends Component {
                         </tbody>
                      </table>
                    */}
-
          </div>
       );
    }

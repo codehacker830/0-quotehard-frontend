@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import axios from '../../../../util/Api';
+import axios from '../../../../../util/Api';
 
 export const CompanyNameShow = (props) => {
    const [companyName, setCompanyName] = useState("");

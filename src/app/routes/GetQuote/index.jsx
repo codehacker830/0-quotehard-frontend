@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import NavCrump from "../../../components/NavCrump";
-import QuoteToPeopleList from "./components/QuoteToPeopleList";
 import QuoteSettings from "./components/QuoteSettings";
-import PriceItemForm from "../../../components/PriceItemForm";
-import TextItemForm from "../../../components/TextItemForm";
-import SubTotal from "../../../components/SubTotal";
 import { toast } from 'react-toastify';
 import {
    toastWarningConfig,
@@ -12,8 +8,6 @@ import {
    toastErrorConfig,
    toastInfoConfig,
 } from "../../../util/toastrConfig";
-import CompleterContact from "./components/CompleterContact";
-import LableFor from "./components/LableFor";
 import axios from "../../../util/Api";
 import {
    parseDate,
@@ -33,24 +27,19 @@ import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
 import { getQuoteDataById, getTemplateQuoteDataById, updateQuote, updateQuoteToPeopleList, initiailizeQuote } from "../../../actions/Data";
 import QuoteTitle from "./components/QuoteTitle";
 import AddPriceItemBtn from "../../../components/AddPriceItemBtn";
+import QuoteToPeopleList from "./components/QuoteToPeopleList";
+import NotesSection from "./components/NotesSection";
+import ItemsSection from "./components/ItemsSection";
 
 class GetQuote extends Component {
    constructor(props) {
       super(props);
       this.state = {
          loading: false,
-         fileArray: [],
          emailTo: ""
       };
    }
-   removeImageItem = (url) => {
-      const newFileArray = this.state.fileArray.filter((item) => item !== url);
-      this.setState({ fileArray: newFileArray });
-   };
-   uploadFiles = (e) => {
-      e.preventDefault();
-      console.log(this.state.fileArray);
-   };
+
    handleClickSaveNext = () => {
       const { toPeopleList, title, settings, items, notes } = this.props.quote;
       if (toPeopleList.length === 0) { toast.info("You must add at least one contact.", toastInfoConfig); return; }
@@ -152,16 +141,6 @@ class GetQuote extends Component {
       }
 
    };
-
-   removeImageItem = (url) => {
-      const newFileArray = this.state.fileArray.filter(item => item !== url);
-      this.setState({ fileArray: newFileArray });
-   }
-   uploadFiles = (e) => {
-      e.preventDefault()
-      console.log(this.state.fileArray)
-   }
-
    async componentDidMount() {
       await this.props.getDefaultSalesCategory();
       await this.props.getDefaultSalesTax();
@@ -186,9 +165,6 @@ class GetQuote extends Component {
       console.log(" ^^^^^^^ GET QUOTE props ^^^^^^^^^^ ", this.props);
       const { location } = this.props;
       const {
-         toPeopleList,
-         title,
-         settings,
          items,
          notes
       } = this.props.quote;
@@ -256,49 +232,7 @@ class GetQuote extends Component {
                <div className="mt-6 mb-5">
                   <div className="row">
                      {/* Email list */}
-                     <div className="col-sm-6">
-                        <div className="d-flex">
-                           <div className="p-1 font-w700">To</div>
-                           <div className="p-1 w-100 maxWidth-550">
-                              <div className="row no-gutters">
-                                 <QuoteToPeopleList
-                                    toPeopleList={toPeopleList}
-                                    removeContact={(ind) => {
-                                       const newCL = toPeopleList.filter((it, index) => index !== ind);
-                                       this.props.updateQuoteToPeopleList(newCL);
-                                    }}
-                                 />
-                              </div>
-                              <div
-                                 className="row no-gutters"
-                                 style={{ position: "relative" }}
-                              >
-                                 <input
-                                    type="text"
-                                    id="emailTo"
-                                    className="form-control rounded-0"
-                                    autoComplete="off"
-                                    value={this.state.emailTo}
-                                    onChange={(ev) => this.setState({ emailTo: ev.target.value })}
-                                 />
-                                 <CompleterContact
-                                    emailTo={this.state.emailTo}
-                                    addContact={(contact) => {
-                                       if (toPeopleList.find((it) => it._id === contact._id)) this.setState({ emailTo: "" });
-                                       else {
-                                          this.props.updateQuoteToPeopleList([
-                                             ...toPeopleList,
-                                             contact
-                                          ]);
-                                          this.setState({ emailTo: "" });
-                                       }
-                                    }}
-                                 />
-                                 <LableFor />
-                              </div>
-                           </div>
-                        </div>
-                     </div>
+                     <QuoteToPeopleList />
                      <QuoteSettings />
                   </div>
 
@@ -306,61 +240,13 @@ class GetQuote extends Component {
                   <QuoteTitle />
 
                   {/* Items */}
-                  {
-                     items.map((item, index) => {
-                        if (item.category === "priceItem") return <PriceItemForm
-                           key={index}
-                           index={index}
-                           isPaperClipDisabled={false}
-                           isSettingDisabled={false}
-                           isAddItemDisabled={false}
-                           isOrderUpDisabled={false}
-                           isOrderDownDisabled={false}
-                           isRemoveDisabled={false}
-                           {...item}
-                        />
-                        else if (item.category === "textItem") return <TextItemForm
-                           key={index}
-                           index={index}
-                           isNote={false}
-                           isPaperClipDisabled={false}
-                           isSettingDisabled={false}
-                           isAddItemDisabled={false}
-                           isOrderUpDisabled={false}
-                           isOrderDownDisabled={false}
-                           isRemoveDisabled={false}
-                           {...item}
-                        />
-                        else return <SubTotal
-                           key={index}
-                           index={index}
-                        />
-                     })
-                  }
-
+                  <ItemsSection />
                   <AddPriceItemBtn />
 
-                  <div className="quote-edit-total-wrap">
-                     <QuoteTotal />
-                  </div>
+                  <QuoteTotal />
 
-                  {
-                     notes.map((item, index) => {
-                        return <TextItemForm
-                           key={index}
-                           index={index}
-                           isNote={true}
-                           isPaperClipDisabled={false}
-                           isSettingDisabled={true}
-                           isAddItemDisabled={false}
-                           isOrderUpDisabled={false}
-                           isOrderDownDisabled={false}
-                           isRemoveDisabled={false}
-                           {...item}
-                        />
-                     })
-                  }
-
+                  {/* Notes */}
+                  <NotesSection />
                   <AddNoteBtn />
 
                   {/* Footer action button group */}
