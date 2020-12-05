@@ -73,7 +73,7 @@ export default class EditContact extends Component {
       axios.put(`/contacts/${contactId}`, data).then((res) => {
          console.log("api resopnse = >", res);
          toast.success("Contact was updated successfully.", toastSuccessConfig);
-         // this.props.history.push(this.goTo);
+         this.props.history.push(this.goTo);
       }).catch(err => {
          const { errors } = err.response.data;
          ToastErrorNotification(errors);

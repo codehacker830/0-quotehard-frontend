@@ -163,7 +163,6 @@ class GetQuote extends Component {
    }
 
    async componentDidMount() {
-      this.setState({ loading: true });
       await this.props.getDefaultSalesCategory();
       await this.props.getDefaultSalesTax();
       await this.props.getSalesCategories('current');
@@ -172,17 +171,14 @@ class GetQuote extends Component {
       if (this.props.match.path === QUOTE_GET_PATH) {
          // Initialize quote reducer state
          this.props.initiailizeQuote();
-         // this.setState({ loading: false });
       }
       if (this.props.match.path === QUOTE_BY_ID_PATH) {
          // Get quote details with quote ID
          await this.props.getQuoteDataById(this.props.match.params.id);
-         this.setState({ loading: false });
       }
       if (this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH) {
          // Get template detials with id
          await this.props.getTemplateQuoteDataById(this.props.match.params.id);
-         this.setState({ loading: false });
       }
    }
    render() {
