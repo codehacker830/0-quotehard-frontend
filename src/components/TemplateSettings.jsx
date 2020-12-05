@@ -296,7 +296,7 @@ class TemplateSettings extends React.Component {
                      </div>
                   </div>
                </div>
-               <button type="button" className="btn btn-outline-dark" onClick={() => this.setState({ show: !this.state.show })}>{this.state.show ? "Hide" : "Show All..."}</button>
+               <button type="button" className="btn btn-sm btn-outline-dark" onClick={() => this.setState({ show: !this.state.show })}>{this.state.show ? "Hide" : "Show All..."}</button>
             </div>
          </div>
       )

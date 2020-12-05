@@ -59,7 +59,7 @@ export const getTemplateQuoteDataById = (quoteTemplateId) => {
       }
    }
 }
-export const initiailizeQuote = () => {
+export const initializeQuote = () => {
    return (dispatch) => dispatch({ type: INITIALIZE_QUOTE });
 }
 export const updateQuote = (quote) => {

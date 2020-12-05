@@ -1,9 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
 import TextareaAutosize from 'react-autosize-textarea/lib';
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { updateQuoteTitle } from '../../../../actions/Data';
 
-export const QuoteTitle = (props) => {
+export const QuoteTitle = () => {
+    const title = useSelector(state => state.mainData.quote.title);
+    const dispatch = useDispatch();
     return (
         <div className="row">
             <div className="col-12">
@@ -11,20 +13,12 @@ export const QuoteTitle = (props) => {
                     className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2 my-4"
                     rows={1}
                     placeholder="Title of Quote"
-                    value={props.title}
-                    onChange={(ev) => props.updateQuoteTitle(ev.target.value)}
+                    value={title}
+                    onChange={(ev) => dispatch(updateQuoteTitle(ev.target.value))}
                 ></TextareaAutosize>
             </div>
         </div>
     )
 }
 
-const mapStateToProps = ({ mainData }) => {
-    const { title } = mainData.quote;
-    return { title };
-};
-
-const mapDispatchToProps = {
-    updateQuoteTitle
-};
-export default connect(mapStateToProps, mapDispatchToProps)(QuoteTitle);
+export default QuoteTitle;

@@ -34,27 +34,7 @@ const initialSettings = {
 export default (state = initialSettings, action) => {
    switch (action.type) {
       case INITIALIZE_QUOTE:
-         return {
-            ...state,
-            quote: {
-               toPeopleList: [],
-               title: "",
-               settings: { ...initQuoteSettings },
-               items: [
-                  {
-                     category: "priceItem",
-                     priceItem: { ...initPriceItem, files: [] },
-                  },
-               ],
-               notes: [
-                  {
-                     category: "textItem",
-                     textItem: { ...initTextItem, files: [] }
-                  }
-               ],
-               discussions: []
-            }
-         };
+         return initialSettings;
       case GET_QUOTE:
          return {
             ...state,

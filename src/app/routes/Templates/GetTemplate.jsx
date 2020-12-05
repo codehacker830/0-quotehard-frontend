@@ -21,6 +21,9 @@ import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSal
 import { getTemplateQuoteDataById } from '../../../actions/Data';
 import { connect } from 'react-redux';
 import { CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_GET_PATH } from '../../../constants/PathNames';
+import NotesSection from '../GetQuote/components/NotesSection';
+import ItemsSection from '../GetQuote/components/ItemsSection';
+import { QuoteTitle } from '../GetQuote/components/QuoteTitle';
 
 class GetTemplate extends Component {
    constructor(props) {
@@ -73,10 +76,6 @@ class GetTemplate extends Component {
       //       toast.error("Template failed to update", toastErrorConfig);
       //    });
    }
-   onClickCancel = () => {
-      this.props.history.push("/app/content/templates");
-   }
-
    removeImageItem = (url) => {
       const newFileArray = this.state.fileArray.filter(item => item !== url);
       this.setState({ fileArray: newFileArray });
@@ -282,8 +281,7 @@ class GetTemplate extends Component {
                <div className="mt-6 mb-5">
                   {/* Template Setting */}
                   <div className="row">
-                     <div className="col-sm-6">
-                     </div>
+                     <div className="col-sm-6" />
                      <TemplateSettings
                         {...this.state.settings}
                         updateSettings={(settings) => this.setState({ settings: settings })}
@@ -291,77 +289,17 @@ class GetTemplate extends Component {
                   </div>
 
                   {/* Template Title */}
-                  <div className="row">
-                     <div className="col-12">
-                        <textarea className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2 my-4"
-                           rows={1} placeholder="Title of Template"
-                           value={title}
-                           onChange={(ev) => this.setState({ title: ev.target.value })}
-                        >
-                        </textarea>
-                     </div>
-                  </div>
+                  <QuoteTitle />
 
                   {/* items */}
-                  {
-                     items.map((item, index) => {
-                        if (item.category === "priceItem") return <PriceItemForm
-                           key={index}
-                           index={index}
-                           isViewOnly={isViewOnly}
-                           isPaperClipDisabled={false}
-                           isSettingDisabled={false}
-                           isAddItemDisabled={false}
-                           isOrderUpDisabled={false}
-                           isOrderDownDisabled={false}
-                           isRemoveDisabled={false}
-                           {...item}
-                        />
-                        else if (item.category === "textItem") return <TextItemForm
-                           key={index}
-                           index={index}
-                           isViewOnly={isViewOnly}
-                           isNote={false}
-                           isPaperClipDisabled={false}
-                           isSettingDisabled={false}
-                           isAddItemDisabled={false}
-                           isOrderUpDisabled={false}
-                           isOrderDownDisabled={false}
-                           isRemoveDisabled={false}
-                           {...item}
-                        />
-                        else return <SubTotal
-                           key={index}
-                           index={index}
-                           removeItem={this.removeItem}
-                        />
-                     })
-                  }
-
+                  <ItemsSection />
                   <AddPriceItemBtn />
 
                   {/* Quote item total show */}
                   <QuoteTotal />
 
                   {/* Here is notes */}
-                  {
-                     notes.map((item, index) => {
-                        return <TextItemForm
-                           key={index}
-                           index={index}
-                           isViewOnly={isViewOnly}
-                           isNote={true}
-                           isPaperClipDisabled={false}
-                           // isSettingDisabled={true}
-                           isAddItemDisabled={false}
-                           isOrderUpDisabled={false}
-                           isOrderDownDisabled={false}
-                           isRemoveDisabled={false}
-                           {...item}
-                        />
-                     })
-                  }
-
+                  <NotesSection />
                   <AddNoteBtn />
 
                   {/* Footer action button group */}
@@ -375,11 +313,11 @@ class GetTemplate extends Component {
                         this.props.match.path === CONTENT_TEMPLATE_GET_PATH &&
                         <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={this.onClickCreate}>Create</button>
                      }
-                     <button className="btn btn-lg btn-rounded btn-hero-secondary" onClick={this.onClickCancel}>Cancel</button>
+                     <Link className="btn btn-lg btn-rounded btn-hero-secondary" to="/app/content/templates">Cancel</Link>
                   </div>
                </div>
             </div>
-         </React.Fragment>
+         </React.Fragment >
       );
    }
 }

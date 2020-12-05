@@ -4,8 +4,10 @@ import axios from '../../../util/Api';
 import QuoteTableShow from './QuoteTableShow';
 import QuoteOverview from './QuoteOverview';
 import { QUOTE_GET_PATH } from '../../../constants/PathNames';
+import { initializeQuote } from '../../../actions/Data';
+import { connect } from 'react-redux';
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -23,6 +25,8 @@ export default class Dashboard extends Component {
    }
    componentDidMount() {
       window.addEventListener('click', this.onClickOutsideHandler);
+      // Initiate mainData quote reducer
+      this.props.initializeQuote();
       // get all quotes and templates
       const Promise1 = axios.get('/quotes');
       const Promise2 = axios.get('/templates');
@@ -50,7 +54,6 @@ export default class Dashboard extends Component {
          <div className="content">
             <div className="row py-3">
                <div className="col-md-6">
-
                   <div className="form-group">
                      <div style={{ position: "relative", width: "fit-content" }} ref={this.dropdownContainer}>
                         <button className="btn btn-success"
@@ -125,3 +128,8 @@ export default class Dashboard extends Component {
       );
    }
 }
+
+const mapDispatchToProps = {
+   initializeQuote
+}
+export default connect(() => ({}), mapDispatchToProps)(Dashboard);

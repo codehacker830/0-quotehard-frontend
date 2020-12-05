@@ -24,7 +24,7 @@ import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSal
 import NavCrumpLeft from "../../../components/NavCrump/NavCrumpLeft";
 import { QUOTE_GET_FROM_TEMPLATE_PATH, QUOTE_GET_PATH, QUOTE_BY_ID_PATH, QUOTES_PATH } from "../../../constants/PathNames";
 import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
-import { getQuoteDataById, getTemplateQuoteDataById, updateQuote, updateQuoteToPeopleList, initiailizeQuote } from "../../../actions/Data";
+import { getQuoteDataById, getTemplateQuoteDataById, updateQuote, updateQuoteToPeopleList } from "../../../actions/Data";
 import QuoteTitle from "./components/QuoteTitle";
 import AddPriceItemBtn from "../../../components/AddPriceItemBtn";
 import QuoteToPeopleList from "./components/QuoteToPeopleList";
@@ -148,8 +148,7 @@ class GetQuote extends Component {
       await this.props.getSalesTaxes('current');
 
       if (this.props.match.path === QUOTE_GET_PATH) {
-         // Initialize quote reducer state
-         this.props.initiailizeQuote();
+
       }
       if (this.props.match.path === QUOTE_BY_ID_PATH) {
          // Get quote details with quote ID
@@ -226,7 +225,6 @@ class GetQuote extends Component {
                      </ul>
                   </NavCrumpRight>
                }
-
             </NavCrump>
             <div className="content bg-custom">
                <div className="mt-6 mb-5">
@@ -294,5 +292,5 @@ const mapStateToProps = ({ auth, globalSettings, mainData }) => {
    const { defaultSalesTax, defaultSalesCategory } = globalSettings;
    return { authUser, quote, defaultSalesTax, defaultSalesCategory }
 }
-const mapDispatchToProps = { updateQuote, getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes, getQuoteDataById, getTemplateQuoteDataById, updateQuoteToPeopleList, initiailizeQuote };
+const mapDispatchToProps = { updateQuote, getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes, getQuoteDataById, getTemplateQuoteDataById, updateQuoteToPeopleList };
 export default connect(mapStateToProps, mapDispatchToProps)(GetQuote);
