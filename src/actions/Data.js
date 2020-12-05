@@ -9,7 +9,8 @@ import {
    UPDATE_QUOTE_SETTINGS,
    UPDATE_QUOTE_TITLE,
    UPDATE_QUOTE_ITEMS,
-   UPDATE_QUOTE_NOTES
+   UPDATE_QUOTE_NOTES,
+   INITIALIZE_QUOTE
 } from '../constants/ActionTypes';
 import { toast } from 'react-toastify';
 
@@ -58,7 +59,9 @@ export const getTemplateQuoteDataById = (quoteTemplateId) => {
       }
    }
 }
-
+export const initiailizeQuote = () => {
+   return (dispatch) => dispatch({ type: INITIALIZE_QUOTE });
+}
 export const updateQuote = (quote) => {
    return (dispatch) => dispatch({ type: GET_QUOTE, payload: quote });
 };

@@ -22,22 +22,15 @@ import {
    convertStrIntoDateObj,
    ToastErrorNotification,
 } from "../../../util";
-import {
-   initQuoteSettings,
-   initPriceItem,
-   initTextItem,
-   initSubTotal,
-} from "../../../constants/InitState";
 import AddNoteBtn from "../../../components/AddNoteBtn";
 import QuoteTotal from "../../../components/QuoteTotal";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from "../../../actions/GlobalSettings";
 import NavCrumpLeft from "../../../components/NavCrump/NavCrumpLeft";
-
 import { QUOTE_GET_FROM_TEMPLATE_PATH, QUOTE_GET_PATH, QUOTE_BY_ID_PATH, QUOTES_PATH } from "../../../constants/PathNames";
 import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
-import { getQuoteDataById, getTemplateQuoteDataById, updateQuote, updateQuoteToPeopleList } from "../../../actions/Data";
+import { getQuoteDataById, getTemplateQuoteDataById, updateQuote, updateQuoteToPeopleList, initiailizeQuote } from "../../../actions/Data";
 import QuoteTitle from "./components/QuoteTitle";
 import AddPriceItemBtn from "../../../components/AddPriceItemBtn";
 
@@ -170,6 +163,7 @@ class GetQuote extends Component {
    }
 
    async componentDidMount() {
+      this.setState({ loading: true });
       await this.props.getDefaultSalesCategory();
       await this.props.getDefaultSalesTax();
       await this.props.getSalesCategories('current');
@@ -177,32 +171,18 @@ class GetQuote extends Component {
 
       if (this.props.match.path === QUOTE_GET_PATH) {
          // Initialize quote reducer state
-         this.props.updateQuote({
-            toPeopleList: [],
-            title: "",
-            settings: { ...initQuoteSettings },
-            items: [
-               {
-                  category: "priceItem",
-                  priceItem: { ...initPriceItem },
-               },
-            ],
-            notes: [
-               {
-                  category: "textItem",
-                  textItem: { ...initTextItem }
-               }
-            ],
-            discussions: []
-         });
+         this.props.initiailizeQuote();
+         // this.setState({ loading: false });
       }
       if (this.props.match.path === QUOTE_BY_ID_PATH) {
          // Get quote details with quote ID
          await this.props.getQuoteDataById(this.props.match.params.id);
+         this.setState({ loading: false });
       }
       if (this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH) {
          // Get template detials with id
          await this.props.getTemplateQuoteDataById(this.props.match.params.id);
+         this.setState({ loading: false });
       }
    }
    render() {
@@ -219,6 +199,7 @@ class GetQuote extends Component {
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
       if (location.state && location.state.from === QUOTES_PATH) linkName = "Quotes";
+
       return (
          <React.Fragment>
             <NavCrump>
@@ -431,5 +412,5 @@ const mapStateToProps = ({ auth, globalSettings, mainData }) => {
    const { defaultSalesTax, defaultSalesCategory } = globalSettings;
    return { authUser, quote, defaultSalesTax, defaultSalesCategory }
 }
-const mapDispatchToProps = { updateQuote, getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes, getQuoteDataById, getTemplateQuoteDataById, updateQuoteToPeopleList };
+const mapDispatchToProps = { updateQuote, getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes, getQuoteDataById, getTemplateQuoteDataById, updateQuoteToPeopleList, initiailizeQuote };
 export default connect(mapStateToProps, mapDispatchToProps)(GetQuote);

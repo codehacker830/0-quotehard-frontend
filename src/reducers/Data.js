@@ -6,6 +6,7 @@ import {
    UPDATE_QUOTE_ITEMS,
    UPDATE_QUOTE_NOTES,
    UPDATE_QUOTE_DISCUSSIONS,
+   INITIALIZE_QUOTE,
 } from '../constants/ActionTypes';
 import { initPriceItem, initQuoteSettings, initTextItem } from '../constants/InitState';
 
@@ -32,6 +33,8 @@ const initialSettings = {
 
 export default (state = initialSettings, action) => {
    switch (action.type) {
+      case INITIALIZE_QUOTE:
+         return initialSettings;
       case GET_QUOTE:
          return {
             ...state,
