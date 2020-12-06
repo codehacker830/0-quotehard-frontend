@@ -1,7 +1,7 @@
 import { set } from 'lodash';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { updateQuoteSettings } from '../../../../../actions/Data';
+import { updateQuoteSettings } from '../../actions/Data';
 
 export default function PricingDisplayLevel() {
     const settings = useSelector(state => state.mainData.quote.settings);

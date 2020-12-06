@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import TextareaAutosize from 'react-autosize-textarea/lib';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { updateQuoteItems, updateQuoteNotes } from '../actions/Data';
 import { initPriceItem, initTextItem } from '../constants/InitState';
+import { CONTENT_TEMPLATE_BY_ID_PATH } from '../constants/PathNames';
 import axios from '../util/Api';
 
 class TextItemForm extends Component {
@@ -16,6 +18,7 @@ class TextItemForm extends Component {
       };
       this.hiddenFileInput = React.createRef();
       this.addItemOptionContainer = React.createRef();
+      this.isViewOnly = this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH;
    }
    removeImageItem = (url) => {
       const newFileArray = this.props.textItem.files.filter(item => item !== url);
@@ -256,10 +259,10 @@ class TextItemForm extends Component {
             {/* Textarea section */}
             <div className="row">
                <div className="col-sm-12 col-md-10 col-lg-8">
-                  <div className={`w-100 border p-2 mb-2 ${this.props.isViewOnly ? "bg-disabled" : ""}`}>
+                  <div className={`w-100 border p-2 mb-2 ${this.isViewOnly ? "bg-disabled" : ""}`}>
                      <TextareaAutosize className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2"
                         rows={1} placeholder="Text Heading"
-                        disabled={!!this.props.isViewOnly}
+                        disabled={!!this.isViewOnly}
                         value={this.props.textItem.textHeading}
                         onChange={(ev) => {
                            const newItem = {
@@ -273,7 +276,7 @@ class TextItemForm extends Component {
                      <TextareaAutosize className="form-control border-0 rounded-0 mt-1 p-2"
                         rows={1} placeholder="Long description, terms of trade or compelling sales text"
                         value={this.props.textItem.longDescription}
-                        disabled={!!this.props.isViewOnly}
+                        disabled={!!this.isViewOnly}
                         onChange={(ev) => {
                            const newItem = {
                               category: "textItem",
@@ -315,4 +318,4 @@ const mapDispatchToProps = {
    updateQuoteItems,
    updateQuoteNotes
 }
-export default connect(mapStateToProps, mapDispatchToProps)(TextItemForm);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TextItemForm));

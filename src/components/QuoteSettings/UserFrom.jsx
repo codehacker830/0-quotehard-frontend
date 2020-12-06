@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { updateQuoteSettings } from '../../../../../actions/Data';
+import { updateQuoteSettings } from '../../actions/Data';
 
 function UserFrom() {
     const authUser = useSelector(state => state.auth.authUser);

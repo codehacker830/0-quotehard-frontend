@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateQuoteSettings } from '../../../../../actions/Data';
-import { getTeamMembers } from '../../../../../actions/Team';
-import { parseDate, parseTime } from '../../../../../util';
+import { updateQuoteSettings } from '../../actions/Data';
+import { getTeamMembers } from '../../actions/Team';
+import { parseDate, parseTime } from '../../util';
 import Currency from './Currency';
 import Discount from './Discount';
 import PricingDisplayLevel from './PricingDisplayLevel';

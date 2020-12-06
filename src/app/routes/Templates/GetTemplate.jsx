@@ -20,7 +20,7 @@ import AddPriceItemBtn from '../../../components/AddPriceItemBtn';
 import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../actions/GlobalSettings';
 import { getTemplateQuoteDataById } from '../../../actions/Data';
 import { connect } from 'react-redux';
-import { CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_GET_PATH } from '../../../constants/PathNames';
+import { CONTENT_TEMPLATES_PATH, CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_GET_PATH } from '../../../constants/PathNames';
 import NotesSection from '../GetQuote/components/NotesSection';
 import ItemsSection from '../GetQuote/components/ItemsSection';
 import { QuoteTitle } from '../GetQuote/components/QuoteTitle';
@@ -50,7 +50,7 @@ class GetTemplate extends Component {
          .then(({ data }) => {
             console.log("res data ---------------->", data);
             toast.success("New Template was created.", toastSuccessConfig);
-            this.props.history.push("/app/content/templates")
+            this.props.history.push(CONTENT_TEMPLATES_PATH)
          })
          .catch(err => {
             console.error(" error ===>", err);
@@ -69,7 +69,7 @@ class GetTemplate extends Component {
       //    .then(({ data }) => {
       //       console.log("res data ---------------->", data);
       //       toast.success("Template was updated.", toastSuccessConfig);
-      //       this.props.history.push("/app/content/templates")
+      //       this.props.history.push(CONTENT_TEMPLATES_PATH)
       //    })
       //    .catch(err => {
       //       console.error(" error ===>", err);
@@ -132,7 +132,7 @@ class GetTemplate extends Component {
       axios.put(`/templates/archive/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to archive tempalte", data);
          toast.success("Template was Archived.", toastSuccessConfig);
-         this.props.history.push('/app/content/templates');
+         this.props.history.push(CONTENT_TEMPLATES_PATH);
       }).catch((err) => {
          console.error(" failed to archive template ", err);
       });
@@ -141,7 +141,7 @@ class GetTemplate extends Component {
       axios.put(`/templates/un-archive/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to archive tempalte", data);
          toast.success("Template was Undo-Archived.", toastSuccessConfig);
-         this.props.history.push('/app/content/templates');
+         this.props.history.push(CONTENT_TEMPLATES_PATH);
       }).catch((err) => {
          console.error(" failed to un-archive template ", err);
       });
@@ -150,7 +150,7 @@ class GetTemplate extends Component {
       axios.put(`/templates/default/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to make tempalte as a default", data);
          toast.success("Template was set as Default.", toastSuccessConfig);
-         this.props.history.push('/app/content/templates');
+         this.props.history.push(CONTENT_TEMPLATES_PATH);
       }).catch((err) => {
          console.error(" failed to make template as a default ", err);
       });
@@ -159,7 +159,7 @@ class GetTemplate extends Component {
       axios.put(`/templates/undo-default/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to undo tempalte as a default", data);
          toast.success("Template was Undone as Default.", toastSuccessConfig);
-         this.props.history.push('/app/content/templates');
+         this.props.history.push(CONTENT_TEMPLATES_PATH);
       }).catch((err) => {
          console.error(" failed to undo template from default ", err);
       });
@@ -171,12 +171,8 @@ class GetTemplate extends Component {
 
    }
    render() {
-      console.log(" Get Template state  ===>", this.state)
-      console.log(" Get Template props  ===>", this.props)
-      const linkTo = "/app/content/templates";
+      const linkTo = CONTENT_TEMPLATES_PATH;
       const linkName = "Templates";
-      const isViewOnly = this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH;
-      const { title, settings, items, notes } = this.props.quote;
       return (
          <React.Fragment>
             <div className="bg-body-light border-top border-bottom">
@@ -274,31 +270,25 @@ class GetTemplate extends Component {
                   </div>
                </div>
             </div>
-            {/* <NavCrump linkTo="/app/content/templates">
+            {/* <NavCrump linkTo=CONTENT_TEMPLATES_PATH>
                Templates
             </NavCrump> */}
             <div className="content bg-custom">
                <div className="mt-6 mb-5">
                   {/* Template Setting */}
-                  <div className="row">
-                     <div className="col-sm-6" />
-                     <TemplateSettings
-                        {...this.state.settings}
-                        updateSettings={(settings) => this.setState({ settings: settings })}
-                     />
-                  </div>
+                  <TemplateSettings />
 
                   {/* Template Title */}
                   <QuoteTitle />
 
-                  {/* items */}
+                  {/* Items */}
                   <ItemsSection />
                   <AddPriceItemBtn />
 
-                  {/* Quote item total show */}
+                  {/* Total */}
                   <QuoteTotal />
 
-                  {/* Here is notes */}
+                  {/* notes */}
                   <NotesSection />
                   <AddNoteBtn />
 
@@ -307,13 +297,12 @@ class GetTemplate extends Component {
                      {
                         this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH &&
                         <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={this.onClickUpdate}>Update</button>
-
                      }
                      {
                         this.props.match.path === CONTENT_TEMPLATE_GET_PATH &&
                         <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={this.onClickCreate}>Create</button>
                      }
-                     <Link className="btn btn-lg btn-rounded btn-hero-secondary" to="/app/content/templates">Cancel</Link>
+                     <Link className="btn btn-lg btn-rounded btn-hero-secondary" to=CONTENT_TEMPLATES_PATH>Cancel</Link>
                   </div>
                </div>
             </div>

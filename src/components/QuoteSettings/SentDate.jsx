@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { updateQuoteSettings } from '../../../../../actions/Data';
-import { parseDate, parseTime } from '../../../../../util';
+import { updateQuoteSettings } from '../../actions/Data';
+import { parseDate, parseTime } from '../../util';
 
 export default function SentDate() {
     const settings = useSelector(state => state.mainData.quote.settings);

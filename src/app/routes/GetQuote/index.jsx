@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import NavCrump from "../../../components/NavCrump";
-import QuoteSettings from "./components/QuoteSettings";
 import { toast } from 'react-toastify';
 import {
    toastWarningConfig,
@@ -25,6 +24,7 @@ import NavCrumpLeft from "../../../components/NavCrump/NavCrumpLeft";
 import { QUOTE_GET_FROM_TEMPLATE_PATH, QUOTE_GET_PATH, QUOTE_BY_ID_PATH, QUOTES_PATH } from "../../../constants/PathNames";
 import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
 import { getQuoteDataById, getTemplateQuoteDataById, updateQuote, updateQuoteToPeopleList } from "../../../actions/Data";
+import QuoteSettings from "../../../components/QuoteSettings";
 import QuoteTitle from "./components/QuoteTitle";
 import AddPriceItemBtn from "../../../components/AddPriceItemBtn";
 import QuoteToPeopleList from "./components/QuoteToPeopleList";
