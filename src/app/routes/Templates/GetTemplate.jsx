@@ -3,17 +3,9 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import AddNoteBtn from '../../../components/AddNoteBtn';
 import NavCrump from '../../../components/NavCrump';
-import PriceItemForm from '../../../components/PriceItemForm';
 import QuoteTotal from '../../../components/QuoteTotal';
 import SubTotal from '../../../components/SubTotal';
 import TemplateSettings from '../../../components/TemplateSettings';
-import TextItemForm from '../../../components/TextItemForm';
-import {
-   initTemplateSettings,
-   initPriceItem,
-   initTextItem,
-   initSubTotal,
-} from '../../../constants/InitState';
 import axios from '../../../util/Api';
 import { toastErrorConfig, toastSuccessConfig } from '../../../util/toastrConfig';
 import AddPriceItemBtn from '../../../components/AddPriceItemBtn';
@@ -302,7 +294,7 @@ class GetTemplate extends Component {
                         this.props.match.path === CONTENT_TEMPLATE_GET_PATH &&
                         <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={this.onClickCreate}>Create</button>
                      }
-                     <Link className="btn btn-lg btn-rounded btn-hero-secondary" to=CONTENT_TEMPLATES_PATH>Cancel</Link>
+                     <Link className="btn btn-lg btn-rounded btn-hero-secondary" to={CONTENT_TEMPLATES_PATH}>Cancel</Link>
                   </div>
                </div>
             </div>
