@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { initializeQuote } from '../../../actions/Data';
 import SubHeader from '../../../components/SubHeader';
 import CreatePriceItem from './CreatePriceItem';
 import CreateTextItem from './CreateTextItem';
@@ -7,7 +9,10 @@ import GetTemplate from './GetTemplate';
 import PriceItems from './PriceItems';
 import TemplateItems from './TemplateItems';
 import TextItems from './TextItems';
-export default class Templates extends Component {
+class Templates extends Component {
+   componentDidMount() {
+      this.props.initializeQuote();
+   }
    render() {
       return (
          <React.Fragment>
@@ -18,7 +23,7 @@ export default class Templates extends Component {
                <Route exact path="/app/content/template/get" component={GetTemplate} />
                <Route exact path="/app/content/template/get/duplicate/:id" component={GetTemplate} />
                <Route exact path="/app/content/template/:id" component={GetTemplate} />
-               
+
                <Route exact path="/app/content/item-price/browse" component={PriceItems} />
                <Route exact path="/app/content/item-price/create-new" component={CreatePriceItem} />
                <Route exact path="/app/content/item-price/view/:id" component={CreatePriceItem} />
@@ -32,3 +37,7 @@ export default class Templates extends Component {
       );
    }
 }
+const mapDispatchToProps = {
+   initializeQuote
+}
+export default connect(() => ({}), mapDispatchToProps)(Templates);

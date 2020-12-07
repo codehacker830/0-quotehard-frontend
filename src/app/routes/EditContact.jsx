@@ -360,7 +360,7 @@ export default class EditContact extends Component {
                         />
 
                         <div className="form-group py-3">
-                           <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={this.onHandleSubmit}>Update</button>
+                           <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.onHandleSubmit}>Update</button>
                            <Link className="btn btn-lg btn-rounded btn-hero-secondary" to="/app/c/contacts">Cancel</Link>
                         </div>
                      </div>

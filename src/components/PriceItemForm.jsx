@@ -24,8 +24,11 @@ class PriceItemForm extends Component {
       this.addItemOptionContainer = React.createRef();
       this.optionalItemRef = React.createRef();
       this.multipleChoiceRef = React.createRef();
-      this.isViewOnly = this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH
-         || this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH;
+      this.isViewOnly = (
+         this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH
+         || this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH
+      ) && this.props.priceItem._id;
+
    }
    removeImageItem = (url) => {
       const newFileArray = this.props.priceItem.files.filter(item => item !== url);
@@ -67,9 +70,10 @@ class PriceItemForm extends Component {
    componentDidUpdate(prevProps, prevState) {
       this.fileArray = this.props.priceItem.files;
       const { defaultSalesCategory, defaultSalesTax } = this.props;
-      console.log("Priceitemform prevProps", prevProps);
-      console.log("priceitemform this.props", this.props);
-      console.log("defaultSalesCategory", defaultSalesCategory);
+      this.isViewOnly = (
+         this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH
+         || this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH
+      ) && this.props.priceItem._id;
       if (!this.props.priceItem.salesCategory && defaultSalesCategory) {
          const newItem = {
             category: "priceItem",

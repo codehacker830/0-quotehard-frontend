@@ -81,7 +81,7 @@ export const InviteForm = (props) => {
                   </label>
                </div>
                <div className="mb-5">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={onClickSend}>Send Invitation</button>
+                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={onClickSend}>Send Invitation</button>
                   <Link className="btn btn-lg btn-rounded btn-hero-secondary" to={SETTINGS_TEAM_PATH}>Cancel</Link>
                </div>
             </div>

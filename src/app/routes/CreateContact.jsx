@@ -300,7 +300,7 @@ export default class CreateContact extends Component {
                         />
 
                         <div className="form-group py-3">
-                           <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={this.onHandleSubmit}>Create</button>
+                           <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.onHandleSubmit}>Create</button>
                            <Link className="btn btn-lg btn-rounded btn-hero-secondary" to={this.goTo}>Cancel</Link>
                         </div>
                      </div>

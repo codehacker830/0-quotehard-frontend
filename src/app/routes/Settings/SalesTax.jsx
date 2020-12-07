@@ -183,7 +183,7 @@ export const SalesTax = (props) => {
                   </div>
                </div>
                <div className="mb-4">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={onClickSave}>Save</button>
+                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={onClickSave}>Save</button>
                   <Link className="btn btn-lg btn-rounded btn-hero-secondary" to={SALES_TAX_CATEGORIES_PATH}>Cancel</Link>
                </div>
             </div>

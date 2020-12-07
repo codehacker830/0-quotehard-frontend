@@ -67,7 +67,7 @@ export default class EmailNotifications extends Component {
                </div>
 
                <div className="mb-4">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-2">Save</button>
+                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1">Save</button>
                   <Link className="btn btn-lg btn-rounded btn-hero-secondary" to="/app/settings">Cancel</Link>
                </div>
             </div>

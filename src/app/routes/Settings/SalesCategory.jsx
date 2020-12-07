@@ -187,7 +187,7 @@ export const SalesCategory = (props) => {
                   </select>
                </div>
                <div className="mb-4">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={onClickSave}>Save</button>
+                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={onClickSave}>Save</button>
                   <Link className="btn btn-lg btn-rounded btn-hero-secondary" to="/app/settings/sales-tax-categories">Cancel</Link>
                </div>
             </div>

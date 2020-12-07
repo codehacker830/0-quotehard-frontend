@@ -124,7 +124,7 @@ class CreatePriceItem extends Component {
       await this.props.getDefaultSalesTax();
       await this.props.getSalesCategories('current');
       await this.props.getSalesTaxes('current');
-      if (this.props.location.pathname === '/app/content/item-price/view/:id') {
+      if (this.props.match.path === '/app/content/item-price/view/:id') {
          // Get priceItem details with priceItem ID
          axios.get(`/templates/priceitem/id/${this.props.match.params.id}`).then(({ data }) => {
             const { priceItem } = data;

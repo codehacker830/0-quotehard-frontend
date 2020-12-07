@@ -181,7 +181,7 @@ export const Profile = (props) => {
                </div>
 
                <div className="mb-4">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-2">Save</button>
+                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1">Save</button>
                   <button className="btn btn-lg btn-rounded btn-hero-secondary">Cancel</button>
                </div>
 

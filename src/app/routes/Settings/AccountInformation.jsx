@@ -512,7 +512,7 @@ export const AccountInformation = (props) => {
                </div>
 
                <div className="mb-4">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={onHandleSave}>Save</button>
+                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={onHandleSave}>Save</button>
                   <button className="btn btn-lg btn-rounded btn-hero-secondary">Cancel</button>
                </div>
             </div>

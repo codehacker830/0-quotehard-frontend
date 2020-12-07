@@ -70,7 +70,7 @@ class TextItemForm extends Component {
    }
 
    updateItem = (ind, item) => {
-      // console.log("adfasdf ", ind, item);
+      console.log("note text item -------------------> ", ind, item);
       if (this.props.isNote) {
          const { notes } = this.props.quote;
          let newNotes = [...notes];
@@ -90,7 +90,10 @@ class TextItemForm extends Component {
          let newNotes = [...notes];
          newNotes.splice(ind + 1, 0, {
             category: "textItem",
-            textItem: initTextItem,
+            textItem: {
+               ...initTextItem,
+               files: []
+            }
          });
          this.props.updateQuoteNotes(newNotes);
       }
@@ -102,12 +105,16 @@ class TextItemForm extends Component {
             priceItem: {
                ...initPriceItem,
                salesCategory: this.props.defaultSalesCategory,
-               salesTax: this.props.defaultSalesTax
+               salesTax: this.props.defaultSalesTax,
+               files: []
             },
          });
          else if (category === "textItem") newItems.splice(ind + 1, 0, {
             category: category,
-            textItem: { ...initTextItem },
+            textItem: {
+               ...initTextItem,
+               files: []
+            },
          });
          else newItems.splice(ind + 1, 0, {
             category: category,

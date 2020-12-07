@@ -122,7 +122,7 @@ Other - Just saying hello`,
                </div>
 
                <div className="mb-4">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={this.onHandleSubmit}>Save & Preview</button>
+                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.onHandleSubmit}>Save & Preview</button>
                   <Link className="btn btn-lg btn-rounded btn-hero-secondary" to={`/app/add-ons/leads`}>Cancel</Link>
                </div>
             </div>

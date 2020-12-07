@@ -465,7 +465,7 @@ class Appearance extends Component {
                </div>
 
                <div className="mb-4">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-2"
+                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1"
                      onClick={this.onClickSaveAndPublish}
                      disabled={this.state.loading}
                   >

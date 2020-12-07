@@ -51,7 +51,7 @@ export default class NewLeadNotification extends Component {
                </div>
 
                <div className="mb-4">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-2" onClick={this.onHandleSubmit}>Save</button>
+                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.onHandleSubmit}>Save</button>
                   <Link className="btn btn-lg btn-rounded btn-hero-secondary" to={`/app/add-ons/leads`}>Cancel</Link>
                </div>
             </div>
