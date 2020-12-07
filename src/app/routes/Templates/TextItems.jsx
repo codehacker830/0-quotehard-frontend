@@ -9,7 +9,7 @@ export default class TextItems extends Component {
       textItems: []
    };
    componentDidMount() {
-      axios.get('/templates/textitems').then(({ data }) => {
+      axios.get('/templates/textitem/all').then(({ data }) => {
          console.log("response ============", data);
          this.setState({
             textItems: data.textItems

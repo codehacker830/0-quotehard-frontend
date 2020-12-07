@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { updateQuoteItems } from '../actions/Data';
 import { initPriceItem, initTextItem } from '../constants/InitState';
-import { CONTENT_TEMPLATE_BY_ID_PATH } from '../constants/PathNames';
+import { CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_DUPLICATE_PATH } from '../constants/PathNames';
 import { toFixedFloat } from '../util';
 import axios from '../util/Api';
 
@@ -24,7 +24,8 @@ class PriceItemForm extends Component {
       this.addItemOptionContainer = React.createRef();
       this.optionalItemRef = React.createRef();
       this.multipleChoiceRef = React.createRef();
-      this.isViewOnly = this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH;
+      this.isViewOnly = this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH
+         || this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH;
    }
    removeImageItem = (url) => {
       const newFileArray = this.props.priceItem.files.filter(item => item !== url);
@@ -580,7 +581,6 @@ class PriceItemForm extends Component {
                   </div>
 
                   <div className={`row pb-1 ${this.props.priceItem.isCostPriceMargin ? "" : "d-none"}`}>
-                     {/* <div className={`row pb-1`}> */}
                      <div className="col-12">
                         <div className="bg-light-gray border p-1">
                            <div className="row">

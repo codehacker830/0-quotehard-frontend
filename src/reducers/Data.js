@@ -14,7 +14,7 @@ import { initPriceItem, initQuoteSettings, initTextItem } from '../constants/Ini
 const initialSettings = {
    quote: {
       toPeopleList: [],
-      status: "",
+      status: null,
       title: "",
       settings: { ...initQuoteSettings },
       items: [

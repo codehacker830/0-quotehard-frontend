@@ -10,9 +10,9 @@ import axios from '../../../util/Api';
 import { toastErrorConfig } from '../../../util/toastrConfig';
 import AddPriceItemBtn from '../../../components/AddPriceItemBtn';
 import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../actions/GlobalSettings';
-import { getContentTemplateById, updateQuote, updateQuoteStatus } from '../../../actions/Data';
+import { getContentTemplateById, getDuplicateTemplateById, updateQuote, updateQuoteStatus } from '../../../actions/Data';
 import { connect } from 'react-redux';
-import { CONTENT_TEMPLATES_PATH, CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_GET_PATH } from '../../../constants/PathNames';
+import { CONTENT_TEMPLATES_PATH, CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_DUPLICATE_PATH, CONTENT_TEMPLATE_GET_PATH } from '../../../constants/PathNames';
 import NotesSection from '../GetQuote/components/NotesSection';
 import ItemsSection from '../GetQuote/components/ItemsSection';
 import { QuoteTitle } from '../GetQuote/components/QuoteTitle';
@@ -70,17 +70,16 @@ class GetTemplate extends Component {
          title,
          settings
       };
-      console.log("1111111111111111111111 data 1111111111111", data);
-      // axios.put(`/templates/id/${this.props.match.params.id}`, data)
-      //    .then(({ data }) => {
-      //       console.log("res data ---------------->", data);
-      //       toast.success("Template was updated.");
-      //       this.props.history.push(CONTENT_TEMPLATES_PATH)
-      //    })
-      //    .catch(err => {
-      //       console.error(" error ===>", err);
-      //       toast.error("Template failed to update");
-      //    });
+      axios.put(`/templates/id/${this.props.match.params.id}`, data)
+         .then(({ data }) => {
+            console.log("res data ---------------->", data);
+            toast.success("Template was updated.");
+            this.props.history.push(CONTENT_TEMPLATES_PATH)
+         })
+         .catch(err => {
+            console.error(" error ===>", err);
+            toast.error("Template failed to update");
+         });
    }
    removeImageItem = (url) => {
       const newFileArray = this.state.fileArray.filter(item => item !== url);
@@ -104,20 +103,15 @@ class GetTemplate extends Component {
       await this.props.getSalesTaxes('current');
 
       if (this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH) {
-         console.log("---------- this.props.match.params.id ----------------", this.props.match.params.id);
-         // const Promise1 = axios.get(`/templates/id/${this.props.match.params.id}`);
-         // const Promise2 = axios.get(`/templates/default/${this.props.match.params.id}`);
-         // Promise.all([Promise1, Promise2]).then((values) => {
-         //    console.log("values ===>", values);
-         //    const { status, title, settings, items, notes } = values[0].data.template;
-         //    const { isDefault } = values[1].data;
-         //    this.setState({ isDefault });
-         // });
          this.props.getContentTemplateById(this.props.match.params.id);
          axios.get(`/templates/default/${this.props.match.params.id}`).then(({ data }) => {
             const { isDefault } = data;
             this.setState({ isDefault });
          });
+      }
+      if (this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH) {
+         this.props.getDuplicateTemplateById(this.props.match.params.id);
+         this.setState({ isDefault: false });
       }
    }
    componentWillUnmount() {
@@ -160,7 +154,8 @@ class GetTemplate extends Component {
       });
    }
    onClickCopy = () => {
-
+      toast.success('This is a copy.');
+      this.props.history.push(`/app/content/template/get/duplicate/${this.props.match.params.id}`)
    }
    onClickDelete = () => {
 
@@ -316,6 +311,7 @@ const mapDispatchToProps = {
    getDefaultSalesTax,
    getSalesCategories,
    getSalesTaxes,
-   getContentTemplateById
+   getContentTemplateById,
+   getDuplicateTemplateById
 };
 export default connect(mapStateToProps, mapDispatchToProps)(GetTemplate);

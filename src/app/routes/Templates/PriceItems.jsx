@@ -9,7 +9,7 @@ export default class PriceItems extends Component {
       priceItems: []
    };
    componentDidMount() {
-      axios.get('/templates/priceitems').then(({ data }) => {
+      axios.get('/templates/priceitem/all').then(({ data }) => {
          console.log("response ============", data);
          this.setState({
             priceItems: data.priceItems

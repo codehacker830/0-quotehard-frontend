@@ -16,8 +16,9 @@ export default class Templates extends Component {
                <Redirect exact path="/app/content" to="/app/content/templates" />
                <Route exact path="/app/content/templates" component={TemplateItems} />
                <Route exact path="/app/content/template/get" component={GetTemplate} />
+               <Route exact path="/app/content/template/get/duplicate/:id" component={GetTemplate} />
                <Route exact path="/app/content/template/:id" component={GetTemplate} />
-
+               
                <Route exact path="/app/content/item-price/browse" component={PriceItems} />
                <Route exact path="/app/content/item-price/create-new" component={CreatePriceItem} />
                <Route exact path="/app/content/item-price/view/:id" component={CreatePriceItem} />

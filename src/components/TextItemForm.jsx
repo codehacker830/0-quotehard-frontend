@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { updateQuoteItems, updateQuoteNotes } from '../actions/Data';
 import { initPriceItem, initTextItem } from '../constants/InitState';
-import { CONTENT_TEMPLATE_BY_ID_PATH } from '../constants/PathNames';
+import { CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_DUPLICATE_PATH } from '../constants/PathNames';
 import axios from '../util/Api';
 
 class TextItemForm extends Component {
@@ -18,7 +18,8 @@ class TextItemForm extends Component {
       };
       this.hiddenFileInput = React.createRef();
       this.addItemOptionContainer = React.createRef();
-      this.isViewOnly = this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH;
+      this.isViewOnly = this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH
+         || this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH;
    }
    removeImageItem = (url) => {
       const newFileArray = this.props.textItem.files.filter(item => item !== url);
@@ -251,6 +252,17 @@ class TextItemForm extends Component {
                      <button className="btn btn-light" disabled={this.props.isRemoveDisabled} onClick={() => this.removeItem(this.props.index)}>
                         <i className="fa fa-trash-alt"></i>
                      </button>
+                     {
+                        this.isViewOnly &&
+                        <button className="btn btn-light mr-1" onClick={() => this.props.history.push({
+                           pathname: `/app/content/item-text/view/${this.props.textItem._id}`,
+                           state: {
+                              from: this.props.location.pathname
+                           }
+                        })}>
+                           <span className="text-primary"><i className="fa fa-pen"></i> Edit</span>
+                        </button>
+                     }
                   </div>
                </div>
             </div>

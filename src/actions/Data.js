@@ -51,9 +51,23 @@ export const getContentTemplateById = (quoteTemplateId) => {
       dispatch({ type: FETCH_START });
       try {
          const { data } = await axios.get(`/templates/id/${quoteTemplateId}`);
-         console.log(" Template Data by id reponse =>", data);
          const { status, title, settings, items, notes } = data.template;
          const payload = { status, title, settings, items, notes };
+         dispatch({ type: FETCH_SUCCESS });
+         dispatch({ type: GET_QUOTE, payload: payload });
+      } catch (err) {
+         dispatch({ type: FETCH_ERROR, payload: err.message });
+         console.log("Error****:", err.message);
+      }
+   }
+};
+export const getDuplicateTemplateById = (quoteTemplateId) => {
+   return async (dispatch) => {
+      dispatch({ type: FETCH_START });
+      try {
+         const { data } = await axios.get(`/templates/id/${quoteTemplateId}`);
+         const { title, settings, items, notes } = data.template;
+         const payload = { status: "current", title, settings, items, notes };
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: GET_QUOTE, payload: payload });
       } catch (err) {
@@ -114,3 +128,7 @@ export const submitDismiss = (qaId) => {
       }
    }
 };
+
+
+/////  TextItem (template) actions /////
+
