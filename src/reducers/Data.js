@@ -1,5 +1,6 @@
 import {
    GET_QUOTE,
+   UPDATE_QUOTE_STATUS,
    UPDATE_QUOTE_TOPEOPLELIST,
    UPDATE_QUOTE_TITLE,
    UPDATE_QUOTE_SETTINGS,
@@ -13,6 +14,7 @@ import { initPriceItem, initQuoteSettings, initTextItem } from '../constants/Ini
 const initialSettings = {
    quote: {
       toPeopleList: [],
+      status: "",
       title: "",
       settings: { ...initQuoteSettings },
       items: [
@@ -40,6 +42,14 @@ export default (state = initialSettings, action) => {
             ...state,
             quote: action.payload
          };
+      case UPDATE_QUOTE_STATUS:
+         return {
+            ...state,
+            quote: {
+               ...state.quote,
+               status: action.payload
+            }
+         }
       case UPDATE_QUOTE_TOPEOPLELIST:
          return {
             ...state,

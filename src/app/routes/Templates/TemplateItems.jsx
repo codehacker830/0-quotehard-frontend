@@ -5,7 +5,6 @@ import InlineHelp from '../../../components/InlineHelp';
 import TotalLabelFor from '../../../components/TotalLabelFor';
 import { formatDate } from '../../../util';
 import axios from '../../../util/Api';
-import { toastErrorConfig, toastSuccessConfig } from '../../../util/toastrConfig';
 import { CONTENT_TEMPLATE_GET_PATH } from '../../../constants/PathNames';
 
 export default class TemplateItems extends Component {
@@ -15,26 +14,12 @@ export default class TemplateItems extends Component {
       filterStatus: "current",
       templates: []
    };
-   filterTemplates = (templates) => {
-      return templates.filter((template) => {
-         return template.status === this.state.filterStatus;
-      })
-   }
    componentDidMount() {
       this.mounted = true;
       if (this.mounted) {
          console.log("asdfadsfasdf");
-         const Promise1 = axios.get('/templates')
-         // .then(({ data }) => {
-         //    console.log("res data ---------------->", data);
-         //    this.setState({ templates: data.templates });
-         // });
-
-         const Promise2 = axios.get(`/templates/default_id`)
-         // .then(({ data }) => {
-         //    console.log("res data ---------------->", data);
-         //    this.setState({ templates: data.templates });
-         // });
+         const Promise1 = axios.get('/templates');
+         const Promise2 = axios.get(`/templates/default_id`);
          Promise.all([Promise1, Promise2]).then((values) => {
             console.log("values ==========================>", values);
             const { defaultTemplateId } = values[1].data;
@@ -44,13 +29,13 @@ export default class TemplateItems extends Component {
             })
          }).catch(err => {
             console.error(" error ===>", err);
-            toast.error("Failed to get templates list", toastErrorConfig);
+            toast.error("Failed to get templates list");
          });
       }
    }
    render() {
       const { history } = this.props;
-      const templateList = this.filterTemplates(this.state.templates);
+      const templateList = this.state.templates.filter((template) => template.status === this.state.filterStatus);
       return (
          <div className="content">
             <div className="block block-rounded">
@@ -106,14 +91,14 @@ export default class TemplateItems extends Component {
                                              <td>
                                                 <div className="d-flex">
                                                    <div className="u-ellipsis">
-                                                      <Link to={`/app/content/template/${item._id}`}>{item.title}</Link>
+                                                      <Link to={`/app/content/template/${item._id}`}>{item.title}</Link>&nbsp;
                                                       {
                                                          item.status === "archived" &&
-                                                         <span className="label">Archived</span>
+                                                         <><span className="label">Archived</span>&nbsp;</>
                                                       }
                                                       {
                                                          this.state.defaultTemplateId === item._id &&
-                                                         <span className="label label-success">Default</span>
+                                                         <><span className="label label-success">Default</span>&nbsp;</>
                                                       }
                                                       <br />
                                                       <small className="text-gray font-size-sm">{formatDate(item.updatedAt)}</small>

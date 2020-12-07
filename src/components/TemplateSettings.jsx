@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux';
 import Currency from './QuoteSettings/Currency';
 import Discount from './QuoteSettings/Discount';
 import PricingDisplayLevel from './QuoteSettings/PricingDisplayLevel';
@@ -15,6 +16,22 @@ class TemplateSettings extends React.Component {
             <div className="col-sm-6">
                <div className="pl-4 py-2" style={{ borderLeft: "4px solid #eee" }}>
                   <h3>Template Settings</h3>
+                  {
+                     this.props.isDefault &&
+                     <div className="optionRow mb-1">
+                        <span className="label label-success">Default</span>&nbsp;
+                        <span className="smallGreyText">selection for New Quotes</span>
+                     </div>
+                  }
+                  {
+                     this.props.status === "archived" &&
+                     <div className="optionRow mb-1">
+                        <label className="editOption-label">Status</label>
+                        <div className="mb-2">
+                           <span className="label">Archived</span>
+                        </div>
+                     </div>
+                  }
                   <div className={`mb-3 ${this.state.show ? "" : "d-none"}`}>
                      <Discount />
                      <Currency />
@@ -28,5 +45,9 @@ class TemplateSettings extends React.Component {
       )
    }
 }
+const mapStateToProps = ({ mainData }) => {
+   const { status } = mainData.quote;
+   return { status };
+}
 
-export default TemplateSettings;
+export default connect(mapStateToProps)(TemplateSettings);

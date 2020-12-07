@@ -4,6 +4,7 @@ import {
    FETCH_SUCCESS,
    FETCH_ERROR,
    GET_QUOTE,
+   UPDATE_QUOTE_STATUS,
    UPDATE_QUOTE_DISCUSSIONS,
    UPDATE_QUOTE_TOPEOPLELIST,
    UPDATE_QUOTE_SETTINGS,
@@ -28,7 +29,7 @@ export const getPublicQuoteWithEntoken = () => {
          console.log("Error****:", err.message);
       }
    }
-}
+};
 
 export const getQuoteDataById = (quoteId) => {
    return async (dispatch) => {
@@ -43,29 +44,35 @@ export const getQuoteDataById = (quoteId) => {
          console.log("Error****:", err.message);
       }
    }
-}
+};
 
-export const getTemplateQuoteDataById = (quoteTemplateId) => {
+export const getContentTemplateById = (quoteTemplateId) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
          const { data } = await axios.get(`/templates/id/${quoteTemplateId}`);
          console.log(" Template Data by id reponse =>", data);
+         const { status, title, settings, items, notes } = data.template;
+         const payload = { status, title, settings, items, notes };
          dispatch({ type: FETCH_SUCCESS });
-         dispatch({ type: GET_QUOTE, payload: data.template });
+         dispatch({ type: GET_QUOTE, payload: payload });
       } catch (err) {
          dispatch({ type: FETCH_ERROR, payload: err.message });
          console.log("Error****:", err.message);
       }
    }
-}
+};
+
 export const initializeQuote = () => {
    return (dispatch) => dispatch({ type: INITIALIZE_QUOTE });
-}
+};
+
 export const updateQuote = (quote) => {
    return (dispatch) => dispatch({ type: GET_QUOTE, payload: quote });
 };
-
+export const updateQuoteStatus = (status) => {
+   return (dispatch) => dispatch({ type: UPDATE_QUOTE_STATUS, payload: status })
+}
 export const updateQuoteToPeopleList = (toPeopleList) => {
    return (dispatch) => dispatch({ type: UPDATE_QUOTE_TOPEOPLELIST, payload: toPeopleList });
 };
@@ -106,4 +113,4 @@ export const submitDismiss = (qaId) => {
          console.log("Error****:", err.message);
       }
    }
-}
+};

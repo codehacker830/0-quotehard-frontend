@@ -35,6 +35,7 @@ export const APPEARANCE_SETTINGS = 'appearance_settings';
 // Quote
 export const INITIALIZE_QUOTE = 'initialzie_quote';
 export const GET_QUOTE = 'get_quote';
+export const UPDATE_QUOTE_STATUS = 'update_quote_status';
 export const UPDATE_QUOTE_TOPEOPLELIST = 'update_quote_topeoplelist';
 export const UPDATE_QUOTE_TITLE = 'update_quote_title';
 export const UPDATE_QUOTE_SETTINGS = 'update_quote_settings';

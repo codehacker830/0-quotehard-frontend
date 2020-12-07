@@ -23,7 +23,7 @@ import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSal
 import NavCrumpLeft from "../../../components/NavCrump/NavCrumpLeft";
 import { QUOTE_GET_FROM_TEMPLATE_PATH, QUOTE_GET_PATH, QUOTE_BY_ID_PATH, QUOTES_PATH } from "../../../constants/PathNames";
 import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
-import { getQuoteDataById, getTemplateQuoteDataById, updateQuote, updateQuoteToPeopleList } from "../../../actions/Data";
+import { getQuoteDataById, getContentTemplateById, updateQuote, updateQuoteToPeopleList } from "../../../actions/Data";
 import QuoteSettings from "../../../components/QuoteSettings";
 import QuoteTitle from "./components/QuoteTitle";
 import AddPriceItemBtn from "../../../components/AddPriceItemBtn";
@@ -156,7 +156,7 @@ class GetQuote extends Component {
       }
       if (this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH) {
          // Get template detials with id
-         await this.props.getTemplateQuoteDataById(this.props.match.params.id);
+         await this.props.getContentTemplateById(this.props.match.params.id);
       }
    }
    render() {
@@ -292,5 +292,5 @@ const mapStateToProps = ({ auth, globalSettings, mainData }) => {
    const { defaultSalesTax, defaultSalesCategory } = globalSettings;
    return { authUser, quote, defaultSalesTax, defaultSalesCategory }
 }
-const mapDispatchToProps = { updateQuote, getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes, getQuoteDataById, getTemplateQuoteDataById, updateQuoteToPeopleList };
+const mapDispatchToProps = { updateQuote, getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes, getQuoteDataById, getContentTemplateById, updateQuoteToPeopleList };
 export default connect(mapStateToProps, mapDispatchToProps)(GetQuote);

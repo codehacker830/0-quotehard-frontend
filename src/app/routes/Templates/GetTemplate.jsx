@@ -7,10 +7,10 @@ import QuoteTotal from '../../../components/QuoteTotal';
 import SubTotal from '../../../components/SubTotal';
 import TemplateSettings from '../../../components/TemplateSettings';
 import axios from '../../../util/Api';
-import { toastErrorConfig, toastSuccessConfig } from '../../../util/toastrConfig';
+import { toastErrorConfig } from '../../../util/toastrConfig';
 import AddPriceItemBtn from '../../../components/AddPriceItemBtn';
 import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../actions/GlobalSettings';
-import { getTemplateQuoteDataById } from '../../../actions/Data';
+import { getContentTemplateById, updateQuote, updateQuoteStatus } from '../../../actions/Data';
 import { connect } from 'react-redux';
 import { CONTENT_TEMPLATES_PATH, CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_GET_PATH } from '../../../constants/PathNames';
 import NotesSection from '../GetQuote/components/NotesSection';
@@ -30,7 +30,21 @@ class GetTemplate extends Component {
       this.actionsContainer = React.createRef();
    }
    onClickCreate = () => {
-      const { title, settings, items, notes } = this.state;
+      const { title, items, notes } = this.props.quote;
+      const {
+         discount,
+         currency,
+         taxMode,
+         pricingDisplayLevel,
+         displayItemCode
+      } = this.props.quote.settings;
+      const settings = {
+         discount,
+         currency,
+         taxMode,
+         pricingDisplayLevel,
+         displayItemCode
+      };
       if (title === "") { toast.info("You are missing a Template Title."); return; }
       const data = {
          title,
@@ -41,12 +55,12 @@ class GetTemplate extends Component {
       axios.post('/templates', data)
          .then(({ data }) => {
             console.log("res data ---------------->", data);
-            toast.success("New Template was created.", toastSuccessConfig);
+            toast.success("New Template was created.");
             this.props.history.push(CONTENT_TEMPLATES_PATH)
          })
          .catch(err => {
             console.error(" error ===>", err);
-            toast.error("Template failed to create", toastErrorConfig);
+            toast.error("Template failed to create");
          });
    }
    onClickUpdate = () => {
@@ -60,12 +74,12 @@ class GetTemplate extends Component {
       // axios.put(`/templates/id/${this.props.match.params.id}`, data)
       //    .then(({ data }) => {
       //       console.log("res data ---------------->", data);
-      //       toast.success("Template was updated.", toastSuccessConfig);
+      //       toast.success("Template was updated.");
       //       this.props.history.push(CONTENT_TEMPLATES_PATH)
       //    })
       //    .catch(err => {
       //       console.error(" error ===>", err);
-      //       toast.error("Template failed to update", toastErrorConfig);
+      //       toast.error("Template failed to update");
       //    });
    }
    removeImageItem = (url) => {
@@ -82,66 +96,55 @@ class GetTemplate extends Component {
          this.setState({ show: false });
       }
    }
-   componentDidMount() {
+   async componentDidMount() {
       window.addEventListener('click', this.onClickOutsideHandler);
+      await this.props.getDefaultSalesCategory();
+      await this.props.getDefaultSalesTax();
+      await this.props.getSalesCategories('current');
+      await this.props.getSalesTaxes('current');
+
       if (this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH) {
          console.log("---------- this.props.match.params.id ----------------", this.props.match.params.id);
-         const Promise1 = axios.get(`/templates/id/${this.props.match.params.id}`)
-         // .then(({ data }) => {
-         //    console.log("response to get template by id ===>", data);
-         //    const { status, title, settings, items, notes } = data.template;
-         //    this.setState({
-         //       status,
-         //       title,
-         //       settings,
-         //       items,
-         //       notes
-         //    });
-         // }).catch(err => {
-         //    console.error("Error during get template by id.");
+         // const Promise1 = axios.get(`/templates/id/${this.props.match.params.id}`);
+         // const Promise2 = axios.get(`/templates/default/${this.props.match.params.id}`);
+         // Promise.all([Promise1, Promise2]).then((values) => {
+         //    console.log("values ===>", values);
+         //    const { status, title, settings, items, notes } = values[0].data.template;
+         //    const { isDefault } = values[1].data;
+         //    this.setState({ isDefault });
          // });
-
-         const Promise2 = axios.get(`/templates/default/${this.props.match.params.id}`);
-         Promise.all([Promise1, Promise2]).then((values) => {
-            console.log("values ===>", values);
-            const { status, title, settings, items, notes } = values[0].data.template;
-            const { isDefault } = values[1].data;
-            this.setState({
-               isDefault,
-               status,
-               title,
-               settings,
-               items,
-               notes
-            });
-         })
+         this.props.getContentTemplateById(this.props.match.params.id);
+         axios.get(`/templates/default/${this.props.match.params.id}`).then(({ data }) => {
+            const { isDefault } = data;
+            this.setState({ isDefault });
+         });
       }
    }
    componentWillUnmount() {
       window.removeEventListener('click', this.onClickOutsideHandler);
    }
    onClickArchive = () => {
-      axios.put(`/templates/archive/${this.props.match.params.id}`).then(({ data }) => {
-         console.log(" success to archive tempalte", data);
-         toast.success("Template was Archived.", toastSuccessConfig);
+      axios.put(`/templates/archive/${this.props.match.params.id}`).then(async ({ data }) => {
+         await this.props.updateQuoteStatus("archived");
+         toast.success("Content template archived.");
          this.props.history.push(CONTENT_TEMPLATES_PATH);
       }).catch((err) => {
-         console.error(" failed to archive template ", err);
+         console.error("Failed to archive template ", err);
       });
    }
    onClickUnArchive = () => {
-      axios.put(`/templates/un-archive/${this.props.match.params.id}`).then(({ data }) => {
-         console.log(" success to archive tempalte", data);
-         toast.success("Template was Undo-Archived.", toastSuccessConfig);
+      axios.put(`/templates/un-archive/${this.props.match.params.id}`).then(async ({ data }) => {
+         await this.props.updateQuoteStatus("current");
+         toast.success("Content template was unarchived.");
          this.props.history.push(CONTENT_TEMPLATES_PATH);
       }).catch((err) => {
-         console.error(" failed to un-archive template ", err);
+         console.error("Failed to un-archive template ", err);
       });
    }
    onClickDefault = () => {
       axios.put(`/templates/default/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to make tempalte as a default", data);
-         toast.success("Template was set as Default.", toastSuccessConfig);
+         toast.success("Content template - default.");
          this.props.history.push(CONTENT_TEMPLATES_PATH);
       }).catch((err) => {
          console.error(" failed to make template as a default ", err);
@@ -150,7 +153,7 @@ class GetTemplate extends Component {
    onClickUndoDefault = () => {
       axios.put(`/templates/undo-default/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to undo tempalte as a default", data);
-         toast.success("Template was Undone as Default.", toastSuccessConfig);
+         toast.success("Content template - no default set.");
          this.props.history.push(CONTENT_TEMPLATES_PATH);
       }).catch((err) => {
          console.error(" failed to undo template from default ", err);
@@ -184,29 +187,29 @@ class GetTemplate extends Component {
                         </button>
 
                         <div className={`dropdown-menu dropdown-menu-right p-0 ${this.state.show ? "show" : ""}`} style={{ minWidth: 250 }}>
-                           <ul className="nav-items my-0 p-1">
+                           <ul className="choices" style={{ left: 30, top: 10 }}>
                               {
-                                 this.state.status === "current" &&
+                                 this.props.quote.status === "current" &&
                                  <li>
-                                    <button className="dropdown-item media py-2" onClick={this.onClickArchive}>
+                                    <button className="btn-in-action" onClick={this.onClickArchive}>
                                        <div className="mx-3">
                                           <i className="fa fa-fw fa-archive text-secondary" />
                                        </div>
-                                       <div className="media-body font-size-sm pr-2">
-                                          <div className="font-w600">Archive</div>
+                                       <div className="media-body font-size-sm font-w600 pr-2">
+                                          <span>Archive</span>
                                        </div>
                                     </button>
                                  </li>
                               }
                               {
-                                 this.state.status === "archived" &&
+                                 this.props.quote.status === "archived" &&
                                  <li>
-                                    <button className="dropdown-item media py-2" onClick={this.onClickUnArchive}>
+                                    <button className="btn-in-action" onClick={this.onClickUnArchive}>
                                        <div className="mx-3">
                                           <i className="fa fa-fw fa-archive text-secondary" />
                                        </div>
-                                       <div className="media-body font-size-sm pr-2">
-                                          <div className="font-w600">Archived<i className="fa fa-fw fa-long-arrow-alt-left"></i> Undo</div>
+                                       <div className="media-body font-size-sm font-w600 pr-2">
+                                          <span>Archived<span className="choices-undo"> ← undo</span></span>
                                        </div>
                                     </button>
                                  </li>
@@ -214,22 +217,22 @@ class GetTemplate extends Component {
                               {
                                  this.state.isDefault ?
                                     <li>
-                                       <button className="dropdown-item media py-2" onClick={this.onClickUndoDefault}>
+                                       <button className="btn-in-action" onClick={this.onClickUndoDefault}>
                                           <div className="mx-3">
                                              <i className="fa fa-fw fa-star text-secondary" />
                                           </div>
-                                          <div className="media-body font-size-sm pr-2">
-                                             <div className="font-w600">Make default<i className="fa fa-fw fa-long-arrow-alt-left"></i> Undo</div>
+                                          <div className="media-body font-size-sm font-w600 pr-2">
+                                             <span>Make default<span className="choices-undo"> ← undo</span></span>
                                           </div>
                                        </button>
                                     </li>
                                     : <li>
-                                       <button className="dropdown-item media py-2" onClick={this.onClickDefault}>
+                                       <button className="btn-in-action" onClick={this.onClickDefault}>
                                           <div className="mx-3">
                                              <i className="fa fa-fw fa-star text-secondary" />
                                           </div>
-                                          <div className="media-body font-size-sm pr-2">
-                                             <div className="font-w600">Make default</div>
+                                          <div className="media-body font-size-sm font-w600 pr-2">
+                                             <span>Make default</span>
                                           </div>
                                        </button>
                                     </li>
@@ -237,22 +240,22 @@ class GetTemplate extends Component {
 
 
                               <li>
-                                 <button className="dropdown-item media py-2" onClick={this.onClickCopy}>
+                                 <button className="btn-in-action" onClick={this.onClickCopy}>
                                     <div className="mx-3">
                                        <i className="fa fa-fw fa-copy text-secondary" />
                                     </div>
-                                    <div className="media-body font-size-sm pr-2">
-                                       <div className="font-w600">Copy</div>
+                                    <div className="media-body font-size-sm font-w600 pr-2">
+                                       <span>Copy</span>
                                     </div>
                                  </button>
                               </li>
                               <li>
-                                 <button className="dropdown-item media py-2" onClick={this.onClickDelete}>
+                                 <button className="btn-in-action" onClick={this.onClickDelete}>
                                     <div className="mx-3">
                                        <i className="fa fa-fw fa-trash-alt text-secondary" />
                                     </div>
-                                    <div className="media-body font-size-sm pr-2">
-                                       <div className="font-w600">Delete</div>
+                                    <div className="media-body font-size-sm font-w600 pr-2">
+                                       <span>Delete</span>
                                     </div>
                                  </button>
                               </li>
@@ -262,13 +265,10 @@ class GetTemplate extends Component {
                   </div>
                </div>
             </div>
-            {/* <NavCrump linkTo=CONTENT_TEMPLATES_PATH>
-               Templates
-            </NavCrump> */}
             <div className="content bg-custom">
                <div className="mt-6 mb-5">
                   {/* Template Setting */}
-                  <TemplateSettings />
+                  <TemplateSettings isDefault={this.state.isDefault} />
 
                   {/* Template Title */}
                   <QuoteTitle />
@@ -303,13 +303,19 @@ class GetTemplate extends Component {
    }
 }
 
-const mapStateToProps = ({ auth, globalSettings, mainData }) => {
+const mapStateToProps = ({ auth, mainData }) => {
    const { authUser } = auth;
    const { quote } = mainData;
-   const { defaultSalesTax, defaultSalesCategory } = globalSettings;
-   return { authUser, quote, defaultSalesTax, defaultSalesCategory }
+   return { authUser, quote }
 }
 
-const mapDispatchToProps = { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes, getTemplateQuoteDataById };
-
+const mapDispatchToProps = {
+   updateQuote,
+   updateQuoteStatus,
+   getDefaultSalesCategory,
+   getDefaultSalesTax,
+   getSalesCategories,
+   getSalesTaxes,
+   getContentTemplateById
+};
 export default connect(mapStateToProps, mapDispatchToProps)(GetTemplate);
