@@ -4,7 +4,7 @@ import Comment from './Comment';
 import PrivateNote from './PrivateNote';
 import QuestionAndAnswer from './QuestionAndAnswer';
 
-class QuoteDiscussionList extends Component {
+class PublicQuoteDiscussionList extends Component {
     render() {
         return this.props.discussions.map((discussion, index) => {
             if (discussion.category === "privateNote") return <PrivateNote key={index} discussion={discussion} />
@@ -19,4 +19,4 @@ const mapStateToProps = ({ mainData }) => {
     return { discussions };
 }
 
-export default connect(mapStateToProps)(QuoteDiscussionList);
+export default connect(mapStateToProps)(PublicQuoteDiscussionList);

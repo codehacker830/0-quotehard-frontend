@@ -429,7 +429,7 @@ class PublicQuoteView extends Component {
                                  </div>
                               </div> */}
                               {/* Quote total */}
-                              <div className="quoteViewTotalWrap pt-3">
+                              <div className="PublicQuoteViewTotalWrap pt-3">
                                  <QuoteTotal />
 
                                  {/* <table className={`quoteTotal hasTerm table table-borderless`}>

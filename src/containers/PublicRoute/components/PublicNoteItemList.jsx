@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import AttachedFilesShowCase from './AttachedFilesShowCase';
 
-class NoteItemList extends Component {
+class PublicNoteItemList extends Component {
    render() {
       return (
          this.props.notes.map((note, index) => (
@@ -20,4 +20,4 @@ const mapStateToProps = ({ mainData }) => {
    return { notes };
 }
 
-export default connect(mapStateToProps)(NoteItemList)
+export default connect(mapStateToProps)(PublicNoteItemList)

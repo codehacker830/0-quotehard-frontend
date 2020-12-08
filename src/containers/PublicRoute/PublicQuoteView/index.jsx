@@ -1,37 +1,32 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import NavCrump from '../../components/NavCrump';
-import ProgressBar from '../../components/ProgressBar';
-import axios from '../../util/Api';
-import { checkIfTeamMember, formatDate, formatDateTime, toFixedFloat } from '../../util';
+import NavCrump from '../../../components/NavCrump';
+import ProgressBar from '../../../components/ProgressBar';
+import { checkIfTeamMember, formatDate, formatDateTime, toFixedFloat } from '../../../util';
 import { connect } from 'react-redux';
-import { toast } from 'react-toastify';
-
-import { toastErrorConfig, toastSuccessConfig, toastWarningConfig } from '../../util/toastrConfig';
-import QuoteTotal from '../../components/QuoteTotal';
-import { setInitUrl, userSignOut } from '../../actions/Auth';
-import { getTeamMembers } from '../../actions/Team';
+import { getPublicViewPersonWithEntoken, setInitUrl, userSignOut } from '../../../actions/Auth';
+import { getTeamMembers } from '../../../actions/Team';
 import TextareaAutosize from 'react-autosize-textarea/lib';
-import QuoteLogo from './components/QuoteLogo';
+import QuoteLogo from '../components/QuoteLogo';
 import QuoteDetail from './QuoteDetail';
 import StatusShowCase from './StatusShowCase';
-import AttachedFilesShowCase from './components/AttachedFilesShowCase';
-import NoteItemList from './components/NoteItemList';
-import FullWrapper from './components/FullWrapper';
-import QuoteDetailWrapper from './components/QuoteDetailWrapper';
-import QuoteItemWrapper from './components/QuoteItemWrapper';
-import { SwitchQuoteLayoutClass } from '../../util/index';
-import { getPublicQuoteWithEntoken } from '../../actions/Data';
-import VisiableOnlyAuthTeamMember from './components/VisiableOnlyAuthTeamMember';
-import DeclineCommentShow from './components/DeclineCommentShow_0';
-import QuoteViewTotalWrap from './components/QuoteViewTotalWrap';
-import { QUOTES_PATH } from '../../constants/PathNames';
-import NavCrumpLeft from '../../components/NavCrump/NavCrumpLeft';
-import NavCrumpRight from '../../components/NavCrump/NavCrumpRight';
-import QuoteItemList from './components/QuoteItemList';
-import QuoteDiscussionList from './components/QuoteDiscussionList';
-import { getPublicAppearanceWithEntoken } from '../../actions/Appearance';
-import QuoteDisscussionWrite from './components/QuoteDisscussionWrite';
+import AttachedFilesShowCase from '../components/AttachedFilesShowCase';
+import PublicNoteItemList from '../components/PublicNoteItemList';
+import PublicViewFullWrapper from '../components/PublicViewFullWrapper';
+import PublicQuoteDetailWrapper from '../components/PublicQuoteDetailWrapper';
+import PublicQuoteItemWrapper from '../components/PublicQuoteItemWrapper';
+import { SwitchQuoteLayoutClass } from '../../../util';
+import { getPublicQuoteWithEntoken } from '../../../actions/Data';
+import PublicVisiableOnlyAuthTeamMember from '../components/PublicVisiableOnlyAuthTeamMember';
+import DeclineCommentShow from '../components/DeclineCommentShow';
+import PublicQuoteViewTotalWrap from '../components/PublicQuoteViewTotalWrap';
+import { QUOTES_PATH } from '../../../constants/PathNames';
+import NavCrumpLeft from '../../../components/NavCrump/NavCrumpLeft';
+import NavCrumpRight from '../../../components/NavCrump/NavCrumpRight';
+import PublicQuoteItemList from '../components/PublicQuoteItemList';
+import PublicQuoteDiscussionList from '../components/PublicQuoteDiscussionList';
+import { getPublicAppearanceWithEntoken } from '../../../actions/Appearance';
+import PublicQuoteDisscussionWrite from '../components/PublicQuoteDisscussionWrite';
 import AcceptBox from './AcceptBox';
 
 class PublicQuoteView extends Component {
@@ -67,6 +62,7 @@ class PublicQuoteView extends Component {
       if (this.mounted) {
          await this.props.getPublicQuoteWithEntoken();
          await this.props.getPublicAppearanceWithEntoken();
+         await this.props.getPublicViewPersonWithEntoken();
          this.setState({ isMounting: false });
          if (auth.authUser) {
             this.props.getTeamMembers();
@@ -98,7 +94,7 @@ class PublicQuoteView extends Component {
       else return (
          <React.Fragment>
             <main id="main-container">
-               <VisiableOnlyAuthTeamMember>
+               <PublicVisiableOnlyAuthTeamMember>
                   <NavCrump>
                      <NavCrumpLeft linkTo={linkTo}>
                         {linkName}
@@ -159,48 +155,44 @@ class PublicQuoteView extends Component {
                         </ul>
                      </NavCrumpRight>
                   </NavCrump>
-               </VisiableOnlyAuthTeamMember>
+               </PublicVisiableOnlyAuthTeamMember>
                <div className="quoteCanvas-bg" style={{ backgroundColor: appearanceSetting.colors.background }}>
 
-                  <VisiableOnlyAuthTeamMember>
+                  <PublicVisiableOnlyAuthTeamMember>
                      <StatusShowCase />
-                  </VisiableOnlyAuthTeamMember>
+                  </PublicVisiableOnlyAuthTeamMember>
 
                   <div className={`${SwitchQuoteLayoutClass(appearanceSetting.contactDetailLayout, appearanceSetting.layout)}`}>
                      <div className="quoteCanvas-page">
-                        <FullWrapper>
-                           <QuoteDetailWrapper>
+                        <PublicViewFullWrapper>
+                           <PublicQuoteDetailWrapper>
                               <QuoteLogo />
                               <QuoteDetail quote={quote} />
-                           </QuoteDetailWrapper>
+                           </PublicQuoteDetailWrapper>
 
-                           <QuoteItemWrapper>
+                           <PublicQuoteItemWrapper>
                               <h1 className="quoteCanvas-title">{quote.title}</h1>
                               <div id="form_message" />
                               <div className="clear" />
 
                               <div className="quoteItems">
-                                 <QuoteItemList />
+                                 <PublicQuoteItemList />
                                  <div className="clear" />
-                                 <QuoteViewTotalWrap />
-                                 <NoteItemList />
+                                 <PublicQuoteViewTotalWrap />
+                                 <PublicNoteItemList />
                               </div>
 
                               <div id="discussion" className="discuss-wrap">
                                  <h3 className="quote-discuss-h3">Questions &amp; Answers</h3>
-                                 <QuoteDiscussionList />
+                                 <PublicQuoteDiscussionList />
                                  <div className="clear" />
 
-                                 <QuoteDisscussionWrite />
+                                 <PublicQuoteDisscussionWrite />
                               </div>
-
-                              
                               <AcceptBox />
-
                               <DeclineCommentShow />
-
-                           </QuoteItemWrapper>
-                        </FullWrapper>
+                           </PublicQuoteItemWrapper>
+                        </PublicViewFullWrapper>
                      </div>
                      <div className="no_print">
                         <a className="powered-by powered-by-no powered-by-bg" href="https://www.quotientapp.com/" data-sheet="ignore"><img className="powered-by-black" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-black-01.png" alt="Quotient. Simply Smarter Quotes." /><img className="powered-by-white" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-white-01.png" alt="Quotient. Simply Smarter Quotes." /></a>
@@ -216,5 +208,9 @@ class PublicQuoteView extends Component {
 const mapStateToProps = ({ auth, commonData, appearanceSetting, teamSetting, mainData }) => {
    return { auth, commonData, appearanceSetting, teamSetting, quote: mainData.quote };
 }
-const mapDispatchToProps = { setInitUrl, userSignOut, getPublicQuoteWithEntoken, getPublicAppearanceWithEntoken, getTeamMembers };
+const mapDispatchToProps = {
+   setInitUrl, userSignOut,
+   getPublicQuoteWithEntoken, getPublicAppearanceWithEntoken, getPublicViewPersonWithEntoken,
+   getTeamMembers
+};
 export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);

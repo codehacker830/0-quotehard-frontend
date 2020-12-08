@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-class QuoteDetailWrapper extends Component {
+class PublicQuoteDetailWrapper extends Component {
    render() {
       const { appearanceSetting } = this.props;
       if (appearanceSetting.contactDetailLayout != 2) return (this.props.children);
@@ -16,4 +16,4 @@ class QuoteDetailWrapper extends Component {
 }
 
 const mapStateToProps = ({ appearanceSetting }) => ({ appearanceSetting: appearanceSetting });
-export default connect(mapStateToProps)(QuoteDetailWrapper)
+export default connect(mapStateToProps)(PublicQuoteDetailWrapper)

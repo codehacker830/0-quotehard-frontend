@@ -8,7 +8,7 @@ import CommentWrite from './CommentWrite';
 import PrivateNoteWrite from './PrivateNoteWrite';
 import QuestionWrite from './QuestionWrite';
 
-class QuoteDisscussionWrite extends Component {
+class PublicQuoteDisscussionWrite extends Component {
     fileObj = [];
     fileArray = [];
     constructor(props) {
@@ -140,4 +140,4 @@ const mapStateToProps = ({ mainData }) => {
 const mapDispatchToProps = {
     updateQuoteDiscussions
 }
-export default connect(mapStateToProps, mapDispatchToProps)(QuoteDisscussionWrite)
+export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteDisscussionWrite)

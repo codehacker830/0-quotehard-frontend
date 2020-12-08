@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-class FullWrapper extends Component {
+class PublicQuoteItemWrapper extends Component {
    render() {
       const { appearanceSetting } = this.props;
       if (appearanceSetting.contactDetailLayout != 2) return (this.props.children);
       else return (
-         <div className="row">
+         <div className="col-sm-9" style={{ order: -1 }}>
             {this.props.children}
          </div>
       );
    }
 }
 const mapStateToProps = ({ appearanceSetting }) => ({ appearanceSetting: appearanceSetting });
-export default connect(mapStateToProps)(FullWrapper);
+export default connect(mapStateToProps)(PublicQuoteItemWrapper);

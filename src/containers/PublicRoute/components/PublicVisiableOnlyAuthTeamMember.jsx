@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { checkIfTeamMember } from '../../../util';
 
-class VisiableOnlyAuthTeamMember extends Component {
+class PublicVisiableOnlyAuthTeamMember extends Component {
    render() {
       const { auth, teamSetting } = this.props;
       if (checkIfTeamMember(auth.authUser, teamSetting.teamMembers)) return this.props.children;
@@ -10,4 +10,4 @@ class VisiableOnlyAuthTeamMember extends Component {
    }
 }
 const mapStateToProps = ({ auth, teamSetting }) => ({ auth, teamSetting });
-export default connect(mapStateToProps)(VisiableOnlyAuthTeamMember);
+export default connect(mapStateToProps)(PublicVisiableOnlyAuthTeamMember);

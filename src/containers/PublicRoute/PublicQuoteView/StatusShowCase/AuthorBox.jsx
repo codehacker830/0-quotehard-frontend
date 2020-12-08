@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { formatDate } from '../../../util';
+import { formatDate } from '../../../../util';
 
 class AuthorBox extends Component {
    render() {

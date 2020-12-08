@@ -15,7 +15,7 @@ class QuoteItem extends Component {
    }
 }
 
-class QuoteItemList extends Component {
+class PublicQuoteItemList extends Component {
    render() {
       const { quote } = this.props;
       if (!quote.items.length) return null;
@@ -27,4 +27,4 @@ const mapStateToProps = ({ mainData }) => {
    return { quote };
 }
 
-export default connect(mapStateToProps)(QuoteItemList);
+export default connect(mapStateToProps)(PublicQuoteItemList);

@@ -1,8 +1,9 @@
 import {
-   COMPANY_DATA,
    INIT_URL,
    SIGNOUT_USER_SUCCESS,
    USER_DATA,
+   COMPANY_DATA,
+   PERSON_DATA,
    USER_TOKEN_SET
 } from "../constants/ActionTypes";
 
@@ -10,7 +11,8 @@ const INIT_STATE = {
    token: JSON.parse(localStorage.getItem('token')),
    initURL: "",
    authUser: null,
-   accountCompany: null
+   accountCompany: null,
+   person: null
 };
 
 
@@ -39,6 +41,12 @@ export default (state = INIT_STATE, action) => {
             ...state,
             accountCompany: action.payload,
          };
+      }
+      case PERSON_DATA: {
+         return {
+            ...state,
+            person: action.payload
+         }
       }
       case USER_TOKEN_SET: {
          return {

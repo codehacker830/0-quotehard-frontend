@@ -72,11 +72,7 @@ class App extends Component {
             <div id="page-container" className="main-content-boxed">
                <Switch>
                   <RestrictedRoute path='/app' token={token} component={asyncComponent(() => import("../app"))} />
-                  {/* <Route path='/app' component={asyncComponent(() => import("../app"))} /> */}
-
-                  <Route exact path='/q/:entoken/author-discuss' component={asyncComponent(() => import("./PublicQuoteView"))} />
-                  <Route exact path='/q/:entoken/accepted' component={asyncComponent(() => import("./ThankyouPage"))} />
-                  <Route exact path='/q/:entoken' component={asyncComponent(() => import("./PublicQuoteView"))} />
+                  <Route path='/q/:entoken' component={asyncComponent(() => import("./PublicRoute"))} />
                   <Route exact path='/sign-in' component={SignIn} />
                   <Route exact path='/sign-in/invite/create' component={InviteCreate} />
                   <Route exact path='/sign-in/invite/existing' component={InviteExisting} />

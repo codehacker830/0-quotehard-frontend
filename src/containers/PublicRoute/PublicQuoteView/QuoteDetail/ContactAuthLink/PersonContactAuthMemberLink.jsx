@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { checkIfTeamMember } from '../../../../util';
+import { checkIfTeamMember } from '../../../../../util';
 
 class PersonContactAuthMemberLink extends Component {
    render() {

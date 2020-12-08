@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { formatDateTime } from '../../../util';
+import { formatDateTime } from '../../../../util';
 import PreparedForInline from './PreparedForInline';
 import FullCustomerDetailInline from './FullCustomerDetailInline';
 import FullCustomerDetailInColumn from './FullCustomerDetailInColumn';
 import CopyToInline from './CopyToInline';
-import { formatDate } from '../../../util';
+import { formatDate } from '../../../../util';
 import PreparedForInColumns from './PreparedForInColumns';
 
 class QuoteDetail extends Component {

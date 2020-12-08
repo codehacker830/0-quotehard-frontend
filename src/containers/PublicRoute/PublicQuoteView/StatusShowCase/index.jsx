@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ActivityHistoryFull from '../components/ActivityHistoryFull';
+import ActivityHistoryFull from '../../components/ActivityHistoryFull';
 import AuthorBox from './AuthorBox';
 import StatEditTimes from './StatEditTimes';
 import StatOpenTimes from './StatOpenTimes';
 import StatQATimes from './StatQATimes';
 import StatNoteTimes from './StatNoteTimes';
 import { withRouter } from 'react-router-dom';
-import axios from '../../../util/Api';
 import { toast } from 'react-toastify';
+import axios from '../../../../util/Api';
 
 class StatusShowCase extends Component {
    constructor(props) {

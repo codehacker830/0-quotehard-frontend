@@ -3,21 +3,26 @@ import TextareaAutosize from 'react-autosize-textarea/lib';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from '../../../util/Api';
-import { toastErrorConfig, toastSuccessConfig } from '../../../util/toastrConfig';
+import { formatDateTime } from '../../../../util';
+import axios from '../../../../util/Api';
+import { toastErrorConfig, toastSuccessConfig } from '../../../../util/toastrConfig';
 import { AcceptSummary } from './AcceptSummary';
 
 class AcceptBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false
+            loading: false,
+            orderReferenceNumber: "",
+            acceptedComment: "",
+            isAgree: false
         };
 
     }
     onClickAccept = () => {
         const { entoken } = this.props.match.params;
         this.setState({ loading: true });
+        if (!this.state.isAgree) { toast.success("Check the agree box to accept."); return; }
         axios.post('/quotes/accept', { entoken: entoken })
             .then(({ data }) => {
                 console.log("========== res =========", data);
@@ -33,19 +38,11 @@ class AcceptBox extends Component {
     }
     onClickDecline = () => {
         const { entoken } = this.props.match.params;
-        axios.post('/quotes/decline', { entoken: entoken })
-            .then(({ data }) => {
-                console.log("========== res =========", data);
-                toast.success('Quote was Declined,', toastSuccessConfig);
-            })
-            .catch(err => {
-                console.error(" ========== checking public draft error =========", err);
-                this.setState({ loading: false });
-                toast.error('Failed during quote decline request.,', toastErrorConfig);
-            });
+        this.props.history.push(`/q/${entoken}/decline`);
     }
     render() {
-        const { quote } = this.props;
+        const { person, quote } = this.props;
+        const personFullName = person ? person.firstName + " " + person.lastName : "";
         return (
             <React.Fragment>
                 {/* Accept Box */}
@@ -57,25 +54,36 @@ class AcceptBox extends Component {
                     <div className="form-group-half">
                         <label className="label-light" htmlFor="accept_comment">Additional comments</label>
                         <TextareaAutosize className="form-control" rows={5} placeholder="Optional" name="accept[comment]" id="accept_comment"
-                            value={""} />
+                            value={this.state.acceptedComment}
+                            onChange={ev => this.setState({ acceptedComment: ev.target.value })} />
                     </div>
                     {/* Order/Reference Number */}
                     <div className="form-group-half">
                         <label className="label-light" htmlFor="accept_reference">Your order/reference number</label>
-                        <input className="form-control" placeholder="Optional" name="accept[reference]" defaultValue type="text"
-                            id="accept_reference" />
+                        <input className="form-control" placeholder="Optional" name="accept[reference]" type="text"
+                            id="accept_reference"
+                            value={this.state.orderReferenceNumber}
+                            onChange={ev => this.setState({ orderReferenceNumber: ev.target.value })} />
                     </div>
                     {/* acceptCb */}
                     <div className="form-group-half">
                         <div className="acceptCb">
                             <div className="acceptCb-left">
                                 <label className="acceptCb-label-box" htmlFor="accept__confirm">
-                                    <input className="quote-accept-checkbox" name="accept[_confirm]" defaultValue="yes" type="checkbox" id="accept__confirm" />
+                                    <input className="quote-accept-checkbox" name="accept[_confirm]" type="checkbox" id="accept__confirm"
+                                        value={this.state.isAgree}
+                                        onChange={() => this.setState({ isAgree: !this.state.isAgree })}
+                                    />
                                 </label>
                             </div>
                             <div className="acceptCb-right">
                                 <label className="acceptCb-label" htmlFor="accept__confirm">
-                                    Yes, I Money Owner agree to and accept this quote, on <span className="dt-time">December 8, 2020 at 12:08PM</span>.
+                                    Yes, I {personFullName} agree to and accept this quote
+                                    {
+                                        quote.acceptedAt ?
+                                            <>, on <span className="dt-time">{formatDateTime(quote.acceptedAt)}</span>.</>
+                                            : null
+                                    }
                                 </label>
                                 <div className="acceptCb-prompt isHidden">
                                     <span className="glyphicon glyphicon-arrow-up" /> Check the box to accept.
@@ -127,14 +135,14 @@ class AcceptBox extends Component {
                     <div className="form-group-half">
                         <label className="label-light">Additional comments</label>
                         <div className="accept-input-submitted">
-                            <p>additional comments&nbsp;</p>
+                            <p>{quote.acceptedComment}&nbsp;</p>
                         </div>
                     </div>
                     {/* Order/Reference Number */}
                     <div className="form-group">
                         <label className="label-light">Order/reference number</label>
                         <div className="accept-input-submitted">
-                            <p>123 &nbsp;</p>
+                            <p>{quote.orderReferenceNumber} &nbsp;</p>
                         </div>
                     </div>
                     {/* acceptCb */}
@@ -146,7 +154,13 @@ class AcceptBox extends Component {
                             </div>
                             <div className="acceptCb-right">
                                 <label className="acceptCb-label-done">
-                                    Yes, I Money Owner agree to and accept this quote, on <span className="dt-time">December 8, 2020 at 12:31PM</span>.</label>
+                                    Yes, I {personFullName} agree to and accept this quote
+                                    {
+                                        quote.acceptedAt ?
+                                            <>, on <span className="dt-time">{formatDateTime(quote.acceptedAt)}</span>.</>
+                                            : null
+                                    }
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -157,9 +171,10 @@ class AcceptBox extends Component {
     }
 }
 
-const mapStateToProps = ({ mainData }) => {
+const mapStateToProps = ({ auth, mainData }) => {
+    const { person } = auth;
     const { quote } = mainData;
-    return { quote };
+    return { person, quote };
 }
 
 const mapDispatchToProps = {

@@ -8,6 +8,7 @@ import {
    SIGNOUT_USER_SUCCESS,
    USER_DATA,
    COMPANY_DATA,
+   PERSON_DATA,
    USER_TOKEN_SET,
 
 } from "../constants/ActionTypes";
@@ -215,3 +216,19 @@ export const updateAccountInfo = (accountCompany, ownProps) => {
       }
    }
 }
+
+export const getPublicViewPersonWithEntoken = () => {
+   const entoken = localStorage.getItem('entoken');
+   return async (dispatch) => {
+      dispatch({ type: FETCH_START });
+      try {
+         const { data } = await axios.post('/quotes/view-public/person', { entoken });
+         console.log("========== Publick overview person =========", data);
+         dispatch({ type: FETCH_SUCCESS });
+         dispatch({ type: PERSON_DATA, payload: data.person });
+      } catch (err) {
+         dispatch({ type: FETCH_ERROR, payload: err.message });
+         console.log("Error****:", err.message);
+      }
+   }
+};
