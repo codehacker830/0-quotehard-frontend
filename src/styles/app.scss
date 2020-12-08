@@ -10,6 +10,11 @@
 .bg-dark {
    background-color: #40474a;
 }
+.btn-new {
+   color: #fff;
+   background-color: #1bb02d;
+   border-color: #1aa72b;
+}
 .btn-success {
    background-color: #32b842;
    border-color: #32b842;
@@ -614,14 +619,6 @@ a.nav-link.active {
 .isHidden {
    display: none;
 }
-// .clear {
-//    clear: both;
-//    display: block;
-//    overflow: hidden;
-//    visibility: hidden;
-//    width: 0;
-//    height: 0;
-// }
 .appear-check-3-img {
    width: 100%;
    margin-top: 5px;

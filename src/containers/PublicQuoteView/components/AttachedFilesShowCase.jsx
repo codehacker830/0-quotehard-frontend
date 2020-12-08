@@ -15,7 +15,7 @@ export default class AttachedFilesShowCase extends Component {
                               href={file}
                               title="quotefile">
                               <img src={file}
-                                 alt="..." /></a>
+                                 alt="file" /></a>
                         </div>
                      ))
                   }

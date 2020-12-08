@@ -6,7 +6,6 @@ import { SwitchLogoLayoutClass } from '../../../util';
 class QuoteLogo extends Component {
    render() {
       const { appearanceSetting } = this.props;
-      console.log(" appearance setting ========>", appearanceSetting);
       if (!appearanceSetting.logo) return null;
       else return (
          <div className={`${SwitchLogoLayoutClass(appearanceSetting.contactDetailLayout, appearanceSetting.layout)}`}>
@@ -16,5 +15,5 @@ class QuoteLogo extends Component {
       );
    }
 }
-const mapStateToProps = ({ appearanceSetting }) => ({ appearanceSetting: appearanceSetting });
+const mapStateToProps = ({ appearanceSetting }) => ({ appearanceSetting });
 export default connect(mapStateToProps)(QuoteLogo)

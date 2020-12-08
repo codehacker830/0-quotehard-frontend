@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import AttachedFilesShowCase from './AttachedFilesShowCase';
 
-export default class NoteItemList extends Component {
+class NoteItemList extends Component {
    render() {
       return (
-         this.props.noteList.map((note, index) => (
+         this.props.notes.map((note, index) => (
             <div className="tItem-text" key={index}>
                <h3>{note.textItem.textHeading}</h3>
                <p>{note.textItem.longDescription}</p>
@@ -14,3 +15,9 @@ export default class NoteItemList extends Component {
       );
    }
 }
+const mapStateToProps = ({ mainData }) => {
+   const { notes } = mainData.quote;
+   return { notes };
+}
+
+export default connect(mapStateToProps)(NoteItemList)

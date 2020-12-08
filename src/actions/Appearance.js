@@ -1,3 +1,4 @@
+import { createLogger } from "redux-logger";
 import { APPEARANCE_SETTINGS, FETCH_ERROR, FETCH_START, FETCH_SUCCESS, LOGO_URL } from "../constants/ActionTypes"
 import axios from "../util/Api";
 
@@ -65,8 +66,11 @@ export const getPublicAppearanceWithEntoken = () => {
    const entoken = localStorage.getItem('entoken');
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
+      console.log('public view appearance setting start ===>')
+
       try {
          const { data } = await axios.post('/quotes/view-public/appearance', { entoken });
+         console.log('public view appearance setting res ===>', data)
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: APPEARANCE_SETTINGS, payload: data.appearanceSetting });
       } catch (err) {

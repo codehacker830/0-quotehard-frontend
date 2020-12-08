@@ -11,9 +11,9 @@ import { toast } from 'react-toastify';
 import { toastErrorConfig, toastSuccessConfig, toastWarningConfig } from '../../util/toastrConfig';
 import QuoteTotal from '../../components/QuoteTotal';
 import { setInitUrl, userSignOut } from '../../actions/Auth';
-import DeclineCommentShow from './components/DeclineCommentShow';
-import ImageShowCase from './components/ImageShowCase';
-import LogoShowCase from './components/LogoShowCase';
+import DeclineCommentShow from './components/DeclineCommentShow_0';
+import ImageShowCase from './components/ImageShowCase_0';
+import LogoShowCase from './components/LogoShowCase_0';
 
 class PublicQuoteView extends Component {
    mounted = false;
@@ -165,45 +165,7 @@ class PublicQuoteView extends Component {
             console.error("error during submit question ==>", err);
          });
    }
-   submitAnswer = (qaId) => {
-      const { answerContent } = this.state;
-      const { entoken } = this.props.match.params;
-      if (answerContent === "") {
-         toast.warn("Answer content should not be empty.", toastWarningConfig);
-         return;
-      }
-      this.setState({ loading: true });
-      axios.post('/quotes/answer-question', { answerContent, entoken, qaId })
-         .then(({ data }) => {
-            toast.success("Answer was Submitted.", toastSuccessConfig);
-            this.setState({
-               loading: false,
-               discussions: data.discussions,
-               answerContent: ""
-            });
-         })
-         .catch(err => {
-            this.setState({ loading: false });
-            console.error("error during submit answer ==>", err);
-         });
-   }
-   submitDismiss = (qaId) => {
-      const { entoken } = this.props.match.params;
-      this.setState({ loading: true });
-      axios.post('/quotes/dismiss', { entoken, qaId })
-         .then(({ data }) => {
-            toast.success("Answer was Dismissed.", toastSuccessConfig);
-            this.setState({
-               loading: false,
-               discussions: data.discussions,
-               answerContent: ""
-            });
-         })
-         .catch(err => {
-            this.setState({ loading: false });
-            console.error("error during submit dismiss ==>", err);
-         });
-   }
+   
    componentDidMount() {
       this.mounted = true;
       const entoken = this.props.match.params.entoken;
@@ -552,126 +514,7 @@ class PublicQuoteView extends Component {
 
                               {/* show QA records */}
                               {/* <div className={`mb-4 ${this.state.discussions.length ? "" : "d-none"}`}> */}
-                              <div className={`mb-4 `}>
-                                 <h3 className="py-3 border-bottom mx-4">Questions & Answers</h3>
-                                 {
-                                    this.state.discussions.map((discussion, index) => {
-                                       if (discussion.category === "privateNote") {
-                                          if (this.state.isPrivateEligible) return (
-                                             <div className="discuss-row discuss-form mb-3 d-flex" key={index}>
-                                                <img className="avatar-48 mr-3 mb-2" src={discussion.privateNote.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
-                                                <div className="border-green-left pl-3">
-                                                   <div className="row no-gutters mb-1">
-                                                      <span className="label-success">private</span>
-                                                      <span className="font-w700 text-black mr-2">{discussion.privateNote.author.firstName + " " + discussion.privateNote.author.lastName}</span>
-                                                      <span className="font-w400 text-secondary">{formatDateTime(discussion.privateNote.updatedAt)}</span>
-                                                   </div>
-                                                   <div className="row no-gutters">
-                                                      <span className="text-black">{discussion.privateNote.content}</span>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                          );
-                                       }
-                                       else if (discussion.category === "comment") return (
-                                          <div className="discuss-row discuss-form mb-3 d-flex" key={index}>
-                                             <img className="avatar-48 mr-3 mb-2" src={discussion.comment.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
-                                             <div className="">
-                                                <div className="row no-gutters mb-1">
-                                                   <span className="font-w700 text-black mr-2">{discussion.comment.author.firstName + " " + discussion.comment.author.lastName}</span>
-                                                   <span className="font-w400 text-secondary">{formatDateTime(discussion.comment.updatedAt)}</span>
-                                                </div>
-                                                <div className="row no-gutters">
-                                                   <span className="text-black">{discussion.comment.content}</span>
-                                                </div>
-                                             </div>
-                                          </div>
-                                       );
-                                       else if (discussion.category === "questionAndAnswer") {
-                                          const isAnswerAbleUser = this.props.auth.authUser && this.state.quote && (this.props.auth.authUser._id === this.state.quote.author._id);
-                                          return (
-                                             <React.Fragment key={index}>
-                                                <div className="discuss-row discuss-form mb-3 d-flex">
-                                                   <img className="avatar-48 mr-3 mb-2" src={discussion.questionAndAnswer.question.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
-                                                   <div className="">
-                                                      <div className="row no-gutters mb-1">
-                                                         <span className="font-w700 text-black mr-2">{discussion.questionAndAnswer.question.author.firstName + " " + discussion.questionAndAnswer.question.author.lastName}</span>
-                                                         <span className="font-w400 text-secondary">{formatDateTime(discussion.questionAndAnswer.question.updatedAt)}</span>
-                                                      </div>
-                                                      <div className="row no-gutters">
-                                                         <span className="text-black">{discussion.questionAndAnswer.question.content}</span>
-                                                      </div>
-                                                   </div>
-                                                </div>
-                                                {
-                                                   discussion.questionAndAnswer.answer.status === "answered" &&
-                                                   <div className="discuss-row discuss-form mb-3 d-flex">
-                                                      <img className="avatar-48 mr-3 mb-2" src={discussion.questionAndAnswer.answer.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
-                                                      <div className="">
-                                                         <div className="row no-gutters mb-1">
-                                                            <span className="font-w700 text-black mr-2">{discussion.questionAndAnswer.answer.author.firstName + " " + discussion.questionAndAnswer.answer.author.lastName}</span>
-                                                            <span className="font-w400 text-secondary">{formatDateTime(discussion.questionAndAnswer.answer.updatedAt)}</span>
-                                                         </div>
-                                                         <div className="row no-gutters">
-                                                            <span className="text-black">{discussion.questionAndAnswer.answer.content}</span>
-                                                         </div>
-                                                      </div>
-                                                   </div>
-                                                }
-                                                {
-                                                   discussion.questionAndAnswer.answer.status === "dismissed" && null
-                                                }
-                                                {
-                                                   discussion.questionAndAnswer.answer.status === "pending" && isAnswerAbleUser &&
-                                                   <div className="discuss-row discuss-form">
-                                                      <textarea
-                                                         className="form-control mb-2"
-                                                         name="example-textarea-input"
-                                                         rows={4}
-                                                         state={this.state.answerContent}
-                                                         onChange={(ev) => this.setState({ answerContent: ev.target.value })} />
-
-                                                      {/* Images preview section */}
-                                                      <div className="row m-1">
-                                                         {(this.state.fileArray || []).map((url, index) => (
-                                                            <div className="p-1" key={index}>
-                                                               <img src={url} className="mr-2 image-preview-size" alt="..." />
-                                                               <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)}>
-                                                                  <i className="fa fa-times-circle"></i>
-                                                               </button>
-                                                            </div>
-                                                         ))}
-                                                      </div>
-
-                                                      {/* <ProgressBar percentage={75} /> */}
-                                                      <input type="file"
-                                                         ref={this.hiddenFileInput}
-                                                         onChange={this.uploadMultipleFiles}
-                                                         className="d-none"
-                                                         multiple
-                                                      />
-                                                      <button className="btn btn-hero-sm btn-square btn-outline-warning w-100 p-3"
-                                                         onClick={this.handleClickFileOpen}
-                                                      >
-                                                         <i className="si si-paper-clip fa-fw mr-1"></i>
-                                                      Add Image or File
-                                                      </button>
-                                                      <div className="row no-gutters mt-3">
-                                                         <button className="btn btn-secondary mr-2" disabled={this.state.loading} onClick={() => this.submitAnswer(discussion._id)}>
-                                                            {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
-                                                            Answer Question</button>
-                                                         <button className="btn btn-alt-secondary" disabled={this.state.loading} onClick={() => this.submitDismiss(discussion._id)}>
-                                                            {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
-                                                            Dismiss</button>
-                                                      </div>
-                                                   </div>
-                                                }
-                                             </React.Fragment>
-                                          );
-                                       }
-                                    })
-                                 }
-                              </div>
+                              
                               {
                                  this.props.auth.authUser && this.state.quote && (this.props.auth.authUser._id === this.state.quote.author._id) ?
                                     <div className="discuss-wrap">

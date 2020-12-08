@@ -27,6 +27,10 @@ class Dashboard extends Component {
       window.addEventListener('click', this.onClickOutsideHandler);
       // Initiate mainData quote reducer
       this.props.initializeQuote();
+
+      console.log("dddddddd ==========================>");
+
+
       // get all quotes and templates
       const Promise1 = axios.get('/quotes');
       const Promise2 = axios.get('/templates');
@@ -37,7 +41,7 @@ class Dashboard extends Component {
             templates: values[1].data.templates
          })
       }).catch(err => {
-         console.error(" error ===>", err);
+         console.error("  Promise all error ===>", err);
       });
    }
    componentWillUnmount() {
@@ -48,8 +52,8 @@ class Dashboard extends Component {
       const { search } = this.state;
       const { match } = this.props;
 
-
       const templateList = this.state.templates.filter((temp) => temp.status === "current");
+      console.log(" templateLISt ---> ", templateList)
       return (
          <div className="content">
             <div className="row py-3">

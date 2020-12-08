@@ -6,11 +6,25 @@ import QuotePriceItem from './QuotePriceItem';
 import QuoteSubTotal from './QuoteSubTotal';
 import QuoteTextItem from './QuoteTextItem';
 
-export default class QuoteItem extends Component {
+class QuoteItem extends Component {
    render() {
       const { item, index } = this.props;
       if (item.category === "priceItem") return <QuotePriceItem item={item} index={index} />;
       else if (item.category === "textItem") return <QuoteTextItem item={item} />;
-      else if (item.category === "subTotal") return <QuoteSubTotal index={index} />;
+      else return <QuoteSubTotal index={index} />;
    }
 }
+
+class QuoteItemList extends Component {
+   render() {
+      const { quote } = this.props;
+      if (!quote.items.length) return null;
+      else return quote.items.map((item, index) => <QuoteItem item={item} key={index} index={index} />);
+   }
+}
+const mapStateToProps = ({ mainData }) => {
+   const { quote } = mainData;
+   return { quote };
+}
+
+export default connect(mapStateToProps)(QuoteItemList);
