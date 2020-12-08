@@ -5,36 +5,6 @@ import QuoteTotalHasNoTerm from './QuoteTotalHasNoTerm';
 
 class QuoteTotal extends Component {
    render() {
-      const { settings, items } = this.props;
-      console.log("_________ checkIfHasTerm(items) ___________", checkIfHasTerm(items));
-      console.log(" --------- QuoteTotal Props ---------> ", this.props);
-      const pItems = this.props.items.filter(item => item.category === "priceItem");
-
-      let isTaxEnable = false;
-      let isSubscriptionEnable = false;
-      let isMarginShowEnable = false;
-
-      let subTotal = 0;
-      let discountTotal = 0;
-      let maxTax = 0;
-      let taxTotal = 0;
-      let costPriceTotal = 0;
-      for (let i = 0; i < pItems.length; i++) {
-         if (parseFloat(pItems[i].priceItem.salesTax) > maxTax) maxTax = parseFloat(pItems[i].priceItem.salesTax);
-         const itemDiscount = pItems[i].priceItem.itemTotal * parseFloat(this.props.settings.discount) / 100;
-         discountTotal += itemDiscount;
-
-         isTaxEnable = !!pItems[i].priceItem.salesTax;
-         isSubscriptionEnable = pItems[i].priceItem.isSubscription;
-         isMarginShowEnable = pItems[i].priceItem.isCostPriceMargin;
-
-         subTotal += (pItems[i].priceItem.itemTotal - itemDiscount);
-         taxTotal += (pItems[i].priceItem.itemTotal - itemDiscount) * parseFloat(pItems[i].priceItem.salesTax) / 100;
-         costPriceTotal += pItems[i].priceItem.costPrice * pItems[i].priceItem.quantity;
-      }
-      let totalIncludingTax = subTotal + taxTotal;
-      let marginTotal = subTotal - costPriceTotal;
-      console.log(">>>>>>>>>>>>>> discountTotal >>>>>>", discountTotal);
       return (
          <div className="quote-edit-total-wrap">
             <QuoteTotalHasNoTerm />
