@@ -22,7 +22,7 @@ export const InviteForm = (props) => {
          toast.success('You\'re missing some required information');
          return;
       }
-      axios.post('/settings/team/invite-form', { firstName, lastName, email, role })
+      axios.post('/settings/team/invite', { firstName, lastName, email, role })
          .then(() => {
             toast.success('Invite has been sent.');
             props.history.push('/app/settings/team');
