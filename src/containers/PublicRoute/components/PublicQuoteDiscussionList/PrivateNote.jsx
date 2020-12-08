@@ -6,8 +6,8 @@ import AttachedFilesShowCase from '../AttachedFilesShowCase';
 class PrivateNote extends Component {
     render() {
         const { discussion } = this.props;
-        const { authUser, teamMembers } = this.props;
-        if (checkIfTeamMember(authUser, teamMembers)) return (
+        const { quote, teamMembers } = this.props;
+        if (checkIfTeamMember(quote.author, teamMembers)) return (
             <div className="discuss-row discuss-row-private">
                 <div className="discuss-bubble">
                     <div className="bubble-left avatar-48"
@@ -33,9 +33,9 @@ class PrivateNote extends Component {
         else return null;
     }
 }
-const mapStateToProps = ({ auth, teamSetting }) => {
-    const { authUser } = auth;
+const mapStateToProps = ({ mainData, teamSetting }) => {
+    const { quote } = mainData;
     const { teamMembers } = teamSetting;
-    return { authUser, teamMembers }
+    return { quote, teamMembers }
 };
 export default connect(mapStateToProps)(PrivateNote)

@@ -41,15 +41,6 @@ class PublicQuoteView extends Component {
          quote: {},
          commentShow: false,
          privateNoteShow: false,
-
-         questionSectionShow: false,
-         isAgreeChecked: false,
-
-         questionContent: "",
-         toMateAccountId: "",
-         privateNoteContent: "",
-         answerContent: "",
-
       };
 
    }
@@ -74,22 +65,19 @@ class PublicQuoteView extends Component {
       console.log(" ----------- PublicQuoteView props ------", this.props);
       const { isMounting } = this.state;
       const { location } = this.props;
-      const { auth, commonData, appearanceSetting, teamSetting, quote } = this.props;
-      const { authUser } = auth;
+      const { appearanceSetting, teamSetting, quote } = this.props;
       const { teamMembers } = teamSetting;
-      const { discussions } = quote;
-      console.log('quote_____', quote)
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
       if (location.state && location.state.from === QUOTES_PATH) linkName = "Quotes";
 
       if (isMounting) return <div>loading...</div>;
       else if (this.props.match.path === '/q/:entoken/author-discuss') {
-         if (checkIfTeamMember(authUser, teamMembers)) {
+         if (checkIfTeamMember(quote.author, teamMembers)) {
             this.props.setInitUrl(`/q/${this.props.match.params.entoken}`);
-            // this.props.history.push('/sign-in');
             return <Redirect to="/sign-in" />
-         } else return <Redirect to={`/q/${this.props.match.params.entoken}`} />
+         }
+         else return <Redirect to={`/q/${this.props.match.params.entoken}`} />
       }
       else return (
          <React.Fragment>
@@ -205,8 +193,8 @@ class PublicQuoteView extends Component {
    }
 }
 
-const mapStateToProps = ({ auth, commonData, appearanceSetting, teamSetting, mainData }) => {
-   return { auth, commonData, appearanceSetting, teamSetting, quote: mainData.quote };
+const mapStateToProps = ({ auth, appearanceSetting, teamSetting, mainData }) => {
+   return { auth, appearanceSetting, teamSetting, quote: mainData.quote };
 }
 const mapDispatchToProps = {
    setInitUrl, userSignOut,

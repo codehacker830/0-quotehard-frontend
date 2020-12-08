@@ -4,8 +4,8 @@ import { checkIfTeamMember } from '../../../../../util';
 
 class PersonContactAuthMemberLink extends Component {
    render() {
-      const { auth, teamSetting, contact } = this.props;
-      const isTeamMember = checkIfTeamMember(auth.authUser, teamSetting.teamMembers);
+      const { quote, teamSetting, contact } = this.props;
+      const isTeamMember = checkIfTeamMember(quote.author, teamSetting.teamMembers);
       let fullName = contact.firstName + " " + contact.lastName;
       if (isTeamMember) return (
          <>
@@ -16,5 +16,5 @@ class PersonContactAuthMemberLink extends Component {
    }
 }
 
-const mapStateToProps = ({ auth, teamSetting }) => ({ auth, teamSetting });
+const mapStateToProps = ({ mainData, teamSetting }) => ({ quote: mainData.quote, teamSetting });
 export default connect(mapStateToProps)(PersonContactAuthMemberLink);

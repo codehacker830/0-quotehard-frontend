@@ -3,7 +3,7 @@ import TextareaAutosize from 'react-autosize-textarea/lib';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { formatDateTime } from '../../../../util';
+import { checkIfTeamMember, formatDateTime } from '../../../../util';
 import axios from '../../../../util/Api';
 import { toastErrorConfig, toastSuccessConfig } from '../../../../util/toastrConfig';
 import { AcceptSummary } from './AcceptSummary';
@@ -21,17 +21,16 @@ class AcceptBox extends Component {
     }
     onClickAccept = () => {
         const { entoken } = this.props.match.params;
-        this.setState({ loading: true });
+        const { orderReferenceNumber, acceptedComment } = this.state;
         if (!this.state.isAgree) { toast.success("Check the agree box to accept."); return; }
-        axios.post('/quotes/accept', { entoken: entoken })
-            .then(({ data }) => {
-                console.log("========== res =========", data);
+        this.setState({ loading: true });
+        axios.post('/quotes/accept', { entoken, orderReferenceNumber, acceptedComment })
+            .then(() => {
                 this.setState({ loading: false });
-                toast.success('Quote was Accepted,', toastSuccessConfig);
+                toast.success('Quote was Accepted, Thank you.', toastSuccessConfig);
                 this.props.history.push(`/q/${entoken}/accepted`);
             })
             .catch(err => {
-                console.error(" ========== checking public draft error =========", err);
                 this.setState({ loading: false });
                 toast.error('Failed during quote acception request.,', toastErrorConfig);
             });
@@ -41,9 +40,10 @@ class AcceptBox extends Component {
         this.props.history.push(`/q/${entoken}/decline`);
     }
     render() {
-        const { person, quote } = this.props;
+        const { person, quote, teamMembers } = this.props;
         const personFullName = person ? person.firstName + " " + person.lastName : "";
-        return (
+        const isMember = checkIfTeamMember(quote.author, teamMembers);
+        if (!isMember && quote.status === "awaiting") return (
             <React.Fragment>
                 {/* Accept Box */}
                 <div className="acceptBox no_print" style={{ backgroundColor: "#e9f1f9" }}>
@@ -96,16 +96,19 @@ class AcceptBox extends Component {
 
                     {/* accept button box */}
                     <div className="quote-box-accept">
-                        <button className="btn btn-save btnAccept quote-btn-lg" onClick={this.onClickAccept}>Accept on behalf</button>
+                        <button className="btn btn-save btnAccept quote-btn-lg" disabled={this.state.loading} onClick={this.onClickAccept}>
+                            {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
+                            Accept on behalf
+                        </button>
                         <span className="quote-box-decline-wrap">
-                            <button className="btn btn-lg btn-lg-skinny" onClick={this.onClickDecline}>Cancel</button>
+                            <button className="btn btn-lg btn-lg-skinny" onClick={this.onClickDecline}>Decline</button>
                         </span>
                     </div>
                 </div>
-
-
-
-
+            </React.Fragment>
+        )
+        else if (quote.status === "accepted") return (
+            <React.Fragment>
                 {/* Accepted Show Box */}
                 <div className="acceptBox no_print" style={{ backgroundColor: "#e9f1f9" }}>
                     <h3 className="quote-box-h3-accept">{quote.title}</h3>
@@ -164,21 +167,21 @@ class AcceptBox extends Component {
                             </div>
                         </div>
                     </div>
-
                 </div>
             </React.Fragment>
         )
+        else return null;
     }
 }
 
-const mapStateToProps = ({ auth, mainData }) => {
-    const { person } = auth;
+const mapStateToProps = ({ auth, mainData, teamSetting }) => {
+    const { teamMembers } = teamSetting;
+    const { authUser, person } = auth;
     const { quote } = mainData;
-    return { person, quote };
+    return { authUser, person, quote, teamMembers };
 }
 
 const mapDispatchToProps = {
 
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AcceptBox));

@@ -171,12 +171,11 @@ export const SwitchLogoLayoutClass = (contactDetailLayout, layout) => {
    else return "quote-logo quote-logo-x-legacy  quote-logo-x-legacy-top";
 }
 
-export const checkIfTeamMember = (authUser, teamMembers) => {
-   if (!authUser) return false;
-   console.log("teamMembersteamMembers =", teamMembers);
+export const checkIfTeamMember = (author, teamMembers) => {
+   if (!author) return false;
 
    if (!teamMembers.length) return false;
-   const val = teamMembers.find((member) => member._id === authUser._id);
+   const val = teamMembers.find((member) => member._id === author._id);
    if (val) return true;
    else return false;
 }

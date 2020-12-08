@@ -4,10 +4,10 @@ import { checkIfTeamMember } from '../../../util';
 
 class PublicVisiableOnlyAuthTeamMember extends Component {
    render() {
-      const { auth, teamSetting } = this.props;
-      if (checkIfTeamMember(auth.authUser, teamSetting.teamMembers)) return this.props.children;
+      const { quote, teamSetting } = this.props;
+      if (checkIfTeamMember(quote.author, teamSetting.teamMembers)) return this.props.children;
       else return null;
    }
 }
-const mapStateToProps = ({ auth, teamSetting }) => ({ auth, teamSetting });
+const mapStateToProps = ({ mainData, teamSetting }) => ({ quote: mainData.quote, teamSetting });
 export default connect(mapStateToProps)(PublicVisiableOnlyAuthTeamMember);
