@@ -41,12 +41,13 @@ class AcceptBox extends Component {
     }
     render() {
         const { person, quote, teamMembers } = this.props;
+        const colors = { ...this.props.colors };
         const personFullName = person ? person.firstName + " " + person.lastName : "";
         const isMember = checkIfTeamMember(quote.author, teamMembers);
         if (!isMember && quote.status === "awaiting") return (
             <React.Fragment>
                 {/* Accept Box */}
-                <div className="acceptBox no_print" style={{ backgroundColor: "#e9f1f9" }}>
+                <div className="acceptBox no_print" style={{ backgroundColor: `${colors.highlights}` }}>
                     <h3 className="quote-box-h3-accept">{quote.title}</h3>
 
                     <AcceptSummary />
@@ -110,7 +111,7 @@ class AcceptBox extends Component {
         else if (quote.status === "accepted") return (
             <React.Fragment>
                 {/* Accepted Show Box */}
-                <div className="acceptBox no_print" style={{ backgroundColor: "#e9f1f9" }}>
+                <div className="acceptBox no_print" style={{ backgroundColor: `${colors.highlights}` }}>
                     <h3 className="quote-box-h3-accept">{quote.title}</h3>
                     <AcceptSummary />
 
@@ -174,11 +175,12 @@ class AcceptBox extends Component {
     }
 }
 
-const mapStateToProps = ({ auth, mainData, teamSetting }) => {
+const mapStateToProps = ({ auth, mainData, teamSetting, appearanceSetting }) => {
+    const { colors } = appearanceSetting;
     const { teamMembers } = teamSetting;
     const { authUser, person } = auth;
     const { quote } = mainData;
-    return { authUser, person, quote, teamMembers };
+    return { colors, authUser, person, quote, teamMembers };
 }
 
 const mapDispatchToProps = {

@@ -67,17 +67,20 @@ class PublicQuoteView extends Component {
       const { location } = this.props;
       const { appearanceSetting, teamSetting, quote } = this.props;
       const { teamMembers } = teamSetting;
+
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
       if (location.state && location.state.from === QUOTES_PATH) linkName = "Quotes";
 
+      const isMember = checkIfTeamMember(quote.author, teamMembers);
+      console.error("QUOTE AUTHOR IS TEAM MEMBER ? ", isMember);
+
       if (isMounting) return <div>loading...</div>;
       else if (this.props.match.path === '/q/:entoken/author-discuss') {
-         if (checkIfTeamMember(quote.author, teamMembers)) {
+         if (isMember) {
             this.props.setInitUrl(`/q/${this.props.match.params.entoken}`);
             return <Redirect to="/sign-in" />
-         }
-         else return <Redirect to={`/q/${this.props.match.params.entoken}`} />
+         } else return <Redirect to={`/q/${this.props.match.params.entoken}`} />
       }
       else return (
          <React.Fragment>
@@ -179,6 +182,7 @@ class PublicQuoteView extends Component {
                               </div>
                               <AcceptBox />
                               <DeclineCommentShow />
+
                            </PublicQuoteItemWrapper>
                         </PublicViewFullWrapper>
                      </div>
