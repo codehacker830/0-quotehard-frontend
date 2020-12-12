@@ -6,28 +6,25 @@ import DraftSection from './DraftSection';
 
 class QuoteTableShow extends Component {
    render() {
-      console.log(" =============== this.props.quotes   ///", this.props.quotes);
-      const draftQuotes = this.props.quotes.filter((it) => it.status === "draft");
-      const awaitingQuotes = this.props.quotes.filter((it) => it.status === "awaiting");
-      const acceptedQuotes = this.props.quotes.filter((it) => it.status === "accepted");
-      const declinedQuotes = this.props.quotes.filter((it) => it.status === "declined");
+      const { quotes } = this.props;
+      const draftQuotes = quotes.filter((it) => it.status === "draft");
+      const awaitingQuotes = quotes.filter((it) => it.status === "awaiting");
+      const acceptedQuotes = quotes.filter((it) => it.status === "accepted");
+      const declinedQuotes = quotes.filter((it) => it.status === "declined");
 
-      return (
+      if (!quotes.length) return (<div className="col-md-6"></div>);
+      else return (
          <div className="col-md-6">
-            {
-               this.props.quotes.length ?
-                  <div className="mb-4">
-                     {/* Draft Section */}
-                     <DraftSection draftQuotes={draftQuotes} />
-                     {/* Awating Acceptance Section*/}
-                     <AwaitingSection awaitingQuotes={awaitingQuotes} />
-                     {/* Accepted Section */}
-                     <AcceptedSection acceptedQuotes={acceptedQuotes} />
-                     {/* Declined Section */}
-                     <DeclinedSection declinedQuotes={declinedQuotes} />
-                  </div>
-                  : null
-            }
+            <div className="mb-4">
+               {/* Draft Section */}
+               <DraftSection draftQuotes={draftQuotes} />
+               {/* Awating Acceptance Section*/}
+               <AwaitingSection awaitingQuotes={awaitingQuotes} />
+               {/* Accepted Section */}
+               <AcceptedSection acceptedQuotes={acceptedQuotes} />
+               {/* Declined Section */}
+               <DeclinedSection declinedQuotes={declinedQuotes} />
+            </div>
          </div>
       );
    }

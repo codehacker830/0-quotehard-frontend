@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
-import SubHeader from '../components/SubHeader';
-import Footer from '../components/Footer';
 import { Switch, Route } from 'react-router-dom';
 import asyncComponent from '../util/asyncComponent';
 import { connect } from 'react-redux';
