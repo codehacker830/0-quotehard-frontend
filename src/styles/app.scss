@@ -766,3 +766,25 @@ a.nav-link.active {
    border-color: transparent;
    background: rgba(209,229,159,.2);
 }
+
+.starterTips {
+   margin-bottom: 60px;
+}
+.starterTips-title {
+   margin-bottom: 15px;
+}
+
+.starterTips ul {
+   list-style: none;
+   padding-left: 0;
+   margin-bottom: 10px;
+}
+
+.starterTips .starterTips-done {
+   color: #707070;
+}
+
+.starterTips li {
+   padding-bottom: 6px;
+   font-weight: 400;
+}

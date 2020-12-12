@@ -14,6 +14,7 @@ export const QuoteToContactsShow = () => {
       const newCL = toPeopleList.filter((it, index) => index !== ind);
       dispatch(updateQuoteToPeopleList(newCL));
    }
+   console.log('toPeopleList', toPeopleList);
    return (
       <React.Fragment>
          {

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import AcceptedSection from './AcceptedSection';
 import AwaitingSection from './AwaitingSection';
 import DeclinedSection from './DeclinedSection';
 import DraftSection from './DraftSection';
+import StarterTips from './StarterTips';
 
 class QuoteTableShow extends Component {
    render() {
@@ -15,7 +17,7 @@ class QuoteTableShow extends Component {
       if (!quotes.length) return (<div className="col-md-6"></div>);
       else return (
          <div className="col-md-6">
-            <div className="mb-4">
+            <div className="mb-5">
                {/* Draft Section */}
                <DraftSection draftQuotes={draftQuotes} />
                {/* Awating Acceptance Section*/}
@@ -25,6 +27,7 @@ class QuoteTableShow extends Component {
                {/* Declined Section */}
                <DeclinedSection declinedQuotes={declinedQuotes} />
             </div>
+            <StarterTips />
          </div>
       );
    }

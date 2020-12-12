@@ -8,8 +8,8 @@ class NewQuoteBtn extends Component {
         super(props);
         this.state = {
             loading: false,
-
             dropdownOpen: false,
+            defaultTemplateId: null,
             templates: [],
         };
         this.dropdownContainer = React.createRef();
@@ -17,15 +17,21 @@ class NewQuoteBtn extends Component {
 
     componentDidMount() {
         window.addEventListener('click', this.onClickOutsideHandler);
-        // get all quotes and templates
-        axios.get('/templates/current').then(({ data }) => {
+
+        // get all current templates and default ID
+        const Promise1 = axios.get(`/templates/status/current`);
+        const Promise2 = axios.get(`/templates/defaultId`);
+        Promise.all([Promise1, Promise2]).then((values) => {
+            const { defaultTemplateId } = values[1].data;
+            console.log('defaultTemplateId', values)
             this.setState({
                 loading: false,
-                templates: data.templates
+                templates: values[0].data.templates,
+                defaultTemplateId
             })
         }).catch(err => {
             this.setState({ loading: false });
-            console.error("  get current template error ===>", err);
+            console.error(" error ===>", err);
         });
     }
     onClickOutsideHandler = (ev) => {
@@ -60,24 +66,41 @@ class NewQuoteBtn extends Component {
                             }
                         </button>
                         <div className={`dropdown-menu dropdown-menu-left p-0 border ${this.state.dropdownOpen ? "show" : ""}`}>
-                            <div className="p-2">
+                            <ul className="choices" data-tg-control="QuoteNew">
                                 {
                                     this.state.templates.map((template, index) => {
-                                        return (
-                                            <Link className="dropdown-item" to={`/app/quote/get/from-template/${template._id}`} key={index}>{template.title}</Link>
+                                        if (template._id === this.state.defaultTemplateId) return (
+                                            <>
+                                                <li key={index}>
+                                                    <Link to={`/app/quote/get/from-template/${template._id}`} className="btn-in-action">
+                                                        <span className="text-secondary"><i className="fa fa-fw fa-star" /></span>&nbsp;
+                                                        <span>{template.title}</span>
+                                                    </Link>
+                                                </li>
+                                                <li className="choices-break" />
+                                            </>
+                                        );
+                                        else return (
+                                            <li key={index}>
+                                                <Link to={`/app/quote/get/from-template/${template._id}`} className="btn-in-action">
+                                                    <span>{template.title}</span>
+                                                </Link>
+                                            </li>
                                         );
                                     })
                                 }
-                                <div role="separator" className="dropdown-divider" />
-                                <Link className="dropdown-item" to={{
-                                    pathname: QUOTE_GET_PATH,
-                                    state: {
-                                        from: this.props.location.pathname
-                                    }
-                                }}>
-                                    New Quote, without Template
-                           </Link>
-                            </div>
+                                <li className="choices-break" />
+                                <li>
+                                    <Link className="btn-in-action" to={{
+                                        pathname: QUOTE_GET_PATH,
+                                        state: {
+                                            from: this.props.location.pathname
+                                        }
+                                    }}>
+                                        New Quote, without Template
+                                    </Link>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>

@@ -35,7 +35,7 @@ export const getQuoteDataById = (quoteId) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
-         const { data } = await axios.get(`/quotes/get-by-id/${quoteId}`);
+         const { data } = await axios.get(`/quotes/id/${quoteId}`);
          console.log(" Quote get by id response  =>", data);
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: GET_QUOTE, payload: data.quote });
@@ -52,7 +52,11 @@ export const getContentTemplateById = (quoteTemplateId) => {
       try {
          const { data } = await axios.get(`/templates/id/${quoteTemplateId}`);
          const { status, title, settings, items, notes } = data.template;
-         const payload = { status, title, settings, items, notes };
+         const payload = {
+            toPeopleList: [],
+            status, title, settings, items, notes,
+            discussions: []
+         };
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: GET_QUOTE, payload: payload });
       } catch (err) {

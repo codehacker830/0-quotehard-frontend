@@ -17,11 +17,9 @@ export default class TemplateItems extends Component {
    componentDidMount() {
       this.mounted = true;
       if (this.mounted) {
-         console.log("asdfadsfasdf");
-         const Promise1 = axios.get('/templates');
-         const Promise2 = axios.get(`/templates/default_id`);
+         const Promise1 = axios.get(`/templates/status/${this.state.filterStatus}`);
+         const Promise2 = axios.get(`/templates/defaultId`);
          Promise.all([Promise1, Promise2]).then((values) => {
-            console.log("values ==========================>", values);
             const { defaultTemplateId } = values[1].data;
             this.setState({
                templates: values[0].data.templates,
@@ -33,9 +31,16 @@ export default class TemplateItems extends Component {
          });
       }
    }
+   componentDidUpdate(prevProps, prevState) {
+      if (prevState.filterStatus !== this.state.filterStatus) {
+         axios.get(`/templates/status/${this.state.filterStatus}`).then(({ data }) => {
+            this.setState({ templates: data.templates });
+         })
+      }
+   }
    render() {
       const { history } = this.props;
-      const templateList = this.state.templates.filter((template) => template.status === this.state.filterStatus);
+      const { templates } = this.state;
       return (
          <div className="content">
             <div className="block block-rounded">
@@ -75,7 +80,7 @@ export default class TemplateItems extends Component {
             <div className="block block-rounded">
                <div className="block-content">
                   {
-                     templateList.length === 0 ?
+                     templates.length === 0 ?
                         <InlineHelp>
                            Templates are collections of items.
                         <br />Save time and improve consistency by making your ideal quote reusable.
@@ -85,7 +90,7 @@ export default class TemplateItems extends Component {
                            <table className="quotient-table">
                               <tbody className="rowClick">
                                  {
-                                    templateList.map((item, index) => {
+                                    templates.map((item, index) => {
                                        return (
                                           <tr onClick={() => history.push(`/app/content/template/${item._id}`)} key={index}>
                                              <td>
@@ -111,7 +116,7 @@ export default class TemplateItems extends Component {
                                  }
                               </tbody>
                            </table>
-                           <TotalLabelFor list={templateList} />
+                           <TotalLabelFor list={templates} />
                         </React.Fragment>
                   }
                </div>

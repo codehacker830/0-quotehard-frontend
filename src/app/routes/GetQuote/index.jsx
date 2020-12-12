@@ -75,7 +75,7 @@ class GetQuote extends Component {
       } else if (this.props.match.path = QUOTE_BY_ID_PATH) {
          const quoteId = this.props.match.params.id;
          this.setState({ loading: true, type: "SAVE_NEXT" });
-         axios.put(`/quotes/${quoteId}`, data)
+         axios.put(`/quotes/id/${quoteId}`, data)
             .then(({ data }) => {
                console.log("uuuuuuuuuuuuuuuuu =>", data);
                toast.success("Quote was defined.", toastSuccessConfig);
@@ -124,7 +124,7 @@ class GetQuote extends Component {
       } else if (this.props.match.path = QUOTE_BY_ID_PATH) {
          const quoteId = this.props.match.params.id;
          this.setState({ loading: true, type: "SAVE" });
-         axios.put(`/quotes/${quoteId}`, data)
+         axios.put(`/quotes/id/${quoteId}`, data)
             .then(({ data }) => {
                console.log("uuuuuuuuuuuuuuuuu =>", data);
                this.setState({ loading: false, type: null });
@@ -147,6 +147,7 @@ class GetQuote extends Component {
       await this.props.getSalesCategories('current');
       await this.props.getSalesTaxes('current');
 
+      
       if (this.props.match.path === QUOTE_GET_PATH) {
 
       }
