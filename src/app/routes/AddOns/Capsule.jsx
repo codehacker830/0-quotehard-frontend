@@ -34,7 +34,7 @@ export default class Capsule extends Component {
 
                   <h4 className="mb-2">Create Quotes from Capsule</h4>
                   <div className="mb-4 ml-3">
-                     <p>You can add a time saving link within Capsule to create a new Quotient Quote.</p>
+                     <p>You can add a time saving link within Capsule to create a new Quotehard Quote.</p>
                      <button className="btn btn-alt-primary">See Instructions...</button>
                   </div>
                </div>

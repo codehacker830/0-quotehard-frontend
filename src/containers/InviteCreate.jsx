@@ -53,7 +53,7 @@ export const InviteCreate = (props) => {
                      <div className="col-sm-8 col-xl-6">
                         <div className="py-3">
                            <div className="form-group">
-                              <h1 className="font-w700">Welcome to Quotient!</h1>
+                              <h1 className="font-w700">Welcome to Quotehard!</h1>
                               <p className="font-size-h4">
                                  <strong>
                                     You have been invited to create and send quotes for SilverCompany.

@@ -19,7 +19,7 @@ export default class CustomEmail extends Component {
                   <div className="ml-2 mt-3">
                      <div className="form-check mb-2">
                         <input className="form-check-input" type="radio" id="viaQuotient" name="via-email" />
-                        <label className="form-check-label text-black" htmlFor="viaQuotient"><strong>Quotient</strong></label>
+                        <label className="form-check-label text-black" htmlFor="viaQuotient"><strong>Quotehard</strong></label>
                         <div className="p-3 bg-light border maxWidth-400">
                            <div>{`From: Raffale <mail@e.quotientapp.com>`}</div>
                            <div>{`Replies will go to: <Raffale@gmail.com>`}</div>

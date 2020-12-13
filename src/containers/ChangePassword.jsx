@@ -95,7 +95,7 @@ class ChangePassword extends Component {
                               </button>
                               <p className="mt-3 mb-0 d-lg-flex justify-content-lg-between">
                                  <a className="btn btn-sm btn-light d-block d-lg-inline-block mb-1" href="https://quotehard.com/">
-                                    <i className="fa fa-fw fa-sign-out-alt text-muted mr-1" /> Cancel, return to Quotient home page
+                                    <i className="fa fa-fw fa-sign-out-alt text-muted mr-1" /> Cancel, return to Quotehard home page
                                  </a>
                               </p>
                            </div>

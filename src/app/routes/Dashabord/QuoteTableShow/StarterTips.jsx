@@ -8,7 +8,7 @@ export default class StarterTips extends Component {
                 <h3 className="starterTips-title">Getting started checklist</h3>
                 <ul>
                     <li className=" starterTips-done">
-                        <i className="fa fa-fw fa-check" /> Quotient account created </li>
+                        <i className="fa fa-fw fa-check" /> Quotehard account created </li>
                     <li className=" starterTips-done">
                         <i className="fa fa-fw fa-check" /> Company logo. Nice! </li>
                     <li className="">

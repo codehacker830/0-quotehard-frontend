@@ -386,7 +386,7 @@ class SignUp extends Component {
                                  Create Account
                               </button>
                               <p className="mt-4 mb-0 d-lg-flex justify-content-center">
-                                 By creating an account, you agree to Quotient’s
+                                 By creating an account, you agree to Quotehard’s
                                  <a href="https://www.quotientapp.com/terms" className="px-1">Terms of Service.</a>
                               </p>
                            </div>

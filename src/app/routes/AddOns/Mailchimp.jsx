@@ -21,7 +21,7 @@ export default class Mailchimp extends Component {
 
                   <h4 className="mb-2">Copy contacts to a Mailchimp list</h4>
                   <div className="mb-4 ml-3">
-                     <p>Import your current Quotient contacts into Mailchimp, and continue to copy contacts to Mailchimp every time a quote is sent.</p>
+                     <p>Import your current Quotehard contacts into Mailchimp, and continue to copy contacts to Mailchimp every time a quote is sent.</p>
                      <button className="btn btn-alt-primary"><i className="fa fa-fw fa-plus-circle" /> Enable</button>
                   </div>
                </div>

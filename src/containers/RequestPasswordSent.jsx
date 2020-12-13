@@ -19,7 +19,7 @@ export default class RequestPasswordSent extends Component {
                            <div className="form-group text-center">
                               <p className="mt-3 mb-0 d-lg-flex justify-content-lg-between">
                                  <a className="btn btn-sm btn-light d-block d-lg-inline-block mb-1" href="https://quotehard.com">
-                                    ← Quotient home page
+                                    ← Quotehard home page
                                  </a>
                               </p>
                            </div>

@@ -33,7 +33,7 @@ export const AccountInformation = (props) => {
                <h1>Account Information</h1>
 
                <div className="mb-4">
-                  <label htmlFor="quotientAccountName">Quotient Account Name</label>
+                  <label htmlFor="quotientAccountName">Quotehard Account Name</label>
                   <input type="text" className="form-control rounded-0 font-size-h4 font-w700" id="quotientAccountName" name="quotientAccountName"
                      value={accountCompany.companyName}
                      onChange={(ev) => {

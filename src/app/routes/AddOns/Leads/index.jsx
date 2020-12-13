@@ -11,7 +11,7 @@ export default class Leads extends Component {
          isShowCode: false
       }
       this.code = "";
-      this.leadFormCode = `<!-- Quotient Lead Form -->
+      this.leadFormCode = `<!-- Quotehard Lead Form -->
       <div id="quotient-lead-form"></div>
       <script>
             (function (w, s, o, g, i, a, m) {
@@ -22,7 +22,7 @@ export default class Leads extends Component {
             })(window, document, 'script', 'https://www.quotientapp.com/e/39310-1d2ce4e9213f4170a3ceb990d0ae61f5/form/embed.js');
             _qLead.id = 'quotient-lead-form';
       </script>
-      <!-- End Quotient Lead Form -->`;
+      <!-- End Quotehard Lead Form -->`;
    }
 
    _onReady = (event) => {
@@ -40,7 +40,7 @@ export default class Leads extends Component {
                <div className="maxWidth-800">
                   <p className="font-size-h5 mb-5">
                      Leads allow your customers to send you a quote request via an online form. Their details will
-                     be added directly into Quotient, ready to be converted into a quote. You'll get notified
+                     be added directly into Quotehard, ready to be converted into a quote. You'll get notified
                      instantly by email and on your Dashboard when a new request happens.
                   </p>
                   <div className="mb-5">

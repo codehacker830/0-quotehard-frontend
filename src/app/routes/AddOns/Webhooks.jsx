@@ -14,7 +14,7 @@ export default class Webhooks extends Component {
                <div className="mb-5">
                   <div className="maxWidth-800 mb-4">
                      <p className="font-size-h4">
-                        Webhooks allow you to receive a payload of data in JSON format whenever certain events happen on this Quotient Account.
+                        Webhooks allow you to receive a payload of data in JSON format whenever certain events happen on this Quotehard Account.
                      <a href="https://www.quotientapp.com/webhooks"> Read the Documentation.</a>
                      </p>
 

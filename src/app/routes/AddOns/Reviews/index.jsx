@@ -12,7 +12,7 @@ export default class Reviews extends Component {
          isShowReviewPageCode: false,
       }
       this.code = "";
-      this.reviewFormCode = `<!-- Quotient Review Form -->
+      this.reviewFormCode = `<!-- Quotehard Review Form -->
       <div id="quotient-review-form"></div>
       <script>
           (function (w, s, o, g, i, a, m) {
@@ -23,8 +23,8 @@ export default class Reviews extends Component {
           })(window, document, 'script', 'https://www.quotientapp.com/e/39310-e00e6ab738d94571b39bc1db4f0c019d/reviews/form-embed.js');
           _qReviewForm.id = 'quotient-review-form';
       </script>
-      <!-- End Quotient Ask for Review Form -->`;
-      this.reviewPageCode = `<!-- Quotient Reviews Page -->
+      <!-- End Quotehard Ask for Review Form -->`;
+      this.reviewPageCode = `<!-- Quotehard Reviews Page -->
       <div id="quotient-reviews-page"></div>
       <script>
           (function (w, s, o, g, i, a, m) {
@@ -35,7 +35,7 @@ export default class Reviews extends Component {
           })(window, document, 'script', 'https://www.quotientapp.com/e/39310-e00e6ab738d94571b39bc1db4f0c019d/reviews/page-embed.js');
           _qReviewPage.id = 'quotient-reviews-page';
       </script>
-      <!-- End Quotient Reviews Page -->`;
+      <!-- End Quotehard Reviews Page -->`;
    }
 
    _onReady = (event) => {

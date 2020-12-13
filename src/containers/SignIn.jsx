@@ -65,7 +65,7 @@ class SignIn extends Component {
                         <Link to="/" className="d-flex justify-content-center">
                            <img src="/logo-180.png" className="logo" alt="logo" />
                         </Link>
-                        <span className="text-dark font-w700 font-size-h2">Sign in to Quotient</span>
+                        <span className="text-dark font-w700 font-size-h2">Sign in to Quotehard</span>
                         {
                            isInvited && !isAlreadyAccepted ?
                               <p className="font-size-h4">
@@ -128,7 +128,7 @@ class SignIn extends Component {
                                     state: this.props.location.state
                                  }}>
                                     <i className="fa fa-plus text-muted mr-1" />
-                                    Create a new Quotient Account
+                                    Create a new Quotehard Account
                                  </Link>
                               </p>
                            </div>

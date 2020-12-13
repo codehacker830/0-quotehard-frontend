@@ -33,7 +33,7 @@ class InviteExisting extends Component {
                               You are currently signed in as <strong>... email ...</strong> - <Link to="#">sign out and create a new sign in...</Link>
                            </h4>
                            <h4>
-                              <Link to="#">Don't accept invite and return to Quotient website.</Link>
+                              <Link to="#">Don't accept invite and return to Quotehard website.</Link>
                            </h4>
                         </div>
                      </div>
