@@ -2,13 +2,13 @@ import { isNumber } from 'highcharts';
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import AddAddressBtn from '../../components/Contact/AddAddressBtn';
-import AddPhoneBtn from '../../components/Contact/AddPhoneBtn';
-import CompleterCompany from '../../components/Contact/CompleterCompany';
-import NavCrump from '../../components/NavCrump';
-import axios from '../../util/Api';
-import { toastSuccessConfig } from '../../util/toastrConfig';
-import { ToastErrorNotification } from '../../util';
+import AddAddressBtn from '../../../components/Contact/AddAddressBtn';
+import AddPhoneBtn from '../../../components/Contact/AddPhoneBtn';
+import CompleterCompany from '../../../components/Contact/CompleterCompany';
+import NavCrump from '../../../components/NavCrump';
+import axios from '../../../util/Api';
+import { toastSuccessConfig } from '../../../util/toastrConfig';
+import { ToastErrorNotification } from '../../../util';
 
 export default class EditContact extends Component {
    constructor(props) {

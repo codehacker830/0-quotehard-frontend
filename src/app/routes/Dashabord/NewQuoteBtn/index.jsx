@@ -19,8 +19,8 @@ class NewQuoteBtn extends Component {
         window.addEventListener('click', this.onClickOutsideHandler);
 
         // get all current templates and default ID
-        const Promise1 = axios.get(`/templates/status/current`);
-        const Promise2 = axios.get(`/templates/defaultId`);
+        const Promise1 = axios.get('/templates/status/current');
+        const Promise2 = axios.get('/templates/defaultId');
         Promise.all([Promise1, Promise2]).then((values) => {
             const { defaultTemplateId } = values[1].data;
             console.log('defaultTemplateId', values)

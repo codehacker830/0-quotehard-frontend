@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import InlineHelp from '../../components/InlineHelp';
-import TotalLabelFor from '../../components/TotalLabelFor';
-import axios from '../../util/Api';
+import InlineHelp from '../../../components/InlineHelp';
+import TotalLabelFor from '../../../components/TotalLabelFor';
+import axios from '../../../util/Api';
 
 export default class Contacts extends Component {
    state = {
