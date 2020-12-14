@@ -27,9 +27,6 @@ class CreatePriceItem extends Component {
       e.preventDefault()
       console.log(this.state.fileArray)
    }
-   updateItem = (ind, item) => {
-      this.setState({ priceItem: item.priceItem });
-   }
    onClickSubmit = () => {
       const { priceItem } = this.props.quote.items[0];
       const {
@@ -148,7 +145,6 @@ class CreatePriceItem extends Component {
             <div className="content bg-custom">
                <div className="mt-6 mb-5">
                   <PriceItemForm
-                     priceItem={priceItem}
                      index={0}
                      isPaperClipDisabled={false}
                      isSettingDisabled={false}
@@ -156,6 +152,7 @@ class CreatePriceItem extends Component {
                      isOrderUpDisabled={true}
                      isOrderDownDisabled={true}
                      isRemoveDisabled={true}
+                     priceItem={priceItem}
                   />
                </div>
 

@@ -17,8 +17,8 @@ const NotesSection = (props) => {
                 isPaperClipDisabled={false}
                 isSettingDisabled={true}
                 isAddItemDisabled={false}
-                isOrderUpDisabled={false}
-                isOrderDownDisabled={false}
+                isOrderUpDisabled={index === 0}
+                isOrderDownDisabled={index === notes.length - 1}
                 isRemoveDisabled={false}
                 {...item}
             />

@@ -444,8 +444,7 @@ class PriceItemForm extends Component {
                               <img src={url} className="mr-2 image-preview-size" alt="..." />
                               {
                                  !isViewOnly &&
-                                 <button className="btn btn-sm btn-light"
-                                    onClick={() => this.removeImageItem(url)}>
+                                 <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)} disabled={isViewOnly}>
                                     <i className="fa fa-times-circle"></i>
                                  </button>
                               }

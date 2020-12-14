@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { updateQuoteItems } from '../../../actions/Data';
+import { updateQuoteNotes } from '../../../actions/Data';
 import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../actions/GlobalSettings';
 import NavCrump from '../../../components/NavCrump';
 import TextItemForm from '../../../components/TextItemForm';
@@ -20,20 +20,9 @@ class CreateTextItem extends Component {
          file: [null],
          textItem: { ...initTextItem }
       };
-      this.hiddenFileInput = React.createRef();
-      this.linkTo = this.props.location.state ? this.props.location.state.from : "/app/content/item-text/browse";
-      this.linkName = this.props.location.state && this.props.location.state.from.includes("/app/content/template/") ? "Edit Template" : "Items";
-   }
-   removeImageItem = (url) => {
-      const newFileArray = this.state.fileArray.filter(item => item !== url);
-      this.setState({ fileArray: newFileArray });
-   }
-   uploadFiles = (e) => {
-      e.preventDefault()
-      console.log(this.state.fileArray)
    }
    onClickCreate = () => {
-      const { textHeading, longDescription, files } = this.state.textItem;
+      const { textHeading, longDescription, files } = this.props.quote.notes[0].textItem;
       if (textHeading === "") { toast.info("You are missing a Title.", toastInfoConfig); return; }
       const payload = { textHeading, longDescription, files };
       if (this.props.location.pathname === '/app/content/item-text/create-new') {
@@ -55,10 +44,10 @@ class CreateTextItem extends Component {
    }
    updateItem = (ind, item) => {
       // console.log("adfasdf ", ind, item);
-      const { items } = this.props.quote;
-      let newItems = [...items];
-      newItems[ind] = item;
-      this.props.updateQuoteItems(newItems);
+      const { notes } = this.props.quote;
+      let newNotes = [...notes];
+      newNotes[ind] = item;
+      this.props.updateQuoteNotes(newNotes);
    }
    async componentDidMount() {
       await this.props.getDefaultSalesCategory();
@@ -69,33 +58,39 @@ class CreateTextItem extends Component {
       if (this.props.match.path === '/app/content/item-text/view/:id') {
          // Get textItem details with textItem ID
          axios.get(`/templates/textitem/id/${this.props.match.params.id}`).then(({ data }) => {
-            console.log(" res ^^^^^^^^^^^^^^^^^^^^^^^^^^^ =>", data);
+            console.log(" r################", data);
             const { textItem } = data;
-            this.setState({
-               textItem: textItem
-            });
+            const newItem = {
+               category: "textItem",
+               textItem
+            };
+            this.updateItem(0, newItem);
          }).catch(err => {
             console.error("get textItem detail api error =>", err);
          });
       }
    }
    render() {
+      const linkTo = this.props.location.state ? this.props.location.state.from : "/app/content/item-text/browse";
+      const linkName = this.props.location.state && this.props.location.state.from.includes("/app/content/template/") ? "Edit Template" : "Items";
+      const { textItem } = this.props.quote.notes[0];
       return (
          <React.Fragment>
-            <NavCrump linkTo={this.linkTo}>
-               {this.linkName}
+            <NavCrump linkTo={linkTo}>
+               {linkName}
             </NavCrump>
             <div className="content bg-custom">
                <div className="mt-6 mb-5">
                   <TextItemForm
                      index={0}
+                     isNote={true}
                      isPaperClipDisabled={false}
                      isSettingDisabled={true}
                      isAddItemDisabled={true}
                      isOrderUpDisabled={true}
                      isOrderDownDisabled={true}
                      isRemoveDisabled={true}
-                     textItem={this.state.textItem}
+                     textItem={textItem}
                   />
                </div>
 
@@ -117,7 +112,7 @@ const mapStateToProps = ({ mainData }) => {
    return { quote };
 };
 const mapDispatchToProps = {
-   updateQuoteItems,
+   updateQuoteNotes,
    getDefaultSalesCategory,
    getDefaultSalesTax,
    getSalesCategories,

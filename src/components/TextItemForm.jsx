@@ -311,9 +311,12 @@ class TextItemForm extends Component {
                         {(this.props.textItem.files || []).map((url, index) => (
                            <div className="p-1" key={index}>
                               <img src={url} className="mr-2 image-preview-size" alt="..." />
-                              <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)}>
-                                 <i className="fa fa-times-circle"></i>
-                              </button>
+                              {
+                                 !isViewOnly &&
+                                 <button className="btn btn-sm btn-light" onClick={() => this.removeImageItem(url)}>
+                                    <i className="fa fa-times-circle"></i>
+                                 </button>
+                              }
                            </div>
                         ))}
                      </div>
