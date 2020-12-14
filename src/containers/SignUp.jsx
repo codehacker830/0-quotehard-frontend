@@ -91,7 +91,7 @@ class SignUp extends Component {
                               </div>
 
                               <div className="form-group">
-                                 <label className="font-w700 font-size-h4">Company Info</label>
+                                 <label className="font-w700 font-size-h4">Company InfoInColumns</label>
                                  <input type="text" className="form-control" placeholder="Name of Company or Organisation" value={companyName} onChange={(ev) => this.setState({ companyName: ev.target.value })} />
                               </div>
                               <div className="form-group">
@@ -396,9 +396,9 @@ class SignUp extends Component {
                   </div>
                </div>
                {/* END Main Section */}
-               {/* Meta Info Section */}
+               {/* Meta InfoInColumns Section */}
 
-               {/* END Meta Info Section */}
+               {/* END Meta InfoInColumns Section */}
             </div>
          </main>
       );

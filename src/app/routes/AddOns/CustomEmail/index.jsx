@@ -21,7 +21,7 @@ export default class CustomEmail extends Component {
                         <input className="form-check-input" type="radio" id="viaQuotient" name="via-email" />
                         <label className="form-check-label text-black" htmlFor="viaQuotient"><strong>Quotehard</strong></label>
                         <div className="p-3 bg-light border maxWidth-400">
-                           <div>{`From: Raffale <mail@e.quotientapp.com>`}</div>
+                           <div>{`FromInColumns: Raffale <mail@e.quotientapp.com>`}</div>
                            <div>{`Replies will go to: <Raffale@gmail.com>`}</div>
                         </div>
                         <span>The most reliable and future-proof option.</span>
@@ -30,7 +30,7 @@ export default class CustomEmail extends Component {
                         <input className="form-check-input" type="radio" id="viaYourOwnDomain" name="via-email" />
                         <label className="form-check-label text-black" htmlFor="viaYourOwnDomain"><strong>Your Own Domain</strong></label>
                         <div className="p-3 bg-light border maxWidth-400">
-                           <div>{`From: Raffale <Raffale@gmail.com>`}</div>
+                           <div>{`FromInColumns: Raffale <Raffale@gmail.com>`}</div>
                         </div>
                         <span>If you choose this option make sure you verify your domain… to reduce the risk of Quotes being caught up in spam.</span>
                      </div>

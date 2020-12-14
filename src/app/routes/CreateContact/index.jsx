@@ -214,7 +214,7 @@ export default class CreateContact extends Component {
                                     </div>
                                 </div>
 
-                                {/* Address Set From */}
+                                {/* Address Set FromInColumns */}
                                 {
                                     this.state.phones && this.state.phones.map((item, index) => {
                                         return (

@@ -221,7 +221,7 @@ export default class EditContact extends Component {
                            )
                         }
 
-                        {/* Address Set From */}
+                        {/* Address Set FromInColumns */}
                         {
                            this.state.phones.map((item, index) => {
                               return (

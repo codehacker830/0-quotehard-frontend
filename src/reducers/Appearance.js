@@ -25,14 +25,9 @@ const initialState = {
    pdfPageSize: 1,
 
    companyDisplayName: "",
-   companyAddress: "",
-   companyWebsite: "",
-   companyPhone: "",
-
-   // companyDisplayName: "companyDisplayName",
-   // companyAddress: "companyAddress",
-   // companyWebsite: "www.example.com",
-   // companyPhone: "companyPhone-123",
+   address: "",
+   website: "",
+   phone: "",
 };
 
 export default (state = initialState, action) => {

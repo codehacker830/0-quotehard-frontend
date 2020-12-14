@@ -139,9 +139,9 @@ class SignIn extends Component {
                   </div>
                </div>
                {/* END Main Section */}
-               {/* Meta Info Section */}
+               {/* Meta InfoInColumns Section */}
 
-               {/* END Meta Info Section */}
+               {/* END Meta InfoInColumns Section */}
             </div>
          </main>
       );

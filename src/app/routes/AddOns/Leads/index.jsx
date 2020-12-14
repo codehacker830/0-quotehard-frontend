@@ -93,7 +93,7 @@ export default class Leads extends Component {
                   <div className="w-100 border-bottom mb-5"></div>
 
                   <div className="mb-2">
-                     <h3>How can I use the Lead From?</h3>
+                     <h3>How can I use the Lead FromInColumns?</h3>
                      <ul className="fa-ul">
                         <li>
                            <span className="fa-li">
