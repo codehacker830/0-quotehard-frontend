@@ -191,8 +191,6 @@ class TextItemForm extends Component {
       }
    }
    render() {
-      console.log("TextItemForm State ______", this.state);
-      console.log("TextItemForm Props ______", this.props);
       const { isViewOnly } = this.props;
       return (
          <React.Fragment>

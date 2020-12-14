@@ -28,9 +28,10 @@ class GetTemplate extends Component {
 
          status: "",
          isDefault: false,
+         isDeleteAlertOpen: false
       }
    }
-   onClickCreate = () => {
+   onClickCreate = async () => {
       const { title, items, notes } = this.props.quote;
       const {
          discount,
@@ -47,22 +48,21 @@ class GetTemplate extends Component {
          displayItemCode
       };
       if (title === "") { toast.info("You are missing a Template Title."); return; }
-      const data = {
+      const payload = {
          title,
          settings,
          items,
          notes
       };
-      axios.post('/templates', data)
-         .then(({ data }) => {
-            console.log("res data ---------------->", data);
-            toast.success("New Template was created.");
-            this.props.history.push(CONTENT_TEMPLATES_PATH)
-         })
-         .catch(err => {
-            console.error(" error ===>", err);
-            toast.error("Template failed to create");
-         });
+      try {
+         const { data } = axios.post('/templates', payload);
+         console.log("res data ---------------->", data);
+         toast.success("New Template was created.");
+         this.props.history.push(CONTENT_TEMPLATES_PATH)
+      } catch (err) {
+         console.error(" error ===>", err);
+         toast.error("Template failed to create");
+      }
    }
    onClickUpdate = async () => {
       console.log('GET TEMPLATE QUOTE ____', this.props.quote)
@@ -140,10 +140,17 @@ class GetTemplate extends Component {
       this.props.history.push(`/app/content/template/get/duplicate/${templateId}`)
    }
    onClickDelete = () => {
-
+      const templateId = this.props.match.params.id;
+      axios.delete(`/templates/id/${templateId}`).then(({ data }) => {
+         console.log(" success to undo tempalte as a default", data);
+         toast.success("Content template - deleted.");
+         this.props.history.push(CONTENT_TEMPLATES_PATH);
+      }).catch((err) => {
+         this.setState({ isDeleteAlertOpen: false });
+         console.error(" failed to undo template from default ", err);
+      });
    }
    async componentDidMount() {
-
       await this.props.getDefaultSalesCategory();
       await this.props.getDefaultSalesTax();
       await this.props.getSalesCategories('current');
@@ -237,7 +244,7 @@ class GetTemplate extends Component {
                            </button>
                         </li>
                         <li>
-                           <button className="btn-in-action" onClick={this.onClickDelete}>
+                           <button className="btn-in-action" onClick={() => this.setState({ isDeleteAlertOpen: true })}>
                               <div className="mx-3">
                                  <i className="fa fa-fw fa-trash-alt text-secondary" />
                               </div>
@@ -250,6 +257,21 @@ class GetTemplate extends Component {
                   </NavCrumpRight>
                }
             </NavCrump>
+            <div id="AlerterPage" style={{}}>
+               {
+                  this.state.isDeleteAlertOpen ?
+                     <div className="alertBar alertBar-prompt">
+                        <div className="container">
+                           <h4>Please confirm:</h4>
+                           <div className="btnSet">
+                              <button className="btn btn-lg btn-secondary mr-2" onClick={this.onClickDelete}>Delete</button>
+                              <button className="btn btn-lg" onClick={() => this.setState({ isDeleteAlertOpen: false })}>Cancel</button>
+                           </div>
+                        </div>
+                     </div>
+                     : null
+               }
+            </div>
             <div className="content bg-custom">
                <div className="mt-6 mb-5">
                   {/* Template Setting */}
@@ -272,10 +294,11 @@ class GetTemplate extends Component {
                   {/* Footer action button group */}
                   <div className="row p-3">
                      {
-                        this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH &&
+                        (this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH || this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH) &&
                         <React.Fragment>
                            <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={async () => {
-                              await this.onClickUpdate();
+                              if (this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH) await this.onClickUpdate();
+                              else if (this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH) await this.onClickCreate();
                               this.props.history.push(CONTENT_TEMPLATES_PATH);
                            }}>Save & Finish</button>
                            <button className="btn btn-lg btn-rounded btn-hero-secondary mr-1" onClick={this.onClickUpdate}>Save</button>
