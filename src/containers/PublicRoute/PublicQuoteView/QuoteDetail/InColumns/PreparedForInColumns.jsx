@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import CompanyContactAuthMemberLink from './ContactAuthLink/CompanyContactAuthMemberLink';
-import PersonContactLinkShow from './ContactAuthLink/PersonContactAuthMemberLink';
+import CompanyContactLink from '../ContactAuthLink/CompanyContactLink';
+import PersonContactLinkShow from '../ContactAuthLink/PersonContactLink';
 
 export default class PreparedForInColumns extends Component {
    render() {
@@ -9,7 +9,7 @@ export default class PreparedForInColumns extends Component {
          <>
             <label className="quote-detail-label">For</label>
             <div className="quote-detail-block">
-               <CompanyContactAuthMemberLink contact={firstPerson.company} />
+               <CompanyContactLink contact={firstPerson.company} />
             </div>
             <label className="quote-detail-label">To</label>
             <div className="quote-detail-block">

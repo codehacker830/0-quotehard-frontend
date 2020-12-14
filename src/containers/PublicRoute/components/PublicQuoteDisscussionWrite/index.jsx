@@ -1,10 +1,9 @@
 import React, { Component, createRef } from 'react'
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { updateQuoteDiscussions } from '../../../../actions/Data';
 import { checkIfTeamMember } from '../../../../util';
-import axios from '../../../../util/Api';
-import { toastErrorConfig, toastSuccessConfig, toastWarningConfig } from '../../../../util/toastrConfig';
 import CommentWrite from './CommentWrite';
 import PrivateNoteWrite from './PrivateNoteWrite';
 import QuestionWrite from './QuestionWrite';
@@ -18,14 +17,23 @@ class PublicQuoteDisscussionWrite extends Component {
             questionSectionShow: false,
         };
     }
+    onClickAskQuestion = () => {
+        const isPreviewMode = this.props.match.path === "/q/:entoken/preview";
+        if (isPreviewMode) {
+            toast.warn("This is just a preview.");
+            return;
+        }
+        this.setState({ questionSectionShow: true });
+    }
     render() {
         const { quote, teamMembers } = this.props;
         const isMember = checkIfTeamMember(quote.author, teamMembers);
+        const isPreviewMode = this.props.match.path === "/q/:entoken/preview";
         return (
             <div className="no_print u-section-2">
                 <div className="discuss-wrap">
                     {
-                        isMember ?
+                        isMember && !isPreviewMode ?
                             <React.Fragment>
                                 <div className={`discuss-button-wrap ${this.state.commentShow || this.state.privateNoteShow ? "isHidden" : ""}`}>
                                     {
@@ -40,7 +48,7 @@ class PublicQuoteDisscussionWrite extends Component {
                             </React.Fragment>
                             : <React.Fragment>
                                 <div className={`discuss-button-wrap ${this.state.questionSectionShow ? "d-none" : ""}`}>
-                                    <button className="btn btn-hero-lg btn-outline-primary mr-1 mb-3" onClick={() => this.setState({ questionSectionShow: true })}>Ask a Question</button>
+                                    <button className="btn btn-hero-lg btn-outline-primary mr-1 mb-3" onClick={this.onClickAskQuestion}>Ask a Question</button>
                                 </div>
                                 <QuestionWrite questionSectionShow={this.state.questionSectionShow} onClickCancel={() => this.setState({ questionSectionShow: false })} />
                             </React.Fragment>
@@ -58,4 +66,4 @@ const mapStateToProps = ({ mainData, teamSetting }) => {
 const mapDispatchToProps = {
     updateQuoteDiscussions
 }
-export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteDisscussionWrite)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PublicQuoteDisscussionWrite))

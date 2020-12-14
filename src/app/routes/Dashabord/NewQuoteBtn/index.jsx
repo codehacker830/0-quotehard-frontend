@@ -70,7 +70,7 @@ class NewQuoteBtn extends Component {
                                 {
                                     this.state.templates.map((template, index) => {
                                         if (template._id === this.state.defaultTemplateId) return (
-                                            <>
+                                            <React.Fragment key={index}>
                                                 <li key={index}>
                                                     <Link to={`/app/quote/get/from-template/${template._id}`} className="btn-in-action">
                                                         <span className="text-secondary"><i className="fa fa-fw fa-star" /></span>&nbsp;
@@ -78,7 +78,7 @@ class NewQuoteBtn extends Component {
                                                     </Link>
                                                 </li>
                                                 <li className="choices-break" />
-                                            </>
+                                            </React.Fragment>
                                         );
                                         else return (
                                             <li key={index}>

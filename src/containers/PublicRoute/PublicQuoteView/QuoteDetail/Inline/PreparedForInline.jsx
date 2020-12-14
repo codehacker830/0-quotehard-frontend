@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import CompanyContactAuthMemberLink from './ContactAuthLink/CompanyContactAuthMemberLink';
-import PersonContactLinkShow from './ContactAuthLink/PersonContactAuthMemberLink';
+import CompanyContactLink from '../ContactAuthLink/CompanyContactLink';
+import PersonContactLinkShow from '../ContactAuthLink/PersonContactLink';
 
 export default class PreparedForInline extends Component {
    render() {
@@ -10,7 +10,7 @@ export default class PreparedForInline extends Component {
             <div>
                <label>Prepared for</label>&nbsp;
                <span className="quote-detail-block">
-                  <CompanyContactAuthMemberLink contact={firstPerson.company} />
+                  <CompanyContactLink contact={firstPerson.company} />
                </span>
             </div>
             <div>

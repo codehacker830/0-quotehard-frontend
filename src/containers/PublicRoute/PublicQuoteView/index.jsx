@@ -28,6 +28,7 @@ import PublicQuoteDiscussionList from '../components/PublicQuoteDiscussionList';
 import { getPublicAppearanceWithEntoken } from '../../../actions/Appearance';
 import PublicQuoteDisscussionWrite from '../components/PublicQuoteDisscussionWrite';
 import AcceptBox from './AcceptBox';
+import PreviewBanner from './PreviewBanner';
 
 class PublicQuoteView extends Component {
    mounted = false;
@@ -148,17 +149,18 @@ class PublicQuoteView extends Component {
                   </NavCrump>
                </PublicVisiableOnlyAuthTeamMember>
                <div className="quoteCanvas-bg" style={{ backgroundColor: appearanceSetting.colors.background }}>
-
                   <PublicVisiableOnlyAuthTeamMember>
                      <StatusShowCase />
                   </PublicVisiableOnlyAuthTeamMember>
+
+                  <PreviewBanner />
 
                   <div className={`${SwitchQuoteLayoutClass(appearanceSetting.contactDetailLayout, appearanceSetting.layout)}`}>
                      <div className="quoteCanvas-page">
                         <PublicViewFullWrapper>
                            <PublicQuoteDetailWrapper>
                               <QuoteLogo />
-                              <QuoteDetail quote={quote} />
+                              <QuoteDetail />
                            </PublicQuoteDetailWrapper>
 
                            <PublicQuoteItemWrapper>
@@ -174,10 +176,7 @@ class PublicQuoteView extends Component {
                               </div>
 
                               <div id="discussion" className="discuss-wrap">
-                                 <h3 className="quote-discuss-h3">Questions &amp; Answers</h3>
                                  <PublicQuoteDiscussionList />
-                                 <div className="clear" />
-
                                  <PublicQuoteDisscussionWrite />
                               </div>
                               <AcceptBox />
@@ -186,9 +185,12 @@ class PublicQuoteView extends Component {
                            </PublicQuoteItemWrapper>
                         </PublicViewFullWrapper>
                      </div>
-                     <div className="no_print">
-                        <a className="powered-by powered-by-no powered-by-bg" href="https://www.quotientapp.com/" data-sheet="ignore"><img className="powered-by-black" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-black-01.png" alt="Quotehard. Simply Smarter Quotes." /><img className="powered-by-white" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-white-01.png" alt="Quotehard. Simply Smarter Quotes." /></a>
-                     </div>
+                     {/* <div className="no_print">
+                        <a className="powered-by powered-by-bg" href="http://www.qoutehard.com/">
+                           <img className="powered-by-black" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-black-01.png" alt="Quotehard. Simply Smarter Quotes." />
+                           <img className="powered-by-white" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-white-01.png" alt="Quotehard. Simply Smarter Quotes." />
+                        </a>
+                     </div> */}
                   </div>
                </div>
             </main>

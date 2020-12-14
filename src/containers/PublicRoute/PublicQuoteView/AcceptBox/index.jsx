@@ -20,9 +20,14 @@ class AcceptBox extends Component {
 
     }
     onClickAccept = () => {
+        if (!this.state.isAgree) { toast.success("Check the agree box to accept."); return; }
+        const isPreviewMode = this.props.match.path === "/q/:entoken/preview";
+        if(isPreviewMode) {
+            toast.warn("This is just a preview.");
+            return;
+        }
         const { entoken } = this.props.match.params;
         const { orderReferenceNumber, acceptedComment } = this.state;
-        if (!this.state.isAgree) { toast.success("Check the agree box to accept."); return; }
         this.setState({ loading: true });
         axios.post('/quotes/accept', { entoken, orderReferenceNumber, acceptedComment })
             .then(() => {
@@ -36,6 +41,11 @@ class AcceptBox extends Component {
             });
     }
     onClickDecline = () => {
+        const isPreviewMode = this.props.match.path === "/q/:entoken/preview";
+        if(isPreviewMode) {
+            toast.warn("This is just a preview.");
+            return;
+        }
         const { entoken } = this.props.match.params;
         this.props.history.push(`/q/${entoken}/decline`);
     }
@@ -44,7 +54,8 @@ class AcceptBox extends Component {
         const colors = { ...this.props.colors };
         const personFullName = person ? person.firstName + " " + person.lastName : "";
         const isMember = checkIfTeamMember(quote.author, teamMembers);
-        if (!isMember && quote.status === "awaiting") return (
+        const isPreviewMode = this.props.match.path === "/q/:entoken/preview";
+        if ((!isMember && quote.status === "awaiting") || isPreviewMode) return (
             <React.Fragment>
                 {/* Accept Box */}
                 <div className="acceptBox no_print" style={{ backgroundColor: `${colors.highlights}` }}>
@@ -99,7 +110,7 @@ class AcceptBox extends Component {
                     <div className="quote-box-accept">
                         <button className="btn btn-save btnAccept quote-btn-lg" disabled={this.state.loading} onClick={this.onClickAccept}>
                             {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
-                            Accept on behalf
+                            Accept
                         </button>
                         <span className="quote-box-decline-wrap">
                             <button className="btn btn-lg btn-lg-skinny" onClick={this.onClickDecline}>Decline</button>

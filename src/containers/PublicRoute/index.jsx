@@ -8,6 +8,7 @@ class PublicRoute extends Component {
         return (
             <Switch>
                 <Route exact path='/q/:entoken' component={asyncComponent(() => import("./PublicQuoteView"))} />
+                <Route exact path='/q/:entoken/preview' component={asyncComponent(() => import("./PublicQuoteView"))} />
                 <Route exact path='/q/:entoken/author-discuss' component={asyncComponent(() => import("./PublicQuoteView"))} />
                 <Route exact path='/q/:entoken/accepted' component={asyncComponent(() => import("./Accepted"))} />
                 <Route exact path='/q/:entoken/decline' component={asyncComponent(() => import("./Decline"))} />

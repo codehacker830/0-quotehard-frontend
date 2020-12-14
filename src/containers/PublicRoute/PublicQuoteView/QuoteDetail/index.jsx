@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { formatDateTime } from '../../../../util';
-import PreparedForInline from './PreparedForInline';
-import FullCustomerDetailInline from './FullCustomerDetailInline';
-import FullCustomerDetailInColumn from './FullCustomerDetailInColumn';
-import CopyToInline from './CopyToInline';
+import PreparedForInline from './Inline/PreparedForInline';
+import FullCustomerDetailInline from './Inline/FullCustomerDetailInline';
+import FullCustomerDetailInColumns from './InColumns/FullCustomerDetailInColumns';
+import PreparedForInColumns from './InColumns/PreparedForInColumns';
+import CopyToInline from './Inline/CopyToInline';
 import { formatDate } from '../../../../util';
-import PreparedForInColumns from './PreparedForInColumns';
 
 class QuoteDetail extends Component {
-   componentDidMount() {
-
-   }
    render() {
       console.log(" QuoteDetail Props ---------------->", this.props);
       const { auth, appearanceSetting, teamSetting, quote } = this.props;
@@ -48,7 +45,7 @@ class QuoteDetail extends Component {
             <div className="quote-detail-columns-col">
                <div className="quote-detail-row">
                   <PreparedForInColumns firstPerson={quote.toPeopleList[0]} />
-                  <FullCustomerDetailInColumn firstPerson={quote.toPeopleList[0]}/>
+                  <FullCustomerDetailInColumns firstPerson={quote.toPeopleList[0]} />
                </div>
             </div>
             <div className="quote-detail-columns-col">
@@ -103,13 +100,13 @@ class QuoteDetail extends Component {
                }
             </div>
             <div>
-               <label>Quote&nbsp;number</label>&nbsp;
+               <label>Quote number</label>&nbsp;
                   <span className="quote-detail-block">{quote.number}</span>
                <label>Date</label>&nbsp;
                   <span className="quote-detail-block">
                   <span className="dt-time">{formatDate(quote.settings.sentAt)}</span>
                </span>
-               <label>Valid&nbsp;until</label>&nbsp;
+               <label>Valid until</label>&nbsp;
                   <span className="quote-detail-block">
                   <span className="dt-time">{formatDateTime(quote.settings.validUntil)}</span>
                </span>
@@ -150,7 +147,7 @@ class QuoteDetail extends Component {
             </div>
             <div className="quote-detail-row">
                <PreparedForInColumns firstPerson={quote.toPeopleList[0]} />
-               <FullCustomerDetailInColumn firstPerson={quote.toPeopleList[0]}/>
+               <FullCustomerDetailInColumns firstPerson={quote.toPeopleList[0]} />
             </div>
             <div className="quote-detail-row">
                <label className="quote-detail-label">Quote Number</label>
@@ -166,5 +163,5 @@ class QuoteDetail extends Component {
       );
    }
 }
-const mapStateToProps = ({ auth, appearanceSetting, teamSetting }) => ({ auth, appearanceSetting, teamSetting });
+const mapStateToProps = ({ auth, appearanceSetting, teamSetting, mainData }) => ({ auth, appearanceSetting, teamSetting, quote: mainData.quote });
 export default connect(mapStateToProps)(QuoteDetail);

@@ -6,7 +6,7 @@ import StatEditTimes from './StatEditTimes';
 import StatOpenTimes from './StatOpenTimes';
 import StatQATimes from './StatQATimes';
 import StatNoteTimes from './StatNoteTimes';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from '../../../../util/Api';
 
@@ -46,6 +46,7 @@ class StatusShowCase extends Component {
    }
    render() {
       const { quote } = this.props;
+      const { entoken } = this.props.match.params;
       if (quote.status === "draft") return (
          <div className="offlineBanner no_print" >
             <div className="container">
@@ -57,7 +58,7 @@ class StatusShowCase extends Component {
                   </div>
                </div>
                <div className="author-stat-link author-stat-link-preview">
-                  <a href={`/q/Rsh3zk2z1v5XcVNg5IsSe6sgvtK-7dvmaSH7Py3xr-U?preview`}>Preview as Your Customer</a>
+                  <Link to={`/q/${entoken}/preview`}>Preview as Your Customer</Link>
                </div>
                <div className="clear" />
             </div>
@@ -75,7 +76,7 @@ class StatusShowCase extends Component {
                <StatNoteTimes />
                <StatEditTimes />
                <div className="author-stat-link author-stat-link-preview">
-                  <a href={`/q/ciTUQh0ZhuDtzul4uSj0vo182Ar2MMQVBLjfG6XCxH0?preview`}>Preview as Your Customer</a>
+                  <Link to={`/q/${entoken}/preview`}>Preview as Your Customer</Link>
                </div>
                <div className={`author-stat-link history-snippet ${this.state.show ? "isHidden" : ""}`}>
                   <button className={`buttonLink ${this.state.loading ? "disabled" : ""}`}

@@ -77,7 +77,7 @@ export default class ViewContact extends Component {
                {
                   this.props.match.path === "/app/c/contacts/view/:id" &&
                   <NavCrumpRight>
-                     <ul className="nav-items my-0 p-1">
+                     <ul className="choices" style={{ left: 50, top: 10 }}>
                         {
                            this.state.contact.status === "current" &&
                            <li>

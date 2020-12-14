@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-class FullCustomerDetailInColumn extends Component {
+class FullCustomerDetailInColumns extends Component {
    render() {
       const { isDisplayFullCustomerDetail, firstPerson } = this.props;
       if (isDisplayFullCustomerDetail) return (
@@ -44,4 +44,4 @@ const mapStateToProps = ({ appearanceSetting }) => {
    const { isDisplayFullCustomerDetail } = appearanceSetting;
    return { isDisplayFullCustomerDetail };
 };
-export default connect(mapStateToProps)(FullCustomerDetailInColumn);
+export default connect(mapStateToProps)(FullCustomerDetailInColumns);

@@ -278,7 +278,7 @@ class GetTemplate extends Component {
                               await this.onClickUpdate();
                               this.props.history.push(CONTENT_TEMPLATES_PATH);
                            }}>Save & Finish</button>
-                           <button className="btn btn-lg btn-rounded btn-hero-secondary mr-1" onClick={async () => await this.onClickUpdate()}>Save</button>
+                           <button className="btn btn-lg btn-rounded btn-hero-secondary mr-1" onClick={this.onClickUpdate}>Save</button>
                         </React.Fragment>
                      }
                      {
