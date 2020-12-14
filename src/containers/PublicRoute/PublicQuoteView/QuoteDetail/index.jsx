@@ -11,21 +11,22 @@ class QuoteDetail extends Component {
    render() {
       console.log(" QuoteDetail Props ----------------> ", this.props);
       const { appearanceSetting } = this.props;
-      if (appearanceSetting.contactDetailLayout === 0) return (
-         <div className="quote-detail quote-detail-columns">
-            <div className="quote-detail-columns-col">
+      const { contactDetailLayout, layout } = appearanceSetting;
+      if (contactDetailLayout === 0) return (
+         <div className="quote-detail quote-detail-columns" style={{ display: "flex" }}>
+            <div className="quote-detail-columns-col" style={{ order: layout }}>
                <FromInColumns />
             </div>
-            <div className="quote-detail-columns-col">
+            <div className="quote-detail-columns-col" style={{ order: (layout + 1) % 3 }}>
                <FullCustomerDetailInColumns />
             </div>
-            <div className="quote-detail-columns-col">
+            <div className="quote-detail-columns-col" style={{ order: (layout + 2) % 3 }}>
                <InfoInColumns />
             </div>
             <div className="clear" />
          </div>
       );
-      else if (appearanceSetting.contactDetailLayout === 1) return (
+      else if (contactDetailLayout === 1) return (
          <div className="quote-detail quote-detail-inline">
             <FullCustomerDetailInline />
             <FromInline />
