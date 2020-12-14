@@ -24,11 +24,6 @@ class PriceItemForm extends Component {
       this.addItemOptionContainer = React.createRef();
       this.optionalItemRef = React.createRef();
       this.multipleChoiceRef = React.createRef();
-      this.isViewOnly = (
-         this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH
-         || this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH
-      ) && this.props.priceItem._id;
-
    }
    removeImageItem = (url) => {
       const newFileArray = this.props.priceItem.files.filter(item => item !== url);
@@ -70,10 +65,7 @@ class PriceItemForm extends Component {
    componentDidUpdate(prevProps, prevState) {
       this.fileArray = this.props.priceItem.files;
       const { defaultSalesCategory, defaultSalesTax } = this.props;
-      this.isViewOnly = (
-         this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH
-         || this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH
-      ) && this.props.priceItem._id;
+
       if (!this.props.priceItem.salesCategory && defaultSalesCategory) {
          const newItem = {
             category: "priceItem",
@@ -103,7 +95,6 @@ class PriceItemForm extends Component {
    }
 
    updateItem = (ind, item) => {
-      // console.log("adfasdf ", ind, item);
       const { items } = this.props.quote;
       let newItems = [...items];
       newItems[ind] = item;
@@ -174,6 +165,7 @@ class PriceItemForm extends Component {
    }
    render() {
       console.log(" priceitem props =====> ", this.props);
+      const { isViewOnly } = this.props;
       const { salesCatgories, salesTaxes } = this.props;
       return (
          <React.Fragment>
@@ -233,14 +225,14 @@ class PriceItemForm extends Component {
                      />
                      <button className="btn btn-light mr-1"
                         onClick={this.handleClickFileOpen}
-                        disabled={this.props.isPaperClipDisabled}
+                        disabled={this.props.isPaperClipDisabled || isViewOnly}
                      >
                         <i className="fa fa-paperclip"></i>
                      </button>
                      <div style={{ position: "relative" }} ref={this.settingContainter}>
                         <button className="btn btn-light mr-1"
                            onClick={() => this.setState({ isSettingOpen: !this.state.isSettingOpen })}
-                           disabled={this.props.isSettingDisabled}
+                           disabled={this.props.isSettingDisabled || isViewOnly}
                         >
                            <i className="fa fa-cogs"></i>
                         </button>
@@ -387,7 +379,7 @@ class PriceItemForm extends Component {
                         <i className="fa fa-trash-alt"></i>
                      </button>
                      {
-                        this.isViewOnly &&
+                        isViewOnly &&
                         <button className="btn btn-light mr-1" onClick={() => this.props.history.push({
                            pathname: `/app/content/item-price/view/${this.props.priceItem._id}`,
                            state: {
@@ -405,9 +397,9 @@ class PriceItemForm extends Component {
             {/* Textarea section */}
             <div className="row">
                <div className="col-sm-6 pr-0">
-                  <div className={`w-100 border p-2 mb-2 ${this.isViewOnly ? "bg-disabled" : ""}`}>
+                  <div className={`w-100 border p-2 mb-2 ${isViewOnly ? "bg-disabled" : ""}`}>
                      <input className="form-control border-0 rounded-0 p-2 mb-1"
-                        disabled={!!this.isViewOnly}
+                        disabled={isViewOnly}
                         placeholder="Item Code / ID (optional)"
                         value={this.props.priceItem.itemCode}
                         onChange={(ev) => {
@@ -420,7 +412,7 @@ class PriceItemForm extends Component {
                      />
                      <TextareaAutosize className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2"
                         rows={1} placeholder="Product or Service Heading"
-                        disabled={!!this.isViewOnly}
+                        disabled={isViewOnly}
                         value={this.props.priceItem.productHeading}
                         onChange={(ev) => {
                            const newItem = {
@@ -432,7 +424,7 @@ class PriceItemForm extends Component {
                      >
                      </TextareaAutosize>
                      <TextareaAutosize className="form-control border-0 rounded-0 mt-1 p-2" rows={1} placeholder="Long description"
-                        disabled={!!this.isViewOnly}
+                        disabled={isViewOnly}
                         value={this.props.priceItem.longDescription}
                         onChange={(ev) => {
                            const newItem = {
@@ -445,13 +437,13 @@ class PriceItemForm extends Component {
                      </TextareaAutosize>
 
                      {/* Images preview section */}
-                     <div className={`row no-gutters ${this.isViewOnly ? "bg-disabled" : ""}`}>
+                     <div className={`row no-gutters ${isViewOnly ? "bg-disabled" : ""}`}>
                         {this.state.uploading && <div className="p-2 text-success font-w700">Uploading...</div>}
                         {(this.props.priceItem.files || []).map((url, index) => (
                            <div className="p-1" key={index}>
                               <img src={url} className="mr-2 image-preview-size" alt="..." />
                               {
-                                 !this.isViewOnly &&
+                                 !isViewOnly &&
                                  <button className="btn btn-sm btn-light"
                                     onClick={() => this.removeImageItem(url)}>
                                     <i className="fa fa-times-circle"></i>
@@ -467,7 +459,7 @@ class PriceItemForm extends Component {
                   <div className="row pb-1">
                      <div className="col-6 pr-0">
                         <select className="custom-select rounded-0"
-                           disabled={!!this.isViewOnly}
+                           disabled={isViewOnly}
                            value={this.props.priceItem.salesCategory}
                            onChange={(ev) => {
                               const newItem = {
@@ -484,7 +476,7 @@ class PriceItemForm extends Component {
                      </div>
                      <div className="col-6 pl-1">
                         <select className="custom-select rounded-0"
-                           disabled={!!this.isViewOnly}
+                           disabled={isViewOnly}
                            value={this.props.priceItem.salesTax}
                            onChange={(ev) => {
                               const newItem = {
@@ -508,7 +500,7 @@ class PriceItemForm extends Component {
                                  <input
                                     type="number"
                                     className="form-control rounded-0"
-                                    disabled={!!this.isViewOnly}
+                                    disabled={isViewOnly}
                                     value={this.props.priceItem.discount == 0 ? "" : this.props.priceItem.discount}
                                     onChange={(ev) => {
                                        const discount = ev.target.value === "" ? 0 : ev.target.value;
@@ -538,7 +530,7 @@ class PriceItemForm extends Component {
                               <span className="text-secondary text-uppercase mx-2 my-auto">Per</span>
                               <input type="number"
                                  className="form-control rounded-0 mr-1"
-                                 disabled={!!this.isViewOnly}
+                                 disabled={isViewOnly}
                                  value={this.props.priceItem.per == 0 ? "" : this.props.priceItem.per}
                                  onChange={(ev) => {
                                     const per = ev.target.value == 0 ? 0 : ev.target.value;
@@ -550,7 +542,7 @@ class PriceItemForm extends Component {
                                  }}
                               />
                               <select className="form-control rounded-0"
-                                 disabled={!!this.isViewOnly}
+                                 disabled={isViewOnly}
                                  value={this.props.priceItem.every}
                                  onChange={(ev) => {
                                     const newItem = {
@@ -567,7 +559,7 @@ class PriceItemForm extends Component {
                               <input type="number"
                                  className="form-control rounded-0"
                                  placeholder="Optional"
-                                 disabled={!!this.isViewOnly}
+                                 disabled={isViewOnly}
                                  value={this.props.priceItem.period == 0 ? "" : this.props.priceItem.period}
                                  onChange={(ev) => {
                                     const period = ev.target.value == 0 ? 0 : ev.target.value;
@@ -592,7 +584,7 @@ class PriceItemForm extends Component {
                                  <input className="form-control border border-success rounded-0 mr-1"
                                     type="number"
                                     placeholder="-- Cost Price --"
-                                    disabled={!!this.isViewOnly}
+                                    disabled={isViewOnly}
                                     value={this.props.priceItem.costPrice == 0 ? "" : this.props.priceItem.costPrice}
                                     onChange={(ev) => {
                                        const costPrice = ev.target.value == 0 ? 1 : ev.target.value;
@@ -622,7 +614,7 @@ class PriceItemForm extends Component {
                         <input
                            type="number"
                            id="unit" className="form-control rounded-0"
-                           disabled={!!this.isViewOnly}
+                           disabled={isViewOnly}
                            value={this.props.priceItem.unitPrice == 0 ? "" : this.props.priceItem.unitPrice}
                            onChange={(ev) => {
                               const unitPrice = ev.target.value == 0 ? 0 : ev.target.value;
@@ -644,7 +636,7 @@ class PriceItemForm extends Component {
                      </div>
                      <div className="col-4 pl-1 pr-0">
                         <input type="number" id="quantity" className={`form-control rounded-0 ${this.props.priceItem.isEditableQuantity ? "border-primary" : ""}`}
-                           disabled={!!this.isViewOnly}
+                           disabled={isViewOnly}
                            value={this.props.priceItem.quantity == 0 ? "" : this.props.priceItem.quantity}
                            onChange={(ev) => {
                               const quantity = ev.target.value === "" ? 0 : ev.target.value;
@@ -666,7 +658,7 @@ class PriceItemForm extends Component {
                      </div>
                      <div className="col-4 pl-1">
                         <input type="number" id="total" className="form-control rounded-0"
-                           disabled={!!this.isViewOnly}
+                           disabled={isViewOnly}
                            value={this.props.priceItem.itemTotal == 0 ? "" : this.props.priceItem.itemTotal}
                            onChange={(ev) => {
                               const itemTotal = ev.target.value === "" ? 0 : ev.target.value;

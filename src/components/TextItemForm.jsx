@@ -18,8 +18,6 @@ class TextItemForm extends Component {
       };
       this.hiddenFileInput = React.createRef();
       this.addItemOptionContainer = React.createRef();
-      this.isViewOnly = this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH
-         || this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH;
    }
    removeImageItem = (url) => {
       const newFileArray = this.props.textItem.files.filter(item => item !== url);
@@ -195,6 +193,7 @@ class TextItemForm extends Component {
    render() {
       console.log("TextItemForm State ______", this.state);
       console.log("TextItemForm Props ______", this.props);
+      const { isViewOnly } = this.props;
       return (
          <React.Fragment>
             {/* ToolWrapper */}
@@ -209,12 +208,12 @@ class TextItemForm extends Component {
                      />
                      <button className="btn btn-light mr-1"
                         onClick={this.handleClickFileOpen}
-                        disabled={this.props.isPaperClipDisabled}
+                        disabled={this.props.isPaperClipDisabled || isViewOnly}
                      >
                         <i className="fa fa-paperclip"></i>
                      </button>
                      <div style={{ position: "relative" }}>
-                        <button className="btn btn-light mr-1" disabled={true}>
+                        <button className="btn btn-light mr-1" disabled={this.props.isSettingDisabled || isViewOnly}>
                            <i className="fa fa-cogs"></i>
                         </button>
                      </div>
@@ -260,7 +259,7 @@ class TextItemForm extends Component {
                         <i className="fa fa-trash-alt"></i>
                      </button>
                      {
-                        this.isViewOnly &&
+                        isViewOnly &&
                         <button className="btn btn-light mr-1" onClick={() => this.props.history.push({
                            pathname: `/app/content/item-text/view/${this.props.textItem._id}`,
                            state: {
@@ -278,10 +277,10 @@ class TextItemForm extends Component {
             {/* Textarea section */}
             <div className="row">
                <div className="col-sm-12 col-md-10 col-lg-8">
-                  <div className={`w-100 border p-2 mb-2 ${this.isViewOnly ? "bg-disabled" : ""}`}>
+                  <div className={`w-100 border p-2 mb-2 ${isViewOnly ? "bg-disabled" : ""}`}>
                      <TextareaAutosize className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2"
                         rows={1} placeholder="Text Heading"
-                        disabled={!!this.isViewOnly}
+                        disabled={isViewOnly}
                         value={this.props.textItem.textHeading}
                         onChange={(ev) => {
                            const newItem = {
@@ -295,7 +294,7 @@ class TextItemForm extends Component {
                      <TextareaAutosize className="form-control border-0 rounded-0 mt-1 p-2"
                         rows={1} placeholder="Long description, terms of trade or compelling sales text"
                         value={this.props.textItem.longDescription}
-                        disabled={!!this.isViewOnly}
+                        disabled={isViewOnly}
                         onChange={(ev) => {
                            const newItem = {
                               category: "textItem",

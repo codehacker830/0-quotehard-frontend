@@ -1,32 +1,38 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import PriceItemForm from '../../../../components/PriceItemForm'
 import SubTotal from '../../../../components/SubTotal'
 import TextItemForm from '../../../../components/TextItemForm'
+import { CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_DUPLICATE_PATH } from '../../../../constants/PathNames'
 
 class ItemsSection extends Component {
     render() {
+        const isAvailablePath = (this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH || this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH);
+
         return this.props.items.map((item, index) => {
             if (item.category === "priceItem") return <PriceItemForm
                 key={index}
                 index={index}
+                isViewOnly={isAvailablePath && !!item._id}
                 isPaperClipDisabled={false}
                 isSettingDisabled={false}
                 isAddItemDisabled={false}
-                isOrderUpDisabled={false}
-                isOrderDownDisabled={false}
+                isOrderUpDisabled={index === 0}
+                isOrderDownDisabled={index === this.props.items.length - 1}
                 isRemoveDisabled={false}
                 {...item}
             />
             else if (item.category === "textItem") return <TextItemForm
                 key={index}
                 index={index}
+                isViewOnly={isAvailablePath && !!item._id}
                 isNote={false}
                 isPaperClipDisabled={false}
                 isSettingDisabled={false}
                 isAddItemDisabled={false}
-                isOrderUpDisabled={false}
-                isOrderDownDisabled={false}
+                isOrderUpDisabled={index === 0}
+                isOrderDownDisabled={index === this.props.items.length - 1}
                 isRemoveDisabled={false}
                 {...item}
             />
@@ -43,4 +49,4 @@ const mapStateToProps = ({ mainData }) => {
     return { items };
 }
 
-export default connect(mapStateToProps)(ItemsSection);
+export default connect(mapStateToProps)(withRouter(ItemsSection));
