@@ -53,7 +53,6 @@ export const getAppearanceSetting = () => {
       dispatch({ type: FETCH_START, payload: APPEARANCE_SETTINGS });
       try {
          const { data } = await axios.get("/settings/appearance");
-         console.log('get appearance setting data', data)
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: APPEARANCE_SETTINGS, payload: data.appearanceSetting });
       } catch (err) {
@@ -66,11 +65,8 @@ export const getPublicAppearanceWithEntoken = () => {
    const entoken = localStorage.getItem('entoken');
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
-      console.log('public view appearance setting start ===>')
-
       try {
          const { data } = await axios.post('/quotes/view-public/appearance', { entoken });
-         console.log('public view appearance setting res ===>', data)
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: APPEARANCE_SETTINGS, payload: data.appearanceSetting });
       } catch (err) {
@@ -89,7 +85,6 @@ export const publishAppearanceSettings = (setting) => {
       dispatch({ type: FETCH_START });
       try {
          const { data } = await axios.put("/settings/appearance", { setting });
-         console.log('publish response appearanceSetting data :', data)
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: APPEARANCE_SETTINGS, payload: data.appearanceSetting });
       } catch (err) {

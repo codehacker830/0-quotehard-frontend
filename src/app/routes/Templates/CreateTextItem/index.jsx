@@ -20,22 +20,28 @@ class CreateTextItem extends Component {
    }
    onClickCreate = () => {
       const { textHeading, longDescription, files } = this.props.quote.notes[0].textItem;
-      if (textHeading === "") { toast.info("You are missing a Title.", toastInfoConfig); return; }
+      if (textHeading === "") { toast.info("🌟 An Item Title OR Item Code is required."); return; }
+
       const payload = { textHeading, longDescription, files };
-      if (this.props.location.pathname === '/app/content/item-text/create-new') {
-         axios.post('/templates/textitem/create', payload).then(({ data }) => {
-            toast.success("New TextItem template was created.", toastSuccessConfig);
+      console.log("payload : ", payload)
+      console.log("this.props.match.path : ", this.props.match.path)
+      if (this.props.match.path === '/app/content/item-text/create-new'
+         || this.props.match.path === '/app/content/item-text/duplicate/:id') {
+         axios.post('/templates/textitem', payload).then(() => {
+            toast.success("Item created.");
+            this.props.history.push('/app/content/item-text/browse');
          }).catch(err => {
             console.error("error during create textitem =>", err);
-            toast.error("TextItem failed to create.");
+            toast.error("Item failed to create.");
          });
       } else if (this.props.match.path === '/app/content/item-text/view/:id') {
          const textItemId = this.props.match.params.id;
-         axios.put(`/templates/textitem/id/${textItemId}`, payload).then(({ data }) => {
-            toast.success("TextItem template was updated.", toastSuccessConfig);
+         axios.put(`/templates/textitem/id/${textItemId}`, payload).then(() => {
+            toast.success("Item saved.");
+            this.props.history.push('/app/content/item-text/browse');
          }).catch(err => {
             console.error("error during create textitem =>", err);
-            toast.error("TextItem failed to update.");
+            toast.error("Item failed to save.");
          });
       }
    }
@@ -52,10 +58,11 @@ class CreateTextItem extends Component {
       await this.props.getSalesCategories('current');
       await this.props.getSalesTaxes('current');
 
-      if (this.props.match.path === '/app/content/item-text/view/:id') {
+      if (this.props.match.path === '/app/content/item-text/duplicate/:id') toast.success("This is a copy.");
+      if (this.props.match.path === '/app/content/item-text/view/:id'
+         || this.props.match.path === '/app/content/item-text/duplicate/:id') {
          // Get textItem details with textItem ID
          axios.get(`/templates/textitem/id/${this.props.match.params.id}`).then(({ data }) => {
-            console.log(" r################", data);
             const { textItem } = data;
             const newItem = {
                category: "textItem",
@@ -86,7 +93,8 @@ class CreateTextItem extends Component {
       });
    }
    onClickCopy = () => {
-
+      const textItemId = this.props.match.params.id;
+      this.props.history.push(`/app/content/item-text/duplicate/${textItemId}`);
    }
    onClickDelete = () => {
       const textItemId = this.props.match.params.id;
@@ -101,6 +109,7 @@ class CreateTextItem extends Component {
 
    }
    render() {
+      console.log("this.props ---------", this.props)
       const linkTo = this.props.location.state ? this.props.location.state.from : "/app/content/item-text/browse";
       const linkName = this.props.location.state && this.props.location.state.from.includes("/app/content/template/") ? "Edit Template" : "Items";
       const { textItem } = this.props.quote.notes[0];
@@ -202,13 +211,14 @@ class CreateTextItem extends Component {
                      textItem={textItem}
                   />
                </div>
-               <RelatedTemplateList templates={textItem.templates}/>
+               <RelatedTemplateList templates={textItem.templates} />
 
                {/* Footer action button group */}
                <div className="row p-3">
                   <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.onClickCreate}>
                      {this.props.match.path === '/app/content/item-text/create-new' && "Create"}
-                     {this.props.match.path === '/app/content/item-text/view/:id' && "Update"}
+                     {this.props.match.path === '/app/content/item-text/view/:id' && `Save & Update ${textItem.templates.length > 0 ? `${textItem.templates.length} template` + `${textItem.templates.length > 1 ? "s" : ""}` : ""}`}
+                     {this.props.match.path === '/app/content/item-text/duplicate/:id' && "Save"}
                   </button>
                   <button className="btn btn-lg btn-rounded btn-hero-secondary" onClick={() => this.props.history.push("/app/content/item-text/browse")}>Cancel</button>
                </div>

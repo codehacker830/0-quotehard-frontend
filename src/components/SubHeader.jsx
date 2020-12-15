@@ -4,15 +4,21 @@ import { Link, NavLink, withRouter } from 'react-router-dom';
 class SubHeader extends Component {
    render() {
       const { location } = this.props;
+      console.log("ASDFASDFASDF ", this.props)
       let hidden = false;
       if (
          location.pathname === "/app/content/template/get"
-         || location.pathname === "/app/content/item-price/create-new"
-         || location.pathname === "/app/content/item-text/create-new"
-         || location.pathname.includes("/app/content/item-price/view")
-         || location.pathname.includes("/app/content/item-text/view")
          || location.pathname.includes("/app/content/template/")
+         
+         || location.pathname === "/app/content/item-price/create-new"
+         || location.pathname.includes("/app/content/item-price/view/")
+         || location.pathname.includes("/app/content/item-price/duplicate/")
+         
+         || location.pathname === "/app/content/item-text/create-new"
+         || location.pathname.includes("/app/content/item-text/view/")
+         || location.pathname.includes("/app/content/item-text/duplicate/")
       ) hidden = true;
+      // this.props.match.path === '/app/content/item-text/duplicate/:id'
       return (
          <div className={`bg-body-light border-top border-bottom ${hidden ? "d-none" : ""}`}>
             <div className="container px-5 py-3">

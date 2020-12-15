@@ -27,11 +27,13 @@ class Templates extends Component {
                <Route exact path="/app/content/item-price/browse" component={PriceItems} />
                <Route exact path="/app/content/item-price/create-new" component={CreatePriceItem} />
                <Route exact path="/app/content/item-price/view/:id" component={CreatePriceItem} />
+               <Route exact path="/app/content/item-price/duplicate/:id" component={CreatePriceItem} />
 
                <Route exact path="/app/content/item-text/browse" component={TextItems} />
                <Route exact path="/app/content/item-text/create-new" component={CreateTextItem} />
                <Route exact path="/app/content/item-text/view/:id" component={CreateTextItem} />
-
+               <Route exact path="/app/content/item-text/duplicate/:id" component={CreateTextItem} />
+               
             </Switch>
          </React.Fragment>
       );

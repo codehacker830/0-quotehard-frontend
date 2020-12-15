@@ -81,24 +81,23 @@ class CreatePriceItem extends Component {
          quantity,
          itemTotal,
       };
-      if (this.props.location.pathname === '/app/content/item-price/create-new') {
-         axios.post('/templates/priceitem', payload).then(({ data }) => {
-            console.log(" create priceItem res =>", data);
-            toast.success("New PriceItem template was created.");
+      if (this.props.match.path === '/app/content/item-price/create-new'
+         || this.props.match.path === '/app/content/item-price/duplicate/:id') {
+         axios.post('/templates/priceitem', payload).then(() => {
+            toast.success("Item created.");
             this.props.history.push(this.linkTo);
          }).catch(err => {
             console.error("error during create priceItem =>", err);
-            toast.error("PriceItem failed to create");
+            toast.error("Item failed to create");
          });
       } else if (this.props.match.path === '/app/content/item-price/view/:id') {
          const priceItemId = this.props.match.params.id;
-         axios.put(`/templates/priceitem/id/${priceItemId}`, payload).then(({ data }) => {
-            console.log(" update priceItem res =>", data);
+         axios.put(`/templates/priceitem/id/${priceItemId}`, payload).then(() => {
             toast.success("Item updated.");
             this.props.history.push(this.linkTo);
          }).catch(err => {
             console.error("error during update priceItem =>", err);
-            toast.error("PriceItem failed to update");
+            toast.error("Item failed to update.");
          });
       }
    }
@@ -113,10 +112,12 @@ class CreatePriceItem extends Component {
       await this.props.getDefaultSalesTax();
       await this.props.getSalesCategories('current');
       await this.props.getSalesTaxes('current');
-      if (this.props.match.path === '/app/content/item-price/view/:id') {
+
+      if (this.props.match.path === '/app/content/item-price/duplicate/:id') toast.success("This is a copy.");
+      if (this.props.match.path === '/app/content/item-price/view/:id'
+         || this.props.match.path === '/app/content/item-price/duplicate/:id') {
          // Get priceItem details with priceItem ID
          axios.get(`/templates/priceitem/id/${this.props.match.params.id}`).then(({ data }) => {
-            console.log("template priceitem res____", data);
             const { priceItem } = data;
             const newPriceItem = {
                category: "priceItem",
@@ -147,7 +148,8 @@ class CreatePriceItem extends Component {
       });
    }
    onClickCopy = () => {
-
+      const priceItemId = this.props.match.params.id;
+      this.props.history.push(`/app/content/item-price/duplicate/${priceItemId}`);
    }
    onClickDelete = () => {
       const priceItemId = this.props.match.params.id;
@@ -265,18 +267,14 @@ class CreatePriceItem extends Component {
                   />
                </div>
 
-               <RelatedTemplateList templates={priceItem.templates}/>
+               <RelatedTemplateList templates={priceItem.templates} />
 
                {/* Footer action button group */}
                <div className="row p-3">
                   <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.onClickSubmit}>
-                     {
-                        this.props.location.pathname === '/app/content/item-price/create-new' && "Create"
-                     }
-                     {
-                        this.props.match.path === '/app/content/item-price/view/:id' &&
-                        `Save & Update ${priceItem.templates.length > 0 ? `${priceItem.templates.length} template` + `${priceItem.templates.length > 1 ? "s" : ""}` : ""}`
-                     }
+                     {this.props.match.path === '/app/content/item-price/create-new' && "Create"}
+                     {this.props.match.path === '/app/content/item-price/view/:id' && `Save & Update ${priceItem.templates.length > 0 ? `${priceItem.templates.length} template` + `${priceItem.templates.length > 1 ? "s" : ""}` : ""}`}
+                     {this.props.match.path === '/app/content/item-price/duplicate/:id' && "Save"}
                   </button>
                   <button className="btn btn-lg btn-rounded btn-hero-secondary" onClick={() => this.props.history.push("/app/content/item-text/browse")}>Cancel</button>
                </div>

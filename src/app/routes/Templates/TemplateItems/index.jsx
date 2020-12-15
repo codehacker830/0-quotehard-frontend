@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import InlineHelp from '../../../components/InlineHelp';
-import TotalLabelFor from '../../../components/TotalLabelFor';
-import { formatDate } from '../../../util';
-import axios from '../../../util/Api';
-import { CONTENT_TEMPLATE_GET_PATH } from '../../../constants/PathNames';
+import InlineHelp from '../../../../components/InlineHelp';
+import TotalLabelFor from '../../../../components/TotalLabelFor';
+import { formatDate } from '../../../../util';
+import axios from '../../../../util/Api';
+import { CONTENT_TEMPLATE_GET_PATH } from '../../../../constants/PathNames';
 
 export default class TemplateItems extends Component {
    mounted = false;
@@ -20,9 +20,6 @@ export default class TemplateItems extends Component {
          const Promise1 = axios.get(`/templates/status/${this.state.filterStatus}`);
          const Promise2 = axios.get(`/templates/defaultId`);
          Promise.all([Promise1, Promise2]).then((values) => {
-            console.log("templates --------", values[0].data.templates)
-            console.log("defaultTemplateId --------", values[1].data.defaultTemplateId)
-
             const { defaultTemplateId } = values[1].data;
             this.setState({
                templates: values[0].data.templates,
@@ -37,7 +34,6 @@ export default class TemplateItems extends Component {
    componentDidUpdate(prevProps, prevState) {
       if (prevState.filterStatus !== this.state.filterStatus) {
          axios.get(`/templates/status/${this.state.filterStatus}`).then(({ data }) => {
-            console.log("data.templates --------", data.templates)
             this.setState({ templates: data.templates });
          })
       }
@@ -62,7 +58,7 @@ export default class TemplateItems extends Component {
                         <div className="row no-gutters">
                            <div className="col-sm-6 px-1">
                               <div className="form-group">
-                                 <select className="form-control" id="filter_from" name="filter_from"
+                                 <select className="form-control" id="templte_filter_from" name="templte_filter_from"
                                     value={this.state.filterStatus}
                                     onChange={(ev) => this.setState({ filterStatus: ev.target.value })}
                                  >

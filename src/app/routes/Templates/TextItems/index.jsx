@@ -1,25 +1,30 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import InlineHelp from '../../../components/InlineHelp';
-import { toFixedFloat } from '../../../util';
-import axios from '../../../util/Api';
+import InlineHelp from '../../../../components/InlineHelp';
+import TotalLabelFor from '../../../../components/TotalLabelFor';
+import axios from '../../../../util/Api';
 
-export default class PriceItems extends Component {
+export default class TextItems extends Component {
    state = {
-      priceItems: []
+      textItems: [],
+      filterStatus: "current",
    };
    componentDidMount() {
-      axios.get('/templates/priceitem/all').then(({ data }) => {
-         console.log("response ============", data);
-         this.setState({
-            priceItems: data.priceItems
-         });
+      axios.get(`/templates/textitem/status/${this.state.filterStatus}`).then(({ data }) => {
+         this.setState({ textItems: data.textItems });
       }).catch(err => {
          console.error("err during get priceitems =>", err);
       })
    }
+   componentDidUpdate(prevProps, prevState) {
+      if (prevState.filterStatus !== this.state.filterStatus) {
+         axios.get(`/templates/textitem/status/${this.state.filterStatus}`).then(({ data }) => {
+            this.setState({ textItems: data.textItems });
+         })
+      }
+   }
    render() {
-      console.log("111111 priceItems state 1111111", this.state);
+      const { history } = this.props;
       return (
          <div className="content">
             <div className="block block-rounded">
@@ -37,9 +42,12 @@ export default class PriceItems extends Component {
                         <div className="row no-gutters">
                            <div className="col-sm-6 px-1">
                               <div className="form-group">
-                                 <select className="form-control" id="filter_from" name="filter_from" defaultValue="Current">
-                                    <option value="Current">Current</option>
-                                    <option value="Archived">Archived</option>
+                                 <select className="form-control" id="textItem_filter_from" name="textItem_filter_from"
+                                    value={this.state.filterStatus}
+                                    onChange={(ev) => this.setState({ filterStatus: ev.target.value })}
+                                 >
+                                    <option value="current">Current</option>
+                                    <option value="archived">Archived</option>
                                  </select>
                               </div>
                            </div>
@@ -47,7 +55,7 @@ export default class PriceItems extends Component {
                      </div>
                      <div className="col-md-6">
                         <div className="row mb-2">
-                           <Link to="/app/content/item-price/create-new" className="btn btn-success ml-auto" >New Item</Link>
+                           <Link to="/app/content/item-text/create-new" className="btn btn-success ml-auto">New Item</Link>
                         </div>
                      </div>
                   </div>
@@ -56,7 +64,7 @@ export default class PriceItems extends Component {
             <div className="block block-rounded">
                <div className="block-content">
                   {
-                     this.state.priceItems.length === 0 ?
+                     this.state.textItems.length === 0 ?
                         <InlineHelp>
                            Create reusable items for your products and services, that autocomplete in quotes and templates.
                         </InlineHelp>
@@ -64,40 +72,25 @@ export default class PriceItems extends Component {
                            <table className="quotient-table">
                               <tbody className="rowClick">
                                  {
-                                    this.state.priceItems.map((item, index) => {
+                                    this.state.textItems.map((item, index) => {
                                        return (
-                                          <tr onClick={() => this.props.history.push(`/app/content/item-price/view/${item._id}`)} key={index}>
+                                          <tr onClick={() => history.push(`/app/content/item-text/view/${item._id}`)} key={index}>
                                              <td>
                                                 <div className="d-flex">
                                                    <div className="u-ellipsis">
-                                                      <Link to={`/app/content/item-price/view/${item._id}`}>{item.productHeading}</Link>
+                                                      <Link to={`/app/content/item-text/view/${item._id}`}>{item.textHeading}</Link>
                                                       <br />
-                                                      <small className="text-gray font-size-sm">{item.longDescription}</small>
+                                                      <small className="text-gray font-size-sm">{item.longDescription}&nbsp;</small>
                                                    </div>
-                                                   {
-                                                      item.isSubscription ?
-                                                         <>
-                                                            <span className="text-gray font-size-sm ml-auto"> per {item.per} {item.every}</span>
-                                                            {
-                                                               item.period ?
-                                                                  null
-                                                                  : <span className="text-gray font-size-sm ml-auto"> (for {item.period} months)</span>
-                                                            }
-                                                         </>
-                                                         : <span className="text-black font-size-sm ml-auto">{item.quantity} @ {toFixedFloat(item.unitPrice)}</span>
-                                                   }
                                                 </div>
                                              </td>
                                           </tr>
                                        );
                                     })
                                  }
-
                               </tbody>
                            </table>
-                           <div className="px-2 py-4">
-                              <span>Total {this.state.priceItems.length}</span>
-                           </div>
+                           <TotalLabelFor list={this.state.textItems} />
                         </React.Fragment>
                   }
                </div>
