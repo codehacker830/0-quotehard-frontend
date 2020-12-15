@@ -55,8 +55,7 @@ class GetTemplate extends Component {
          notes
       };
       try {
-         const { data } = axios.post('/templates', payload);
-         console.log("res data ---------------->", data);
+         const { data } = await axios.post('/templates', payload);
          toast.success("New Template was created.");
          this.props.history.push(CONTENT_TEMPLATES_PATH)
       } catch (err) {

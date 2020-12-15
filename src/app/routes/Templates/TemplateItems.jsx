@@ -20,7 +20,8 @@ export default class TemplateItems extends Component {
          const Promise1 = axios.get(`/templates/status/${this.state.filterStatus}`);
          const Promise2 = axios.get(`/templates/defaultId`);
          Promise.all([Promise1, Promise2]).then((values) => {
-            console.log("values --------", values)
+            console.log("templates --------", values[0].data.templates)
+            console.log("defaultTemplateId --------", values[1].data.defaultTemplateId)
 
             const { defaultTemplateId } = values[1].data;
             this.setState({
