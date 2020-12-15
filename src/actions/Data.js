@@ -15,6 +15,7 @@ import {
    UPDATE_PRICEITEM_STATUS
 } from '../constants/ActionTypes';
 import { toast } from 'react-toastify';
+import { initPriceItem, initTextItem } from '../constants/InitState';
 
 export const getPublicQuoteWithEntoken = () => {
    const entoken = localStorage.getItem('entoken');
@@ -55,7 +56,19 @@ export const getContentTemplateById = (quoteTemplateId) => {
          const { status, title, settings, items, notes } = data.template;
          const payload = {
             toPeopleList: [],
-            status, title, settings, items, notes,
+            status, title, settings,
+            items: items.length ? items : [
+               {
+                  category: "priceItem",
+                  priceItem: { ...initPriceItem },
+               },
+            ],
+            notes: notes.length ? notes : [
+               {
+                  category: "textItem",
+                  textItem: { ...initTextItem }
+               }
+            ],
             discussions: []
          };
          dispatch({ type: FETCH_SUCCESS });
@@ -87,7 +100,21 @@ export const initializeQuote = () => {
 };
 
 export const updateQuote = (quote) => {
-   return (dispatch) => dispatch({ type: GET_QUOTE, payload: quote });
+   let items = quote.items;
+   let notes = quote.notes;
+   if (!quote.items.length) items = [
+      {
+         category: "priceItem",
+         priceItem: { ...initPriceItem },
+      },
+   ];
+   if (!quote.notes.length) notes = [
+      {
+         category: "textItem",
+         textItem: { ...initTextItem }
+      }
+   ];
+   return (dispatch) => dispatch({ type: GET_QUOTE, payload: { ...quote, items, notes } });
 };
 export const updateQuoteStatus = (status) => {
    return (dispatch) => dispatch({ type: UPDATE_QUOTE_STATUS, payload: status })
