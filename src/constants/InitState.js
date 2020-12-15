@@ -18,6 +18,8 @@ export const initTemplateSettings = {
 };
 
 export const initPriceItem = {
+   templates: [],
+
    isOptional: false,
    isOptionSelected: false,
 
@@ -51,7 +53,10 @@ export const initPriceItem = {
    itemTotal: 0,
 };
 export const initTextItem = {
-   // _id: "",
+   tag: "",
+   status: "",
+   templates: [],
+
    textHeading: "",
    longDescription: "",
    files: [],

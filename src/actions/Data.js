@@ -11,7 +11,8 @@ import {
    UPDATE_QUOTE_TITLE,
    UPDATE_QUOTE_ITEMS,
    UPDATE_QUOTE_NOTES,
-   INITIALIZE_QUOTE
+   INITIALIZE_QUOTE,
+   UPDATE_PRICEITEM_STATUS
 } from '../constants/ActionTypes';
 import { toast } from 'react-toastify';
 
@@ -115,6 +116,9 @@ export const updateQuoteDiscussions = (discussions) => {
    return (dispatch) => dispatch({ type: UPDATE_QUOTE_DISCUSSIONS, payload: discussions });
 };
 
+export const updatePriceItemStatus = (status) => {
+   return (dispatch) => dispatch({ type: UPDATE_PRICEITEM_STATUS, payload: status })
+}
 
 export const submitDismiss = (qaId) => {
    const entoken = localStorage.getItem('entoken');

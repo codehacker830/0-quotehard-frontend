@@ -833,6 +833,17 @@ a.nav-link.active {
 .btnSet .btn {
    margin-right: 5px;
 }
+.pop_hidden {
+   display: none;
+}
+.pop_default.isHidden {
+   display: none!important;
+}
+
+.pop_trigger {
+   border-bottom: 1px dotted #999;
+   cursor: pointer;
+}
 @media (min-width: 992px) {
    .container {
        padding-left: 30px;

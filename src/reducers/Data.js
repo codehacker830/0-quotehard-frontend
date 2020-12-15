@@ -8,6 +8,7 @@ import {
    UPDATE_QUOTE_NOTES,
    UPDATE_QUOTE_DISCUSSIONS,
    INITIALIZE_QUOTE,
+   UPDATE_PRICEITEM_STATUS,
 } from '../constants/ActionTypes';
 import { initPriceItem, initQuoteSettings, initTextItem } from '../constants/InitState';
 
@@ -97,6 +98,18 @@ export default (state = initialSettings, action) => {
             quote: {
                ...state.quote,
                discussions: action.payload
+            }
+         };
+
+      case UPDATE_PRICEITEM_STATUS:
+         return {
+            ...state,
+            quote: {
+               ...state.quote,
+               items: [{
+                  ...state.quote.items[0],
+                  priceItem: { ...state.quote.items[0].priceItem, status: action.payload }
+               }]
             }
          };
       default:

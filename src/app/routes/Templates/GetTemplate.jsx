@@ -108,7 +108,7 @@ class GetTemplate extends Component {
       const templateId = this.props.match.params.id;
       axios.put(`/templates/un-archive/${templateId}`).then(async ({ data }) => {
          await this.props.updateQuoteStatus("current");
-         toast.success("Content template was unarchived.");
+         toast.success("Content template unarchived.");
          this.props.history.push(CONTENT_TEMPLATES_PATH);
       }).catch((err) => {
          console.error("Failed to un-archive template ", err);
@@ -264,8 +264,8 @@ class GetTemplate extends Component {
                         <div className="container">
                            <h4>Please confirm:</h4>
                            <div className="btnSet">
-                              <button className="btn btn-lg btn-secondary mr-2" onClick={this.onClickDelete}>Delete</button>
-                              <button className="btn btn-lg" onClick={() => this.setState({ isDeleteAlertOpen: false })}>Cancel</button>
+                              <button className="btn btn-secondary mr-2" onClick={this.onClickDelete}>Delete</button>
+                              <button className="btn" onClick={() => this.setState({ isDeleteAlertOpen: false })}>Cancel</button>
                            </div>
                         </div>
                      </div>

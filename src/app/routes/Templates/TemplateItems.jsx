@@ -20,6 +20,8 @@ export default class TemplateItems extends Component {
          const Promise1 = axios.get(`/templates/status/${this.state.filterStatus}`);
          const Promise2 = axios.get(`/templates/defaultId`);
          Promise.all([Promise1, Promise2]).then((values) => {
+            console.log("values --------", values)
+
             const { defaultTemplateId } = values[1].data;
             this.setState({
                templates: values[0].data.templates,
@@ -34,6 +36,7 @@ export default class TemplateItems extends Component {
    componentDidUpdate(prevProps, prevState) {
       if (prevState.filterStatus !== this.state.filterStatus) {
          axios.get(`/templates/status/${this.state.filterStatus}`).then(({ data }) => {
+            console.log("data.templates --------", data.templates)
             this.setState({ templates: data.templates });
          })
       }
