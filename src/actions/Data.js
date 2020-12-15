@@ -12,7 +12,8 @@ import {
    UPDATE_QUOTE_ITEMS,
    UPDATE_QUOTE_NOTES,
    INITIALIZE_QUOTE,
-   UPDATE_PRICEITEM_STATUS
+   UPDATE_PRICEITEM_STATUS,
+   UPDATE_TEXTITEM_STATUS
 } from '../constants/ActionTypes';
 import { toast } from 'react-toastify';
 import { initPriceItem, initTextItem } from '../constants/InitState';
@@ -146,7 +147,9 @@ export const updateQuoteDiscussions = (discussions) => {
 export const updatePriceItemStatus = (status) => {
    return (dispatch) => dispatch({ type: UPDATE_PRICEITEM_STATUS, payload: status })
 }
-
+export const updateTextItemStatus = (status) => {
+   return (dispatch) => dispatch({ type: UPDATE_TEXTITEM_STATUS, payload: status })
+}
 export const submitDismiss = (qaId) => {
    const entoken = localStorage.getItem('entoken');
    return async (dispatch) => {

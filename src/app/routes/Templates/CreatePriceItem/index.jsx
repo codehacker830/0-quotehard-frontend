@@ -253,7 +253,7 @@ class CreatePriceItem extends Component {
                <div className="mt-6 mb-5">
                   {
                      priceItem.status === "archived" &&
-                     <p><span class="label">Archived</span></p>
+                     <p><span className="label">Archived</span></p>
                   }
                   <PriceItemForm
                      index={0}

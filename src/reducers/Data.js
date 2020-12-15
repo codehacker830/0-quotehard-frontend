@@ -9,6 +9,7 @@ import {
    UPDATE_QUOTE_DISCUSSIONS,
    INITIALIZE_QUOTE,
    UPDATE_PRICEITEM_STATUS,
+   UPDATE_TEXTITEM_STATUS,
 } from '../constants/ActionTypes';
 import { initPriceItem, initQuoteSettings, initTextItem } from '../constants/InitState';
 
@@ -109,6 +110,17 @@ export default (state = initialSettings, action) => {
                items: [{
                   ...state.quote.items[0],
                   priceItem: { ...state.quote.items[0].priceItem, status: action.payload }
+               }]
+            }
+         };
+      case UPDATE_TEXTITEM_STATUS:
+         return {
+            ...state,
+            quote: {
+               ...state.quote,
+               notes: [{
+                  ...state.quote.notes[0],
+                  textItem: { ...state.quote.notes[0].textItem, status: action.payload }
                }]
             }
          };

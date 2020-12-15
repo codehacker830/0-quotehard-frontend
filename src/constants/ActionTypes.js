@@ -45,3 +45,4 @@ export const UPDATE_QUOTE_NOTES = 'update_quote_notes';
 export const UPDATE_QUOTE_DISCUSSIONS = 'update_quote_discussions';
 
 export const UPDATE_PRICEITEM_STATUS = 'update_priceitem_status';
+export const UPDATE_TEXTITEM_STATUS = 'update_textitem_status';

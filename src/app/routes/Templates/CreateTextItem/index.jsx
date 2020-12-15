@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
-import { updateQuoteNotes } from '../../../../actions/Data';
+import { updateQuoteNotes, updateTextItemStatus } from '../../../../actions/Data';
 import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../../actions/GlobalSettings';
 import NavCrump from '../../../../components/NavCrump';
 import NavCrumpLeft from '../../../../components/NavCrump/NavCrumpLeft';
@@ -77,7 +77,7 @@ class CreateTextItem extends Component {
    onClickArchive = () => {
       const textItemId = this.props.match.params.id;
       axios.put(`/templates/textitem/archive/${textItemId}`).then(() => {
-         this.props.updatePriceItemStatus("archived");
+         this.props.updateTextItemStatus("archived");
          toast.success("Item archived.");
       }).catch((err) => {
          console.error("Failed to archive template ", err);
@@ -86,7 +86,7 @@ class CreateTextItem extends Component {
    onClickUnArchive = () => {
       const textItemId = this.props.match.params.id;
       axios.put(`/templates/textitem/un-archive/${textItemId}`).then(() => {
-         this.props.updatePriceItemStatus("current");
+         this.props.updateTextItemStatus("current");
          toast.success("Item unarchived.");
       }).catch((err) => {
          console.error("Failed to un-archive template ", err);
@@ -199,6 +199,10 @@ class CreateTextItem extends Component {
 
             <div className="content bg-custom">
                <div className="mt-6 mb-5">
+                  {
+                     textItem.status === "archived" &&
+                     <p><span className="label">Archived</span></p>
+                  }
                   <TextItemForm
                      index={0}
                      isNote={true}
@@ -237,5 +241,7 @@ const mapDispatchToProps = {
    getDefaultSalesTax,
    getSalesCategories,
    getSalesTaxes,
+   updateTextItemStatus
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(CreateTextItem)
