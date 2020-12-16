@@ -1,22 +1,26 @@
 import React, { Component } from 'react';
 import { Link, NavLink, withRouter } from 'react-router-dom';
+import qs from 'qs';
 
 class SubHeader extends Component {
    render() {
       const { location } = this.props;
-      console.log("ASDFASDFASDF ", this.props)
+      const queryObj = qs.parse(location.search, { ignoreQueryPrefix: true });
+      const isMergeMode = queryObj.merge_loser ? true : false;
       let hidden = false;
       if (
          location.pathname === "/app/content/template/get"
          || location.pathname.includes("/app/content/template/")
-         
+
          || location.pathname === "/app/content/item-price/create-new"
          || location.pathname.includes("/app/content/item-price/view/")
          || location.pathname.includes("/app/content/item-price/duplicate/")
-         
+
          || location.pathname === "/app/content/item-text/create-new"
          || location.pathname.includes("/app/content/item-text/view/")
          || location.pathname.includes("/app/content/item-text/duplicate/")
+
+         || isMergeMode
       ) hidden = true;
       // this.props.match.path === '/app/content/item-text/duplicate/:id'
       return (

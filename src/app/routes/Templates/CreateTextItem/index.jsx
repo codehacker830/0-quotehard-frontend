@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { updateQuoteNotes, updateTextItemStatus } from '../../../../actions/Data';
 import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../../actions/GlobalSettings';
@@ -10,6 +11,7 @@ import TextItemForm from '../../../../components/TextItemForm';
 import axios from '../../../../util/Api';
 import { toastErrorConfig, toastInfoConfig, toastSuccessConfig } from '../../../../util/toastrConfig';
 import RelatedTemplateList from '../components/RelatedTemplateList';
+import ConfirmTItemMergeBanner from './ConfirmTItemMergeBanner';
 
 class CreateTextItem extends Component {
    constructor(props) {
@@ -17,19 +19,18 @@ class CreateTextItem extends Component {
       this.state = {
          isDeleteAlertOpen: false
       };
+      this.linkTo = this.props.location.state ? this.props.location.state.from : "/app/content/item-text/browse";
+      this.linkName = this.props.location.state && this.props.location.state.from.includes("/app/content/template/") ? "Edit Template" : "Items";
    }
-   onClickCreate = () => {
+   onClickSubmit = () => {
       const { textHeading, longDescription, files } = this.props.quote.notes[0].textItem;
       if (textHeading === "") { toast.info("🌟 An Item Title OR Item Code is required."); return; }
-
       const payload = { textHeading, longDescription, files };
-      console.log("payload : ", payload)
-      console.log("this.props.match.path : ", this.props.match.path)
       if (this.props.match.path === '/app/content/item-text/create-new'
          || this.props.match.path === '/app/content/item-text/duplicate/:id') {
          axios.post('/templates/textitem', payload).then(() => {
             toast.success("Item created.");
-            this.props.history.push('/app/content/item-text/browse');
+            this.props.history.push(this.linkTo);
          }).catch(err => {
             console.error("error during create textitem =>", err);
             toast.error("Item failed to create.");
@@ -38,7 +39,7 @@ class CreateTextItem extends Component {
          const textItemId = this.props.match.params.id;
          axios.put(`/templates/textitem/id/${textItemId}`, payload).then(() => {
             toast.success("Item saved.");
-            this.props.history.push('/app/content/item-text/browse');
+            this.props.history.push(this.linkTo);
          }).catch(err => {
             console.error("error during create textitem =>", err);
             toast.error("Item failed to save.");
@@ -106,18 +107,19 @@ class CreateTextItem extends Component {
       });
    }
    onClickDeleteAndMerge = () => {
-
+      const textItemId = this.props.match.params.id;
+      this.props.history.push({
+         pathname: '/app/content/item-text/browse',
+         search: `?merge_loser=${textItemId}`
+      })
    }
    render() {
-      console.log("this.props ---------", this.props)
-      const linkTo = this.props.location.state ? this.props.location.state.from : "/app/content/item-text/browse";
-      const linkName = this.props.location.state && this.props.location.state.from.includes("/app/content/template/") ? "Edit Template" : "Items";
       const { textItem } = this.props.quote.notes[0];
       return (
          <React.Fragment>
             <NavCrump>
-               <NavCrumpLeft linkTo={linkTo}>
-                  {linkName}
+               <NavCrumpLeft linkTo={this.linkTo}>
+                  {this.linkName}
                </NavCrumpLeft>
                <NavCrumpRight>
                   <ul className="choices" style={{ left: 50, top: 10 }}>
@@ -197,6 +199,8 @@ class CreateTextItem extends Component {
                }
             </div>
 
+            <ConfirmTItemMergeBanner />
+
             <div className="content bg-custom">
                <div className="mt-6 mb-5">
                   {
@@ -219,9 +223,9 @@ class CreateTextItem extends Component {
 
                {/* Footer action button group */}
                <div className="row p-3">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.onClickCreate}>
+                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.onClickSubmit}>
                      {this.props.match.path === '/app/content/item-text/create-new' && "Create"}
-                     {this.props.match.path === '/app/content/item-text/view/:id' && `Save & Update ${textItem.templates.length > 0 ? `${textItem.templates.length} template` + `${textItem.templates.length > 1 ? "s" : ""}` : ""}`}
+                     {this.props.match.path === '/app/content/item-text/view/:id' && `Save${textItem.templates.length > 0 ? ` & Update ${textItem.templates.length} template` + `${textItem.templates.length > 1 ? "s" : ""}` : ""}`}
                      {this.props.match.path === '/app/content/item-text/duplicate/:id' && "Save"}
                   </button>
                   <button className="btn btn-lg btn-rounded btn-hero-secondary" onClick={() => this.props.history.push("/app/content/item-text/browse")}>Cancel</button>

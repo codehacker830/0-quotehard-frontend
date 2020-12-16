@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavLink, Link, withRouter } from 'react-router-dom';
 import { userSignOut } from '../actions/Auth';
+import qs from 'qs';
 
 class Header extends Component {
    constructor(props) {
@@ -25,6 +26,8 @@ class Header extends Component {
    render() {
       const { isOpen } = this.state;
       const { location } = this.props;
+      const queryObj = qs.parse(location.search, { ignoreQueryPrefix: true });
+      const isMergeMode = queryObj.merge_loser ? true : false;
       const { authUser, accountCompany } = this.props;
       let show = false;
       if (
@@ -37,7 +40,7 @@ class Header extends Component {
          || location.pathname === "/app/settings"
       ) show = true;
       return (
-         <header id="page-header" className={`bg-dark ${show ? "" : "d-none"}`}>
+         <header id="page-header" className={`bg-dark ${show && !isMergeMode ? "" : "d-none"}`}>
             {/* Header Content */}
             <div className="container content-header">
                {/* Left Section */}

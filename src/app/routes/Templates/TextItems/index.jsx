@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import InlineHelp from '../../../../components/InlineHelp';
 import TotalLabelFor from '../../../../components/TotalLabelFor';
 import axios from '../../../../util/Api';
+import NewTextItemBtn from './NewTextItemBtn';
+import SelectWinnerBrand from '../components/SelectWinnerBrand';
+import Tr_TextItem from './Tr_TextItem';
 
 export default class TextItems extends Component {
    state = {
-      textItems: [],
       filterStatus: "current",
+      textItems: [],
    };
    componentDidMount() {
       axios.get(`/templates/textitem/status/${this.state.filterStatus}`).then(({ data }) => {
@@ -24,9 +27,13 @@ export default class TextItems extends Component {
       }
    }
    render() {
+      console.log("Text items props ===>", this.props);
       const { history } = this.props;
+
       return (
          <div className="content">
+            <SelectWinnerBrand />
+            
             <div className="block block-rounded">
                <div className="block-content">
                   <div className="row p-3">
@@ -53,11 +60,7 @@ export default class TextItems extends Component {
                            </div>
                         </div>
                      </div>
-                     <div className="col-md-6">
-                        <div className="row mb-2">
-                           <Link to="/app/content/item-text/create-new" className="btn btn-success ml-auto">New Item</Link>
-                        </div>
-                     </div>
+                     <NewTextItemBtn />
                   </div>
                </div>
             </div>
@@ -71,23 +74,7 @@ export default class TextItems extends Component {
                         : <React.Fragment>
                            <table className="quotient-table">
                               <tbody className="rowClick">
-                                 {
-                                    this.state.textItems.map((item, index) => {
-                                       return (
-                                          <tr onClick={() => history.push(`/app/content/item-text/view/${item._id}`)} key={index}>
-                                             <td>
-                                                <div className="d-flex">
-                                                   <div className="u-ellipsis">
-                                                      <Link to={`/app/content/item-text/view/${item._id}`}>{item.textHeading}</Link>
-                                                      <br />
-                                                      <small className="text-gray font-size-sm">{item.longDescription}&nbsp;</small>
-                                                   </div>
-                                                </div>
-                                             </td>
-                                          </tr>
-                                       );
-                                    })
-                                 }
+                                 {this.state.textItems.map((item, index) => <Tr_TextItem key={index} item={item} />)}
                               </tbody>
                            </table>
                            <TotalLabelFor list={this.state.textItems} />

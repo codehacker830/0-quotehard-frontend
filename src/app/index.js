@@ -27,7 +27,6 @@ class AppRoot extends Component {
          || location.pathname === "/app/content/templates"
          || location.pathname === "/app/content/item-price/browse"
          || location.pathname === "/app/content/item-text/browse"
-
       ) isBgGray = true;
       return (
          <main id="main-container" className={isBgGray ? "" : "bg-white"}>

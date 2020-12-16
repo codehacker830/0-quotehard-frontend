@@ -10,6 +10,7 @@ import NavCrumpRight from '../../../../components/NavCrump/NavCrumpRight';
 import PriceItemForm from '../../../../components/PriceItemForm';
 import axios from '../../../../util/Api';
 import RelatedTemplateList from '../components/RelatedTemplateList';
+import ConfirmPItemMergeBanner from './ConfirmPItemMergeBanner';
 
 class CreatePriceItem extends Component {
    constructor(props) {
@@ -51,7 +52,7 @@ class CreatePriceItem extends Component {
          quantity,
          itemTotal,
       } = priceItem;
-      if (productHeading === "" && itemCode === "") { toast.info("Title Or item code is missing."); return; }
+      if (productHeading === "" && itemCode === "") { toast.info("🌟 Title Or item code is missing."); return; }
       const payload = {
          isOptional,
          isOptionSelected,
@@ -161,7 +162,11 @@ class CreatePriceItem extends Component {
       });
    }
    onClickDeleteAndMerge = () => {
-
+      const priceItemId = this.props.match.params.id;
+      this.props.history.push({
+         pathname: '/app/content/item-price/browse',
+         search: `?merge_loser=${priceItemId}`
+      })
    }
    render() {
       const { priceItem } = this.props.quote.items[0];
@@ -248,7 +253,7 @@ class CreatePriceItem extends Component {
                      : null
                }
             </div>
-
+            <ConfirmPItemMergeBanner />
             <div className="content bg-custom">
                <div className="mt-6 mb-5">
                   {
@@ -273,7 +278,7 @@ class CreatePriceItem extends Component {
                <div className="row p-3">
                   <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.onClickSubmit}>
                      {this.props.match.path === '/app/content/item-price/create-new' && "Create"}
-                     {this.props.match.path === '/app/content/item-price/view/:id' && `Save & Update ${priceItem.templates.length > 0 ? `${priceItem.templates.length} template` + `${priceItem.templates.length > 1 ? "s" : ""}` : ""}`}
+                     {this.props.match.path === '/app/content/item-price/view/:id' && `Save${priceItem.templates.length > 0 ? ` & Update ${priceItem.templates.length} template` + `${priceItem.templates.length > 1 ? "s" : ""}` : ""}`}
                      {this.props.match.path === '/app/content/item-price/duplicate/:id' && "Save"}
                   </button>
                   <button className="btn btn-lg btn-rounded btn-hero-secondary" onClick={() => this.props.history.push("/app/content/item-text/browse")}>Cancel</button>

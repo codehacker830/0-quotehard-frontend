@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import InlineHelp from '../../../../components/InlineHelp';
 import { toFixedFloat } from '../../../../util';
 import axios from '../../../../util/Api';
+import SelectWinnerBrand from '../components/SelectWinnerBrand';
+import NewPriceItemBtn from './NewPriceItemBtn';
+import Tr_PriceItem from './Tr_PriceItem';
 
 export default class PriceItems extends Component {
    state = {
@@ -26,6 +29,8 @@ export default class PriceItems extends Component {
    render() {
       return (
          <div className="content">
+            <SelectWinnerBrand />
+
             <div className="block block-rounded">
                <div className="block-content">
                   <div className="row p-3">
@@ -52,11 +57,7 @@ export default class PriceItems extends Component {
                            </div>
                         </div>
                      </div>
-                     <div className="col-md-6">
-                        <div className="row mb-2">
-                           <Link to="/app/content/item-price/create-new" className="btn btn-success ml-auto" >New Item</Link>
-                        </div>
-                     </div>
+                     <NewPriceItemBtn />
                   </div>
                </div>
             </div>
@@ -71,35 +72,7 @@ export default class PriceItems extends Component {
                            <table className="quotient-table">
                               <tbody className="rowClick">
                                  {
-                                    this.state.priceItems.map((item, index) => {
-                                       return (
-                                          <tr onClick={() => this.props.history.push(`/app/content/item-price/view/${item._id}`)} key={index}>
-                                             <td>
-                                                <div className="d-flex">
-                                                   <div className="u-ellipsis">
-                                                      <small className="text-gray">{item.itemCode}</small>
-                                                      <br />
-                                                      <Link to={`/app/content/item-price/view/${item._id}`}>{item.productHeading ? item.productHeading : "[ No title ]"}</Link>
-                                                      <br />
-                                                      <small className="text-gray font-size-sm">{item.longDescription}&nbsp;</small>
-                                                   </div>
-                                                   {
-                                                      item.isSubscription ?
-                                                         <React.Fragment>
-                                                            <span className="text-gray font-size-sm ml-auto"> per {item.per} {item.every}</span>
-                                                            {
-                                                               item.period ?
-                                                                  null
-                                                                  : <span className="text-gray font-size-sm ml-auto"> (for {item.period} months)</span>
-                                                            }
-                                                         </React.Fragment>
-                                                         : <span className="text-black font-size-sm ml-auto">{item.quantity} @ {toFixedFloat(item.unitPrice)}</span>
-                                                   }
-                                                </div>
-                                             </td>
-                                          </tr>
-                                       );
-                                    })
+                                    this.state.priceItems.map((item, index) => <Tr_PriceItem key={index} item={item} />)
                                  }
 
                               </tbody>
