@@ -83,7 +83,7 @@ export default class CreateContact extends Component {
             addresses
         }
         console.log("request payload ===>", data);
-        axios.post("/contacts", data).then(({ data }) => {
+        axios.post(`/contacts/${this.props.match.params.category}`, data).then(({ data }) => {
             toast.success("Contact was created successfully.", toastSuccessConfig);
             console.log("create contact api resopnse ==>", data);
             this.props.history.push(`/app/c/contacts/view/${data.contact._id}`);
@@ -105,7 +105,7 @@ export default class CreateContact extends Component {
         window.removeEventListener('click', this.onClickOutsideHandler);
     }
     render() {
-        console.log("this.state =>", this.state)
+        console.log("this.state =---->", this.state)
         console.log("this.props ---", this.props);
 
         if (this.props.match.params.category !== "person" && this.props.match.params.category !== "company") return <Redirect to="/app/c/contacts" />

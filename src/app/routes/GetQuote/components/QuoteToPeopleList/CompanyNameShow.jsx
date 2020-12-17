@@ -6,7 +6,7 @@ export const CompanyNameShow = (props) => {
    const [companyName, setCompanyName] = useState("");
    useEffect(() => {
       if (props.companyId) {
-         axios.get(`/contacts/search-company-by-id/${props.companyId}`)
+         axios.get(`/contacts/company/id/${props.companyId}`)
             .then(({ data }) => {
                // console.log("44444444444444 ", data);
                setCompanyName(data.contact ? data.contact.companyName : "");

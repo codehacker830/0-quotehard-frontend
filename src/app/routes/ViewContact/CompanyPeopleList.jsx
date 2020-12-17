@@ -8,7 +8,7 @@ const CompanyPeopleList = (props) => {
       console.log("Company Props =>", props.contact);
 
       // get poeple contact list with company contact _id
-      axios.get(`/contacts/people-by-companyid/${props.contact._id}`).then(({ data }) => {
+      axios.get(`/contacts/person/companyid/${props.contact._id}`).then(({ data }) => {
          console.log("api response =", data);
          setPeopleContactArray(data.contacts);
       });

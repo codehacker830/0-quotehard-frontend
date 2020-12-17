@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import qs from 'qs';
 import { Link, withRouter } from 'react-router-dom';
-import { merge } from 'highcharts';
 
 class SelectWinnerBrand extends Component {
    render() {
@@ -9,15 +8,13 @@ class SelectWinnerBrand extends Component {
       const { merge_loser } = queryObj;
       const isMergeMode = merge_loser ? true : false;
       if (isMergeMode) return (
-         <div className="block-content mb-5">
-            <div className="row no-gutters">
-               <div className="col-sm-6">
+         <div className="block block-rounded">
+            <div className="block-content">
+               <div className="row no-gutters">
                   <h2>Select the Winner</h2>
-               </div>
-               <div className="col-sm-6">
-                  <div className="row no-gutters">
-                     <Link className="btn btn-secondary ml-auto" to={this.props.match.path}>Cancel Merge</Link>
-                  </div>
+                  <p className="ml-auto">
+                     <Link className="btn btn-secondary" to={this.props.match.path}>Cancel Merge</Link>
+                  </p>
                </div>
             </div>
          </div>

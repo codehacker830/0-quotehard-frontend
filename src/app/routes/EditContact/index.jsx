@@ -70,7 +70,7 @@ export default class EditContact extends Component {
          toast.warn("Contact can't be catched.");
          return;
       }
-      axios.put(`/contacts/${contactId}`, data).then((res) => {
+      axios.put(`/contacts/${data.category}/id/${contactId}`, data).then((res) => {
          console.log("api resopnse = >", res);
          toast.success("Contact was updated successfully.", toastSuccessConfig);
          this.props.history.push(this.goTo);
@@ -172,7 +172,7 @@ export default class EditContact extends Component {
                                        id="companyName" name="companyName"
                                        placeholder="New, or lookup existing..."
                                        value={this.state.companyName}
-                                       onChange={(ev) => this.setState({ companyName: ev.target.value, show: true })} />
+                                       onChange={(ev) => this.setState({ show: true, companyName: ev.target.value, companyId: "" })} />
                                     <CompleterCompany
                                        companyName={this.state.companyName}
                                        show={this.state.show}

@@ -10,7 +10,7 @@ const CompleterContact = (props) => {
    const toPeopleList = useSelector(state => state.mainData.quote.toPeopleList)
    useEffect(() => {
       if (emailTo !== "") {
-         axios.post("/contacts/search-people-by-email", { email: emailTo })
+         axios.post("/contacts/person/email", { email: emailTo })
             .then(({ data }) => {
                setList(data.contacts);
             })

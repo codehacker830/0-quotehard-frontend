@@ -16,6 +16,7 @@ import PhonesShow from './PhonesShow';
 import { CONTACTS_PATH } from '../../../constants/PathNames';
 import NavCrumpLeft from '../../../components/NavCrump/NavCrumpLeft';
 import NavCrumpRight from '../../../components/NavCrump/NavCrumpRight';
+import ConfirmContactMergeBanner from './ConfirmContactMergeBanner';
 
 export default class ViewContact extends Component {
    constructor(props) {
@@ -37,7 +38,7 @@ export default class ViewContact extends Component {
       })
    }
    onClickArchive = () => {
-      axios.put(`/contacts/archive/${this.props.match.params.id}`).then(({ data }) => {
+      axios.put(`/contacts/${this.state.contact.category}/archive/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to archive contact", data);
          this.setState({ contact: data.contact });
          toast.success("Archived.", toastSuccessConfig);
@@ -46,7 +47,7 @@ export default class ViewContact extends Component {
       });
    }
    onClickUnArchive = () => {
-      axios.put(`/contacts/un-archive/${this.props.match.params.id}`).then(({ data }) => {
+      axios.put(`/contacts/${this.state.contact.category}/un-archive/${this.props.match.params.id}`).then(({ data }) => {
          console.log(" success to archive contact", data);
          this.setState({ contact: data.contact });
          toast.success("Unarchived.", toastSuccessConfig);
@@ -54,19 +55,15 @@ export default class ViewContact extends Component {
          console.error(" failed to un-archive contact ", err);
       });
    }
-   onClickDelete = () => {
-      axios.put(`/contacts/delete/${this.props.match.params.id}`).then(({ data }) => {
-         console.log(" success to archive contact", data);
-         this.props.history.push(CONTACTS_PATH);
-         toast.success("Contact deleted.", toastSuccessConfig);
-      }).catch((err) => {
-         console.error(" failed to un-archive contact ", err);
+   onClickDeleteAndMerge = () => {
+      const contactId = this.props.match.params.id;
+      this.props.history.push({
+         pathname: '/app/c/contacts',
+         search: `?category=${this.state.contact.category}&merge_loser=${contactId}`
       });
    }
    render() {
       console.log(" view contact state =>", this.state);
-      const linkTo = CONTACTS_PATH;
-      const linkName = "Contacts";
       const { contact } = this.state;
       return (
          <React.Fragment>
@@ -105,12 +102,12 @@ export default class ViewContact extends Component {
                            </li>
                         }
                         <li>
-                           <button className="btn-in-action" onClick={this.onClickDelete}>
+                           <button className="btn-in-action" onClick={this.onClickDeleteAndMerge}>
                               <div className="mx-3">
-                                 <i className="fa fa-fw fa-trash-alt text-secondary" />
+                                 <i className="fa fa-fw fa-compress-alt text-secondary" />
                               </div>
                               <div className="media-body font-size-sm font-w600 pr-2">
-                                 <span>Delete</span>
+                                 <span>Delete &amp; merge</span>
                               </div>
                            </button>
                         </li>
@@ -118,6 +115,9 @@ export default class ViewContact extends Component {
                   </NavCrumpRight>
                }
             </NavCrump>
+
+            <ConfirmContactMergeBanner contact={this.state.contact} />
+
             <div className="content">
                <div className="block block-rounded">
                   <div className="block-content p-5">
@@ -169,7 +169,7 @@ export default class ViewContact extends Component {
                      <div className="row no-gutters mb-1">
                         <div className="w-100 font-size-sm mb-1">
                            <i className="far fa-xs fa-clock mr-1"></i>
-                        Recent Activity
+                           Recent Activity
                         <button className={`btn btn-rounded btn-outline-info fa-xs px-2 py-0 ml-2 ${this.state.showActivity ? "" : "d-none"}`} onClick={() => this.setState({ showActivity: false })}>Hide</button>
                         </div>
                         <div className={`w-100 mb-1 ${this.state.showActivity ? "d-none" : ""}`}>

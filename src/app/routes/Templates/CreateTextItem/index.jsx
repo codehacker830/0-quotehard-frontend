@@ -203,10 +203,7 @@ class CreateTextItem extends Component {
 
             <div className="content bg-custom">
                <div className="mt-6 mb-5">
-                  {
-                     textItem.status === "archived" &&
-                     <p><span className="label">Archived</span></p>
-                  }
+                  {textItem.status === "archived" && <p><span className="label">Archived</span></p>}
                   <TextItemForm
                      index={0}
                      isNote={true}

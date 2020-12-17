@@ -6,7 +6,8 @@ class SubHeader extends Component {
    render() {
       const { location } = this.props;
       const queryObj = qs.parse(location.search, { ignoreQueryPrefix: true });
-      const isMergeMode = queryObj.merge_loser ? true : false;
+      const { merge_loser } = queryObj;
+      const isMergeMode = merge_loser ? true : false;
       let hidden = false;
       if (
          location.pathname === "/app/content/template/get"
