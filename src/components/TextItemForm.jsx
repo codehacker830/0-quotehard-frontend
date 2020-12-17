@@ -15,6 +15,7 @@ class TextItemForm extends Component {
       this.state = {
          uploading: false,
          isAddItemListOpen: false,
+         isConfirmingDelete: false
       };
       this.hiddenFileInput = React.createRef();
       this.addItemOptionContainer = React.createRef();
@@ -168,7 +169,6 @@ class TextItemForm extends Component {
          }]);
       } else {
          const { items } = this.props.quote;
-         console.error("items ------- >", items);
          let newItems = [...items];
          if (newItems.length > 2) {
             newItems.splice(ind, 1);
@@ -189,6 +189,7 @@ class TextItemForm extends Component {
             },
          ]);
       }
+      this.setState({ isConfirmingDelete: false });
    }
    render() {
       const { isViewOnly } = this.props;
@@ -253,9 +254,14 @@ class TextItemForm extends Component {
                      <button className="btn btn-light mr-1" disabled={this.props.isOrderDownDisabled} onClick={() => this.orderDownItem(this.props.index)}>
                         <i className="fa fa-long-arrow-alt-down"></i>
                      </button>
-                     <button className="btn btn-light" disabled={this.props.isRemoveDisabled} onClick={() => this.removeItem(this.props.index)}>
-                        <i className="fa fa-trash-alt"></i>
-                     </button>
+                     {
+                        this.state.isConfirmingDelete ?
+                           <button className="btn btn-sm btn-danger" onClick={() => this.removeItem(this.props.index)}>Remove?</button>
+                           :
+                           <button className="btn btn-light mr-1" disabled={this.props.isRemoveDisabled} onClick={() => this.setState({ isConfirmingDelete: true })}>
+                              <i className="fa fa-trash-alt"></i>
+                           </button>
+                     }
                      {
                         isViewOnly &&
                         <button className="btn btn-light mr-1" onClick={() => this.props.history.push({

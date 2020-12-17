@@ -29,7 +29,7 @@ export default class ViewContact extends Component {
    componentDidMount() {
       const contactId = this.props.match.params.id;
       axios.get(`/contacts/id/${contactId}`).then(({ data }) => {
-         console.log("API RESPNSE =>", data);
+         console.log("VIEW CONTACT BY ID RESPONSE =>", data);
          this.setState({ contact: data.contact });
       }).catch((err) => {
          console.error("GET contact API error ==>", err)

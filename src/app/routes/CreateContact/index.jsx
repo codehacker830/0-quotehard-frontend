@@ -113,7 +113,7 @@ export default class CreateContact extends Component {
             <React.Fragment>
                 <NavCrump linkTo={this.goTo}>
                     Previous
-            </NavCrump>
+                </NavCrump>
                 <div className="content">
                     <div className="block block-rounded">
                         <div className="block-content">

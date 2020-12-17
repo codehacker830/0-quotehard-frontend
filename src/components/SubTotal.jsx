@@ -5,6 +5,9 @@ import { initPriceItem } from '../constants/InitState';
 import { numberOfOption, FilterSeqItemsForPartSubTotal, calculateSubTotal } from '../util';
 
 class SubTotal extends Component {
+   state = {
+      isConfirmingDelete: false
+   };
    removeItem = (ind) => {
       const { items } = this.props.quote;
       let newItems = [...items];
@@ -26,6 +29,7 @@ class SubTotal extends Component {
             priceItem: initPriceItem,
          },
       ]);
+      this.setState({ isConfirmingDelete: false });
    }
 
    render() {
@@ -39,9 +43,14 @@ class SubTotal extends Component {
          <div className="row">
             <div className="d-flex ml-auto">
                <div className="py-3">
-                  <button className="btn btn-light mb-auto" onClick={() => this.removeItem(this.props.index)}>
-                     <i className="fa fa-trash-alt"></i>
-                  </button>
+                  {
+                     this.state.isConfirmingDelete ?
+                        <button className="btn btn-sm btn-danger mb-auto" onClick={() => this.removeItem(this.props.index)}>Remove?</button>
+                        :
+                        <button className="btn btn-light mb-auto" onClick={() => this.setState({ isConfirmingDelete: true })}>
+                           <i className="fa fa-trash-alt"></i>
+                        </button>
+                  }
                </div>
                <div className="p-3 text-right my-auto">
                   <p className={`text-secondary mb-0 ${optionNum.total ? "" : "d-none"}`}>Option selected</p>

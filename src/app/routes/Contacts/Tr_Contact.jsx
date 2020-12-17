@@ -15,7 +15,7 @@ class Tr_Contact extends Component {
    render() {
       const { contact } = this.props;
       const isLoser = this.merge_loser === contact._id;
-      console.log("contact   contact  contact :", contact)
+      console.log("TABLE ROW CONTACT INFO ===>", contact)
       console.log("isLoser :", isLoser)
       console.log("this.merge_loser :", this.merge_loser)
       return (

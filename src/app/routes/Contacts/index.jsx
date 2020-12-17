@@ -40,6 +40,7 @@ export default class Contacts extends Component {
       }
       else {
          axios.get('/contacts').then(({ data }) => {
+            console.log("GET ALL CONTACTS RES ===>" , data.contacts)
             this.setState({
                isLoading: false,
                contacts: this.filterContacts(data.contacts)
