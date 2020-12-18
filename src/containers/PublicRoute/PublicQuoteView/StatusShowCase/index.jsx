@@ -50,17 +50,18 @@ class StatusShowCase extends Component {
       if (quote.status === "draft") return (
          <div className="offlineBanner no_print" >
             <div className="container">
-               <div className="author-stat-spacer" />
-               <div className="pull-left">
-                  <div className="author-edit">
-                     <button type="button" className="btn btn-primary mr-2" onClick={this.onClickSend}>Send...</button>
-                     <button type="button" className="btn btn-outline-secondary" onClick={this.onClickEditDraft}>Edit Draft</button>
+               <div className="content">
+                  <div className="pull-left">
+                     <div className="author-edit">
+                        <button type="button" className="btn btn-primary rounded-0 mr-2" onClick={this.onClickSend}>Send...</button>
+                        <button type="button" className="btn btn-outline-secondary rounded-0" onClick={this.onClickEditDraft}>Edit Draft</button>
+                     </div>
                   </div>
+                  <div className="author-stat-link author-stat-link-preview">
+                     <Link to={`/q/${entoken}/preview`}>Preview as Your Customer</Link>
+                  </div>
+                  <div className="clear" />
                </div>
-               <div className="author-stat-link author-stat-link-preview">
-                  <Link to={`/q/${entoken}/preview`}>Preview as Your Customer</Link>
-               </div>
-               <div className="clear" />
             </div>
          </div>
       );

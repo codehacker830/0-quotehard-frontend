@@ -4,7 +4,7 @@ import CompanyContactLink from './ContactAuthLink/CompanyContactLink';
 import PersonContactLink from './ContactAuthLink/PersonContactLink';
 import PersonContactLinkShow from './ContactAuthLink/PersonContactLink';
 
-class FullCustomerDetailInColumns extends Component {
+class ForCustomerDetailInColumns extends Component {
    render() {
       const { isDisplayFullCustomerDetail, toPeopleList } = this.props;
       const firstPerson = toPeopleList[0];
@@ -24,10 +24,10 @@ class FullCustomerDetailInColumns extends Component {
                   </React.Fragment>
                   :
                   <React.Fragment>
-                     <label>For</label>&nbsp;
-                     <span className="quote-detail-block">
+                     <div className="quote-detail-block">
+                        <label className="quote-detail-label">For</label>
                         <PersonContactLinkShow contact={firstPerson} />
-                     </span>
+                     </div>
                   </React.Fragment>
             }
             {
@@ -92,4 +92,4 @@ const mapStateToProps = ({ appearanceSetting, mainData }) => {
    const { isDisplayFullCustomerDetail } = appearanceSetting;
    return { isDisplayFullCustomerDetail, toPeopleList };
 };
-export default connect(mapStateToProps)(FullCustomerDetailInColumns);
+export default connect(mapStateToProps)(ForCustomerDetailInColumns);

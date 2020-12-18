@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import axios from '../../util/Api';
+import axios from '../../../util/Api';
 
 export default class Accepted extends Component {
    mounted = false;

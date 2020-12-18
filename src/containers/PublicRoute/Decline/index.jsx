@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import TextareaAutosize from 'react-autosize-textarea/lib'
 import { Link, withRouter } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import axios from '../../util/Api'
-import { toastErrorConfig } from '../../util/toastrConfig'
+import axios from '../../../util/Api'
+import { toastErrorConfig } from '../../../util/toastrConfig'
 
 class Decline extends Component {
     constructor(props) {

@@ -63,7 +63,7 @@ class GetQuote extends Component {
          axios.post('/quotes', data)
             .then(({ data }) => {
                console.log("res data =>", data);
-               toast.success("New Quote was defined.", toastSuccessConfig);
+               toast.success("New quote defined.", toastSuccessConfig);
                this.setState({ loading: false, type: null });
                this.props.history.push(`/q/${data.entoken}`);
             })
@@ -78,7 +78,7 @@ class GetQuote extends Component {
          axios.put(`/quotes/id/${quoteId}`, data)
             .then(({ data }) => {
                console.log("uuuuuuuuuuuuuuuuu =>", data);
-               toast.success("Quote was defined.", toastSuccessConfig);
+               toast.success("Quote defined.", toastSuccessConfig);
                this.setState({ loading: false, type: null });
                this.props.history.push(`/q/${data.entoken}`);
             })

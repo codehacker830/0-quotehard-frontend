@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import CompanyContactLink from './ContactAuthLink/CompanyContactLink';
 import PersonContactLink from './ContactAuthLink/PersonContactLink';
 
-class FullCustomerDetailInline extends Component {
+class ForCustomerDetailInline extends Component {
    render() {
       const { isDisplayFullCustomerDetail, toPeopleList } = this.props;
       const firstPerson = toPeopleList[0];
@@ -86,4 +86,4 @@ const mapStateToProps = ({ appearanceSetting, mainData }) => {
    const { toPeopleList } = mainData.quote;
    return { isDisplayFullCustomerDetail, toPeopleList };
 };
-export default connect(mapStateToProps)(FullCustomerDetailInline);
+export default connect(mapStateToProps)(ForCustomerDetailInline);

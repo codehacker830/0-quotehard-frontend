@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import FullCustomerDetailInline from './FullCustomerDetailInline';
-import FullCustomerDetailInColumns from './FullCustomerDetailInColumns';
+import ForCustomerDetailInline from './ForCustomerDetailInline';
+import ForCustomerDetailInColumns from './ForCustomerDetailInColumns';
 import InfoInColumns from './InfoInColumns';
 import FromInColumns from './FromInColumns';
 import InfoInline from './InfoInline';
@@ -18,7 +18,7 @@ class QuoteDetail extends Component {
                <FromInColumns />
             </div>
             <div className="quote-detail-columns-col" style={{ order: (layout + 1) % 3 }}>
-               <FullCustomerDetailInColumns />
+               <ForCustomerDetailInColumns />
             </div>
             <div className="quote-detail-columns-col" style={{ order: (layout + 2) % 3 }}>
                <InfoInColumns />
@@ -28,7 +28,7 @@ class QuoteDetail extends Component {
       );
       else if (contactDetailLayout === 1) return (
          <div className="quote-detail quote-detail-inline">
-            <FullCustomerDetailInline />
+            <ForCustomerDetailInline />
             <FromInline />
             <InfoInline />
          </div>
@@ -36,7 +36,7 @@ class QuoteDetail extends Component {
       else return (
          <React.Fragment>
             <FromInColumns />
-            <FullCustomerDetailInColumns />
+            <ForCustomerDetailInColumns />
             <InfoInColumns />
          </React.Fragment>
       );
