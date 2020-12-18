@@ -30,6 +30,7 @@ class AuthorBox extends Component {
             </div>
          </div>
       );
+      else return null;
    }
 }
 const mapStateToProps = ({ mainData }) => {

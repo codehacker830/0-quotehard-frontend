@@ -6,11 +6,9 @@ import { checkIfTeamMember, formatDate, formatDateTime, toFixedFloat } from '../
 import { connect } from 'react-redux';
 import { getPublicViewPersonWithEntoken, setInitUrl, userSignOut } from '../../../actions/Auth';
 import { getTeamMembers } from '../../../actions/Team';
-import TextareaAutosize from 'react-autosize-textarea/lib';
 import QuoteLogo from '../components/QuoteLogo';
 import QuoteDetail from './QuoteDetail';
 import StatusShowCase from './StatusShowCase';
-import AttachedFilesShowCase from '../components/AttachedFilesShowCase';
 import PublicNoteItemList from '../components/PublicNoteItemList';
 import PublicViewFullWrapper from '../components/PublicViewFullWrapper';
 import PublicQuoteDetailWrapper from '../components/PublicQuoteDetailWrapper';
@@ -29,6 +27,7 @@ import { getPublicAppearanceWithEntoken } from '../../../actions/Appearance';
 import PublicQuoteDisscussionWrite from '../components/PublicQuoteDisscussionWrite';
 import AcceptBox from './AcceptBox';
 import PreviewBanner from './PreviewBanner';
+import axios from '../../../util/Api';
 
 class PublicQuoteView extends Component {
    mounted = false;
@@ -45,20 +44,36 @@ class PublicQuoteView extends Component {
       };
 
    }
-   onClickMarkAsSent = () => {
+   onClickEditQuote = () => {
+      const quoteId = this.props.quote._id;
+      axios.put(`/quotes/status/id/${quoteId}`, { status: "editing" }).then(() => {
+         this.props.history.push(`/app/quote/${quoteId}`)
+      }).catch(err => {
+         console.error("Error during update status :", err)
+      });
+   }
+   onClickSendFollowUp = () => {
+
+   }
+   onClickArchive = () => {
 
    }
    onClickAccept = () => {
 
    }
-   onClickCopy = () => {
+   onClickDecline = () => {
 
+   }
+   onClickWithdraw = () => {
+
+   }
+   onClickCopy = () => {
+      const quoteId = this.props.quote._id;
+      this.props.history.push(`/app/quote/get/duplicate/${quoteId}`)
    }
    onClickCopyToTemplate = () => {
-
-   }
-   onClickDelete = () => {
-
+      const quoteId = this.props.quote._id;
+      this.props.history.push(`/app/content/template/get/copy-to-template/${quoteId}`)
    }
    async componentDidMount() {
       this.mounted = true;
@@ -108,12 +123,32 @@ class PublicQuoteView extends Component {
                      <NavCrumpRight>
                         <ul className="choices" style={{ left: 45, top: 10 }}>
                            <li>
-                              <button className="btn-in-action" onClick={this.onClickMarkAsSent}>
+                              <button className="btn-in-action" onClick={() => this.setState({ isEditAlertOpen: true })}>
                                  <div className="icon-wrapper">
-                                    <i className="fa fa-fw fa-arrow-alt-circle-right text-secondary" />
+                                    <i className="fa fa-fw fa-pencil-alt text-secondary" />
                                  </div>
                                  <div className="media-body font-size-sm pr-2">
-                                    <span>Mark as Sent (don't email)</span>
+                                    <span>Edite Quote</span>
+                                 </div>
+                              </button>
+                           </li>
+                           <li>
+                              <button className="btn-in-action" onClick={this.onClickSendFollowUp}>
+                                 <div className="icon-wrapper">
+                                    <i className="fa fa-fw fa-paper-plane text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm pr-2">
+                                    <span>Send Follow-up...</span>
+                                 </div>
+                              </button>
+                           </li>
+                           <li>
+                              <button className="btn-in-action" onClick={this.onClickArchive}>
+                                 <div className="icon-wrapper">
+                                    <i className="fa fa-fw fa-archive text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm pr-2">
+                                    <span>Archive</span>
                                  </div>
                               </button>
                            </li>
@@ -124,6 +159,26 @@ class PublicQuoteView extends Component {
                                  </div>
                                  <div className="media-body font-size-sm pr-2">
                                     <span>Accepted<span className="choices-undo"> ← undo</span></span>
+                                 </div>
+                              </button>
+                           </li>
+                           <li>
+                              <button className="btn-in-action" onClick={this.onClickDecline}>
+                                 <div className="icon-wrapper">
+                                    <i className="fa fa-fw fa-minus-circle text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm pr-2">
+                                    <span>Decline</span>
+                                 </div>
+                              </button>
+                           </li>
+                           <li>
+                              <button className="btn-in-action" onClick={this.onClickWithdraw}>
+                                 <div className="icon-wrapper">
+                                    <i className="fa fa-fw fa-ban text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm pr-2">
+                                    <span>Withdraw</span>
                                  </div>
                               </button>
                            </li>
@@ -148,20 +203,32 @@ class PublicQuoteView extends Component {
                                  </div>
                               </button>
                            </li>
-                           <li>
-                              <button className="btn-in-action" onClick={this.onClickDelete}>
-                                 <div className="icon-wrapper">
-                                    <i className="fa fa-fw fa-trash-alt text-secondary" />
-                                 </div>
-                                 <div className="media-body font-size-sm pr-2">
-                                    <span>Delete</span>
-                                 </div>
-                              </button>
-                           </li>
                         </ul>
                      </NavCrumpRight>
                   </NavCrump>
+
+                  <div id="AlerterPage">
+                     {
+                        this.state.isEditAlertOpen ?
+                           <div className="alertBar alertBar-prompt">
+                              <div className="container">
+                                 <h4>Edit Quote?</h4>
+                                 <p>
+                                    While editing, the details of this Quote will be hidden from your customer.
+                                    <br />
+                                    Once saved, <strong>edits cannot be undone</strong>. Consider creating a copy instead (Actions &gt; Copy).
+                                 </p>
+                                 <div className="btnSet">
+                                    <button className="btn btn-secondary mr-2" onClick={this.onClickEditQuote}>Take offline and edit quote</button>
+                                    <button className="btn" onClick={() => this.setState({ isEditAlertOpen: false })}>Cancel</button>
+                                 </div>
+                              </div>
+                           </div>
+                           : null
+                     }
+                  </div>
                </PublicVisiableOnlyAuthTeamMember>
+
                <div className="quoteCanvas-bg" style={{ backgroundColor: appearanceSetting.colors.background }}>
                   <PublicVisiableOnlyAuthTeamMember>
                      <StatusShowCase />

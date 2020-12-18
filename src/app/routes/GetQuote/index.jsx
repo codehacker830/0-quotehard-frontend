@@ -40,30 +40,12 @@ class GetQuote extends Component {
       };
    }
    onClickMarkAsSent = () => {
-      const { toPeopleList, title, settings, items, notes } = this.props.quote;
+      const { toPeopleList, title } = this.props.quote;
       if (title === "") { toast.info("Missing a Quote Title."); return; }
       if (toPeopleList.length === 0) { toast.info("You must add at least one contact."); return; }
       const quoteId = this.props.match.params.id;
-      // axios.put(`/mark-as-sent/id/${quoteId}`).then(({ data }) => {
-      //    toast.success('Not emailed, marked as sent.');
-      //    this.props.history.push(`/q/${data.entoken}`);
-      // }).catch(err => {
-      //    toast.error('Quote failed to mark as sent.');
-      // });
-      const toPeopleIdList = [];
-      for (let i = 0; i < toPeopleList.length; i++) {
-         toPeopleIdList.push(toPeopleList[i]._id);
-      }
-      const payload = {
-         status: "awaiting",
-         toPeopleList: toPeopleIdList,
-         title,
-         settings,
-         // settings: { ...settings, userFrom: settings.userFrom ? settings.userFrom : this.props.authUser._id },
-         items,
-         notes
-      };
-      axios.put(`/quotes/id/${quoteId}`, payload).then(({ data }) => {
+
+      axios.put(`/quotes/status/id/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
          toast.success('Not emailed, marked as sent.');
          this.props.history.push(`/q/${data.entoken}`);
       }).catch(err => {

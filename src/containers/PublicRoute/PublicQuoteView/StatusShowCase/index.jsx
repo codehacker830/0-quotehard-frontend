@@ -47,35 +47,30 @@ class StatusShowCase extends Component {
    render() {
       const { quote } = this.props;
       const { entoken } = this.props.match.params;
-      if (quote.status === "draft") return (
+      return (
          <div className="offlineBanner no_print" >
             <div className="container">
-               <div className="content">
-                  <div className="pull-left">
-                     <div className="author-edit">
-                        <button type="button" className="btn btn-primary rounded-0 mr-2" onClick={this.onClickSend}>Send...</button>
-                        <button type="button" className="btn btn-outline-secondary rounded-0" onClick={this.onClickEditDraft}>Edit Draft</button>
-                     </div>
-                  </div>
-                  <div className="author-stat-link author-stat-link-preview">
-                     <Link to={`/q/${entoken}/preview`}>Preview as Your Customer</Link>
-                  </div>
-                  <div className="clear" />
-               </div>
-            </div>
-         </div>
-      );
-      else return (
-         <div className="offlineBanner no_print" >
-            <div className="container">
-               <AuthorBox />
-               <div className="author-stat-spacer">
-               </div>
-
-               <StatOpenTimes />
-               <StatQATimes />
-               <StatNoteTimes />
-               <StatEditTimes />
+               {
+                  quote.status === "draft" || quote.status === "editing" ?
+                     <React.Fragment>
+                        <div className="author-stat-spacer" />
+                        <div className="pull-left">
+                           <div className="author-edit">
+                              <button type="button" className="btn btn-primary rounded-0 mr-2" onClick={this.onClickSend}>Send...</button>
+                              <button type="button" className="btn btn-outline-secondary rounded-0" onClick={this.onClickEditDraft}>Edit Draft</button>
+                           </div>
+                        </div>
+                     </React.Fragment>
+                     :
+                     <React.Fragment>
+                        <AuthorBox />
+                        <div className="author-stat-spacer" />
+                        <StatOpenTimes />
+                        <StatQATimes />
+                        <StatNoteTimes />
+                        <StatEditTimes />
+                     </React.Fragment>
+               }
                <div className="author-stat-link author-stat-link-preview">
                   <Link to={`/q/${entoken}/preview`}>Preview as Your Customer</Link>
                </div>
@@ -88,15 +83,17 @@ class StatusShowCase extends Component {
                            <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />
                            : <i className="fa fa-fw fa-history mr-1" />
                      }
-                  All Activity
-               </button>
+                     All Activity
+                  </button>
                </div>
                <div className="clear" />
                <div className="history-full" style={{}}>
                   {this.state.show && <ActivityHistoryFull onHistoryClose={() => this.setState({ show: false })} data={this.data} />}
                </div>
-            </div >
-         </div >
+
+
+            </div>
+         </div>
       );
    }
 }

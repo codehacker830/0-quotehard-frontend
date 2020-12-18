@@ -25,6 +25,10 @@ class AwaitingSection extends Component {
                            <span className="float-right">
                               <small className="text-gray">
                                  <span className="dt-time">{formatDate(item.createdAt)}</span>
+                                 {
+                                    item.status === "editing" &&
+                                    <span class="quotes-label label-sent label-editing">Editing</span>
+                                 }
                               </small>
                            </span>
                            <div className="u-ellipsis">
