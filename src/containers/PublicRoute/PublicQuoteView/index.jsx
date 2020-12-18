@@ -45,7 +45,21 @@ class PublicQuoteView extends Component {
       };
 
    }
+   onClickMarkAsSent = () => {
 
+   }
+   onClickAccept = () => {
+
+   }
+   onClickCopy = () => {
+
+   }
+   onClickCopyToTemplate = () => {
+
+   }
+   onClickDelete = () => {
+
+   }
    async componentDidMount() {
       this.mounted = true;
       const entoken = this.props.match.params.entoken;
@@ -94,17 +108,17 @@ class PublicQuoteView extends Component {
                      <NavCrumpRight>
                         <ul className="choices" style={{ left: 45, top: 10 }}>
                            <li>
-                              <button className="btn-in-action">
+                              <button className="btn-in-action" onClick={this.onClickMarkAsSent}>
                                  <div className="icon-wrapper">
-                                    <i className="fa fa-fw fa-archive text-secondary" />
+                                    <i className="fa fa-fw fa-arrow-alt-circle-right text-secondary" />
                                  </div>
                                  <div className="media-body font-size-sm pr-2">
-                                    <span>Archive</span>
+                                    <span>Mark as Sent(don't email)</span>
                                  </div>
                               </button>
                            </li>
                            <li>
-                              <button className="btn-in-action">
+                              <button className="btn-in-action" onClick={this.onClickAccept}>
                                  <div className="icon-wrapper">
                                     <i className="fa fa-fw fa-check text-secondary" />
                                  </div>
@@ -113,19 +127,9 @@ class PublicQuoteView extends Component {
                                  </div>
                               </button>
                            </li>
-                           <li>
-                              <button className="btn-in-action">
-                                 <div className="icon-wrapper">
-                                    <i className="fa fa-fw fa-ban text-secondary" />
-                                 </div>
-                                 <div className="media-body font-size-sm pr-2">
-                                    <span>Withdraw</span>
-                                 </div>
-                              </button>
-                           </li>
                            <li className="choices-break" />
                            <li>
-                              <button className="btn-in-action">
+                              <button className="btn-in-action" onClick={this.onClickCopy}>
                                  <div className="icon-wrapper">
                                     <i className="fa fa-fw fa-copy text-secondary" />
                                  </div>
@@ -135,12 +139,22 @@ class PublicQuoteView extends Component {
                               </button>
                            </li>
                            <li>
-                              <button className="btn-in-action">
+                              <button className="btn-in-action" onClick={this.onClickCopyToTemplate}>
                                  <div className="icon-wrapper">
                                     <i className="fa fa-fw fa-plus-circle text-secondary" />
                                  </div>
                                  <div className="media-body font-size-sm pr-2">
                                     <span>Copy to Template</span>
+                                 </div>
+                              </button>
+                           </li>
+                           <li>
+                              <button className="btn-in-action" onClick={this.onClickDelete}>
+                                 <div className="icon-wrapper">
+                                    <i className="fa fa-fw fa-trash-alt text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm pr-2">
+                                    <span>Delete</span>
                                  </div>
                               </button>
                            </li>

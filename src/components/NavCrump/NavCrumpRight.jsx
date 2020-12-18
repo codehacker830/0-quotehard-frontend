@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
-export default class NavCrumpRight extends Component {
+class NavCrumpRight extends Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -20,8 +21,13 @@ export default class NavCrumpRight extends Component {
       window.removeEventListener('click', this.onClickOutsideHandler);
    }
    render() {
+      let isShow = true;
+      if (
+         this.props.match.path === "/app/quote/get/duplicate/:id"
+      ) isShow = false;
+
       return (
-         <div className="dropdown d-inline-block" ref={this.actionsContainer}>
+         <div className={`dropdown d-inline-block ${isShow ? "" : "d-none"}`} ref={this.actionsContainer}>
             <button type="button" className="btn btn-dual" onClick={() => this.setState({ show: !this.state.show })}>
                <span className="text-primary">Actions</span>
                <i className="fa fa-fw fa-angle-down ml-1 text-primary" />
@@ -34,3 +40,5 @@ export default class NavCrumpRight extends Component {
       );
    }
 }
+
+export default withRouter(NavCrumpRight);

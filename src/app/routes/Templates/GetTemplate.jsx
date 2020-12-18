@@ -179,7 +179,7 @@ class GetTemplate extends Component {
                {
                   this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH &&
                   <NavCrumpRight>
-                     <ul className="choices" style={{ left: 30, top: 10 }}>
+                     <ul className="choices" style={{ left: 45, top: 10 }}>
                         {
                            this.props.quote.status === "current" &&
                            <li>

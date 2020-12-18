@@ -39,7 +39,40 @@ class GetQuote extends Component {
          emailTo: ""
       };
    }
+   onClickArchive = () => {
 
+   }
+   onClickAccept = () => {
+
+   }
+   onClickWithdraw = () => {
+
+   }
+   onClickCopy = () => {
+      this.props.history.push(`/app/quote/get/duplicate/5664092`)
+   }
+   onClickCopyToTemplatex = () => {
+
+   }
+   async componentDidMount() {
+      await this.props.getDefaultSalesCategory();
+      await this.props.getDefaultSalesTax();
+      await this.props.getSalesCategories('current');
+      await this.props.getSalesTaxes('current');
+
+
+      if (this.props.match.path === QUOTE_GET_PATH) {
+
+      }
+      if (this.props.match.path === QUOTE_BY_ID_PATH) {
+         // Get quote details with quote ID
+         await this.props.getQuoteDataById(this.props.match.params.id);
+      }
+      if (this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH) {
+         // Get template detials with id
+         await this.props.getContentTemplateById(this.props.match.params.id);
+      }
+   }
    handleClickSaveNext = () => {
       const { toPeopleList, title, settings, items, notes } = this.props.quote;
       if (toPeopleList.length === 0) { toast.info("You must add at least one contact.", toastInfoConfig); return; }
@@ -48,7 +81,7 @@ class GetQuote extends Component {
       for (let i = 0; i < toPeopleList.length; i++) {
          toPeopleIdList.push(toPeopleList[i]._id);
       }
-      console.log("people id listtttttttttttttttt ", toPeopleIdList);
+      console.log("toPeopleIdListttttttttttttttttt ", toPeopleIdList);
       const data = {
          status: "draft",
          toPeopleList: toPeopleIdList,
@@ -88,7 +121,7 @@ class GetQuote extends Component {
             });
       } else {
          console.error("Error !!!!!!!!!!!!!!");
-         // toast.warn("Failed before request.", toastWarningConfig);
+         // toast.warn("Failed before request.");
       }
    };
    handleClickSave = () => {
@@ -98,7 +131,7 @@ class GetQuote extends Component {
       for (let i = 0; i < toPeopleList.length; i++) {
          toPeopleIdList.push(toPeopleList[i]._id);
       }
-      console.log("people id listtttttttttttttttt ", toPeopleIdList);
+      console.log("toPeopleIdListtttttttttt ", toPeopleIdList);
       const data = {
          status: "draft",
          toPeopleList: toPeopleIdList,
@@ -141,25 +174,6 @@ class GetQuote extends Component {
       }
 
    };
-   async componentDidMount() {
-      await this.props.getDefaultSalesCategory();
-      await this.props.getDefaultSalesTax();
-      await this.props.getSalesCategories('current');
-      await this.props.getSalesTaxes('current');
-
-      
-      if (this.props.match.path === QUOTE_GET_PATH) {
-
-      }
-      if (this.props.match.path === QUOTE_BY_ID_PATH) {
-         // Get quote details with quote ID
-         await this.props.getQuoteDataById(this.props.match.params.id);
-      }
-      if (this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH) {
-         // Get template detials with id
-         await this.props.getContentTemplateById(this.props.match.params.id);
-      }
-   }
    render() {
       console.log(" ^^^^^^^ GET QUOTE state ^^^^^^^^^^ ", this.state);
       console.log(" ^^^^^^^ GET QUOTE props ^^^^^^^^^^ ", this.props);

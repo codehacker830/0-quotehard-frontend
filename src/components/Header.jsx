@@ -29,7 +29,7 @@ class Header extends Component {
       const queryObj = qs.parse(location.search, { ignoreQueryPrefix: true });
       const isMergeMode = queryObj.merge_loser ? true : false;
       const { authUser, accountCompany } = this.props;
-      let show = false;
+      let isShow = false;
       if (
          location.pathname === "/app"
          || location.pathname === "/app/quotes"
@@ -38,9 +38,9 @@ class Header extends Component {
          || location.pathname === "/app/content/item-price/browse"
          || location.pathname === "/app/content/item-text/browse"
          || location.pathname === "/app/settings"
-      ) show = true;
+      ) isShow = true;
       return (
-         <header id="page-header" className={`bg-dark ${show && !isMergeMode ? "" : "d-none"}`}>
+         <header id="page-header" className={`bg-dark ${isShow && !isMergeMode ? "" : "d-none"}`}>
             {/* Header Content */}
             <div className="container content-header">
                {/* Left Section */}

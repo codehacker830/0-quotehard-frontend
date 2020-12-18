@@ -12,9 +12,14 @@ class RelatedTemplateList extends Component {
    render() {
       const { templates } = this.props;
       const templatesLength = templates.length;
-      if (this.props.match.path === '/app/content/item-price/duplicate/:id'
-         || this.props.match.path === '/app/content/item-text/duplicate/:id') return null;
-      if (!templatesLength) return null;
+      let isHidden = false;
+      if (
+         !templatesLength
+         || this.props.match.path === '/app/content/item-price/duplicate/:id'
+         || this.props.match.path === '/app/content/item-text/duplicate/:id'
+      ) isHidden = true;
+      
+      if (isHidden) return null;
       return (
          <div className="pop_set" data-tg-click="root_pop">
             <p className={`pop_default ${this.state.isShowTemplates ? "isHidden" : ""}`}>

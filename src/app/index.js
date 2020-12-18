@@ -36,6 +36,7 @@ class AppRoot extends Component {
                <Route exact path="/app/quotes" component={asyncComponent(() => import("./routes/Quotes"))} />
 
                <Route exact path="/app/quote/get" component={asyncComponent(() => import("./routes/GetQuote"))} />
+               <Route exact path="/app/quote/get/duplicate/:id" component={asyncComponent(() => import("./routes/GetQuote"))} />
                <Route exact path="/app/quote/get/from-template/:id" component={asyncComponent(() => import("./routes/GetQuote"))} />
                <Route exact path="/app/quote/:id" component={asyncComponent(() => import("./routes/GetQuote"))} />
 
