@@ -187,7 +187,7 @@ class GetTemplate extends Component {
                                  <div className="icon-wrapper">
                                     <i className="fa fa-fw fa-archive text-secondary" />
                                  </div>
-                                 <div className="media-body font-size-sm font-w600 pr-2">
+                                 <div className="media-body font-size-sm pr-2">
                                     <span>Archive</span>
                                  </div>
                               </button>
@@ -200,7 +200,7 @@ class GetTemplate extends Component {
                                  <div className="icon-wrapper">
                                     <i className="fa fa-fw fa-archive text-secondary" />
                                  </div>
-                                 <div className="media-body font-size-sm font-w600 pr-2">
+                                 <div className="media-body font-size-sm pr-2">
                                     <span>Archived<span className="choices-undo"> ← undo</span></span>
                                  </div>
                               </button>
@@ -213,7 +213,7 @@ class GetTemplate extends Component {
                                     <div className="icon-wrapper">
                                        <i className="fa fa-fw fa-star text-secondary" />
                                     </div>
-                                    <div className="media-body font-size-sm font-w600 pr-2">
+                                    <div className="media-body font-size-sm pr-2">
                                        <span>Make default<span className="choices-undo"> ← undo</span></span>
                                     </div>
                                  </button>
@@ -223,7 +223,7 @@ class GetTemplate extends Component {
                                     <div className="icon-wrapper">
                                        <i className="fa fa-fw fa-star text-secondary" />
                                     </div>
-                                    <div className="media-body font-size-sm font-w600 pr-2">
+                                    <div className="media-body font-size-sm pr-2">
                                        <span>Make default</span>
                                     </div>
                                  </button>
@@ -236,7 +236,7 @@ class GetTemplate extends Component {
                               <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-copy text-secondary" />
                               </div>
-                              <div className="media-body font-size-sm font-w600 pr-2">
+                              <div className="media-body font-size-sm pr-2">
                                  <span>Copy</span>
                               </div>
                            </button>
@@ -246,7 +246,7 @@ class GetTemplate extends Component {
                               <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-trash-alt text-secondary" />
                               </div>
-                              <div className="media-body font-size-sm font-w600 pr-2">
+                              <div className="media-body font-size-sm pr-2">
                                  <span>Delete</span>
                               </div>
                            </button>

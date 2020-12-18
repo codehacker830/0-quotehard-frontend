@@ -187,7 +187,7 @@ class GetQuote extends Component {
                               <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-arrow-alt-circle-right text-secondary" />
                               </div>
-                              <div className="media-body font-size-sm font-w600 pr-2">
+                              <div className="media-body font-size-sm pr-2">
                                  <span>Mark as Sent(don't email)</span>
                               </div>
                            </button>
@@ -198,7 +198,7 @@ class GetQuote extends Component {
                               <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-copy text-secondary" />
                               </div>
-                              <div className="media-body font-size-sm font-w600 pr-2">
+                              <div className="media-body font-size-sm pr-2">
                                  <span>Copy</span>
                               </div>
                            </button>
@@ -208,7 +208,7 @@ class GetQuote extends Component {
                               <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-plus-circle text-secondary" />
                               </div>
-                              <div className="media-body font-size-sm font-w600 pr-2">
+                              <div className="media-body font-size-sm pr-2">
                                  <span>Copy to Template</span>
                               </div>
                            </button>
@@ -218,7 +218,7 @@ class GetQuote extends Component {
                               <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-trash-alt text-secondary" />
                               </div>
-                              <div className="media-body font-size-sm font-w600 pr-2">
+                              <div className="media-body font-size-sm pr-2">
                                  <span>Delete</span>
                               </div>
                            </button>

@@ -82,7 +82,7 @@ export default class ViewContact extends Component {
                                  <div className="icon-wrapper">
                                     <i className="fa fa-fw fa-archive text-secondary" />
                                  </div>
-                                 <div className="media-body font-size-sm font-w600 pr-2">
+                                 <div className="media-body font-size-sm pr-2">
                                     <span>Archive</span>
                                  </div>
                               </button>
@@ -95,7 +95,7 @@ export default class ViewContact extends Component {
                                  <div className="icon-wrapper">
                                     <i className="fa fa-fw fa-archive text-secondary" />
                                  </div>
-                                 <div className="media-body font-size-sm font-w600 pr-2">
+                                 <div className="media-body font-size-sm pr-2">
                                     <span>Archive</span><span className="choices-undo"> ← undo</span>
                                  </div>
                               </button>
@@ -106,7 +106,7 @@ export default class ViewContact extends Component {
                               <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-compress-alt text-secondary" />
                               </div>
-                              <div className="media-body font-size-sm font-w600 pr-2">
+                              <div className="media-body font-size-sm pr-2">
                                  <span>Delete &amp; merge</span>
                               </div>
                            </button>

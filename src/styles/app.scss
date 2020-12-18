@@ -732,7 +732,7 @@ a.nav-link.active {
    text-overflow: ellipsis;
    white-space: nowrap;
    overflow: hidden;
-   padding: 4px 6px;
+   padding: 7px 7px;
    display: flex;
    color: #404040;
    cursor: pointer;
@@ -742,7 +742,7 @@ a.nav-link.active {
    outline: none;
 }
 .btn-in-action:hover,
-.btn-in-action:focus,
+// .btn-in-action:focus,
 .btn-in-action:active {
    color: #fff;
    background-color: #51a5e3;

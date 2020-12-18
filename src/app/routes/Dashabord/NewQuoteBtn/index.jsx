@@ -72,33 +72,47 @@ class NewQuoteBtn extends Component {
                                         if (template._id === this.state.defaultTemplateId) return (
                                             <React.Fragment key={index}>
                                                 <li key={index}>
-                                                    <Link to={`/app/quote/get/from-template/${template._id}`} className="btn-in-action">
-                                                        <span className="text-secondary"><i className="fa fa-fw fa-star" /></span>&nbsp;
+                                                    {/* <Link to={`/app/quote/get/from-template/${template._id}`} className="btn-in-action">
+                                                        <span className="icon-wrapper"><i className="fa fa-fw fa-star" /></span>&nbsp;
                                                         <span>{template.title}</span>
-                                                    </Link>
+                                                    </Link> */}
+                                                    <button className="btn-in-action" onClick={() => this.props.history.push(`/app/quote/get/from-template/${template._id}`)}>
+                                                        <div className="icon-wrapper">
+                                                            <i className="fa fa-fw fa-star" />
+                                                        </div>
+                                                        <div className="media-body font-size-sm pr-2">
+                                                            <span>{template.title}</span>
+                                                        </div>
+                                                    </button>
                                                 </li>
                                                 <li className="choices-break" />
                                             </React.Fragment>
                                         );
                                         else return (
                                             <li key={index}>
-                                                <Link to={`/app/quote/get/from-template/${template._id}`} className="btn-in-action">
-                                                    <span>{template.title}</span>
-                                                </Link>
+                                                <button className="btn-in-action" onClick={() => this.props.history.push(`/app/quote/get/from-template/${template._id}`)}>
+                                                    <div className="icon-wrapper" />
+                                                    <div className="media-body font-size-sm pr-2">
+                                                        <span>{template.title}</span>
+                                                    </div>
+                                                </button>
                                             </li>
                                         );
                                     })
                                 }
                                 <li className="choices-break" />
                                 <li>
-                                    <Link className="btn-in-action" to={{
+                                    <button className="btn-in-action" onClick={() => this.props.history.push({
                                         pathname: QUOTE_GET_PATH,
                                         state: {
                                             from: this.props.location.pathname
                                         }
-                                    }}>
-                                        New Quote, without Template
-                                    </Link>
+                                    })}>
+                                        <div className="icon-wrapper" />
+                                        <div className="media-body font-size-sm pr-2">
+                                            <span>New Quote, without Template</span>
+                                        </div>
+                                    </button>
                                 </li>
                             </ul>
                         </div>

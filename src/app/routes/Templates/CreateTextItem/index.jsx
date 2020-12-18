@@ -130,7 +130,7 @@ class CreateTextItem extends Component {
                               <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-archive text-secondary" />
                               </div>
-                              <div className="media-body font-size-sm font-w600 pr-2">
+                              <div className="media-body font-size-sm pr-2">
                                  <span>Archive</span>
                               </div>
                            </button>
@@ -143,7 +143,7 @@ class CreateTextItem extends Component {
                               <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-archive text-secondary" />
                               </div>
-                              <div className="media-body font-size-sm font-w600 pr-2">
+                              <div className="media-body font-size-sm pr-2">
                                  <span>Archived<span className="choices-undo"> ← undo</span></span>
                               </div>
                            </button>
@@ -154,7 +154,7 @@ class CreateTextItem extends Component {
                            <div className="icon-wrapper">
                               <i className="fa fa-fw fa-copy text-secondary" />
                            </div>
-                           <div className="media-body font-size-sm font-w600 pr-2">
+                           <div className="media-body font-size-sm pr-2">
                               <span>Copy</span>
                            </div>
                         </button>
@@ -164,7 +164,7 @@ class CreateTextItem extends Component {
                            <div className="icon-wrapper">
                               <i className="fa fa-fw fa-trash-alt text-secondary" />
                            </div>
-                           <div className="media-body font-size-sm font-w600 pr-2">
+                           <div className="media-body font-size-sm pr-2">
                               <span>Delete</span>
                            </div>
                         </button>
@@ -174,7 +174,7 @@ class CreateTextItem extends Component {
                            <div className="icon-wrapper">
                               <i className="fa fa-fw fa-compress-alt text-secondary" />
                            </div>
-                           <div className="media-body font-size-sm font-w600 pr-2">
+                           <div className="media-body font-size-sm pr-2">
                               <span>Delete & merge</span>
                            </div>
                         </button>

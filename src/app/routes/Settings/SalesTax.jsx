@@ -118,7 +118,7 @@ export const SalesTax = (props) => {
                            <div className="icon-wrapper">
                               <i className="fa fa-fw fa-archive text-secondary" />
                            </div>
-                           <div className="media-body font-size-sm font-w600 pr-2">
+                           <div className="media-body font-size-sm pr-2">
                               <span>Archive
                               {status === "archived" && <span className="choices-undo"> ← undo</span>}
                               </span>
@@ -130,7 +130,7 @@ export const SalesTax = (props) => {
                            <div className="icon-wrapper">
                               <i className="fa fa-fw fa-star text-secondary" />
                            </div>
-                           <div className="media-body font-size-sm font-w600 pr-2">
+                           <div className="media-body font-size-sm pr-2">
                               <span>Make default</span>
                            </div>
                         </button>
