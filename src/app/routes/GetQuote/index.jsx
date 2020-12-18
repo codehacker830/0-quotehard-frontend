@@ -35,11 +35,40 @@ class GetQuote extends Component {
       super(props);
       this.state = {
          loading: false,
-         emailTo: ""
+         emailTo: "",
+         isDeleteAlertOpen: false
       };
    }
    onClickMarkAsSent = () => {
-
+      const { toPeopleList, title, settings, items, notes } = this.props.quote;
+      if (title === "") { toast.info("Missing a Quote Title."); return; }
+      if (toPeopleList.length === 0) { toast.info("You must add at least one contact."); return; }
+      const quoteId = this.props.match.params.id;
+      // axios.put(`/mark-as-sent/id/${quoteId}`).then(({ data }) => {
+      //    toast.success('Not emailed, marked as sent.');
+      //    this.props.history.push(`/q/${data.entoken}`);
+      // }).catch(err => {
+      //    toast.error('Quote failed to mark as sent.');
+      // });
+      const toPeopleIdList = [];
+      for (let i = 0; i < toPeopleList.length; i++) {
+         toPeopleIdList.push(toPeopleList[i]._id);
+      }
+      const payload = {
+         status: "awaiting",
+         toPeopleList: toPeopleIdList,
+         title,
+         settings,
+         // settings: { ...settings, userFrom: settings.userFrom ? settings.userFrom : this.props.authUser._id },
+         items,
+         notes
+      };
+      axios.put(`/quotes/id/${quoteId}`, payload).then(({ data }) => {
+         toast.success('Not emailed, marked as sent.');
+         this.props.history.push(`/q/${data.entoken}`);
+      }).catch(err => {
+         toast.error('Quote failed to mark as sent.');
+      });
    }
    onClickCopy = () => {
       const quoteId = this.props.match.params.id;
@@ -50,7 +79,14 @@ class GetQuote extends Component {
       this.props.history.push(`/app/content/template/get/copy-to-template/${quoteId}`)
    }
    onClickDelete = () => {
-
+      const quoteId = this.props.match.params.id;
+      axios.delete(`/quotes/id/${quoteId}`).then(() => {
+         toast.success("Quote - deleted.");
+         this.props.history.push('/app');
+      }).catch((err) => {
+         this.setState({ isDeleteAlertOpen: false });
+         console.error(" Quote failed to deleted. ", err);
+      });
    }
    async componentDidMount() {
       await this.props.getDefaultSalesCategory();
@@ -116,9 +152,10 @@ class GetQuote extends Component {
          this.create()
             .then(({ data }) => {
                console.log("!!!!!!!!!!!!! =>", data);
-               toast.success("New Quote defined.");
+               toast.success("Quote saved.");
                this.setState({ loading: false, type: null });
-               this.props.updateQuote(data.quote);
+               // this.props.updateQuote(data.quote);
+               this.props.history.push(`/app/quote/${data.quote._id}`)
             })
             .catch(err => {
                console.error(" error ===>", err);
@@ -165,7 +202,6 @@ class GetQuote extends Component {
       if (!quoteId) { toast.error("Not found quote id."); return; }
 
       const { toPeopleList, title, settings, items, notes } = this.props.quote;
-      if (title === "") { toast.info("Missing a Quote Title."); return; }
       const toPeopleIdList = [];
       for (let i = 0; i < toPeopleList.length; i++) {
          toPeopleIdList.push(toPeopleList[i]._id);
@@ -231,7 +267,7 @@ class GetQuote extends Component {
                            </button>
                         </li>
                         <li>
-                           <button className="btn-in-action" onClick={this.onClickDelete}>
+                           <button className="btn-in-action" onClick={() => this.setState({ isDeleteAlertOpen: true })}>
                               <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-trash-alt text-secondary" />
                               </div>
@@ -244,6 +280,21 @@ class GetQuote extends Component {
                   </NavCrumpRight>
                }
             </NavCrump>
+            <div id="AlerterPage">
+               {
+                  this.state.isDeleteAlertOpen ?
+                     <div className="alertBar alertBar-prompt">
+                        <div className="container">
+                           <h4>Please confirm:</h4>
+                           <div className="btnSet">
+                              <button className="btn btn-secondary mr-2" onClick={this.onClickDelete}>Delete</button>
+                              <button className="btn" onClick={() => this.setState({ isDeleteAlertOpen: false })}>Cancel</button>
+                           </div>
+                        </div>
+                     </div>
+                     : null
+               }
+            </div>
             <div className="content bg-custom">
                <div className="mt-6 mb-5">
                   <div className="row">

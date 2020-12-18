@@ -144,13 +144,12 @@ class GetTemplate extends Component {
    }
    onClickDelete = () => {
       const templateId = this.props.match.params.id;
-      axios.delete(`/templates/id/${templateId}`).then(({ data }) => {
-         console.log(" success to undo tempalte as a default", data);
+      axios.delete(`/templates/id/${templateId}`).then(() => {
          toast.success("Content template - deleted.");
          this.props.history.push(CONTENT_TEMPLATES_PATH);
       }).catch((err) => {
          this.setState({ isDeleteAlertOpen: false });
-         console.error(" failed to undo template from default ", err);
+         console.error("Content template failed to delete. ", err);
       });
    }
    async componentDidMount() {
