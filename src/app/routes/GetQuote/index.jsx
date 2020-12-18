@@ -184,7 +184,7 @@ class GetQuote extends Component {
                      <ul className="choices" style={{ left: 25, top: 10 }}>
                         <li>
                            <button className="btn-in-action">
-                              <div className="mx-3">
+                              <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-arrow-alt-circle-right text-secondary" />
                               </div>
                               <div className="media-body font-size-sm font-w600 pr-2">
@@ -195,7 +195,7 @@ class GetQuote extends Component {
                         <li className="choices-break" />
                         <li>
                            <button className="btn-in-action">
-                              <div className="mx-3">
+                              <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-copy text-secondary" />
                               </div>
                               <div className="media-body font-size-sm font-w600 pr-2">
@@ -205,7 +205,7 @@ class GetQuote extends Component {
                         </li>
                         <li>
                            <button className="btn-in-action">
-                              <div className="mx-3">
+                              <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-plus-circle text-secondary" />
                               </div>
                               <div className="media-body font-size-sm font-w600 pr-2">
@@ -215,7 +215,7 @@ class GetQuote extends Component {
                         </li>
                         <li>
                            <button className="btn-in-action">
-                              <div className="mx-3">
+                              <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-trash-alt text-secondary" />
                               </div>
                               <div className="media-body font-size-sm font-w600 pr-2">

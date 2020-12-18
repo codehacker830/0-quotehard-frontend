@@ -119,7 +119,7 @@ export const SalesCategory = (props) => {
                   <ul className="choices" style={{ left: 45, top: 10 }}>
                      <li>
                         <button className="btn-in-action" onClick={onClickArchive}>
-                           <div className="mx-3">
+                           <div className="icon-wrapper">
                               <i className="fa fa-fw fa-archive text-secondary" />
                            </div>
                            <div className="media-body font-size-sm font-w600 pr-2">
@@ -131,7 +131,7 @@ export const SalesCategory = (props) => {
                      </li>
                      <li>
                         <button className="btn-in-action" onClick={onClickDefault}>
-                           <div className="mx-3">
+                           <div className="icon-wrapper">
                               <i className="fa fa-fw fa-star text-secondary" />
                            </div>
                            <div className="media-body font-size-sm font-w600 pr-2">

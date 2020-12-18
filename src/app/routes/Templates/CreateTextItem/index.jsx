@@ -127,7 +127,7 @@ class CreateTextItem extends Component {
                         textItem.status === "current" &&
                         <li>
                            <button className="btn-in-action" onClick={this.onClickArchive}>
-                              <div className="mx-3">
+                              <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-archive text-secondary" />
                               </div>
                               <div className="media-body font-size-sm font-w600 pr-2">
@@ -140,7 +140,7 @@ class CreateTextItem extends Component {
                         textItem.status === "archived" &&
                         <li>
                            <button className="btn-in-action" onClick={this.onClickUnArchive}>
-                              <div className="mx-3">
+                              <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-archive text-secondary" />
                               </div>
                               <div className="media-body font-size-sm font-w600 pr-2">
@@ -151,7 +151,7 @@ class CreateTextItem extends Component {
                      }
                      <li>
                         <button className="btn-in-action" onClick={this.onClickCopy}>
-                           <div className="mx-3">
+                           <div className="icon-wrapper">
                               <i className="fa fa-fw fa-copy text-secondary" />
                            </div>
                            <div className="media-body font-size-sm font-w600 pr-2">
@@ -161,7 +161,7 @@ class CreateTextItem extends Component {
                      </li>
                      <li>
                         <button className="btn-in-action" onClick={() => this.setState({ isDeleteAlertOpen: true })}>
-                           <div className="mx-3">
+                           <div className="icon-wrapper">
                               <i className="fa fa-fw fa-trash-alt text-secondary" />
                            </div>
                            <div className="media-body font-size-sm font-w600 pr-2">
@@ -171,7 +171,7 @@ class CreateTextItem extends Component {
                      </li>
                      <li>
                         <button className="btn-in-action" onClick={this.onClickDeleteAndMerge}>
-                           <div className="mx-3">
+                           <div className="icon-wrapper">
                               <i className="fa fa-fw fa-compress-alt text-secondary" />
                            </div>
                            <div className="media-body font-size-sm font-w600 pr-2">

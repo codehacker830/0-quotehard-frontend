@@ -95,7 +95,7 @@ class PublicQuoteView extends Component {
                         <ul className="choices" style={{ left: 45, top: 10 }}>
                            <li>
                               <button className="btn-in-action">
-                                 <div className="mx-3">
+                                 <div className="icon-wrapper">
                                     <i className="fa fa-fw fa-archive text-secondary" />
                                  </div>
                                  <div className="media-body font-size-sm font-w600 pr-2">
@@ -105,7 +105,7 @@ class PublicQuoteView extends Component {
                            </li>
                            <li>
                               <button className="btn-in-action">
-                                 <div className="mx-3">
+                                 <div className="icon-wrapper">
                                     <i className="fa fa-fw fa-check text-secondary" />
                                  </div>
                                  <div className="media-body font-size-sm font-w600 pr-2">
@@ -115,7 +115,7 @@ class PublicQuoteView extends Component {
                            </li>
                            <li>
                               <button className="btn-in-action">
-                                 <div className="mx-3">
+                                 <div className="icon-wrapper">
                                     <i className="fa fa-fw fa-ban text-secondary" />
                                  </div>
                                  <div className="media-body font-size-sm font-w600 pr-2">
@@ -126,7 +126,7 @@ class PublicQuoteView extends Component {
                            <li className="choices-break" />
                            <li>
                               <button className="btn-in-action">
-                                 <div className="mx-3">
+                                 <div className="icon-wrapper">
                                     <i className="fa fa-fw fa-copy text-secondary" />
                                  </div>
                                  <div className="media-body font-size-sm font-w600 pr-2">
@@ -136,7 +136,7 @@ class PublicQuoteView extends Component {
                            </li>
                            <li>
                               <button className="btn-in-action">
-                                 <div className="mx-3">
+                                 <div className="icon-wrapper">
                                     <i className="fa fa-fw fa-plus-circle text-secondary" />
                                  </div>
                                  <div className="media-body font-size-sm font-w600 pr-2">
