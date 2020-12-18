@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 import NavCrump from "../../../components/NavCrump";
 import { toast } from 'react-toastify';
-import {
-   toastWarningConfig,
-   toastSuccessConfig,
-   toastErrorConfig,
-   toastInfoConfig,
-} from "../../../util/toastrConfig";
 import axios from "../../../util/Api";
 import {
    parseDate,
@@ -18,10 +12,15 @@ import {
 import AddNoteBtn from "../../../components/AddNoteBtn";
 import QuoteTotal from "../../../components/QuoteTotal";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from "../../../actions/GlobalSettings";
 import NavCrumpLeft from "../../../components/NavCrump/NavCrumpLeft";
-import { QUOTE_GET_FROM_TEMPLATE_PATH, QUOTE_GET_PATH, QUOTE_BY_ID_PATH, QUOTES_PATH } from "../../../constants/PathNames";
+import {
+   QUOTE_GET_FROM_TEMPLATE_PATH,
+   QUOTE_GET_PATH,
+   QUOTE_BY_ID_PATH,
+   QUOTE_GET_DUPLICATE_PATH,
+   QUOTES_PATH
+} from "../../../constants/PathNames";
 import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
 import { getQuoteDataById, getContentTemplateById, updateQuote, updateQuoteToPeopleList } from "../../../actions/Data";
 import QuoteSettings from "../../../components/QuoteSettings";
@@ -39,19 +38,18 @@ class GetQuote extends Component {
          emailTo: ""
       };
    }
-   onClickArchive = () => {
-
-   }
-   onClickAccept = () => {
-
-   }
-   onClickWithdraw = () => {
+   onClickMarkAsSent = () => {
 
    }
    onClickCopy = () => {
-      this.props.history.push(`/app/quote/get/duplicate/5664092`)
+      const quoteId = this.props.match.params.id;
+      this.props.history.push(`/app/quote/get/duplicate/${quoteId}`)
    }
-   onClickCopyToTemplatex = () => {
+   onClickCopyToTemplate = () => {
+      const quoteId = this.props.match.params.id;
+      this.props.history.push(`/app/content/template/get/copy-to-template/${quoteId}`)
+   }
+   onClickDelete = () => {
 
    }
    async componentDidMount() {
@@ -60,128 +58,133 @@ class GetQuote extends Component {
       await this.props.getSalesCategories('current');
       await this.props.getSalesTaxes('current');
 
-
-      if (this.props.match.path === QUOTE_GET_PATH) {
-
-      }
-      if (this.props.match.path === QUOTE_BY_ID_PATH) {
+      if (
+         this.props.match.path === QUOTE_BY_ID_PATH
+         || this.props.match.path === QUOTE_GET_DUPLICATE_PATH
+      ) {
          // Get quote details with quote ID
-         await this.props.getQuoteDataById(this.props.match.params.id);
-      }
-      if (this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH) {
+         const quoteId = this.props.match.params.id;
+         await this.props.getQuoteDataById(quoteId);
+      } else if (this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH) {
          // Get template detials with id
-         await this.props.getContentTemplateById(this.props.match.params.id);
+         const templateId = this.props.match.params.id;
+         await this.props.getContentTemplateById(templateId);
       }
    }
-   handleClickSaveNext = () => {
-      const { toPeopleList, title, settings, items, notes } = this.props.quote;
-      if (toPeopleList.length === 0) { toast.info("You must add at least one contact.", toastInfoConfig); return; }
-      if (title === "") { toast.info("You are missing a Quote Title.", toastInfoConfig); return; }
-      const toPeopleIdList = [];
-      for (let i = 0; i < toPeopleList.length; i++) {
-         toPeopleIdList.push(toPeopleList[i]._id);
-      }
-      console.log("toPeopleIdListttttttttttttttttt ", toPeopleIdList);
-      const data = {
-         status: "draft",
-         toPeopleList: toPeopleIdList,
-         title,
-         settings: { ...settings, userFrom: settings.userFrom ? settings.userFrom : this.props.authUser._id },
-         items,
-         notes
-      };
-      console.log(" Quote save data ===> ", data);
-      if (this.props.match.path === QUOTE_GET_PATH || this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH) {
+   onClickSaveNext = () => {
+      const { toPeopleList } = this.props.quote;
+      if (toPeopleList.length === 0) { toast.info("You must add at least one contact."); return; }
+
+      if (
+         this.props.match.path === QUOTE_GET_PATH
+         || this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH
+         || this.props.match.path === QUOTE_GET_DUPLICATE_PATH
+      ) {
          this.setState({ loading: true, type: "SAVE_NEXT" });
-         axios.post('/quotes', data)
+         this.create()
             .then(({ data }) => {
-               console.log("res data =>", data);
-               toast.success("New quote defined.", toastSuccessConfig);
+               toast.success("Quote saved.");
                this.setState({ loading: false, type: null });
                this.props.history.push(`/q/${data.entoken}`);
             })
             .catch(err => {
-               console.error(" error ===>", err);
-               toast.error("Quote failed to create", toastErrorConfig);
+               toast.error("Quote failed to save.");
                this.setState({ loading: false, type: null });
             });
       } else if (this.props.match.path = QUOTE_BY_ID_PATH) {
-         const quoteId = this.props.match.params.id;
          this.setState({ loading: true, type: "SAVE_NEXT" });
-         axios.put(`/quotes/id/${quoteId}`, data)
+         this.update()
             .then(({ data }) => {
-               console.log("uuuuuuuuuuuuuuuuu =>", data);
-               toast.success("Quote defined.", toastSuccessConfig);
+               toast.success("Quote saved.");
                this.setState({ loading: false, type: null });
                this.props.history.push(`/q/${data.entoken}`);
             })
             .catch(err => {
-               const { errors } = err.response.data;
-               ToastErrorNotification(errors);
+               this.setState({ loading: false, type: null });
+               toast.error("Quote failed to save.");
             });
       } else {
-         console.error("Error !!!!!!!!!!!!!!");
-         // toast.warn("Failed before request.");
+         toast.warn("Failed before request.");
       }
    };
-   handleClickSave = () => {
+   onClickSave = () => {
+      if (this.props.location.pathname === QUOTE_GET_PATH
+         || this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH
+         || this.props.match.path === QUOTE_GET_DUPLICATE_PATH
+      ) {
+         this.setState({ loading: true, type: "SAVE" });
+         this.create()
+            .then(({ data }) => {
+               console.log("!!!!!!!!!!!!! =>", data);
+               toast.success("New Quote defined.");
+               this.setState({ loading: false, type: null });
+               this.props.updateQuote(data.quote);
+            })
+            .catch(err => {
+               console.error(" error ===>", err);
+               this.setState({ loading: false, type: null });
+               toast.error("Quote failed to create");
+            });
+      } else if (this.props.match.path = QUOTE_BY_ID_PATH) {
+         this.setState({ loading: true, type: "SAVE" });
+         this.update()
+            .then(({ data }) => {
+               this.setState({ loading: false, type: null });
+               toast.success("Quote updated.");
+               this.props.updateQuote(data.quote);
+            })
+            .catch(err => {
+               console.error(" error ===>", err);
+               this.setState({ loading: false, type: null });
+               toast.error("Quote failed to update");
+            })
+      } else {
+         toast.warn("Failed before request.");
+      }
+   };
+   create = () => {
       const { toPeopleList, title, settings, items, notes } = this.props.quote;
-      if (title === "") { toast.info("Missing a Quote Title.", toastInfoConfig); return; }
+      if (title === "") { toast.info("Missing a Quote Title."); return; }
       const toPeopleIdList = [];
       for (let i = 0; i < toPeopleList.length; i++) {
          toPeopleIdList.push(toPeopleList[i]._id);
       }
-      console.log("toPeopleIdListtttttttttt ", toPeopleIdList);
-      const data = {
+      const payload = {
          status: "draft",
          toPeopleList: toPeopleIdList,
          title,
          settings,
+         // settings: { ...settings, userFrom: settings.userFrom ? settings.userFrom : this.props.authUser._id },
          items,
          notes
       };
-      if (this.props.location.pathname === QUOTE_GET_PATH || this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH) {
-         this.setState({ loading: true, type: "SAVE" });
-         axios.post('/quotes', data)
-            .then(({ data }) => {
-               console.log("res data =>", data);
-               toast.success("New Quote draft was created.", toastSuccessConfig);
-               this.setState({ loading: false, type: null });
-               this.props.history.push(`/app/quote/${data.quote._id}`)
-            })
-            .catch(err => {
-               console.error(" error ===>", err);
-               this.setState({ loading: false, type: null });
-               toast.error("Quote failed to create", toastErrorConfig);
-            });
-      } else if (this.props.match.path = QUOTE_BY_ID_PATH) {
-         const quoteId = this.props.match.params.id;
-         this.setState({ loading: true, type: "SAVE" });
-         axios.put(`/quotes/id/${quoteId}`, data)
-            .then(({ data }) => {
-               console.log("uuuuuuuuuuuuuuuuu =>", data);
-               this.setState({ loading: false, type: null });
-               toast.success("Quote draft was updated.", toastSuccessConfig);
-            })
-            .catch(err => {
-               console.error(" error ===>", err);
-               this.setState({ loading: false, type: null });
-               toast.error("Quote failed to update", toastErrorConfig);
-            });
-      }
-      else {
-         toast.warn("Failed before request.", toastWarningConfig);
-      }
+      return axios.post('/quotes', payload);
+   }
+   update = () => {
+      const quoteId = this.props.match.params.id;
+      if (!quoteId) { toast.error("Not found quote id."); return; }
 
-   };
+      const { toPeopleList, title, settings, items, notes } = this.props.quote;
+      if (title === "") { toast.info("Missing a Quote Title."); return; }
+      const toPeopleIdList = [];
+      for (let i = 0; i < toPeopleList.length; i++) {
+         toPeopleIdList.push(toPeopleList[i]._id);
+      }
+      const payload = {
+         status: "draft",
+         toPeopleList: toPeopleIdList,
+         title,
+         settings,
+         // settings: { ...settings, userFrom: settings.userFrom ? settings.userFrom : this.props.authUser._id },
+         items,
+         notes
+      };
+      return axios.put(`/quotes/id/${quoteId}`, payload);
+   }
    render() {
       console.log(" ^^^^^^^ GET QUOTE state ^^^^^^^^^^ ", this.state);
       console.log(" ^^^^^^^ GET QUOTE props ^^^^^^^^^^ ", this.props);
       const { location } = this.props;
-      const {
-         items,
-         notes
-      } = this.props.quote;
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
       if (location.state && location.state.from === QUOTES_PATH) linkName = "Quotes";
@@ -197,18 +200,18 @@ class GetQuote extends Component {
                   <NavCrumpRight>
                      <ul className="choices" style={{ left: 25, top: 10 }}>
                         <li>
-                           <button className="btn-in-action">
+                           <button className="btn-in-action" onClick={this.onClickMarkAsSent}>
                               <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-arrow-alt-circle-right text-secondary" />
                               </div>
                               <div className="media-body font-size-sm pr-2">
-                                 <span>Mark as Sent(don't email)</span>
+                                 <span>Mark as Sent (don't email)</span>
                               </div>
                            </button>
                         </li>
                         <li className="choices-break" />
                         <li>
-                           <button className="btn-in-action">
+                           <button className="btn-in-action" onClick={this.onClickCopy}>
                               <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-copy text-secondary" />
                               </div>
@@ -218,7 +221,7 @@ class GetQuote extends Component {
                            </button>
                         </li>
                         <li>
-                           <button className="btn-in-action">
+                           <button className="btn-in-action" onClick={this.onClickCopyToTemplate}>
                               <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-plus-circle text-secondary" />
                               </div>
@@ -228,7 +231,7 @@ class GetQuote extends Component {
                            </button>
                         </li>
                         <li>
-                           <button className="btn-in-action">
+                           <button className="btn-in-action" onClick={this.onClickDelete}>
                               <div className="icon-wrapper">
                                  <i className="fa fa-fw fa-trash-alt text-secondary" />
                               </div>
@@ -267,7 +270,7 @@ class GetQuote extends Component {
                      <button
                         className="btn btn-lg btn-rounded btn-hero-primary mr-1"
                         disabled={this.state.loading}
-                        onClick={this.handleClickSaveNext}
+                        onClick={this.onClickSaveNext}
                      >
                         {
                            this.state.loading && this.state.type === "SAVE_NEXT" ?
@@ -279,7 +282,7 @@ class GetQuote extends Component {
                      <button
                         className="btn btn-lg btn-rounded btn-hero-secondary mr-1"
                         disabled={this.state.loading}
-                        onClick={this.handleClickSave}
+                        onClick={this.onClickSave}
                      >
                         {
                            this.state.loading && this.state.type === "SAVE" ?

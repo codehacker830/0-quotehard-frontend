@@ -4,10 +4,12 @@ export const QUOTES_PATH = "/app/quotes";
 export const QUOTE_GET_PATH = '/app/quote/get';
 export const QUOTE_BY_ID_PATH = '/app/quote/:id';
 export const QUOTE_GET_FROM_TEMPLATE_PATH = '/app/quote/get/from-template/:id';
+export const QUOTE_GET_DUPLICATE_PATH = '/app/quote/get/duplicate/:id';
 
 export const CONTENT_TEMPLATES_PATH = '/app/content/templates';
 export const CONTENT_TEMPLATE_BY_ID_PATH = '/app/content/template/:id';
 export const CONTENT_TEMPLATE_DUPLICATE_PATH = '/app/content/template/get/duplicate/:id';
+export const CONTENT_TEMPLATE_GET_COPYTOTEMPLATE_PATH = '/app/content/template/get/copy-to-template/:id';
 export const CONTENT_TEMPLATE_GET_PATH = '/app/content/template/get';
 
 export const SETTINGS_PATH = "/app/settings";

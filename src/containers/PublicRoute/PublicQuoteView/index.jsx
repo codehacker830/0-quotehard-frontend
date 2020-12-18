@@ -113,7 +113,7 @@ class PublicQuoteView extends Component {
                                     <i className="fa fa-fw fa-arrow-alt-circle-right text-secondary" />
                                  </div>
                                  <div className="media-body font-size-sm pr-2">
-                                    <span>Mark as Sent(don't email)</span>
+                                    <span>Mark as Sent (don't email)</span>
                                  </div>
                               </button>
                            </li>

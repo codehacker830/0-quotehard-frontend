@@ -9,9 +9,14 @@ import TemplateSettings from '../../../components/TemplateSettings';
 import axios from '../../../util/Api';
 import AddPriceItemBtn from '../../../components/AddPriceItemBtn';
 import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../actions/GlobalSettings';
-import { getContentTemplateById, getDuplicateTemplateById, updateQuote, updateQuoteStatus } from '../../../actions/Data';
+import { getContentTemplateById, getDuplicateTemplateById, getQuoteDataById, updateQuote, updateQuoteStatus } from '../../../actions/Data';
 import { connect } from 'react-redux';
-import { CONTENT_TEMPLATES_PATH, CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_DUPLICATE_PATH, CONTENT_TEMPLATE_GET_PATH } from '../../../constants/PathNames';
+import {
+   CONTENT_TEMPLATES_PATH, CONTENT_TEMPLATE_BY_ID_PATH,
+   CONTENT_TEMPLATE_DUPLICATE_PATH,
+   CONTENT_TEMPLATE_GET_PATH,
+   CONTENT_TEMPLATE_GET_COPYTOTEMPLATE_PATH
+} from '../../../constants/PathNames';
 import NotesSection from '../GetQuote/components/NotesSection';
 import ItemsSection from '../GetQuote/components/ItemsSection';
 import { QuoteTitle } from '../GetQuote/components/QuoteTitle';
@@ -165,6 +170,10 @@ class GetTemplate extends Component {
          const templateId = this.props.match.params.id;
          this.props.getDuplicateTemplateById(templateId);
          this.setState({ isDefault: false });
+      } else if (this.props.match.path === CONTENT_TEMPLATE_GET_COPYTOTEMPLATE_PATH) {
+         const quoteId = this.props.match.params.id;
+         await this.props.getQuoteDataById(quoteId);
+         this.setState({ isDefault: false });
       }
    }
    render() {
@@ -180,32 +189,20 @@ class GetTemplate extends Component {
                   this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH &&
                   <NavCrumpRight>
                      <ul className="choices" style={{ left: 45, top: 10 }}>
-                        {
-                           this.props.quote.status === "current" &&
-                           <li>
-                              <button className="btn-in-action" onClick={this.onClickArchive}>
-                                 <div className="icon-wrapper">
-                                    <i className="fa fa-fw fa-archive text-secondary" />
-                                 </div>
-                                 <div className="media-body font-size-sm pr-2">
-                                    <span>Archive</span>
-                                 </div>
-                              </button>
-                           </li>
-                        }
-                        {
-                           this.props.quote.status === "archived" &&
-                           <li>
-                              <button className="btn-in-action" onClick={this.onClickUnArchive}>
-                                 <div className="icon-wrapper">
-                                    <i className="fa fa-fw fa-archive text-secondary" />
-                                 </div>
-                                 <div className="media-body font-size-sm pr-2">
-                                    <span>Archived<span className="choices-undo"> ← undo</span></span>
-                                 </div>
-                              </button>
-                           </li>
-                        }
+                        <li>
+                           <button className="btn-in-action" onClick={() => {
+                              if (this.props.quote.status === "current") this.onClickArchive();
+                              else if (this.props.quote.status === "archived") this.onClickUnArchive();
+                           }}>
+                              <div className="icon-wrapper">
+                                 <i className="fa fa-fw fa-archive text-secondary" />
+                              </div>
+                              <div className="media-body font-size-sm pr-2">
+                                 {this.props.quote.status === "current" && <span>Archive</span>}
+                                 {this.props.quote.status === "archived" && <span>Archived<span className="choices-undo"> ← undo</span></span>}
+                              </div>
+                           </button>
+                        </li>
                         {
                            this.state.isDefault ?
                               <li>
@@ -292,19 +289,25 @@ class GetTemplate extends Component {
                   {/* Footer action button group */}
                   <div className="row p-3">
                      {
-                        (this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH || this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH) &&
+                        (this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH
+                           || this.props.match.path === CONTENT_TEMPLATE_GET_COPYTOTEMPLATE_PATH) &&
                         <React.Fragment>
                            <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={async () => {
-                              if (this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH) await this.onClickUpdate();
-                              else if (this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH) await this.onClickCreate();
+                              await this.onClickCreate();
                               this.props.history.push(CONTENT_TEMPLATES_PATH);
-                           }}>Save & Finish</button>
-                           <button className="btn btn-lg btn-rounded btn-hero-secondary mr-1" onClick={this.onClickUpdate}>Save</button>
+                           }}>Save &amp; Finish</button>
+                           <button className="btn btn-lg btn-rounded btn-hero-secondary mr-1" onClick={this.onClickCreate}>Save</button>
                         </React.Fragment>
                      }
                      {
-                        this.props.match.path === CONTENT_TEMPLATE_GET_PATH &&
-                        <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.onClickCreate}>Create</button>
+                        (this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH) &&
+                        <React.Fragment>
+                           <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={async () => {
+                              await this.onClickUpdate();
+                              this.props.history.push(CONTENT_TEMPLATES_PATH);
+                           }}>Save &amp; Finish</button>
+                           <button className="btn btn-lg btn-rounded btn-hero-secondary mr-1" onClick={this.onClickUpdate}>Save</button>
+                        </React.Fragment>
                      }
                      <Link className="btn btn-lg btn-rounded btn-hero-secondary" to={CONTENT_TEMPLATES_PATH}>Cancel</Link>
                   </div>
@@ -329,6 +332,7 @@ const mapDispatchToProps = {
    getSalesCategories,
    getSalesTaxes,
    getContentTemplateById,
-   getDuplicateTemplateById
+   getDuplicateTemplateById,
+   getQuoteDataById
 };
 export default connect(mapStateToProps, mapDispatchToProps)(GetTemplate);
