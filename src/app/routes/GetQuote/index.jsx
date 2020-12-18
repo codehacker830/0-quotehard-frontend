@@ -149,7 +149,7 @@ class GetQuote extends Component {
          this.update()
             .then(({ data }) => {
                this.setState({ loading: false, type: null });
-               toast.success("Quote updated.");
+               toast.success("Quote saved.");
                this.props.updateQuote(data.quote);
             })
             .catch(err => {

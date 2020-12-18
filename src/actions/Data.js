@@ -156,7 +156,7 @@ export const submitDismiss = (qaId) => {
       dispatch({ type: FETCH_START, payload: "" });
       try {
          const { data } = await axios.post('/quotes/dismiss', { entoken, qaId });
-         toast.success("Answer was Dismissed.");
+         toast.success("Answer dismissed.");
          console.log("========== Publick overview did mount get quote =========", data);
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: UPDATE_QUOTE_DISCUSSIONS, payload: data.discussions });
