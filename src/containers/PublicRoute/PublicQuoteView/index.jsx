@@ -28,6 +28,7 @@ import PublicQuoteDisscussionWrite from '../components/PublicQuoteDisscussionWri
 import AcceptBox from './AcceptBox';
 import PreviewBanner from './PreviewBanner';
 import axios from '../../../util/Api';
+import { toast } from 'react-toastify';
 
 class PublicQuoteView extends Component {
    mounted = false;
@@ -36,17 +37,30 @@ class PublicQuoteView extends Component {
       super(props);
       this.state = {
          isMounting: true,
-         loading: false,
 
-         quote: {},
-         commentShow: false,
-         privateNoteShow: false,
+         isEditAlertOpen: false,
+         isUndoAcceptanceAlertOpen: false,
+         isDeclineAlertOpen: false,
+         isWithdrawAlertOpen: false,
+         isUndoWithdrawAlertOpen: false,
+
+         isManualAcceptBoxShow: false
       };
+      this.screenEnd = React.createRef();
 
+   }
+   onClickUpdateOnly = () => {
+      const quoteId = this.props.quote._id;
+      axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
+         toast.success('Update – back online, not emailed.');
+         this.props.history.push(`/q/${data.entoken}`);
+      }).catch(err => {
+         toast.error('Quote failed to mark as sent.');
+      });
    }
    onClickEditQuote = () => {
       const quoteId = this.props.quote._id;
-      axios.put(`/quotes/status/id/${quoteId}`, { status: "editing" }).then(() => {
+      axios.put(`/quotes/status/${quoteId}`, { status: "editing" }).then(() => {
          this.props.history.push(`/app/quote/${quoteId}`)
       }).catch(err => {
          console.error("Error during update status :", err)
@@ -56,16 +70,62 @@ class PublicQuoteView extends Component {
 
    }
    onClickArchive = () => {
-
+      const quoteId = this.props.quote._id;
+      if (this.props.quote.state === "archived") {
+         axios.put(`/quotes/un-archive/${quoteId}`).then(({ data }) => {
+            toast.success('Update – unarchived.')
+            this.props.history.push(`/q/${data.entoken}`);
+         }).catch(err => {
+            toast.error('Quote failed to unarchive.');
+         });
+      } else {
+         axios.put(`/quotes/archive/${quoteId}`).then(({ data }) => {
+            toast.success('Update – archived.')
+            this.props.history.push(`/q/${data.entoken}`);
+         }).catch(err => {
+            toast.error('Quote failed to archive.');
+         });
+      }
    }
    onClickAccept = () => {
-
+      if (this.props.quote.status === "accepted") this.setState({ isUndoAcceptanceAlertOpen: true });
+      else {
+         this.setState({ isManualAcceptBoxShow: true }, () => {
+            this.screenEnd.current.scrollIntoView({ behavior: "smooth" });
+         });
+      }
+   }
+   undoAcceptance = () => {
+      const quoteId = this.props.quote._id;
+      axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
+         this.props.history.push(`/q/${data.entoken}`);
+      }).catch(err => {
+         console.error("Error during update status :", err)
+      });
    }
    onClickDecline = () => {
-
+      const quoteId = this.props.quote._id;
+      axios.put(`/quotes/status/${quoteId}`, { status: "declined" }).then(({ data }) => {
+         this.props.history.push(`/q/${data.entoken}`);
+      }).catch(err => {
+         console.error("Error during update status :", err)
+      });
    }
    onClickWithdraw = () => {
-
+      const quoteId = this.props.quote._id;
+      axios.put(`/quotes/status/${quoteId}`, { status: "withdrawn" }).then(({ data }) => {
+         this.props.history.push(`/q/${data.entoken}`);
+      }).catch(err => {
+         console.error("Error during update status :", err)
+      });
+   }
+   onClickUndoWithdrawn = () => {
+      const quoteId = this.props.quote._id;
+      axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
+         this.props.history.push(`/q/${data.entoken}`);
+      }).catch(err => {
+         console.error("Error during update status :", err)
+      });
    }
    onClickCopy = () => {
       const quoteId = this.props.quote._id;
@@ -122,66 +182,137 @@ class PublicQuoteView extends Component {
                      </NavCrumpLeft>
                      <NavCrumpRight>
                         <ul className="choices" style={{ left: 45, top: 10 }}>
-                           <li>
-                              <button className="btn-in-action" onClick={() => this.setState({ isEditAlertOpen: true })}>
-                                 <div className="icon-wrapper">
-                                    <i className="fa fa-fw fa-pencil-alt text-secondary" />
-                                 </div>
-                                 <div className="media-body font-size-sm pr-2">
-                                    <span>Edite Quote</span>
-                                 </div>
-                              </button>
-                           </li>
-                           <li>
-                              <button className="btn-in-action" onClick={this.onClickSendFollowUp}>
-                                 <div className="icon-wrapper">
-                                    <i className="fa fa-fw fa-paper-plane text-secondary" />
-                                 </div>
-                                 <div className="media-body font-size-sm pr-2">
-                                    <span>Send Follow-up...</span>
-                                 </div>
-                              </button>
-                           </li>
-                           <li>
-                              <button className="btn-in-action" onClick={this.onClickArchive}>
-                                 <div className="icon-wrapper">
-                                    <i className="fa fa-fw fa-archive text-secondary" />
-                                 </div>
-                                 <div className="media-body font-size-sm pr-2">
-                                    <span>Archive</span>
-                                 </div>
-                              </button>
-                           </li>
-                           <li>
-                              <button className="btn-in-action" onClick={this.onClickAccept}>
-                                 <div className="icon-wrapper">
-                                    <i className="fa fa-fw fa-check text-secondary" />
-                                 </div>
-                                 <div className="media-body font-size-sm pr-2">
-                                    <span>Accepted<span className="choices-undo"> ← undo</span></span>
-                                 </div>
-                              </button>
-                           </li>
-                           <li>
-                              <button className="btn-in-action" onClick={this.onClickDecline}>
-                                 <div className="icon-wrapper">
-                                    <i className="fa fa-fw fa-minus-circle text-secondary" />
-                                 </div>
-                                 <div className="media-body font-size-sm pr-2">
-                                    <span>Decline</span>
-                                 </div>
-                              </button>
-                           </li>
-                           <li>
-                              <button className="btn-in-action" onClick={this.onClickWithdraw}>
-                                 <div className="icon-wrapper">
-                                    <i className="fa fa-fw fa-ban text-secondary" />
-                                 </div>
-                                 <div className="media-body font-size-sm pr-2">
-                                    <span>Withdraw</span>
-                                 </div>
-                              </button>
-                           </li>
+                           {
+                              quote.status === "editing" ?
+                                 <React.Fragment>
+                                    <li>
+                                       <button className="btn-in-action" onClick={this.onClickUpdateOnly}>
+                                          <div className="icon-wrapper">
+                                             <i className="fa fa-fw fa-arrow-alt-circle-right text-secondary" />
+                                          </div>
+                                          <div className="media-body font-size-sm pr-2">
+                                             <span>Update Only (don't email)</span>
+                                          </div>
+                                       </button>
+                                    </li>
+                                 </React.Fragment>
+                                 :
+                                 <React.Fragment>
+                                    {
+                                       quote.status !== "withdrawn" &&
+                                       <React.Fragment>
+                                          <li>
+                                             <button className="btn-in-action" onClick={() => {
+                                                this.setState({
+                                                   isEditAlertOpen: true,
+                                                   isUndoAcceptanceAlertOpen: false,
+                                                   isDeclineAlertOpen: false,
+                                                   isWithdrawAlertOpen: false,
+                                                   isUndoWithdrawAlertOpen: false
+                                                });
+                                             }}>
+                                                <div className="icon-wrapper">
+                                                   <i className="fa fa-fw fa-pencil-alt text-secondary" />
+                                                </div>
+                                                <div className="media-body font-size-sm pr-2">
+                                                   <span>Edite Quote</span>
+                                                </div>
+                                             </button>
+                                          </li>
+                                          <li>
+                                             <button className="btn-in-action" onClick={this.onClickSendFollowUp}>
+                                                <div className="icon-wrapper">
+                                                   <i className="fa fa-fw fa-paper-plane text-secondary" />
+                                                </div>
+                                                <div className="media-body font-size-sm pr-2">
+                                                   <span>Send Follow-up...</span>
+                                                </div>
+                                             </button>
+                                          </li>
+                                       </React.Fragment>
+                                    }
+                                    <li>
+                                       <button className="btn-in-action" onClick={this.onClickArchive}>
+                                          <div className="icon-wrapper">
+                                             <i className="fa fa-fw fa-archive text-secondary" />
+                                          </div>
+                                          <div className="media-body font-size-sm pr-2">
+                                             {
+                                                quote.state === "archived" ?
+                                                   <span>Archived<span className="choices-undo"> ← undo</span></span>
+                                                   : <span>Archive</span>
+                                             }
+                                          </div>
+                                       </button>
+                                    </li>
+                                    {
+                                       quote.status !== "withdrawn" &&
+                                       <React.Fragment>
+                                          <li>
+                                             <button className="btn-in-action" onClick={this.onClickAccept}>
+                                                <div className="icon-wrapper">
+                                                   <i className="fa fa-fw fa-check text-secondary" />
+                                                </div>
+                                                <div className="media-body font-size-sm pr-2">
+                                                   {
+                                                      quote.status === "accepted" ?
+                                                         <span>Accepted<span className="choices-undo"> ← undo</span></span>
+                                                         : <span>Accept</span>
+                                                   }
+                                                </div>
+                                             </button>
+                                          </li>
+                                          <li>
+                                             <button className="btn-in-action" onClick={() => {
+                                                this.setState({
+                                                   isEditAlertOpen: false,
+                                                   isUndoAcceptanceAlertOpen: false,
+                                                   isDeclineAlertOpen: true,
+                                                   isWithdrawAlertOpen: false,
+                                                   isUndoWithdrawAlertOpen: false
+                                                });
+                                             }}>
+                                                <div className="icon-wrapper">
+                                                   <i className="fa fa-fw fa-minus-circle text-secondary" />
+                                                </div>
+                                                <div className="media-body font-size-sm pr-2">
+                                                   <span>Decline</span>
+                                                </div>
+                                             </button>
+                                          </li>
+                                       </React.Fragment>
+                                    }
+                                    <li>
+                                       <button className="btn-in-action" onClick={() => {
+                                          if (quote.status !== "withdrawn") this.setState({
+                                             isEditAlertOpen: false,
+                                             isUndoAcceptanceAlertOpen: false,
+                                             isDeclineAlertOpen: false,
+                                             isWithdrawAlertOpen: true,
+                                             isUndoWithdrawAlertOpen: false
+                                          });
+                                          else this.setState({
+                                             isEditAlertOpen: false,
+                                             isUndoAcceptanceAlertOpen: false,
+                                             isDeclineAlertOpen: false,
+                                             isWithdrawAlertOpen: false,
+                                             isUndoWithdrawAlertOpen: true
+                                          });
+                                       }}>
+                                          <div className="icon-wrapper">
+                                             <i className="fa fa-fw fa-ban text-secondary" />
+                                          </div>
+                                          <div className="media-body font-size-sm pr-2">
+                                             {
+                                                quote.status === "withdrawn" ?
+                                                   <span>Withdraw<span className="choices-undo"> ← undo</span></span>
+                                                   : <span>Withdraw</span>
+                                             }
+                                          </div>
+                                       </button>
+                                    </li>
+                                 </React.Fragment>
+                           }
                            <li className="choices-break" />
                            <li>
                               <button className="btn-in-action" onClick={this.onClickCopy}>
@@ -220,7 +351,96 @@ class PublicQuoteView extends Component {
                                  </p>
                                  <div className="btnSet">
                                     <button className="btn btn-secondary mr-2" onClick={this.onClickEditQuote}>Take offline and edit quote</button>
-                                    <button className="btn" onClick={() => this.setState({ isEditAlertOpen: false })}>Cancel</button>
+                                    <button className="btn" onClick={() => this.setState({
+                                       isEditAlertOpen: false,
+                                       isUndoAcceptanceAlertOpen: false,
+                                       isDeclineAlertOpen: false,
+                                       isWithdrawAlertOpen: false,
+                                       isUndoWithdrawAlertOpen: false
+                                    })}>Cancel</button>
+                                 </div>
+                              </div>
+                           </div>
+                           : null
+                     }
+                     {
+                        this.state.isUndoAcceptanceAlertOpen ?
+                           <div className="alertBar alertBar-prompt">
+                              <div className="container">
+                                 <h4>Undo the Acceptance?</h4>
+                                 <ul><li>The Order/reference number and any additional comments <strong>will be removed</strong>.</li></ul>
+                                 <div className="btnSet">
+                                    <button className="btn btn-secondary mr-2" onClick={this.undoAcceptance}>Undo acceptance</button>
+                                    <button className="btn" onClick={() => this.setState({
+                                       isEditAlertOpen: false,
+                                       isUndoAcceptanceAlertOpen: false,
+                                       isDeclineAlertOpen: false,
+                                       isWithdrawAlertOpen: false,
+                                       isUndoWithdrawAlertOpen: false
+                                    })}>Cancel</button>
+                                 </div>
+                              </div>
+                           </div>
+                           : null
+                     }
+                     {
+                        this.state.isDeclineAlertOpen ?
+                           <div className="alertBar alertBar-prompt">
+                              <div className="container">
+                                 <h4>Mark as declined?</h4>
+
+                                 <div className="btnSet">
+                                    <button className="btn btn-secondary mr-2" onClick={this.onClickDecline}>Decline Quote</button>
+                                    <button className="btn" onClick={() => this.setState({
+                                       isEditAlertOpen: false,
+                                       isUndoAcceptanceAlertOpen: false,
+                                       isDeclineAlertOpen: false,
+                                       isWithdrawAlertOpen: false,
+                                       isUndoWithdrawAlertOpen: false
+                                    })}>Cancel</button>
+                                 </div>
+                              </div>
+                           </div>
+                           : null
+                     }
+                     {
+                        this.state.isWithdrawAlertOpen ?
+                           <div className="alertBar alertBar-prompt">
+                              <div className="container">
+                                 <h4>Are you sure you want to withdraw this quote?</h4>
+                                 <ul>
+                                    <li>Quote items and pricing <strong>will be hidden</strong> from your customer’s view.</li>
+                                    <li>This quote will <strong>no longer be counted</strong> in your Dashboard stats.</li>
+                                 </ul>
+                                 <div className="btnSet">
+                                    <button className="btn btn-secondary mr-2" onClick={this.onClickWithdraw}>Withdraw Quote</button>
+                                    <button className="btn" onClick={() => this.setState({
+                                       isEditAlertOpen: false,
+                                       isUndoAcceptanceAlertOpen: false,
+                                       isDeclineAlertOpen: false,
+                                       isWithdrawAlertOpen: false,
+                                       isUndoWithdrawAlertOpen: false
+                                    })}>Cancel</button>
+                                 </div>
+                              </div>
+                           </div>
+                           : null
+                     }
+
+                     {
+                        this.state.isUndoWithdrawAlertOpen ?
+                           <div className="alertBar alertBar-prompt">
+                              <div className="container">
+                                 <h4>Undo and make available to your customer again?</h4>
+                                 <div className="btnSet">
+                                    <button className="btn btn-secondary mr-2" onClick={this.onClickUndoWithdrawn}>Undo</button>
+                                    <button className="btn" onClick={() => this.setState({
+                                       isEditAlertOpen: false,
+                                       isUndoAcceptanceAlertOpen: false,
+                                       isDeclineAlertOpen: false,
+                                       isWithdrawAlertOpen: false,
+                                       isUndoWithdrawAlertOpen: false
+                                    })}>Cancel</button>
                                  </div>
                               </div>
                            </div>
@@ -260,7 +480,8 @@ class PublicQuoteView extends Component {
                                  <PublicQuoteDiscussionList />
                                  <PublicQuoteDisscussionWrite />
                               </div>
-                              <AcceptBox />
+                              <AcceptBox isManualAcceptBoxShow={this.state.isManualAcceptBoxShow} />
+                              <div style={{ float: "left", clear: "both" }} ref={this.screenEnd} />
                               <DeclineCommentShow />
 
                            </PublicQuoteItemWrapper>

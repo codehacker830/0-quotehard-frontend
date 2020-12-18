@@ -9,16 +9,36 @@ export default class Quotes extends Component {
    constructor(props) {
       super(props);
       this.state = {
+         filterState: "currentAndArchived",
          quotes: []
       };
    }
    componentDidMount() {
-      axios.get('/quotes')
+      axios.get(`/quotes`)
          .then(({ data }) => {
             this.setState({ quotes: data.quotes });
          }).catch(err => {
             console.error(" error during get quotes :", err)
          });
+   }
+   componentDidUpdate(prevProps, prevState) {
+      if (prevState.filterState !== this.state.filterState) {
+         if (this.state.filterState === "currentAndArchived") {
+            axios.get(`/quotes`)
+               .then(({ data }) => {
+                  this.setState({ quotes: data.quotes });
+               }).catch(err => {
+                  console.error(" error during get quotes :", err)
+               });
+         } else {
+            axios.get(`/quotes/state/${this.state.filterState}`)
+               .then(({ data }) => {
+                  this.setState({ quotes: data.quotes });
+               }).catch(err => {
+                  console.error(" error during get quotes :", err)
+               });
+         }
+      }
    }
    render() {
       console.log("Quotes state --", this.state);
@@ -40,12 +60,15 @@ export default class Quotes extends Component {
                         <div className="row no-gutters">
                            <div className="col-md-4 col-sm-6 px-1">
                               <div className="form-group">
-                                 <select className="form-control" id="author" name="author">
-                                    <option value="CurrentAndArchived" defaultValue>Current &amp; Archived</option>
+                                 <select className="form-control" id="author" name="author"
+                                    value={this.state.filterState}
+                                    onChange={(ev) => this.setState({ filterState: ev.target.value })}
+                                 >
+                                    <option value="currentAndArchived">Current &amp; Archived</option>
                                     <optgroup label="---------------------------">
-                                       <option value="Current">Current</option>
-                                       <option value="Archived">Archived</option>
-                                       <option value="Follow-up">To follow up</option>
+                                       <option value="current">Current</option>
+                                       <option value="archived">Archived</option>
+                                       <option value="follow-up">To follow up</option>
                                     </optgroup>
                                  </select>
                               </div>

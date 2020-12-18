@@ -45,7 +45,7 @@ class GetQuote extends Component {
       if (toPeopleList.length === 0) { toast.info("You must add at least one contact."); return; }
       const quoteId = this.props.match.params.id;
 
-      axios.put(`/quotes/status/id/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
+      axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
          toast.success('Not emailed, marked as sent.');
          this.props.history.push(`/q/${data.entoken}`);
       }).catch(err => {

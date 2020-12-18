@@ -22,7 +22,7 @@ class Dashboard extends Component {
 
       // Get all Quotes
       this.setState({ isLoadingQuotes: true });
-      axios.get('/quotes').then(({ data }) => {
+      axios.get('/quotes/state/current').then(({ data }) => {
          this.setState({
             isLoadingQuotes: false,
             quotes: data.quotes

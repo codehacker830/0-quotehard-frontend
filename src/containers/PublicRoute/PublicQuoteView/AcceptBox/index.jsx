@@ -22,8 +22,19 @@ class AcceptBox extends Component {
     onClickAccept = () => {
         if (!this.state.isAgree) { toast.success("Check the agree box to accept."); return; }
         const isPreviewMode = this.props.match.path === "/q/:entoken/preview";
-        if(isPreviewMode) {
+        if (isPreviewMode) {
             toast.warn("This is just a preview.");
+            return;
+        }
+        if (this.props.isManualAcceptBoxShow) {
+            const quoteId = this.props.quote._id;
+            axios.put(`/quotes/status/${quoteId}`, { status: "accepted" }).then(({ data }) => {
+                toast.success('Quote accpeted.');
+                this.props.history.push(`/q/${data.entoken}`);
+            }).catch(err => {
+                console.error("Error during update status :", err)
+            });
+
             return;
         }
         const { entoken } = this.props.match.params;
@@ -42,7 +53,7 @@ class AcceptBox extends Component {
     }
     onClickDecline = () => {
         const isPreviewMode = this.props.match.path === "/q/:entoken/preview";
-        if(isPreviewMode) {
+        if (isPreviewMode) {
             toast.warn("This is just a preview.");
             return;
         }
@@ -55,7 +66,7 @@ class AcceptBox extends Component {
         const personFullName = person ? person.firstName + " " + person.lastName : "";
         const isMember = checkIfTeamMember(quote.author, teamMembers);
         const isPreviewMode = this.props.match.path === "/q/:entoken/preview";
-        if ((!isMember && quote.status === "awaiting") || isPreviewMode) return (
+        if ((!isMember && quote.status === "awaiting") || isPreviewMode || this.props.isManualAcceptBoxShow) return (
             <React.Fragment>
                 {/* Accept Box */}
                 <div className="acceptBox no_print" style={{ backgroundColor: `${colors.highlights}` }}>
