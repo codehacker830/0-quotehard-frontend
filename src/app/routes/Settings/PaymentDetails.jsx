@@ -20,13 +20,13 @@ export const PaymentDetails = (props) => {
                      <label htmlFor="example-text-input">Card Number</label>
                      <span className="ml-auto font-size-sm text-success"><i className="fa fa-lock mr-1" />SECURE</span>
                   </div>
-                  <input type="text" className="form-control" id="example-text-input" name="example-text-input" placeholder="" />
+                  <input type="text" className="form-control rounded-0" id="example-text-input" name="example-text-input" placeholder="" />
                </div>
 
                <div className="mb-3">
                   <label htmlFor="example-text-input">Expiry Date</label>
                   <div className="d-flex maxWidth-180">
-                     <select className="form-control mr-2" id="billing__expiry_month" name="billing__expiry_month">
+                     <select className="form-control rounded-0 mr-2" id="billing__expiry_month" name="billing__expiry_month">
                         <option defaultValue>MM</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
@@ -41,7 +41,7 @@ export const PaymentDetails = (props) => {
                         <option value="11">11</option>
                         <option value="12">12</option>
                      </select>
-                     <select className="form-control" id="billing__expiry_year" name="billing__expiry_year">
+                     <select className="form-control rounded-0" id="billing__expiry_year" name="billing__expiry_year">
                         <option defaultValue>YY</option>
                         <option value={2020}>20</option>
                         <option value={2021}>21</option>
@@ -59,12 +59,12 @@ export const PaymentDetails = (props) => {
 
                <div className="mb-3">
                   <label htmlFor="example-text-input">Name on Card</label>
-                  <input type="text" className="form-control" id="example-text-input" name="example-text-input" placeholder="" />
+                  <input type="text" className="form-control rounded-0" id="example-text-input" name="example-text-input" placeholder="" />
                </div>
 
                <div className="mb-3">
                   <label htmlFor="example-text-input">CVC</label>
-                  <input type="text" className="form-control width-115" id="example-text-input" name="example-text-input" placeholder="" />
+                  <input type="text" className="form-control rounded-0 width-115" id="example-text-input" name="example-text-input" placeholder="" />
                   <p className="text-secondary fa-xs">3 or 4 digit code, usually found on the back of your card.</p>
                </div>
 
