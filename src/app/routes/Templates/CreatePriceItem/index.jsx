@@ -21,7 +21,7 @@ class CreatePriceItem extends Component {
       this.linkTo = this.props.location.state ? this.props.location.state.from : "/app/content/item-price/browse";
       this.linkName = this.props.location.state && this.props.location.state.from.includes("/app/content/template/") ? "Edit Template" : "Items";
    }
-   onClickSubmit = () => {
+   onClickSave = () => {
       const { priceItem } = this.props.quote.items[0];
       const {
          isOptional,
@@ -82,6 +82,8 @@ class CreatePriceItem extends Component {
          quantity,
          itemTotal,
       };
+
+      this.setState({ isLoading: true });
       if (this.props.match.path === '/app/content/item-price/create-new'
          || this.props.match.path === '/app/content/item-price/duplicate/:id') {
          axios.post('/templates/priceitem', payload).then(() => {
@@ -90,6 +92,7 @@ class CreatePriceItem extends Component {
          }).catch(err => {
             console.error("error during create priceItem =>", err);
             toast.error("Item failed to create");
+            this.setState({ isLoading: false });
          });
       } else if (this.props.match.path === '/app/content/item-price/view/:id') {
          const priceItemId = this.props.match.params.id;
@@ -99,6 +102,7 @@ class CreatePriceItem extends Component {
          }).catch(err => {
             console.error("error during update priceItem =>", err);
             toast.error("Item failed to update.");
+            this.setState({ isLoading: false });
          });
       }
    }
@@ -276,7 +280,9 @@ class CreatePriceItem extends Component {
 
                {/* Footer action button group */}
                <div className="row p-3">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.onClickSubmit}>
+                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" disabled={this.state.loading} onClick={this.onClickSave}>
+                     {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
+
                      {this.props.match.path === '/app/content/item-price/create-new' && "Create"}
                      {this.props.match.path === '/app/content/item-price/view/:id' && `Save${priceItem.templates.length > 0 ? ` & Update ${priceItem.templates.length} template` + `${priceItem.templates.length > 1 ? "s" : ""}` : ""}`}
                      {this.props.match.path === '/app/content/item-price/duplicate/:id' && "Save"}

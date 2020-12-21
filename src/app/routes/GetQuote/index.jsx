@@ -41,7 +41,11 @@ class GetQuote extends Component {
    }
    onClickMarkAsSent = () => {
       const { toPeopleList, title } = this.props.quote;
-      if (title === "") { toast.info("Missing a Quote Title."); return; }
+      if (title === "") {
+         toast.info("Missing a Quote Title.");
+         this.setState({ isValidWarning: true });
+         return;
+      }
       if (toPeopleList.length === 0) { toast.info("You must add at least one contact."); return; }
       const quoteId = this.props.match.params.id;
 
@@ -163,7 +167,11 @@ class GetQuote extends Component {
    };
    create = () => {
       const { toPeopleList, title, settings, items, notes } = this.props.quote;
-      if (title === "") { toast.info("Missing a Quote Title."); return; }
+      if (title === "") {
+         toast.info("Missing a Quote Title.");
+         this.setState({ isValidWarning: true });
+         return;
+      }
       const toPeopleIdList = [];
       for (let i = 0; i < toPeopleList.length; i++) {
          toPeopleIdList.push(toPeopleList[i]._id);
@@ -286,7 +294,7 @@ class GetQuote extends Component {
                   </div>
 
                   {/* Template Title */}
-                  <QuoteTitle />
+                  <QuoteTitle isValidWarning={this.state.isValidWarning} updateValidWarning={() => this.setState({ isValidWarning: false })} />
 
                   {/* Items */}
                   <ItemsSection />
@@ -302,7 +310,7 @@ class GetQuote extends Component {
                   <div className="row p-3">
                      <button
                         className="btn btn-lg btn-rounded btn-hero-primary mr-1"
-                        disabled={this.state.loading}
+                        disabled={this.state.loading && this.state.type === "SAVE_NEXT"}
                         onClick={this.onClickSaveNext}
                      >
                         {
@@ -314,7 +322,7 @@ class GetQuote extends Component {
                      </button>
                      <button
                         className="btn btn-lg btn-rounded btn-hero-secondary mr-1"
-                        disabled={this.state.loading}
+                        disabled={this.state.loading && this.state.type === "SAVE"}
                         onClick={this.onClickSave}
                      >
                         {

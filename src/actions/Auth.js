@@ -38,11 +38,10 @@ export const getUser = () => {
             dispatch({ type: SIGNOUT_USER_SUCCESS });
          }
       } catch (err) {
-         console.log("Error****:", err.message);
+         localStorage.clear();
          dispatch({ type: SIGNOUT_USER_SUCCESS });
-         dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
-         const { errors } = err.response.data;
-         ToastErrorNotification(errors);
+         dispatch({ type: FETCH_ERROR, payload: "Token expired." });
+         toast.success('Session expired. Please login again.');
       }
    }
 };
@@ -66,9 +65,9 @@ export const userSignIn = ({ email, password, isRemember }) => {
          // if(error.response.status === 422) dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
          // toast.error('Email or password is invalid.');
          // console.log("Error****:", err.message);
-         const { errors } = err.response.data;
          dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
-         ToastErrorNotification(errors);
+         toast.error("Email or password is invalid.");
+         // ToastErrorNotification(errors);
       });
    }
 };

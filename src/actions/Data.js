@@ -166,7 +166,3 @@ export const submitDismiss = (qaId) => {
       }
    }
 };
-
-
-/////  TextItem (template) actions /////
-

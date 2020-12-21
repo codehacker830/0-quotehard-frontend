@@ -35,3 +35,4 @@
 [1029/032909.500:ERROR:exception_snapshot_win.cc(99)] thread ID 51000 not found in process
 [1029/032909.500:ERROR:exception_snapshot_win.cc(99)] thread ID 45956 not found in process
 [1217/175820.277:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1219/000531.534:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)

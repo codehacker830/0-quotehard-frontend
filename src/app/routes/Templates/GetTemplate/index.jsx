@@ -1,38 +1,94 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import AddNoteBtn from '../../../components/AddNoteBtn';
-import NavCrump from '../../../components/NavCrump';
-import QuoteTotal from '../../../components/QuoteTotal';
-import SubTotal from '../../../components/SubTotal';
-import TemplateSettings from '../../../components/TemplateSettings';
-import axios from '../../../util/Api';
-import AddPriceItemBtn from '../../../components/AddPriceItemBtn';
-import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../actions/GlobalSettings';
-import { getContentTemplateById, getDuplicateTemplateById, getQuoteDataById, updateQuote, updateQuoteStatus } from '../../../actions/Data';
+import AddNoteBtn from '../../../../components/AddNoteBtn';
+import NavCrump from '../../../../components/NavCrump';
+import QuoteTotal from '../../../../components/QuoteTotal';
+import SubTotal from '../../../../components/SubTotal';
+import TemplateSettings from '../../../../components/TemplateSettings';
+import axios from '../../../../util/Api';
+import AddPriceItemBtn from '../../../../components/AddPriceItemBtn';
+import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../../actions/GlobalSettings';
+import { getContentTemplateById, getDuplicateTemplateById, getQuoteDataById, updateQuote, updateQuoteStatus } from '../../../../actions/Data';
 import { connect } from 'react-redux';
 import {
    CONTENT_TEMPLATES_PATH, CONTENT_TEMPLATE_BY_ID_PATH,
    CONTENT_TEMPLATE_DUPLICATE_PATH,
    CONTENT_TEMPLATE_GET_PATH,
    CONTENT_TEMPLATE_GET_COPYTOTEMPLATE_PATH
-} from '../../../constants/PathNames';
-import NotesSection from '../GetQuote/components/NotesSection';
-import ItemsSection from '../GetQuote/components/ItemsSection';
-import { QuoteTitle } from '../GetQuote/components/QuoteTitle';
-import NavCrumpLeft from '../../../components/NavCrump/NavCrumpLeft';
-import NavCrumpRight from '../../../components/NavCrump/NavCrumpRight';
+} from '../../../../constants/PathNames';
+import NotesSection from '../../GetQuote/components/NotesSection';
+import ItemsSection from '../../GetQuote/components/ItemsSection';
+import { QuoteTitle } from '../../GetQuote/components/QuoteTitle';
+import NavCrumpLeft from '../../../../components/NavCrump/NavCrumpLeft';
+import NavCrumpRight from '../../../../components/NavCrump/NavCrumpRight';
 
 class GetTemplate extends Component {
    constructor(props) {
       super(props);
       this.state = {
+         loading: true,
+         type: "",
+
          show: false,
          fileArray: [],
 
          status: "",
          isDefault: false,
-         isDeleteAlertOpen: false
+         isDeleteAlertOpen: false,
+
+      }
+   }
+   onClickSaveAndUpdate = () => {
+      if (this.props.quote.title === "") {
+         toast.info("Missing a Template Title.");
+         this.setState({ isValidWarning: true });
+         return;
+      }
+
+      this.setState({ loading: true, type: "SAVEANDUPDATE" });
+      if (this.props.match.path === CONTENT_TEMPLATE_GET_PATH
+         || this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH
+         || this.props.match.path === CONTENT_TEMPLATE_GET_COPYTOTEMPLATE_PATH) {
+         this.onClickCreate().then(() => {
+            this.props.history.push(CONTENT_TEMPLATES_PATH);
+         }).catch(err => {
+            console.error("error during create template: ", err)
+         });
+      }
+
+      if (this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH) {
+         this.onClickUpdate().then(() => {
+            this.props.history.push(CONTENT_TEMPLATES_PATH);
+         }).catch(err => {
+            console.error("error during update template: ", err)
+         });
+      }
+   }
+   onClickSave = () => {
+      if (this.props.quote.title === "") {
+         toast.info("Missing a Template Title.");
+         this.setState({ isValidWarning: true });
+         return;
+      }
+
+      this.setState({ loading: true, type: "SAVE" });
+      if (this.props.match.path === CONTENT_TEMPLATE_GET_PATH
+         || this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH
+         || this.props.match.path === CONTENT_TEMPLATE_GET_COPYTOTEMPLATE_PATH) {
+         this.onClickCreate().then(() => {
+            this.setState({ loading: false, type: "" });
+         }).catch(err => {
+            this.setState({ loading: false, type: "" });
+         });
+      }
+
+      if (this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH) {
+         this.onClickUpdate().then(() => {
+            this.setState({ loading: false, type: "" });
+         }).catch(err => {
+            this.setState({ loading: false, type: "" });
+         });
       }
    }
    onClickCreate = async () => {
@@ -51,7 +107,6 @@ class GetTemplate extends Component {
          pricingDisplayLevel,
          displayItemCode
       };
-      if (title === "") { toast.info("You are missing a Template Title."); return; }
       const payload = {
          title,
          settings,
@@ -68,19 +123,31 @@ class GetTemplate extends Component {
       }
    }
    onClickUpdate = async () => {
-      console.log('GET TEMPLATE QUOTE ____', this.props.quote)
-      const { title, settings, items, notes } = this.props.quote;
-      if (title === "") { toast.info("Missing a Template Title."); return; }
-      const data = {
+      const { title, items, notes } = this.props.quote;
+      const {
+         discount,
+         currency,
+         taxMode,
+         pricingDisplayLevel,
+         displayItemCode
+      } = this.props.quote.settings;
+      const settings = {
+         discount,
+         currency,
+         taxMode,
+         pricingDisplayLevel,
+         displayItemCode
+      };
+      const payload = {
          title,
          settings,
          items,
          notes
       };
       try {
-         const res = await axios.put(`/templates/id/${this.props.match.params.id}`, data);
-         console.log("templates update res data ---------------->", res.data);
-         const { template } = res.data;
+         const { data } = await axios.put(`/templates/id/${this.props.match.params.id}`, payload);
+         console.log("templates update res data ---------------->", data);
+         const { template } = data;
          this.props.updateQuote(template);
          toast.success("Template saved.");
       } catch (err) {
@@ -251,6 +318,17 @@ class GetTemplate extends Component {
                   </NavCrumpRight>
                }
             </NavCrump>
+            {/* <div id="AlerterPage" className="">
+               <div className="alertBar alertBar-general">
+                  <div className="container">
+                     <div className="alertBar-content">
+                        <ul className="alertBar-ul">
+                           <li><i className="fa fa-fw fa-star mr-2" />You are missing a Quote Title.</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div> */}
             <div id="AlerterPage" style={{}}>
                {
                   this.state.isDeleteAlertOpen ?
@@ -272,7 +350,7 @@ class GetTemplate extends Component {
                   <TemplateSettings isDefault={this.state.isDefault} />
 
                   {/* Template Title */}
-                  <QuoteTitle />
+                  <QuoteTitle isValidWarning={this.state.isValidWarning} updateValidWarning={() => this.setState({ isValidWarning: false })} />
 
                   {/* Items */}
                   <ItemsSection />
@@ -287,27 +365,16 @@ class GetTemplate extends Component {
 
                   {/* Footer action button group */}
                   <div className="row p-3">
-                     {
-                        (this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH
-                           || this.props.match.path === CONTENT_TEMPLATE_GET_COPYTOTEMPLATE_PATH) &&
-                        <React.Fragment>
-                           <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={async () => {
-                              await this.onClickCreate();
-                              this.props.history.push(CONTENT_TEMPLATES_PATH);
-                           }}>Save &amp; Finish</button>
-                           <button className="btn btn-lg btn-rounded btn-hero-secondary mr-1" onClick={this.onClickCreate}>Save</button>
-                        </React.Fragment>
-                     }
-                     {
-                        (this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH) &&
-                        <React.Fragment>
-                           <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={async () => {
-                              await this.onClickUpdate();
-                              this.props.history.push(CONTENT_TEMPLATES_PATH);
-                           }}>Save &amp; Finish</button>
-                           <button className="btn btn-lg btn-rounded btn-hero-secondary mr-1" onClick={this.onClickUpdate}>Save</button>
-                        </React.Fragment>
-                     }
+                     <React.Fragment>
+                        <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" disabled={this.state.loading && this.state.type === "SAVEANDUPDATE"} onClick={this.onClickSaveAndUpdate}>
+                           {this.state.loading && this.state.type === "SAVEANDUPDATE" && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
+                           Save &amp; Finish
+                        </button>
+                        <button className="btn btn-lg btn-rounded btn-hero-secondary mr-1" disabled={this.state.loading && this.state.type === "SAVE"} onClick={this.onClickSave}>
+                           {this.state.loading && this.state.type === "SAVE" && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
+                           Save
+                        </button>
+                     </React.Fragment>
                      <Link className="btn btn-lg btn-rounded btn-hero-secondary" to={CONTENT_TEMPLATES_PATH}>Cancel</Link>
                   </div>
                </div>
