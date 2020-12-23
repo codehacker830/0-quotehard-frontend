@@ -12,17 +12,26 @@ export const AccountInformation = (props) => {
          owner,
          location,
          timeZone,
-         dateFormat } = accountCompany;
+         dateFormat
+      } = accountCompany;
+      const payload = {
+         companyName,
+         owner,
+         location,
+         timeZone,
+         dateFormat
+      };
       if (companyName === "") {
-         toast.error(" Please enter an Account Name", { autoClose: false });
+         toast.success(" Please enter an Account Name");
          return;
       }
-      props.updateAccountInfo(accountCompany);
+      props.updateAccountInfo(payload);
    }
    useEffect(() => {
       const { accountCompany } = props;
       setAccountCompany(accountCompany);
    }, [props]);
+   console.log("Account information ===>", props);
    return (
       <React.Fragment>
          <NavCrump linkTo={`/app/settings`}>
