@@ -37,7 +37,8 @@ export default function asyncComponent(importComponent) {
             <div className="d-flex"
                style={{ height: 'calc(100vh - 200px)' }}>
                <div className="m-auto">
-                  <div className="spinner-grow text-secondary mr-2" role="status">
+                  <div class="loader"></div>
+                  {/* <div className="spinner-grow text-secondary mr-2" role="status">
                      <span className="sr-only">Loading...</span>
                   </div>
                   <div className="spinner-grow text-secondary mr-2" role="status">
@@ -45,7 +46,7 @@ export default function asyncComponent(importComponent) {
                   </div>
                   <div className="spinner-grow text-secondary" role="status">
                      <span className="sr-only">Loading...</span>
-                  </div>
+                  </div> */}
                </div>
             </div>;
          return (

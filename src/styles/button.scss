@@ -1,0 +1,75 @@
+.btn-new {
+   color: #fff;
+   background-color: #1bb02d;
+   border-color: #1aa72b;
+}
+
+.btn-success {
+   background-color: #32b842;
+   border-color: #32b842;
+}
+
+.btn-default {
+   color: #404040;
+   background-color: #f5f5f5;
+   border-color: #ccc;
+}
+
+.btn-action {
+   color: #fff;
+   background-color: #494d53;
+   border-color: #45494f;
+}
+
+
+.buttonLink {
+   text-align: center;
+   border: none;
+   background: none;
+   color: #2176c7;
+   outline: none;
+}
+
+.buttonLink.disabled {
+   color: #99a1a8;
+}
+
+.buttonLink:hover {
+   color: #0c5191;
+}
+
+.buttonLink.disabled:hover {
+   color: #99a1a8;
+}
+
+.buttonLink:focus {
+   outline: none;
+}
+
+.btn-in-action {
+   width: 100%;
+   text-align: left;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   overflow: hidden;
+   padding: 7px 7px;
+   display: flex;
+   color: #404040;
+   cursor: pointer;
+   border: none;
+   background: none;
+   border-radius: 2px;
+   outline: none;
+}
+
+.btn-in-action:hover,
+// .btn-in-action:focus,
+.btn-in-action:active {
+   color: #fff;
+   background-color: #51a5e3;
+   outline: none;
+}
+
+.btnSet .btn {
+   margin-right: 5px;
+}
