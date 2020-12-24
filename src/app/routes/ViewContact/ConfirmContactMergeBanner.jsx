@@ -13,6 +13,8 @@ class ConfirmContactMergeBanner extends Component {
    onClickConfirmMerge = () => {
       const { category } = this.props.contact;
       const contactId = this.props.match.params.id;
+      console.log(" AAAAAAAAAAAAAAAAAAA winner ", contactId)
+      console.log(" AAAAAAAAAAAAAAAAAAA merge_loser ", this.merge_loser)
       axios.post(`/contacts/${category}/merge`, { winnerOfMerge: contactId, loserOfMerge: this.merge_loser })
          .then(() => {
             toast.success('Contact merged.');
