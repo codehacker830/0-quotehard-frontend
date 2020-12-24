@@ -20,10 +20,10 @@ class Templates extends Component {
             <Switch>
                <Redirect exact path="/app/content" to="/app/content/templates" />
                <Route exact path="/app/content/templates" component={TemplateItems} />
+               
                <Route exact path="/app/content/template/get" component={GetTemplate} />
                <Route exact path="/app/content/template/get/duplicate/:id" component={GetTemplate} />
                <Route exact path="/app/content/template/get/copy-to-template/:id" component={GetTemplate} />
-               
                <Route exact path="/app/content/template/:id" component={GetTemplate} />
 
                <Route exact path="/app/content/item-price/browse" component={PriceItems} />

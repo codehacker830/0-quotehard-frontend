@@ -6,13 +6,13 @@ import NavCrump from '../../../components/NavCrump';
 
 export const QuoteDefaults = (props) => {
    const [isQuoteNumberAlertOpen, setQuoteNumberAlertOpen] = useState(false);
-   const settings = useSelector(state => state.quoteDefautSetting)
+   const settings = useSelector(state => state.quoteDefaultSetting)
    const dispatch = useDispatch();
    useEffect(() => {
       dispatch(getQuoteDefaultSetting());
    }, []);
-   console.log("quoteDefautSetting--------->", settings);
-   console.log("quoteDefautSetting props--------->", props);
+   console.log("quoteDefaultSetting--------->", settings);
+   console.log("quoteDefaultSetting props--------->", props);
    const {
       expirationQuoteAfter,
       currentQuoteNumber,
@@ -363,8 +363,8 @@ export const QuoteDefaults = (props) => {
                   <label htmlFor="account_expire_days">Default Margin</label>
                   <div className="input-group maxWidth-180">
                      <input type="text" className="form-control rounded-0" id="defaultMargin" name="defaultMargin"
-                        value={defaultMargin}
-                        onChange={(ev) => dispatch(updateQuoteDefaultSetting({ ...settings, defaultMargin: ev.target.value }))}
+                        value={parseInt(defaultMargin) === 0 ? "" : defaultMargin}
+                        onChange={(ev) => dispatch(updateQuoteDefaultSetting({ ...settings, defaultMargin: ev.target.value ? ev.target.value : 0 }))}
                      />
                      <div className="input-group-append">
                         <span className="input-group-text">%</span>
@@ -378,8 +378,7 @@ export const QuoteDefaults = (props) => {
                <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={() => {
                   if (nextQuoteNumber <= currentQuoteNumber) { setQuoteNumberAlertOpen(true); return; }
                   dispatch(publishQuoteDefaultSetting({ ...settings }, props));
-               }
-               }>Save</button>
+               }}>Save</button>
                <Link className="btn btn-lg btn-rounded btn-hero-secondary" to="/app/settings">Cancel</Link>
             </div>
          </div>

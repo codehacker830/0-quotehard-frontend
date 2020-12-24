@@ -22,13 +22,15 @@ import {
    QUOTES_PATH
 } from "../../../constants/PathNames";
 import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
-import { getQuoteDataById, getContentTemplateById, updateQuote, updateQuoteToPeopleList } from "../../../actions/Data";
+import { getQuoteDataById, getContentTemplateById, updateQuote, updateQuoteToPeopleList, updateQuoteSettings } from "../../../actions/Data";
 import QuoteSettings from "../../../components/QuoteSettings";
 import QuoteTitle from "./components/QuoteTitle";
 import AddPriceItemBtn from "../../../components/AddPriceItemBtn";
 import QuoteToPeopleList from "./components/QuoteToPeopleList";
 import NotesSection from "./components/NotesSection";
 import ItemsSection from "./components/ItemsSection";
+import { getQuoteDefaultSetting } from "../../../actions/QuoteDefautSetting";
+import _ from 'lodash';
 
 class GetQuote extends Component {
    constructor(props) {
@@ -79,7 +81,7 @@ class GetQuote extends Component {
       await this.props.getDefaultSalesTax();
       await this.props.getSalesCategories('current');
       await this.props.getSalesTaxes('current');
-
+      await this.props.getQuoteDefaultSetting();
       if (
          this.props.match.path === QUOTE_BY_ID_PATH
          || this.props.match.path === QUOTE_GET_DUPLICATE_PATH
@@ -92,18 +94,77 @@ class GetQuote extends Component {
          const templateId = this.props.match.params.id;
          await this.props.getContentTemplateById(templateId);
       }
+
+      // QUOTE_GET_PATH
+      // QUOTE_GET_DUPLICATE_PATH
+      // QUOTE_GET_FROM_TEMPLATE_PATH
+      // QUOTE_BY_ID_PATH
+
+      const {
+         expirationQuoteAfter,
+         nextQuoteNumber,
+         currency,
+         taxMode,
+         pricingDisplayLevel,
+         displayItemCode,
+         showCostPriceMarginAlways,
+         defaultMargin
+      } = this.props.quoteDefaultSetting;
+
+      // update quoteSetting with defaultSetting
+      if (this.props.match.path === QUOTE_GET_PATH) {
+         console.log(" TTTTTTTTTTTTTTTTTTTTT 11 ", expirationQuoteAfter)
+         const defaultSetting = {
+            validUntil: new Date(Date.now() + 1000 * 3600 * 24 * parseInt(expirationQuoteAfter)),
+            currency,
+            taxMode,
+            pricingDisplayLevel,
+            displayItemCode
+         };
+         this.props.updateQuoteSettings({ ...this.props.settings, ...defaultSetting });
+      } else if (this.props.match.path === QUOTE_GET_DUPLICATE_PATH
+         || this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH
+      ) {
+         console.log(" TTTTTTTTTTTTTTTTTTTTT 22", expirationQuoteAfter)
+         const defaultSetting = {
+            validUntil: new Date(Date.now() + 1000 * 3600 * 24 * parseInt(expirationQuoteAfter))
+         };
+         this.props.updateQuoteSettings({ ...this.props.settings, ...defaultSetting });
+      }
+
    }
+
+
    onClickSaveNext = () => {
       const { toPeopleList } = this.props.quote;
       if (toPeopleList.length === 0) { toast.info("You must add at least one contact."); return; }
-
       if (
          this.props.match.path === QUOTE_GET_PATH
          || this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH
          || this.props.match.path === QUOTE_GET_DUPLICATE_PATH
       ) {
+         const { toPeopleList, title, settings, items, notes } = this.props.quote;
+         if (title === "") {
+            toast.info("Missing a Quote Title.");
+            this.setState({ isValidWarning: true });
+            return;
+         }
+         const toPeopleIdList = [];
+         for (let i = 0; i < toPeopleList.length; i++) {
+            toPeopleIdList.push(toPeopleList[i]._id);
+         }
+         const payload = {
+            status: "draft",
+            toPeopleList: toPeopleIdList,
+            title,
+            settings,
+            // settings: { ...settings, userFrom: settings.userFrom ? settings.userFrom : this.props.authUser._id },
+            items,
+            notes
+         };
+
          this.setState({ loading: true, type: "SAVE_NEXT" });
-         this.create()
+         axios.post('/quotes', payload)
             .then(({ data }) => {
                toast.success("Quote saved.");
                this.setState({ loading: false, type: null });
@@ -113,9 +174,28 @@ class GetQuote extends Component {
                toast.error("Quote failed to save.");
                this.setState({ loading: false, type: null });
             });
+
       } else if (this.props.match.path = QUOTE_BY_ID_PATH) {
+
+         const quoteId = this.props.match.params.id;
+         if (!quoteId) { toast.error("Not found quote id."); return; }
+
+         const { toPeopleList, title, settings, items, notes } = this.props.quote;
+         const toPeopleIdList = [];
+         for (let i = 0; i < toPeopleList.length; i++) {
+            toPeopleIdList.push(toPeopleList[i]._id);
+         }
+         const payload = {
+            status: "draft",
+            toPeopleList: toPeopleIdList,
+            title,
+            settings,
+            // settings: { ...settings, userFrom: settings.userFrom ? settings.userFrom : this.props.authUser._id },
+            items,
+            notes
+         };
          this.setState({ loading: true, type: "SAVE_NEXT" });
-         this.update()
+         axios.put(`/quotes/id/${quoteId}`, payload)
             .then(({ data }) => {
                toast.success("Quote saved.");
                this.setState({ loading: false, type: null });
@@ -134,8 +214,29 @@ class GetQuote extends Component {
          || this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH
          || this.props.match.path === QUOTE_GET_DUPLICATE_PATH
       ) {
+         // Create Quote
+         const { toPeopleList, title, settings, items, notes } = this.props.quote;
+         if (title === "") {
+            toast.info("Missing a Quote Title.");
+            this.setState({ isValidWarning: true });
+            return;
+         }
+         const toPeopleIdList = [];
+         for (let i = 0; i < toPeopleList.length; i++) {
+            toPeopleIdList.push(toPeopleList[i]._id);
+         }
+         const payload = {
+            status: "draft",
+            toPeopleList: toPeopleIdList,
+            title,
+            settings,
+            // settings: { ...settings, userFrom: settings.userFrom ? settings.userFrom : this.props.authUser._id },
+            items,
+            notes
+         };
+         console.log("Quote get payload ===> ", payload)
          this.setState({ loading: true, type: "SAVE" });
-         this.create()
+         axios.post('/quotes', payload)
             .then(({ data }) => {
                console.log("!!!!!!!!!!!!! =>", data);
                toast.success("Quote saved.");
@@ -149,8 +250,26 @@ class GetQuote extends Component {
                toast.error("Quote failed to create");
             });
       } else if (this.props.match.path = QUOTE_BY_ID_PATH) {
+         // Update Quote
+         const quoteId = this.props.match.params.id;
+         if (!quoteId) { toast.error("Not found quote id."); return; }
+
+         const { toPeopleList, title, settings, items, notes } = this.props.quote;
+         const toPeopleIdList = [];
+         for (let i = 0; i < toPeopleList.length; i++) {
+            toPeopleIdList.push(toPeopleList[i]._id);
+         }
+         const payload = {
+            status: "draft",
+            toPeopleList: toPeopleIdList,
+            title,
+            settings,
+            // settings: { ...settings, userFrom: settings.userFrom ? settings.userFrom : this.props.authUser._id },
+            items,
+            notes
+         };
          this.setState({ loading: true, type: "SAVE" });
-         this.update()
+         axios.put(`/quotes/id/${quoteId}`, payload)
             .then(({ data }) => {
                this.setState({ loading: false, type: null });
                toast.success("Quote saved.");
@@ -160,53 +279,9 @@ class GetQuote extends Component {
                console.error(" error ===>", err);
                this.setState({ loading: false, type: null });
                toast.error("Quote failed to update");
-            })
-      } else {
-         toast.warn("Failed before request.");
+            });
       }
    };
-   create = () => {
-      const { toPeopleList, title, settings, items, notes } = this.props.quote;
-      if (title === "") {
-         toast.info("Missing a Quote Title.");
-         this.setState({ isValidWarning: true });
-         return;
-      }
-      const toPeopleIdList = [];
-      for (let i = 0; i < toPeopleList.length; i++) {
-         toPeopleIdList.push(toPeopleList[i]._id);
-      }
-      const payload = {
-         status: "draft",
-         toPeopleList: toPeopleIdList,
-         title,
-         settings,
-         // settings: { ...settings, userFrom: settings.userFrom ? settings.userFrom : this.props.authUser._id },
-         items,
-         notes
-      };
-      return axios.post('/quotes', payload);
-   }
-   update = () => {
-      const quoteId = this.props.match.params.id;
-      if (!quoteId) { toast.error("Not found quote id."); return; }
-
-      const { toPeopleList, title, settings, items, notes } = this.props.quote;
-      const toPeopleIdList = [];
-      for (let i = 0; i < toPeopleList.length; i++) {
-         toPeopleIdList.push(toPeopleList[i]._id);
-      }
-      const payload = {
-         status: "draft",
-         toPeopleList: toPeopleIdList,
-         title,
-         settings,
-         // settings: { ...settings, userFrom: settings.userFrom ? settings.userFrom : this.props.authUser._id },
-         items,
-         notes
-      };
-      return axios.put(`/quotes/id/${quoteId}`, payload);
-   }
    render() {
       console.log(" ^^^^^^^ GET QUOTE state ^^^^^^^^^^ ", this.state);
       console.log(" ^^^^^^^ GET QUOTE props ^^^^^^^^^^ ", this.props);
@@ -345,11 +420,22 @@ class GetQuote extends Component {
       );
    }
 }
-const mapStateToProps = ({ auth, globalSetting, mainData }) => {
+const mapStateToProps = ({ auth, globalSetting, quoteDefaultSetting, mainData }) => {
    const { authUser } = auth;
    const { quote } = mainData;
    const { defaultSalesTax, defaultSalesCategory } = globalSetting;
-   return { authUser, quote, defaultSalesTax, defaultSalesCategory }
+   return { authUser, quote, quoteDefaultSetting, defaultSalesTax, defaultSalesCategory }
 }
-const mapDispatchToProps = { updateQuote, getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes, getQuoteDataById, getContentTemplateById, updateQuoteToPeopleList };
+const mapDispatchToProps = {
+   updateQuote,
+   getDefaultSalesCategory,
+   getDefaultSalesTax,
+   getSalesCategories,
+   getSalesTaxes,
+   getQuoteDataById,
+   getContentTemplateById,
+   updateQuoteToPeopleList,
+   getQuoteDefaultSetting,
+   updateQuoteSettings,
+};
 export default connect(mapStateToProps, mapDispatchToProps)(GetQuote);

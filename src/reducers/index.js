@@ -15,7 +15,7 @@ export default (history) => combineReducers({
    commonData: Common,
    globalSetting: GlobalSetting,
    appearanceSetting: AppearanceSetting,
-   quoteDefautSetting: QuoteDefautSetting,
+   quoteDefaultSetting: QuoteDefautSetting,
    teamSetting: Team,
    mainData: Data,
 });

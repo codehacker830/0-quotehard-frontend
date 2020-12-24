@@ -55,9 +55,12 @@ export const getContentTemplateById = (quoteTemplateId) => {
       try {
          const { data } = await axios.get(`/templates/id/${quoteTemplateId}`);
          const { status, title, settings, items, notes } = data.template;
+         console.log(" SETTTINGGGS ", settings);
          const payload = {
             toPeopleList: [],
-            status, title, settings,
+            status,
+            title,
+            settings,
             items: items.length ? items : [
                {
                   category: "priceItem",

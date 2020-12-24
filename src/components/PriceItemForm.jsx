@@ -5,9 +5,10 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { updateQuoteItems } from '../actions/Data';
 import { initPriceItem, initTextItem } from '../constants/InitState';
-import { CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_DUPLICATE_PATH } from '../constants/PathNames';
+import { CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_DUPLICATE_PATH, QUOTE_GET_FROM_TEMPLATE_PATH, QUOTE_GET_PATH } from '../constants/PathNames';
 import { toFixedFloat } from '../util';
 import axios from '../util/Api';
+import _ from 'lodash';
 
 class PriceItemForm extends Component {
    fileObj = [];
@@ -64,33 +65,57 @@ class PriceItemForm extends Component {
       if (this.state.isSettingOpen && !this.settingContainter.current.contains(ev.target)) this.setState({ isSettingOpen: false });
       if (this.state.isAddItemListOpen && !this.addItemOptionContainer.current.contains(ev.target)) this.setState({ isAddItemListOpen: false });
    }
-   componentDidUpdate(prevProps, prevState) {
-      this.fileArray = this.props.priceItem.files;
-      const { defaultSalesCategory, defaultSalesTax } = this.props;
 
-      if (!this.props.priceItem.salesCategory && defaultSalesCategory) {
+   componentDidMount() {
+      window.addEventListener('click', this.onClickOutsideHandle);
+
+      if (!this.props.costPrice) {
          const newItem = {
             category: "priceItem",
             priceItem: {
                ... this.props.priceItem,
-               salesCategory: defaultSalesCategory
-            }
-         };
-         this.updateItem(this.props.index, newItem);
-      }
-      if (!this.props.priceItem.salesTax && defaultSalesTax) {
-         const newItem = {
-            category: "priceItem",
-            priceItem: {
-               ... this.props.priceItem,
-               salesTax: defaultSalesTax
+               margin: this.props.quoteDefaultSetting.defaultMargin
             }
          };
          this.updateItem(this.props.index, newItem);
       }
    }
-   componentDidMount() {
-      window.addEventListener('click', this.onClickOutsideHandle);
+   componentDidUpdate(prevProps, prevState) {
+      this.fileArray = this.props.priceItem.files;
+      const { defaultSalesCategory, defaultSalesTax } = this.props;
+
+      if (prevProps.priceItem.salesCategory !== this.props.defaultSalesCategory) {
+         const newItem = {
+            category: "priceItem",
+            priceItem: {
+               ...this.props.priceItem,
+               salesCategory: defaultSalesCategory
+            }
+         };
+         this.updateItem(this.props.index, newItem);
+      }
+      if (prevProps.priceItem.salesTax !== this.props.defaultSalesTax) {
+         const newItem = {
+            category: "priceItem",
+            priceItem: {
+               ...this.props.priceItem,
+               salesTax: defaultSalesTax
+            }
+         };
+         this.updateItem(this.props.index, newItem);
+      }
+      if (prevProps.quoteDefaultSetting.defaultMargin !== this.props.quoteDefaultSetting.defaultMargin) {
+         if (!this.props.costPrice) {
+            const newItem = {
+               category: "priceItem",
+               priceItem: {
+                  ... this.props.priceItem,
+                  margin: this.props.quoteDefaultSetting.defaultMargin
+               }
+            };
+            this.updateItem(this.props.index, newItem);
+         }
+      }
    }
    componentWillUnmount() {
       window.removeEventListener('click', this.onClickOutsideHandle);
@@ -166,10 +191,14 @@ class PriceItemForm extends Component {
       ]);
       this.setState({ isConfirmingDelete: false });
    }
+
    render() {
       console.log(" priceitem props =====> ", this.props);
       const { isViewOnly } = this.props;
       const { salesCatgories, salesTaxes } = this.props;
+      const {
+         showCostPriceMarginAlways
+      } = this.props.quoteDefaultSetting;
       return (
          <React.Fragment>
             {/* ToolWrapper */}
@@ -244,7 +273,7 @@ class PriceItemForm extends Component {
                               position: "absolute",
                               zIndex: 99,
                               width: "240px",
-                              height: "220px"
+                              height: showCostPriceMarginAlways ? "190px" : "220px"
                            }}>
                            <div className="form-check pb-1">
                               <input className="form-check-input"
@@ -329,7 +358,7 @@ class PriceItemForm extends Component {
                                  id={`subscription-${this.props.index}`} name={`subscription-${this.props.index}`} />
                               <label className="form-check-label font-w400 font-size-sm" htmlFor={`subscription-${this.props.index}`}>Subscription - Repeating Cost</label>
                            </div>
-                           <div className="form-check pb-1">
+                           <div className={`form-check pb-1 ${showCostPriceMarginAlways ? "d-none" : ""}`}>
                               <input className="form-check-input"
                                  type="checkbox"
                                  checked={this.props.priceItem.isCostPriceMargin}
@@ -583,7 +612,7 @@ class PriceItemForm extends Component {
                      </div>
                   </div>
 
-                  <div className={`row pb-1 ${this.props.priceItem.isCostPriceMargin ? "" : "d-none"}`}>
+                  <div className={`row pb-1 ${this.props.priceItem.isCostPriceMargin || showCostPriceMarginAlways ? "" : "d-none"}`}>
                      <div className="col-12">
                         <div className="bg-light-gray border p-1">
                            <div className="row">
@@ -592,16 +621,16 @@ class PriceItemForm extends Component {
                                     type="number"
                                     placeholder="-- Cost Price --"
                                     disabled={isViewOnly}
-                                    value={this.props.priceItem.costPrice == 0 ? "" : this.props.priceItem.costPrice}
+                                    value={parseFloat(this.props.priceItem.costPrice) === 0 ? "" : this.props.priceItem.costPrice}
                                     onChange={(ev) => {
-                                       const costPrice = ev.target.value == 0 ? 1 : ev.target.value;
+                                       const costPrice = parseFloat(ev.target.value);
                                        const newItem = {
                                           category: "priceItem",
                                           priceItem: {
                                              ... this.props.priceItem,
                                              costPrice: costPrice,
-                                             unitPrice: costPrice == 0 ? this.props.priceItem.unitPrice : costPrice / (100 - this.props.priceItem.margin) * 100,
-                                             itemTotal: costPrice == 0 ?
+                                             unitPrice: costPrice === 0 ? this.props.priceItem.unitPrice : costPrice / (100 - this.props.priceItem.margin) * 100,
+                                             itemTotal: costPrice === 0 ?
                                                 this.props.priceItem.unitPrice * this.props.priceItem.quantity * (100 - this.props.priceItem.discount) / 100
                                                 : costPrice / (100 - this.props.priceItem.margin) * this.props.priceItem.quantity * (100 - this.props.priceItem.discount)
                                           }
@@ -624,14 +653,14 @@ class PriceItemForm extends Component {
                            disabled={isViewOnly}
                            value={this.props.priceItem.unitPrice == 0 ? "" : this.props.priceItem.unitPrice}
                            onChange={(ev) => {
-                              const unitPrice = ev.target.value == 0 ? 0 : ev.target.value;
+                              const unitPrice = parseFloat(ev.target.value);
                               const newItem = {
                                  category: "priceItem",
                                  priceItem: {
                                     ... this.props.priceItem,
                                     unitPrice: unitPrice,
-                                    margin: unitPrice == 0 ? 0
-                                       : this.props.priceItem.costPrice == 0 ? this.props.priceItem.margin
+                                    margin: unitPrice === 0 ? 0
+                                       : parseFloat(this.props.priceItem.costPrice) === 0 ? this.props.priceItem.margin
                                           : (unitPrice - this.props.priceItem.costPrice) / unitPrice * 100,
                                     itemTotal: unitPrice * this.props.priceItem.quantity * (100 - this.props.priceItem.discount) / 100
                                  }
@@ -690,15 +719,15 @@ class PriceItemForm extends Component {
    }
 }
 
-const mapStateToProps = ({ globalSetting, mainData }) => {
+const mapStateToProps = ({ mainData, globalSetting, quoteDefaultSetting }) => {
+   const { quote } = mainData;
    const {
       salesCatgories,
       salesTaxes,
       defaultSalesCategory,
       defaultSalesTax
    } = globalSetting;
-   const { quote } = mainData;
-   return { salesCatgories, salesTaxes, defaultSalesCategory, defaultSalesTax, quote };
+   return { quote, salesCatgories, salesTaxes, defaultSalesCategory, defaultSalesTax, quoteDefaultSetting };
 };
 const mapDispatchToProps = {
    updateQuoteItems

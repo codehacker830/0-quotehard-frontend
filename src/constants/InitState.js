@@ -1,6 +1,6 @@
 export const initQuoteSettings = {
-   validUntil: new Date(Date.now() + 1000 * 3600 * 24 * 60),
-   sentAt: new Date(),
+   validUntil: null,
+   sentAt: null,
    userFrom: "",
    discount: 0,
    currency: "156",
@@ -38,7 +38,7 @@ export const initPriceItem = {
 
    isCostPriceMargin: false,
    costPrice: 0,
-   margin: 20,
+   margin: 0,
 
    _id: "",
    itemCode: "",

@@ -8,10 +8,12 @@ class ForCustomerDetailInColumns extends Component {
    render() {
       const { isDisplayFullCustomerDetail, toPeopleList } = this.props;
       const firstPerson = toPeopleList[0];
+      console.log("First person ----> ", firstPerson);
+      const { company } = firstPerson;
       return (
          <div className="quote-detail-row">
             {
-               firstPerson.company ?
+               company ?
                   <React.Fragment>
                      <label className="quote-detail-label">For</label>
                      <div className="quote-detail-block">

@@ -8,13 +8,13 @@ import { CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_DUPLICATE_PATH } from '..
 
 class ItemsSection extends Component {
     render() {
-        const isAvailablePath = (this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH || this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH);
+        const isViewOnlyPath = (this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH || this.props.match.path === CONTENT_TEMPLATE_DUPLICATE_PATH);
 
         return this.props.items.map((item, index) => {
             if (item.category === "priceItem") return <PriceItemForm
                 key={index}
                 index={index}
-                isViewOnly={isAvailablePath && !!item._id}
+                isViewOnly={isViewOnlyPath && !!item._id}
                 isPaperClipDisabled={false}
                 isSettingDisabled={false}
                 isAddItemDisabled={false}
@@ -26,7 +26,7 @@ class ItemsSection extends Component {
             else if (item.category === "textItem") return <TextItemForm
                 key={index}
                 index={index}
-                isViewOnly={isAvailablePath && !!item._id}
+                isViewOnly={isViewOnlyPath && !!item._id}
                 isNote={false}
                 isPaperClipDisabled={false}
                 isSettingDisabled={false}
