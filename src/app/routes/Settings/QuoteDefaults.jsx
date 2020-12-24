@@ -1,14 +1,50 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
+import { getQuoteDefaultSetting, publishQuoteDefaultSetting, updateQuoteDefaultSetting } from '../../../actions/QuoteDefautSetting';
 import NavCrump from '../../../components/NavCrump';
 
 export const QuoteDefaults = (props) => {
-   const [taxMode, setTaxMode] = useState("exclusive_excluding");
+   const [isQuoteNumberAlertOpen, setQuoteNumberAlertOpen] = useState(false);
+   const settings = useSelector(state => state.quoteDefautSetting)
+   const dispatch = useDispatch();
+   useEffect(() => {
+      dispatch(getQuoteDefaultSetting());
+   }, []);
+   console.log("quoteDefautSetting--------->", settings);
+   console.log("quoteDefautSetting props--------->", props);
+   const {
+      expirationQuoteAfter,
+      currentQuoteNumber,
+      nextQuoteNumber,
+      currency,
+      taxMode,
+      pricingDisplayLevel,
+      displayItemCode,
+      showCostPriceMarginAlways,
+      defaultMargin
+   } = settings;
+
    return (
       <React.Fragment>
          <NavCrump linkTo={`/app/settings`}>
             Settings
          </NavCrump>
+         <div id="AlerterPage">
+            {
+               isQuoteNumberAlertOpen ?
+                  <div className="alertBar alertBar-general">
+                     <div className="container">
+                        <div className="alertBar-content">
+                           <ul className="alertBar-ul">
+                              <li><i className="fa fa-fw fa-star mr-2" />Quote Number must be greater than the last quote number used.</li>
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+                  : null
+            }
+         </div>
          <div className="content">
             <h2 className="my-4">Quote Defaults</h2>
             <h3 className="mb-2">Expire Quotes</h3>
@@ -16,7 +52,10 @@ export const QuoteDefaults = (props) => {
                <div className="mb-2">
                   <label htmlFor="account_expire_days">Expire Quotes After</label>
                   <div className="input-group maxWidth-180">
-                     <input type="text" className="form-control rounded-0" id="days" name="days" defaultValue={90} />
+                     <input type="text" className="form-control rounded-0" id="days" name="days"
+                        value={expirationQuoteAfter}
+                        onChange={ev => dispatch(updateQuoteDefaultSetting({ ...settings, expirationQuoteAfter: ev.target.value }))}
+                     />
                      <div className="input-group-append">
                         <span className="input-group-text">days</span>
                      </div>
@@ -27,8 +66,11 @@ export const QuoteDefaults = (props) => {
             <h3 className="mb-2">Quote Number</h3>
             <div className="ml-3 mb-5">
                <div className="mb-2">
-                  <label htmlFor="account_expire_days">Set the Next Quote Number (last number: 5)</label>
-                  <input type="text" className="form-control rounded-0 maxWidth-180" id="quoteNumber" name="quoteNumber" defaultValue={6} />
+                  <label htmlFor="account_expire_days">Set the Next Quote Number (last number: {currentQuoteNumber})</label>
+                  <input type="text" className="form-control rounded-0 maxWidth-180" id="quoteNumber" name="quoteNumber"
+                     value={nextQuoteNumber}
+                     onChange={ev => dispatch(updateQuoteDefaultSetting({ ...settings, nextQuoteNumber: ev.target.value }))}
+                  />
                </div>
             </div>
 
@@ -36,7 +78,10 @@ export const QuoteDefaults = (props) => {
             <div className="ml-3 mb-5">
                <div className="mb-2">
                   <label htmlFor="account_currency_id">Currency</label>
-                  <select className="form-control rounded-0 maxWidth-300" id="account_currency_id" name="account_currency_id">
+                  <select className="form-control rounded-0 maxWidth-300" id="account_currency_id" name="account_currency_id"
+                     value={currency}
+                     onChange={ev => dispatch(updateQuoteDefaultSetting({ ...settings, currency: ev.target.value }))}
+                  >
                      <optgroup label="––––––––––––––––––––––– " />
                      <option value={8}>Australia Dollar</option>
                      <option value={27}>Canada Dollar</option>
@@ -242,7 +287,8 @@ export const QuoteDefaults = (props) => {
                      id="account_amounts_entered"
                      name="account_amounts_entered"
                      value={taxMode}
-                     onChange={(ev) => setTaxMode(ev.target.value)}>
+                     onChange={ev => dispatch(updateQuoteDefaultSetting({ ...settings, taxMode: ev.target.value }))}
+                  >
                      <option value="exclusive_including">Tax Exclusive (Inclusive Total)</option>
                      <option value="exclusive_excluding">Tax Exclusive</option>
                      <option value="inclusive">Tax Inclusive</option>
@@ -256,24 +302,43 @@ export const QuoteDefaults = (props) => {
                <div className="mb-2">
                   <label>Choose the level of pricing details to present to your customer.</label>
                   <div className="form-check">
-                     <input className="form-check-input" type="radio" id="example-radios-default1" name="example-radios-default" defaultValue="option1" defaultChecked />
-                     <label className="form-check-label" htmlFor="example-radios-default1">Item Quantity & Total</label>
+                     <input className="form-check-input" type="radio" id="itemQuantityAndTotal" name="itemQuantityAndTotal"
+                        value="itemQuantityAndTotal"
+                        checked={pricingDisplayLevel === "itemQuantityAndTotal"}
+                        onChange={(ev) => dispatch(updateQuoteDefaultSetting({ ...settings, pricingDisplayLevel: ev.target.value }))}
+                     />
+                     <label className="form-check-label" htmlFor="itemQuantityAndTotal">Item Quantity & Total</label>
                   </div>
                   <div className="form-check">
-                     <input className="form-check-input" type="radio" id="example-radios-default2" name="example-radios-default" defaultValue="option2" />
-                     <label className="form-check-label" htmlFor="example-radios-default2">Item Quantity</label>
+                     <input className="form-check-input" type="radio" id="itemQuantity" name="itemQuantity"
+                        value="itemQuantity"
+                        checked={pricingDisplayLevel === "itemQuantity"}
+                        onChange={(ev) => dispatch(updateQuoteDefaultSetting({ ...settings, pricingDisplayLevel: ev.target.value }))}
+                     />
+                     <label className="form-check-label" htmlFor="itemQuantity">Item Quantity</label>
                   </div>
                   <div className="form-check">
-                     <input className="form-check-input" type="radio" id="example-radios-default3" name="example-radios-default" defaultValue="option2" />
-                     <label className="form-check-label" htmlFor="example-radios-default3">Item Total</label>
+                     <input className="form-check-input" type="radio" id="itemTotal" name="itemTotal"
+                        value="itemTotal"
+                        checked={pricingDisplayLevel === "itemTotal"}
+                        onChange={(ev) => dispatch(updateQuoteDefaultSetting({ ...settings, pricingDisplayLevel: ev.target.value }))}
+                     />
+                     <label className="form-check-label" htmlFor="itemTotal">Item Total</label>
                   </div>
                   <div className="form-check">
-                     <input className="form-check-input" type="radio" id="example-radios-default3" name="example-radios-default" defaultValue="option2" />
-                     <label className="form-check-label" htmlFor="example-radios-default3">Hide All</label>
+                     <input className="form-check-input" type="radio" id="hideAll" name="hideAll"
+                        value="hideAll"
+                        checked={pricingDisplayLevel === "hideAll"}
+                        onChange={(ev) => dispatch(updateQuoteDefaultSetting({ ...settings, pricingDisplayLevel: ev.target.value }))}
+                     />
+                     <label className="form-check-label" htmlFor="hideAll">Hide All</label>
                   </div>
                   <hr />
                   <div className="form-check">
-                     <input className="form-check-input" type="checkbox" defaultValue id="display-itemcode" name="display-itemcode" />
+                     <input className="form-check-input" type="checkbox" id="display-itemcode" name="display-itemcode"
+                        checked={displayItemCode}
+                        onChange={() => dispatch(updateQuoteDefaultSetting({ ...settings, displayItemCode: !displayItemCode }))}
+                     />
                      <label className="form-check-label" htmlFor="display-itemcode">Display Item Code Always</label>
                   </div>
 
@@ -284,7 +349,10 @@ export const QuoteDefaults = (props) => {
             <div className="ml-3 mb-5">
                <div className="mb-2">
                   <div className="form-check">
-                     <input className="form-check-input" type="checkbox" defaultValue id="showCostPrice" name="showCostPrice" />
+                     <input className="form-check-input" type="checkbox" id="showCostPrice" name="showCostPrice"
+                        checked={showCostPriceMarginAlways}
+                        onChange={() => dispatch(updateQuoteDefaultSetting({ ...settings, showCostPriceMarginAlways: !showCostPriceMarginAlways }))}
+                     />
                      <label className="form-check-label" htmlFor="showCostPrice">
                         Always show Cost Price, when editing
                         <p className="text-secondary fa-xs">Check this box if you enter a Cost Price often</p>
@@ -294,7 +362,10 @@ export const QuoteDefaults = (props) => {
                <div className="mb-2">
                   <label htmlFor="account_expire_days">Default Margin</label>
                   <div className="input-group maxWidth-180">
-                     <input type="text" className="form-control rounded-0" id="defaultMargin" name="defaultMargin" defaultValue={20} />
+                     <input type="text" className="form-control rounded-0" id="defaultMargin" name="defaultMargin"
+                        value={defaultMargin}
+                        onChange={(ev) => dispatch(updateQuoteDefaultSetting({ ...settings, defaultMargin: ev.target.value }))}
+                     />
                      <div className="input-group-append">
                         <span className="input-group-text">%</span>
                      </div>
@@ -304,11 +375,15 @@ export const QuoteDefaults = (props) => {
             </div>
 
             <div className="mb-4">
-               <button className="btn btn-lg btn-rounded btn-hero-primary mr-1">Save</button>
+               <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={() => {
+                  if (nextQuoteNumber <= currentQuoteNumber) { setQuoteNumberAlertOpen(true); return; }
+                  dispatch(publishQuoteDefaultSetting({ ...settings }, props));
+               }
+               }>Save</button>
                <Link className="btn btn-lg btn-rounded btn-hero-secondary" to="/app/settings">Cancel</Link>
             </div>
          </div>
-      </React.Fragment>
+      </React.Fragment >
    )
 }
 

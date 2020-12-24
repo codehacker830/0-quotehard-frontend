@@ -18,13 +18,14 @@ export const updateQuoteDefaultSetting = (setting) => {
    return (dispatch) => dispatch({ type: QUOTE_DEFAULT_SETTING, payload: setting });
 }
 
-export const publishQuoteDefaultSetting = (setting) => {
+export const publishQuoteDefaultSetting = (setting, ownProps) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
          const { data } = await axios.put("/settings/quote-default", { setting });
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: QUOTE_DEFAULT_SETTING, payload: data.quoteDefaultSetting });
+         ownProps.history.push('/app/settings');
       } catch (err) {
          console.error("err during publish quoteDefaultSetting.")
          dispatch({ type: FETCH_ERROR });
