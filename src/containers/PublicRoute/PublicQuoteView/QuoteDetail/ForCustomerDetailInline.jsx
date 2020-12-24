@@ -7,7 +7,8 @@ class ForCustomerDetailInline extends Component {
    render() {
       const { isDisplayFullCustomerDetail, toPeopleList } = this.props;
       const firstPerson = toPeopleList[0];
-      return (
+      if (toPeopleList.length === 0) return null;
+      else return (
          <React.Fragment>
             {
                firstPerson.company ?
