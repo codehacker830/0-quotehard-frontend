@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { uploadLogo, removeLogo, getAppearanceSetting, publishAppearanceSettings } from '../../../../actions/Appearance';
+import { getAppearanceSetting, publishAppearanceSetting } from '../../../../actions/AppearanceSetting';
 import NavCrump from '../../../../components/NavCrump';
 import { switchHeadingFont } from '../../../../util';
 import { Appearance_Colors } from './Appearance_Colors';
@@ -24,7 +24,7 @@ class Appearance extends Component {
    onClickSaveAndPublish = async () => {
       this.setState({ loading: true });
       try {
-         await this.props.publishAppearanceSettings({ ...this.props.appearanceSetting });
+         await this.props.publishAppearanceSetting({ ...this.props.appearanceSetting });
          this.setState({ loading: false });
          this.props.history.push("/app/settings");
       } catch (err) {
@@ -94,5 +94,5 @@ const mapStateToProps = ({ appearanceSetting }) => {
    return { appearanceSetting };
 };
 
-const mapDispatchToProps = { getAppearanceSetting, publishAppearanceSettings };
+const mapDispatchToProps = { getAppearanceSetting, publishAppearanceSetting };
 export default connect(mapStateToProps, mapDispatchToProps)(Appearance);

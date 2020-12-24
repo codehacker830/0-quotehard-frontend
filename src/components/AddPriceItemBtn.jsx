@@ -29,12 +29,12 @@ class AddPriceItemBtn extends Component {
       );
    }
 }
-const mapStateToProps = ({ mainData, globalSettings }) => {
+const mapStateToProps = ({ mainData, globalSetting }) => {
    const { items } = mainData.quote;
    const {
       defaultSalesCategory,
       defaultSalesTax
-   } = globalSettings;
+   } = globalSetting;
    return { items, defaultSalesCategory, defaultSalesTax }
 }
 const mapDispatchToProps = {

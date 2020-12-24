@@ -1,5 +1,4 @@
 import {
-   QUOTE_DEFAULTS,
    GET_SALES_CATEGORIES,
    GET_SALES_TAXES,
    GET_DEFAULT_SALES_CATEGORY,
@@ -7,7 +6,6 @@ import {
 } from '../constants/ActionTypes';
 
 const initialSettings = {
-   quoteDefaults: null,
    salesCatgories: [],
    salesTaxes: [],
    defaultSalesCategory: "",
@@ -16,11 +14,6 @@ const initialSettings = {
 
 export default (state = initialSettings, action) => {
    switch (action.type) {
-      case QUOTE_DEFAULTS:
-         return {
-            ...state,
-            quoteDefaults: action.payload
-         };
       case GET_SALES_CATEGORIES:
          return {
             ...state,

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import TextareaAutosize from 'react-autosize-textarea/lib';
 import { connect } from 'react-redux'
-import { updateAppearanceSetting } from '../../../../../actions/Appearance'
+import { updateAppearanceSetting } from '../../../../../actions/AppearanceSetting'
 
 class Appearance_CompanyInformation extends Component {
    render() {

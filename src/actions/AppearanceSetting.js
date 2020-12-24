@@ -1,5 +1,4 @@
-import { createLogger } from "redux-logger";
-import { APPEARANCE_SETTINGS, FETCH_ERROR, FETCH_START, FETCH_SUCCESS, LOGO_URL } from "../constants/ActionTypes"
+import { APPEARANCE_SETTING, FETCH_ERROR, FETCH_START, FETCH_SUCCESS, LOGO_URL } from "../constants/ActionTypes"
 import axios from "../util/Api";
 
 
@@ -50,11 +49,11 @@ export const removeLogo = (image) => {
 
 export const getAppearanceSetting = () => {
    return async (dispatch) => {
-      dispatch({ type: FETCH_START, payload: APPEARANCE_SETTINGS });
+      dispatch({ type: FETCH_START, payload: APPEARANCE_SETTING });
       try {
          const { data } = await axios.get("/settings/appearance");
          dispatch({ type: FETCH_SUCCESS });
-         dispatch({ type: APPEARANCE_SETTINGS, payload: data.appearanceSetting });
+         dispatch({ type: APPEARANCE_SETTING, payload: data.appearanceSetting });
       } catch (err) {
          dispatch({ type: FETCH_ERROR });
       }
@@ -68,7 +67,7 @@ export const getPublicAppearanceWithEntoken = () => {
       try {
          const { data } = await axios.post('/quotes/view-public/appearance', { entoken });
          dispatch({ type: FETCH_SUCCESS });
-         dispatch({ type: APPEARANCE_SETTINGS, payload: data.appearanceSetting });
+         dispatch({ type: APPEARANCE_SETTING, payload: data.appearanceSetting });
       } catch (err) {
          dispatch({ type: FETCH_ERROR, payload: err.message });
          console.log("Error****:", err.message);
@@ -77,16 +76,16 @@ export const getPublicAppearanceWithEntoken = () => {
 }
 
 export const updateAppearanceSetting = (setting) => {
-   return (dispatch) => dispatch({ type: APPEARANCE_SETTINGS, payload: setting });
+   return (dispatch) => dispatch({ type: APPEARANCE_SETTING, payload: setting });
 }
 
-export const publishAppearanceSettings = (setting) => {
+export const publishAppearanceSetting = (setting) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
          const { data } = await axios.put("/settings/appearance", { setting });
          dispatch({ type: FETCH_SUCCESS });
-         dispatch({ type: APPEARANCE_SETTINGS, payload: data.appearanceSetting });
+         dispatch({ type: APPEARANCE_SETTING, payload: data.appearanceSetting });
       } catch (err) {
          console.error("err during publish appearanceSetting.")
          dispatch({ type: FETCH_ERROR });

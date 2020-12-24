@@ -8,7 +8,7 @@ import SubTotal from '../../../../components/SubTotal';
 import TemplateSettings from '../../../../components/TemplateSettings';
 import axios from '../../../../util/Api';
 import AddPriceItemBtn from '../../../../components/AddPriceItemBtn';
-import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../../actions/GlobalSettings';
+import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../../actions/GlobalSetting';
 import { getContentTemplateById, getDuplicateTemplateById, getQuoteDataById, updateQuote, updateQuoteStatus } from '../../../../actions/Data';
 import { connect } from 'react-redux';
 import {

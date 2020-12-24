@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { removeLogo, uploadLogo } from '../../../../../actions/Appearance';
+import { removeLogo, uploadLogo } from '../../../../../actions/AppearanceSetting';
 import { LOGO_URL } from '../../../../../constants/ActionTypes'
 
 class Appearance_Logo extends Component {

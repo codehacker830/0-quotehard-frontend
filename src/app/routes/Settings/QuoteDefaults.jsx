@@ -16,7 +16,7 @@ export const QuoteDefaults = (props) => {
                <div className="mb-2">
                   <label htmlFor="account_expire_days">Expire Quotes After</label>
                   <div className="input-group maxWidth-180">
-                     <input type="text" className="form-control rounded-0" id="example-group1-input2" name="example-group1-input2" defaultValue={90} />
+                     <input type="text" className="form-control rounded-0" id="days" name="days" defaultValue={90} />
                      <div className="input-group-append">
                         <span className="input-group-text">days</span>
                      </div>
@@ -28,14 +28,14 @@ export const QuoteDefaults = (props) => {
             <div className="ml-3 mb-5">
                <div className="mb-2">
                   <label htmlFor="account_expire_days">Set the Next Quote Number (last number: 5)</label>
-                  <input type="text" className="form-control rounded-0 maxWidth-180" id="example-group1-input2" name="example-group1-input2" defaultValue={6} />
+                  <input type="text" className="form-control rounded-0 maxWidth-180" id="quoteNumber" name="quoteNumber" defaultValue={6} />
                </div>
             </div>
 
             <h3 className="mb-2">Currency &amp; Tax</h3>
             <div className="ml-3 mb-5">
                <div className="mb-2">
-                  <label htmlFor="account_currency_id">Select</label>
+                  <label htmlFor="account_currency_id">Currency</label>
                   <select className="form-control rounded-0 maxWidth-300" id="account_currency_id" name="account_currency_id">
                      <optgroup label="––––––––––––––––––––––– " />
                      <option value={8}>Australia Dollar</option>
@@ -236,7 +236,7 @@ export const QuoteDefaults = (props) => {
                   </select>
                </div>
                <div className="mb-2">
-                  <label htmlFor="account_amounts_entered">Select</label>
+                  <label htmlFor="account_amounts_entered">Amounts Are:</label>
                   <select className="form-control rounded-0 maxWidth-300"
                      // defaultValue={`exclusive_excluding`}
                      id="account_amounts_entered"
@@ -294,7 +294,7 @@ export const QuoteDefaults = (props) => {
                <div className="mb-2">
                   <label htmlFor="account_expire_days">Default Margin</label>
                   <div className="input-group maxWidth-180">
-                     <input type="text" className="form-control rounded-0" id="example-group1-input2" name="example-group1-input2" defaultValue={20} />
+                     <input type="text" className="form-control rounded-0" id="defaultMargin" name="defaultMargin" defaultValue={20} />
                      <div className="input-group-append">
                         <span className="input-group-text">%</span>
                      </div>

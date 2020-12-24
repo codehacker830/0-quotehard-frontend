@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify';
-import { getDefaultSalesCategory, getSalesTaxes, updateDefaultSalesCategory } from '../../../actions/GlobalSettings';
+import { getDefaultSalesCategory, getSalesTaxes, updateDefaultSalesCategory } from '../../../actions/GlobalSetting';
 import NavCrump from '../../../components/NavCrump'
 import axios from '../../../util/Api';
 import { SALES_CATEGORY_CREATE_PATH, SALES_CATEGORY_UPDATE_PATH, SALES_TAX_CATEGORIES_PATH } from '../../../constants/PathNames';
@@ -16,8 +16,8 @@ export const SalesCategory = (props) => {
    const [description, setDescription] = useState("");
    const [defaultSalesTax, setDefaultSalesTax] = useState("0");
 
-   const globalSettings = useSelector(state => {
-      const { defaultSalesCategory, salesTaxes } = state.globalSettings;
+   const globalSetting = useSelector(state => {
+      const { defaultSalesCategory, salesTaxes } = state.globalSetting;
       return { defaultSalesCategory, salesTaxes };
    });
    const onClickSave = () => {
@@ -42,7 +42,7 @@ export const SalesCategory = (props) => {
             });
       }
    }
-   const { defaultSalesCategory, salesTaxes } = globalSettings;
+   const { defaultSalesCategory, salesTaxes } = globalSetting;
    const dispatch = useDispatch();
    useEffect(() => {
       dispatch(getSalesTaxes("current"));
@@ -71,7 +71,7 @@ export const SalesCategory = (props) => {
             toast.success('You may not archive the default category. Make another the default first.');
             return;
          }
-         axios.get(`/settings/archive/sales-category/${id}`)
+         axios.get(`/settings/sales-category/archive/${id}`)
             .then(({ data }) => {
                console.log("archive sales cateogry res __", data);
                const { status, categoryName, description, defaultSalesTax } = data.salesCategory;
@@ -85,7 +85,7 @@ export const SalesCategory = (props) => {
                toast.success('Failed to archive.');
             });
       } else {
-         axios.get(`/settings/un-archive/sales-category/${id}`)
+         axios.get(`/settings/sales-category/un-archive/${id}`)
             .then(({ data }) => {
                console.log("dataaaa", data);
                const { status, categoryName, description, defaultSalesTax } = data.salesCategory;

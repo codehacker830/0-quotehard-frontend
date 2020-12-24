@@ -20,7 +20,7 @@ export const USER_TOKEN_SET = 'user_token_set';
 
 
 // Settings
-export const QUOTE_DEFAULTS = 'quote_defaults';
+export const QUOTE_DEFAULT_SETTING = 'quote_default_setting';
 export const GET_TEAMMEMBERS = 'get_teammates';
 export const GET_SALES_CATEGORIES = 'get_sales_categories';
 export const GET_SALES_TAXES = 'get_sales_taxes';
@@ -28,10 +28,9 @@ export const GET_SALES_TAXES = 'get_sales_taxes';
 export const GET_DEFAULT_SALES_CATEGORY = 'get_default_sales_category';
 export const GET_DEFAULT_SALES_TAX = 'get_default_sales_tax';
 
-// Service
 export const UPLOAD_IMAGE = 'upload_image';
 export const LOGO_URL = 'logo_url';
-export const APPEARANCE_SETTINGS = 'appearance_settings';
+export const APPEARANCE_SETTING = 'appearance_setting';
 
 // Quote
 export const INITIALIZE_QUOTE = 'initialzie_quote';

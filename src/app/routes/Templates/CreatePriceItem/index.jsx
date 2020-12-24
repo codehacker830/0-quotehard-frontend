@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { createLogger } from 'redux-logger';
 import { updatePriceItemStatus, updateQuoteItems } from '../../../../actions/Data';
-import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../../actions/GlobalSettings';
+import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../../actions/GlobalSetting';
 import NavCrump from '../../../../components/NavCrump';
 import NavCrumpLeft from '../../../../components/NavCrump/NavCrumpLeft';
 import NavCrumpRight from '../../../../components/NavCrump/NavCrumpRight';

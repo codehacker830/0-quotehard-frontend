@@ -1,4 +1,4 @@
-import { APPEARANCE_SETTINGS, LOGO_URL } from "../constants/ActionTypes";
+import { APPEARANCE_SETTING, LOGO_URL } from "../constants/ActionTypes";
 
 const initialState = {
    logo: null,
@@ -37,7 +37,7 @@ export default (state = initialState, action) => {
             ...state,
             logo: action.payload
          };
-      case APPEARANCE_SETTINGS:
+      case APPEARANCE_SETTING:
          return action.payload
       default:
          return state;

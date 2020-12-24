@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify';
-import { getDefaultSalesTax, getSalesCategories, updateDefaultSalesTax } from '../../../actions/GlobalSettings';
+import { getDefaultSalesTax, getSalesCategories, updateDefaultSalesTax } from '../../../actions/GlobalSetting';
 import NavCrump from '../../../components/NavCrump'
 import axios from '../../../util/Api';
 import { SALES_TAX_CATEGORIES_PATH, SALES_TAX_CREATE_PATH, SALES_TAX_UPDATE_PATH } from '../../../constants/PathNames';
@@ -14,8 +14,8 @@ export const SalesTax = (props) => {
    const [status, setStatus] = useState("");
    const [taxName, setTaxName] = useState("");
    const [taxRate, setTaxRate] = useState("");
-   const globalSettings = useSelector(state => {
-      const { defaultSalesTax } = state.globalSettings;
+   const globalSetting = useSelector(state => {
+      const { defaultSalesTax } = state.globalSetting;
       return { defaultSalesTax };
    })
    const onClickSave = () => {
@@ -40,7 +40,7 @@ export const SalesTax = (props) => {
             });
       }
    }
-   const { defaultSalesTax } = globalSettings;
+   const { defaultSalesTax } = globalSetting;
 
    const dispatch = useDispatch();
    useEffect(() => {
@@ -69,7 +69,7 @@ export const SalesTax = (props) => {
             toast.success('You may not archive the default tax. Make another the default first.');
             return;
          }
-         axios.get(`/settings/archive/sales-tax/${id}`)
+         axios.get(`/settings/sales-tax/archive/${id}`)
             .then(({ data }) => {
                const { status, taxName, taxRate } = data.salesTax;
                setStatus(status);
@@ -81,7 +81,7 @@ export const SalesTax = (props) => {
                toast.success('Failed to archive.');
             });
       } else {
-         axios.get(`/settings/un-archive/sales-tax/${id}`)
+         axios.get(`/settings/sales-tax/un-archive/${id}`)
             .then(({ data }) => {
                console.log("dataaaa", data);
                const { status, taxName, taxRate } = data.salesTax;

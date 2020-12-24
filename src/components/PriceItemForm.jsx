@@ -690,13 +690,13 @@ class PriceItemForm extends Component {
    }
 }
 
-const mapStateToProps = ({ globalSettings, mainData }) => {
+const mapStateToProps = ({ globalSetting, mainData }) => {
    const {
       salesCatgories,
       salesTaxes,
       defaultSalesCategory,
       defaultSalesTax
-   } = globalSettings;
+   } = globalSetting;
    const { quote } = mainData;
    return { salesCatgories, salesTaxes, defaultSalesCategory, defaultSalesTax, quote };
 };

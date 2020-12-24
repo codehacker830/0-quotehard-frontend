@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { updateAppearanceSetting } from '../../../../../actions/Appearance';
+import { updateAppearanceSetting } from '../../../../../actions/AppearanceSetting';
 import { switchHeadingFont } from '../../../../../util';
 
 class ExampleBoard extends Component {

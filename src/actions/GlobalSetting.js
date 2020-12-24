@@ -14,7 +14,7 @@ export const getDefaultSalesCategory = () => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
-         const { data } = await axios.get('/settings/default/sales-category');
+         const { data } = await axios.get('/settings/sales-category/default');
          console.log(" sales default salescategory api res : ", data);
          dispatch({ type: FETCH_SUCCESS });
          const { defaultSalesCategory } = data;
@@ -30,7 +30,7 @@ export const getDefaultSalesTax = () => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
-         const { data } = await axios.get('/settings/default/sales-tax');
+         const { data } = await axios.get('/settings/sales-tax/default');
          console.log(" get default sales Category api res : ", data);
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: GET_DEFAULT_SALES_TAX, payload: data.defaultSalesTax });
@@ -46,7 +46,7 @@ export const updateDefaultSalesCategory = (id) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
-         const { data } = await axios.put('/settings/default/sales-category', { salesCategoryId: id });
+         const { data } = await axios.put('/settings/sales-category/default', { salesCategoryId: id });
          console.log("make default salescategory api res : ", data);
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: GET_DEFAULT_SALES_CATEGORY, payload: data.defaultSalesCategory });
@@ -64,7 +64,7 @@ export const updateDefaultSalesTax = (id) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
-         const { data } = await axios.put('/settings/default/sales-tax', { salesTaxId: id });
+         const { data } = await axios.put('/settings/sales-tax/default', { salesTaxId: id });
          console.log(" make default sales Tax api res : ", data);
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: GET_DEFAULT_SALES_TAX, payload: data.defaultSalesTax });
@@ -81,7 +81,7 @@ export const getSalesCategories = (status) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
-         const { data } = await axios.get(`/settings/sales-categories/${status}`);
+         const { data } = await axios.get(`/settings/sales-category/status/${status}`);
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: GET_SALES_CATEGORIES, payload: data.categories });
       } catch (error) {
@@ -96,7 +96,7 @@ export const getSalesTaxes = (status) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
-         const { data } = await axios.get(`/settings/sales-taxes/${status}`);
+         const { data } = await axios.get(`/settings/sales-tax/status/${status}`);
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: GET_SALES_TAXES, payload: data.taxes });
 

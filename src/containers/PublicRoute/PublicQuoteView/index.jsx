@@ -23,7 +23,7 @@ import NavCrumpLeft from '../../../components/NavCrump/NavCrumpLeft';
 import NavCrumpRight from '../../../components/NavCrump/NavCrumpRight';
 import PublicQuoteItemList from '../components/PublicQuoteItemList';
 import PublicQuoteDiscussionList from '../components/PublicQuoteDiscussionList';
-import { getPublicAppearanceWithEntoken } from '../../../actions/Appearance';
+import { getPublicAppearanceWithEntoken } from '../../../actions/AppearanceSetting';
 import PublicQuoteDisscussionWrite from '../components/PublicQuoteDisscussionWrite';
 import AcceptBox from './AcceptBox';
 import PreviewBanner from './PreviewBanner';
