@@ -9,7 +9,7 @@ class ForCustomerDetailInColumns extends Component {
       const { isDisplayFullCustomerDetail, toPeopleList } = this.props;
       const firstPerson = toPeopleList[0];
       console.log("toPeopleList ----> ", toPeopleList);
-      const { company } = firstPerson;
+      const company = firstPerson ? firstPerson.company : null;
       return (
          <div className="quote-detail-row">
             {
