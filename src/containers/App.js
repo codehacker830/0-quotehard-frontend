@@ -16,7 +16,7 @@ import AlreadyHaveAccess from './AlreadyHaveAccess';
 import InviteValidation from './InviteValidation';
 import InviteCreate from './InviteCreate';
 import InviteExisting from './InviteExisting';
-import InvitationWentWrong from './InvitationWentWrong';
+import VerificationEmailSent from './VerificationEmailSent';
 
 const RestrictedRoute = ({ component: Component, token, ...rest }) => {
    return (
@@ -51,13 +51,6 @@ class App extends Component {
          await this.props.getUser();
       }
    }
-   // async componentDidUpdate(prevProps, prevState) {
-   //    if (this.props.token && !this.props.authUser) {
-   //       console.error(" >>>>>> Get User in componentDidUpdate ")
-   //       axios.defaults.headers.common['Authorization'] = "Bearer " + this.props.token;
-   //       await this.props.getUser();
-   //    }
-   // }
    render() {
       const { match, location, token, initURL } = this.props;
       if (location.pathname === '/') {
@@ -78,9 +71,9 @@ class App extends Component {
                   <Route exact path='/sign-in' component={SignIn} />
                   <Route exact path='/sign-in/invite/create' component={InviteCreate} />
                   <Route exact path='/sign-in/invite/existing' component={InviteExisting} />
-                  <Route exact path='/sign-in/invite/i/went-wrong' component={InvitationWentWrong} />
-                  <Route exact path='/sign-in/invite/i/already-have-access/:invitationEntoken' component={AlreadyHaveAccess} />
                   <Route exact path='/sign-in/invite/i/:invitationEntoken' component={InviteValidation} />
+
+                  <Route exact path='/sign-in/an-email/verification-sent' component={VerificationEmailSent} />
 
                   <Route exact path='/new-account' component={SignUp} />
                   <Route exact path='/request-password' component={RequestPassword} />

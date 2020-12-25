@@ -9,15 +9,15 @@ export const Tr_Member = (props) => {
       const { accountCompany } = state.auth;
       return { authUser, accountCompany }
    })
-   const isOwner = member._id === state.accountCompany._id;
+   const isOwner = member._id === state.accountCompany.owner;
    const isYou = member._id === state.authUser._id;
    return (
       <React.Fragment>
-         <tr className={`${member.status === "inviting" ? "rowClick-disable" : ""}`}>
+         <tr className={`${member.status === "pending" ? "rowClick-disable" : ""}`}>
             <td>
                <img className="avatar-64 float-left mr-2" src={member.image} alt="..." />
                {
-                  member.status === "inviting" ?
+                  member.status === "pending" ?
                      <div className="u-ellipsis team-list">
                         <button className="btn btn-default btn-sm float-right"
                            onClick={() => props.onClickDeleteInvite(member._id)}>Delete invite</button>

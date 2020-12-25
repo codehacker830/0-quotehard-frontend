@@ -12,7 +12,7 @@ class SignIn extends Component {
       password: "",
 
       isInvited: false,
-      isAlreadyAccepted: false
+      isPreviouslyAccepted: false
    };
    onClickSignIn = () => {
       const { email, password, isRemember } = this.state;
@@ -23,22 +23,16 @@ class SignIn extends Component {
    };
    componentDidMount() {
       if (this.props.location.state) {
-         const { invitationEntoken } = this.props.location.state;
-         axios.post('/settings/team/validate-invitation', { invitationEntoken })
-            .then(({ data }) => {
-               console.log(" invitation link validated data =>", data);
-               const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = data;
+         const { accountInfo } = this.props.location.state;
+         console.log(" invitation link validated data =>", accountInfo);
+         const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = accountInfo;
 
-               const isAlreadyAccepted = (status === "approved")
-                  && (invitationStatus === "accepted")
-                  && (accountCompany === invitedBy);
+         const isPreviouslyAccepted = (status === "approved")
+            && (invitationStatus === "accepted")
+            && (accountCompany === invitedBy);
 
-               this.setState({ email, isInvited: true, isAlreadyAccepted });
-               if (isAlreadyAccepted) toast.success(`⭐ That invite has previously been accepted.`, { autoClose: false });
-            })
-            .catch(err => {
-               this.setState({ isInvited: false });
-            });
+         this.setState({ email, isInvited: true, isPreviouslyAccepted });
+         if (isPreviouslyAccepted) toast.success(`⭐ That invite has previously been accepted.`, { autoClose: false });
       }
    }
    componentDidUpdate(prevProps, prevState) {
@@ -50,9 +44,9 @@ class SignIn extends Component {
    render() {
       console.log(" SIGN IN STATE +++>", this.state);
       console.log(" SIGN IN PROPS +++>", this.props);
-      const { isRemember, email, password, isInvited, isAlreadyAccepted } = this.state;
+      const { isRemember, email, password, isInvited, isPreviouslyAccepted } = this.state;
       console.log("isInvited _____________", isInvited);
-      console.log("isAlreadyAccepted Account ______________", isAlreadyAccepted);
+      console.log("isPreviouslyAccepted Account ______________", isPreviouslyAccepted);
 
       return (
          <main id="main-container" >
@@ -67,7 +61,7 @@ class SignIn extends Component {
                         </Link>
                         <span className="text-dark font-w700 font-size-h2">Sign in to Quotehard</span>
                         {
-                           isInvited && !isAlreadyAccepted ?
+                           isInvited && !isPreviouslyAccepted ?
                               <p className="font-size-h4">
                                  To accept the invite, sign in below or <Link to={{
                                     pathname: '/sign-in/invite/create',

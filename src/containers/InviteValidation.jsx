@@ -1,9 +1,11 @@
 import React, { Component, useEffect, useRef, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { getUser } from '../actions/Auth';
 import axios from '../util/Api';
 import _ from 'lodash';
+import InvitationWentWrong from './InvitationWentWrong';
+import { COMPANY_DATA, USER_DATA } from '../constants/ActionTypes';
 
 function usePrevious(value) {
    const ref = useRef();
@@ -13,47 +15,56 @@ function usePrevious(value) {
    return ref.current;
 }
 
-export const InviteValidation = (props) => {
-   const [isLoading, setIsLoading] = useState(true);
+const InviteValidation = (props) => {
+   const [isLoading, setLoading] = useState(true);
+   const [isAlreadyHaveAccess, setAlreadyHaveAccess] = useState(false);
    const [accountInfo, setAccountInfo] = useState(null);
-   const prevPropsAuthUser = usePrevious(props.authUser);
+   const dispatch = useDispatch();
    const { invitationEntoken } = props.match.params;
+   // const prevPropsAuthUser = usePrevious(props.authUser);
 
    useEffect(() => {
-      if (prevPropsAuthUser !== props.authUser) {
-         console.error("prevPropsAuthUser --------------------------", prevPropsAuthUser);
-         console.error("props.authUser --------------------------", props.authUser);
+      setLoading(true);
+      axios.post('/settings/team/validate-invitation', { invitationEntoken })
+         .then(({ data }) => {
+            console.log(" account information from invitation link =>", data);
+            setAccountInfo(data.account);
+            axios.get('/account').then(() => {
+               dispatch({ type: USER_DATA, payload: data.account });
+               dispatch({ type: COMPANY_DATA, payload: data.accountCompany });
 
-         axios.post('/settings/team/validate-invitation', { invitationEntoken })
-            .then(({ data }) => {
-               console.log(" account information from invitation link =>", data);
-               setAccountInfo(data);
-               setIsLoading(false);
-            })
-            .catch(err => {
-               setIsLoading(false);
+               setAlreadyHaveAccess(true);
+               setLoading(false);
+            }).catch(err => {
+               setLoading(false);
             });
-      }
-   }, [props, isLoading, accountInfo]);
+         }).catch(err => {
+            setLoading(false);
+         });
+   }, []);
 
-   if (isLoading) return <>Loading...</>;
-   else if (!accountInfo) return <Redirect to={`/sign-in/invite/i/went-wrong`} />;
-   else if (props.authUser) return <Redirect to={`/sign-in/invite/i/already-have-access/${invitationEntoken}`} />;
+   if (isLoading) return <div>Loading...</div>;
+   else if (!accountInfo) return <InvitationWentWrong />;
+   else if (isAlreadyHaveAccess) return <Redirect to={{
+      pathname: '/sign-in/invite/existing',
+      state: { accountInfo }
+   }} />;
    else {
       const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = accountInfo;
       if (status === 'approved') return (
          <Redirect to={{
             pathname: '/sign-in',
-            state: { invitationEntoken }
+            state: { accountInfo }
          }} />
       );
       else return (
          <Redirect to={{
             pathname: '/sign-in/invite/create',
-            state: { invitationEntoken }
+            state: { accountInfo }
          }} />
       );
    }
+
 }
 const mapStateToProps = ({ auth }) => {
    const { authUser } = auth;

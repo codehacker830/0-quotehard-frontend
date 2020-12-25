@@ -25,10 +25,10 @@ export const Team = (props) => {
                 setMembers(arr);
             })
             .catch(err => {
-                // toast.error('Failed to delete invitation.');
-                // console.error("delete invitation err =>", err.response.data);
-                const { errors } = err.response.data;
-                ToastErrorNotification(errors);
+                toast.error('Failed to delete invitation.');
+                console.error("delete invitation err =>", err.response.data);
+                // const { errors } = err.response.data;
+                // ToastErrorNotification(errors);
             });
     }
     return (
@@ -45,17 +45,15 @@ export const Team = (props) => {
 
                     <table className="quotient-table mb-5">
                         <tbody className="rowClick">
-                            {
-                                members.map((member, index) => <Tr_Member member={member} key={index} onClickDeleteInvite={(id) => onClickDeleteInvite(id)} />)
-                            }
+                            {members.map((member, index) => <Tr_Member member={member} key={index} onClickDeleteInvite={(id) => onClickDeleteInvite(id)} />)}
                         </tbody>
                     </table>
 
                     <div className="text-black mb-5">
                         Your plan will be automatically upgraded or downgraded, when adding or removing Team Members. <br />
-                  Your current plan allows for <strong>1</strong> Team Member.
-                  See <Link to="/app/settings/billing-overview">Billing Overview</Link> for more details.
-               </div>
+                        Your current plan allows for <strong>1</strong> Team Member.
+                        See <Link to="/app/settings/billing-overview">Billing Overview</Link> for more details.
+                    </div>
 
                     <div className="mb-5">
                         <Link className="text-primary font-w600" to={SETTINGS_PATH}>← Return to Settings</Link>

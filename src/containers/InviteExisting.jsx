@@ -5,15 +5,16 @@ import { userSignOut } from '../actions/Auth';
 
 class InviteExisting extends Component {
    onHandleClick = () => {
-      const { invitationEntoken } = this.props.match.params;
+      const { accountInfo } = this.props.location.state;
       this.props.userSignOut();
       this.props.history.push({
          pathname: '/sign-in',
-         state: { invitationEntoken }
+         state: { accountInfo }
       });
    }
    render() {
-      const { authUser } = this.props.auth;
+      const { authUser, accountCompany } = this.props.auth;
+      const { accountInfo } = this.props.location.state;
       if (authUser) return (
          <main id="main-container">
             <div className="row no-gutters">
@@ -24,16 +25,17 @@ class InviteExisting extends Component {
                         <div className="col-sm-8 col-xl-6">
                            <h1 className="font-w700">Accept Invite</h1>
                            <div className="form-group mb-6">
+                              <p>You have been invited to create and send quotes for {`CodeCompany`}.</p>
                               <button className="btn btn-default btn-lg" onClick={() => this.onHandleClick()}>
                                  Let's Get Started...
                               </button>
                            </div>
                            <hr />
                            <h4>
-                              You are currently signed in as <strong>... email ...</strong> - <Link to="#">sign out and create a new sign in...</Link>
+                              You are currently signed in as <strong>{authUser.email}</strong> - <button className="buttonLink" onClick={() => this.onHandleClick()}>sign out and create a new sign in...</button>
                            </h4>
                            <h4>
-                              <Link to="#">Don't accept invite and return to Quotehard website.</Link>
+                              <Link to="/app">Don't accept invite and return to Quotehard website.</Link>
                            </h4>
                         </div>
                      </div>

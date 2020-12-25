@@ -12,28 +12,23 @@ export const InviteCreate = (props) => {
 
    useEffect(() => {
       const { state } = props.location;
+      console.log("Invite Craete State =>", state);
       if (state) {
-         const invitationEntoken = state;
-         axios.post('/settings/team/validate-invitation', { invitationEntoken })
-            .then(({ data }) => {
-               console.log(" invitation link validated data =>", data);
-               const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = data;
-               setFirstName(firstName);
-               setLastName(lastName);
-               setEmail(email);
+         const { accountInfo } = state;
+         console.log("accountInfo =>", accountInfo);
+         const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = accountInfo;
+         setFirstName(firstName);
+         setLastName(lastName);
+         setEmail(email);
 
-               const isAlreadyAccepted = (status === "approved")
-                  && (invitationStatus === "accepted")
-                  && (accountCompany === invitedBy);
+         const isAlreadyAccepted = (status === "approved")
+            && (invitationStatus === "accepted")
+            && (accountCompany === invitedBy);
 
-               if (isAlreadyAccepted) props.history.push({
-                  pathname: '/sign-in',
-                  state: { invitationEntoken }
-               });
-            })
-            .catch(err => {
-               props.history.push(`/sign-in/invite/i/went-wrong`)
-            });
+         if (isAlreadyAccepted) props.history.push({
+            pathname: '/sign-in',
+            state: { invitationEntoken }
+         });
       } else {
          props.history.push('/sign-in');
       }

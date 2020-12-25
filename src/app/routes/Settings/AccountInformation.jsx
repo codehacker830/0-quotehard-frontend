@@ -31,7 +31,7 @@ export const AccountInformation = (props) => {
       const { accountCompany } = props;
       setAccountCompany(accountCompany);
    }, [props]);
-   console.log("Account information ===>", props);
+   console.log("Account information props ===>", props);
    return (
       <React.Fragment>
          <NavCrump linkTo={`/app/settings`}>
@@ -68,7 +68,7 @@ export const AccountInformation = (props) => {
                   >
                      {
                         props.teamMembers.map((member, index) => {
-                           return <option value={member._id} key={index}>A Devom</option>
+                           return <option value={member._id} key={index}>{member.firstName + " " + member.lastName}</option>
                         })
                      }
                   </select>
@@ -78,7 +78,6 @@ export const AccountInformation = (props) => {
                </div>
 
                <h3 className="mb-4">Account Defaults</h3>
-
                <div className="mb-4">
                   <label htmlFor="countryCode">Country</label>
                   <select className="form-control rounded-0 maxWidth-550" id="countryCode" name="countryCode"
