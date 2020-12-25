@@ -42,10 +42,7 @@ export default (state = initialSettings, action) => {
       case GET_QUOTE:
          return {
             ...state,
-            quote: {
-               ...action.payload,
-               settings: { ...state.quote.settings, ...action.payload.settings }
-            }
+            quote: action.payload
          };
       case UPDATE_QUOTE_STATUS:
          return {

@@ -134,7 +134,6 @@ class GetQuote extends Component {
 
    }
 
-
    onClickSaveNext = () => {
       const { toPeopleList } = this.props.quote;
       if (toPeopleList.length === 0) { toast.info("You must add at least one contact."); return; }
@@ -158,7 +157,6 @@ class GetQuote extends Component {
             toPeopleList: toPeopleIdList,
             title,
             settings,
-            // settings: { ...settings, userFrom: settings.userFrom ? settings.userFrom : this.props.authUser._id },
             items,
             notes
          };
@@ -176,7 +174,6 @@ class GetQuote extends Component {
             });
 
       } else if (this.props.match.path = QUOTE_BY_ID_PATH) {
-
          const quoteId = this.props.match.params.id;
          if (!quoteId) { toast.error("Not found quote id."); return; }
 
@@ -190,7 +187,6 @@ class GetQuote extends Component {
             toPeopleList: toPeopleIdList,
             title,
             settings,
-            // settings: { ...settings, userFrom: settings.userFrom ? settings.userFrom : this.props.authUser._id },
             items,
             notes
          };
@@ -230,7 +226,6 @@ class GetQuote extends Component {
             toPeopleList: toPeopleIdList,
             title,
             settings,
-            // settings: { ...settings, userFrom: settings.userFrom ? settings.userFrom : this.props.authUser._id },
             items,
             notes
          };

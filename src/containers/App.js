@@ -45,17 +45,30 @@ class App extends Component {
       }
    }
 
-   componentWillReceiveProps(nextProps) {
-      console.error(">>>>>> APP nextProps ---->", nextProps);
-      if (nextProps.token) {
+   // componentWillReceiveProps(nextProps) {
+   //    console.error(">>>>>> APP nextProps ---->", nextProps);
+   //    if (nextProps.token) {
+   //       console.error(">>>>>> Axios header token set ---->")
+   //       axios.defaults.headers.common['Authorization'] = "Bearer " + nextProps.token;
+   //    }
+   //    if (nextProps.token && !nextProps.authUser) {
+   //       console.error(">>>>>> Get ME from Token ---->")
+   //       this.props.getUser();
+   //    }
+   // }
+   componentDidMount() {
+      if (this.props.token) {
          console.error(">>>>>> Axios header token set ---->")
-         axios.defaults.headers.common['Authorization'] = "Bearer " + nextProps.token;
-      }
-      if (nextProps.token && !nextProps.authUser) {
-         console.error(">>>>>> Get ME from Token ---->")
+         axios.defaults.headers.common['Authorization'] = "Bearer " + this.props.token;
          this.props.getUser();
       }
    }
+   // componentDidUpdate(prevProps, prevState) {
+   //    if (this.props.token && !this.props.authUser) {
+   //       console.error(">>>>>> Get ME from Token ---->")
+   //       this.props.getUser();
+   //    }
+   // }
    render() {
       const { match, location, token, initURL } = this.props;
       if (location.pathname === '/') {
