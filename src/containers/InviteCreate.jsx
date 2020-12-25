@@ -27,7 +27,7 @@ export const InviteCreate = (props) => {
 
          if (isAlreadyAccepted) props.history.push({
             pathname: '/sign-in',
-            state: { invitationEntoken }
+            state: { accountInfo }
          });
       } else {
          props.history.push('/sign-in');
