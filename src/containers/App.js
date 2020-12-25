@@ -56,11 +56,18 @@ class App extends Component {
    //       this.props.getUser();
    //    }
    // }
-   componentDidMount() {
+   async componentDidMount() {
       if (this.props.token) {
-         console.error(">>>>>> Axios header token set ---->")
+         console.error(" >>>>>> Get User in componentDidMount ")
          axios.defaults.headers.common['Authorization'] = "Bearer " + this.props.token;
-         this.props.getUser();
+         await this.props.getUser();
+      }
+   }
+   async componentDidUpdate(prevProps, prevState) {
+      if (prevProps.token !== this.props.token) {
+         console.error(" >>>>>> Get User in componentDidUpdate ")
+         axios.defaults.headers.common['Authorization'] = "Bearer " + this.props.token;
+         await this.props.getUser();
       }
    }
    // componentDidUpdate(prevProps, prevState) {

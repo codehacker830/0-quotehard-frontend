@@ -29,14 +29,9 @@ export const getUser = () => {
       try {
          const { data } = await axios.get('/account');
          console.log("get User res: ", data);
-         if (data.account) {
-            dispatch({ type: FETCH_SUCCESS });
-            dispatch({ type: USER_DATA, payload: data.account });
-            dispatch({ type: COMPANY_DATA, payload: data.accountCompany });
-         } else {
-            dispatch({ type: FETCH_ERROR, payload: data.error });
-            dispatch({ type: SIGNOUT_USER_SUCCESS });
-         }
+         dispatch({ type: FETCH_SUCCESS });
+         dispatch({ type: USER_DATA, payload: data.account });
+         dispatch({ type: COMPANY_DATA, payload: data.accountCompany });
       } catch (err) {
          localStorage.clear();
          dispatch({ type: SIGNOUT_USER_SUCCESS });
@@ -51,16 +46,11 @@ export const userSignIn = ({ email, password, isRemember }) => {
       dispatch({ type: FETCH_START });
       axios.post('/account/login', { email, password, isRemember }
       ).then(({ data }) => {
-         if (data.account) {
-            localStorage.setItem("token", JSON.stringify(data.access_token));
-            axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
-            dispatch({ type: FETCH_SUCCESS });
-            dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
-            dispatch({ type: USER_DATA, payload: data.account });
-         } else {
-            console.log(" User Sign In error ========> ", data);
-            dispatch({ type: FETCH_ERROR, payload: data.error });
-         }
+         localStorage.setItem("token", JSON.stringify(data.access_token));
+         axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
+         dispatch({ type: FETCH_SUCCESS });
+         dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
+         dispatch({ type: USER_DATA, payload: data.account });
       }).catch((err) => {
          // if(error.response.status === 422) dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
          // toast.error('Email or password is invalid.');
