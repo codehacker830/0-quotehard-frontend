@@ -13,7 +13,7 @@ function UserFrom() {
         <div className="pb-2">
             <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">FROM</label>
             <select className="custom-select rounded-0"
-                value={userFrom ? userFrom : authUser._id}
+                value={userFrom ? userFrom : authUser ? authUser._id : null}
                 onChange={(ev) => dispatch(updateQuoteSettings({ ...settings, userFrom: ev.target.value }))}>
                 {
                     teamMembers.map((mate, index) => {
