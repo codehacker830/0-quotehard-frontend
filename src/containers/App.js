@@ -44,18 +44,6 @@ class App extends Component {
          this.props.setInitUrl(this.props.history.location.pathname);
       }
    }
-
-   // componentWillReceiveProps(nextProps) {
-   //    console.error(">>>>>> APP nextProps ---->", nextProps);
-   //    if (nextProps.token) {
-   //       console.error(">>>>>> Axios header token set ---->")
-   //       axios.defaults.headers.common['Authorization'] = "Bearer " + nextProps.token;
-   //    }
-   //    if (nextProps.token && !nextProps.authUser) {
-   //       console.error(">>>>>> Get ME from Token ---->")
-   //       this.props.getUser();
-   //    }
-   // }
    async componentDidMount() {
       if (this.props.token) {
          console.error(" >>>>>> Get User in componentDidMount ")
@@ -70,12 +58,6 @@ class App extends Component {
          await this.props.getUser();
       }
    }
-   // componentDidUpdate(prevProps, prevState) {
-   //    if (this.props.token && !this.props.authUser) {
-   //       console.error(">>>>>> Get ME from Token ---->")
-   //       this.props.getUser();
-   //    }
-   // }
    render() {
       const { match, location, token, initURL } = this.props;
       if (location.pathname === '/') {

@@ -47,7 +47,7 @@ export const userSignIn = ({ email, password, isRemember }) => {
       axios.post('/account/login', { email, password, isRemember }
       ).then(({ data }) => {
          localStorage.setItem("token", JSON.stringify(data.access_token));
-         axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
+         axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
          dispatch({ type: USER_DATA, payload: data.account });
