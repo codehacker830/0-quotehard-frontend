@@ -40,8 +40,24 @@ export const getQuoteDataById = (quoteId) => {
       try {
          const { data } = await axios.get(`/quotes/id/${quoteId}`);
          console.log(" Quote get by id response  =>", data);
+         const { items, notes } = data.quote;
+         const payload = {
+            ...data.quote,
+            items: items.length ? items : [
+               {
+                  category: "priceItem",
+                  priceItem: { ...initPriceItem },
+               },
+            ],
+            notes: notes.length ? notes : [
+               {
+                  category: "textItem",
+                  textItem: { ...initTextItem }
+               }
+            ]
+         }
          dispatch({ type: FETCH_SUCCESS });
-         dispatch({ type: GET_QUOTE, payload: data.quote });
+         dispatch({ type: GET_QUOTE, payload: payload });
       } catch (err) {
          dispatch({ type: FETCH_ERROR, payload: err.message });
          console.log("Error****:", err.message);

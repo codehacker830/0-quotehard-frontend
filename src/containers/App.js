@@ -51,13 +51,13 @@ class App extends Component {
          await this.props.getUser();
       }
    }
-   async componentDidUpdate(prevProps, prevState) {
-      if (prevProps.token !== this.props.token) {
-         console.error(" >>>>>> Get User in componentDidUpdate ")
-         axios.defaults.headers.common['Authorization'] = "Bearer " + this.props.token;
-         await this.props.getUser();
-      }
-   }
+   // async componentDidUpdate(prevProps, prevState) {
+   //    if (this.props.token && !this.props.authUser) {
+   //       console.error(" >>>>>> Get User in componentDidUpdate ")
+   //       axios.defaults.headers.common['Authorization'] = "Bearer " + this.props.token;
+   //       await this.props.getUser();
+   //    }
+   // }
    render() {
       const { match, location, token, initURL } = this.props;
       if (location.pathname === '/') {

@@ -83,8 +83,7 @@ class PriceItemForm extends Component {
    componentDidUpdate(prevProps, prevState) {
       this.fileArray = this.props.priceItem.files;
       const { defaultSalesCategory, defaultSalesTax } = this.props;
-
-      if (prevProps.priceItem.salesCategory !== this.props.defaultSalesCategory) {
+      if (!this.props.priceItem.salesCategory && this.props.defaultSalesCategory) {
          const newItem = {
             category: "priceItem",
             priceItem: {
@@ -94,7 +93,7 @@ class PriceItemForm extends Component {
          };
          this.updateItem(this.props.index, newItem);
       }
-      if (prevProps.priceItem.salesTax !== this.props.defaultSalesTax) {
+      if (!this.props.priceItem.salesTax && this.props.defaultSalesTax) {
          const newItem = {
             category: "priceItem",
             priceItem: {
@@ -104,6 +103,7 @@ class PriceItemForm extends Component {
          };
          this.updateItem(this.props.index, newItem);
       }
+
       if (prevProps.quoteDefaultSetting.defaultMargin !== this.props.quoteDefaultSetting.defaultMargin) {
          if (!this.props.costPrice) {
             const newItem = {

@@ -12,7 +12,6 @@ import {
    USER_TOKEN_SET,
 
 } from "../constants/ActionTypes";
-import { history } from "../store";
 import { ToastErrorNotification } from "../util";
 import axios from '../util/Api'
 
@@ -28,7 +27,7 @@ export const getUser = () => {
       dispatch({ type: FETCH_START });
       try {
          const { data } = await axios.get('/account');
-         console.log("get User res: ", data);
+         console.log("get User res => : ", data);
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: USER_DATA, payload: data.account });
          dispatch({ type: COMPANY_DATA, payload: data.accountCompany });
@@ -74,7 +73,7 @@ export const userSignUp = ({ firstName, lastName, email, password, companyName, 
          location
       }).then(({ data }) => {
          localStorage.setItem("token", JSON.stringify(data.access_token));
-         axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
+         axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
          dispatch({ type: USER_DATA, payload: data.account });
@@ -95,7 +94,7 @@ export const userSignUpByInvitation = ({ _id, accountCompany, firstName, lastNam
       ).then(({ data }) => {
          if (data.account) {
             localStorage.setItem("token", JSON.stringify(data.access_token));
-            axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
+            axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
             dispatch({ type: USER_DATA, payload: data.account });
@@ -170,7 +169,7 @@ export const userResetPassword = ({ entoken, password }, ownProps) => {
       ).then(({ data }) => {
          if (data.isValid) {
             localStorage.setItem("token", JSON.stringify(data.access_token));
-            axios.defaults.headers.common['access-token'] = "Bearer " + data.access_token;
+            axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
             dispatch({ type: USER_DATA, payload: data.account });

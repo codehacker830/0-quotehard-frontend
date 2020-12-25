@@ -95,11 +95,6 @@ class GetQuote extends Component {
          await this.props.getContentTemplateById(templateId);
       }
 
-      // QUOTE_GET_PATH
-      // QUOTE_GET_DUPLICATE_PATH
-      // QUOTE_GET_FROM_TEMPLATE_PATH
-      // QUOTE_BY_ID_PATH
-
       const {
          expirationQuoteAfter,
          nextQuoteNumber,
@@ -201,8 +196,6 @@ class GetQuote extends Component {
                this.setState({ loading: false, type: null });
                toast.error("Quote failed to save.");
             });
-      } else {
-         toast.warn("Failed before request.");
       }
    };
    onClickSave = () => {
@@ -236,8 +229,7 @@ class GetQuote extends Component {
                console.log("!!!!!!!!!!!!! =>", data);
                toast.success("Quote saved.");
                this.setState({ loading: false, type: null });
-               // this.props.updateQuote(data.quote);
-               this.props.history.push(`/app/quote/${data.quote._id}`)
+               this.props.history.push(`/app/quote/${data.quote._id}`);
             })
             .catch(err => {
                console.error(" error ===>", err);
