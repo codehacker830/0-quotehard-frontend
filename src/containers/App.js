@@ -12,7 +12,6 @@ import RequestPasswordSent from './RequestPasswordSent';
 import Error404 from '../components/Error404';
 import RequestPasswordExpired from './RequestPasswordExpired';
 import ChangePassword from './ChangePassword';
-import AlreadyHaveAccess from './AlreadyHaveAccess';
 import InviteValidation from './InviteValidation';
 import InviteCreate from './InviteCreate';
 import InviteExisting from './InviteExisting';

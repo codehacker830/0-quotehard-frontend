@@ -69,7 +69,7 @@ class ContactsPanel extends Component {
                   <div className="col-md-6">
                      <div className="form-group px-1">
                         <div className="input-group">
-                           <input type="email" className="form-control mr-1" placeholder="Search by Quote Title, Number or Contact..."
+                           <input type="email" className="form-control mr-1" placeholder="Search by Company, Person or Email..."
                               value={this.state.search}
                               onChange={(ev) => this.setState({ search: ev.target.value })}
                            />

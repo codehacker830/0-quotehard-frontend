@@ -170,15 +170,14 @@ class GetQuote extends Component {
 
       } else if (this.props.match.path = QUOTE_BY_ID_PATH) {
          const quoteId = this.props.match.params.id;
-         if (!quoteId) { toast.error("Not found quote id."); return; }
-
          const { toPeopleList, title, settings, items, notes } = this.props.quote;
          const toPeopleIdList = [];
          for (let i = 0; i < toPeopleList.length; i++) {
             toPeopleIdList.push(toPeopleList[i]._id);
          }
+         console.log(" __ SaveNext  toPeopleList __ ", toPeopleList)
+         console.log(" __ SaveNext  toPeopleIdList __ ", toPeopleIdList)
          const payload = {
-            status: "draft",
             toPeopleList: toPeopleIdList,
             title,
             settings,
@@ -247,11 +246,9 @@ class GetQuote extends Component {
             toPeopleIdList.push(toPeopleList[i]._id);
          }
          const payload = {
-            status: "draft",
             toPeopleList: toPeopleIdList,
             title,
             settings,
-            // settings: { ...settings, userFrom: settings.userFrom ? settings.userFrom : this.props.authUser._id },
             items,
             notes
          };

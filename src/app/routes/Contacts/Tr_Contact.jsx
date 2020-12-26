@@ -28,17 +28,17 @@ class Tr_Contact extends Component {
                {
                   contact.category === "person" ?
                      <div className="d-flex">
-                        <img className="avatar-36 mr-2 my-auto" src="/assets/media/avatars/person1.png" alt="person avatar" />
+                        <img className="avatar-36 mr-2 my-auto" src="/assets/media/avatars/person1.png" alt="person_avatar" />
                         <div className="u-ellipsis">
-                           <span>{contact.firstName} {contact.lastName}</span>&nbsp;
+                           <span>{contact.firstName + " " + contact.lastName}</span>&nbsp;
                            {isLoser && <span className="label label-success">Loser</span>}
                            <br />
-                           <small className="text-gray font-size-sm">{contact.company && contact.company.companyName}</small>
+                           <small className="text-gray font-size-sm">{contact.companyName}</small>
                         </div>
                      </div>
                      :
                      <div className="d-flex">
-                        <img className="avatar-36 mr-2 my-auto" src="/assets/media/avatars/company1.png" alt="company avatar" />
+                        <img className="avatar-36 mr-2 my-auto" src="/assets/media/avatars/company1.png" alt="company_avatar" />
                         <div className="u-ellipsis">
                            <span>{contact.companyName}</span>&nbsp;
                            {isLoser && <span className="label label-success">Loser</span>}

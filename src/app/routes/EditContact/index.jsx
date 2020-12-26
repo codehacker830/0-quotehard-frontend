@@ -110,7 +110,7 @@ export default class EditContact extends Component {
    }
 
    render() {
-      console.log("this.state =", this.state)
+      console.log("this.state =", this.state);
       return (
          <React.Fragment>
             <NavCrump linkTo="/app/c/contacts">

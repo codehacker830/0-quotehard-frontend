@@ -10,7 +10,7 @@ const CompleterContact = (props) => {
    const toPeopleList = useSelector(state => state.mainData.quote.toPeopleList)
    useEffect(() => {
       if (emailTo !== "") {
-         axios.post("/contacts/person/email", { email: emailTo })
+         axios.get(`/contacts/person/search/${emailTo}`)
             .then(({ data }) => {
                setList(data.contacts);
             })
@@ -33,10 +33,9 @@ const CompleterContact = (props) => {
    };
 
    return (
-      <>
+      <React.Fragment>
          <input
             type="text"
-            id="emailTo"
             className="form-control rounded-0"
             autoComplete="off"
             value={emailTo}
@@ -46,23 +45,37 @@ const CompleterContact = (props) => {
             emailTo === "" ? null :
                <ul className="completer-ui completer-new-contact" style={{ left: 0, top: 38 }}>
                   <li className="text-info" onClick={() => props.history.push("/app/c/contacts/create/person")}>
-                     <i className="fa fa-plus" /> Create New Contact…
+                     <i className="fa fa-plus mr-1" />Create New Contact…
                   </li>
                   {
                      list.map((contact, index) => {
+                        const {
+                           _id,
+                           firstName,
+                           lastName,
+                           companyName,
+                           email
+                        } = contact;
                         return (
                            <li key={index} className="border-top" onClick={() => addContact(contact)}>
                               <div className="u-ellipsis">
-                                 {contact.firstName} {contact.lastName} <small><em>-</em> <strong> {contact.company}</strong></small>
+                                 {firstName + " " + lastName}
+                                 {
+                                    companyName ?
+                                       <small><em> - </em><strong>{companyName}</strong></small>
+                                       : null
+                                 }
                               </div>
-                              <div className="u-ellipsis"> <small><strong> {contact.email}</strong></small></div>
+                              <div className="u-ellipsis">
+                                 <small><strong>{email}</strong></small>
+                              </div>
                            </li>
                         );
                      })
                   }
                </ul>
          }
-      </>
+      </React.Fragment>
    )
 }
 

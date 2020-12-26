@@ -24,7 +24,7 @@ export default class Contacts extends Component {
    }
 
    filterContacts = (contacts) => {
-      return contacts.filter((contact) => {
+      return contacts.filter(contact => {
          if (this.category === "person" || this.category === "company") return (contact.category === this.category && contact.status === this.status);
          else return contact.status === this.status;
       })
@@ -37,15 +37,18 @@ export default class Contacts extends Component {
                contacts: this.filterContacts(data.contacts)
             });
          });
-      }
-      else {
-         axios.get('/contacts').then(({ data }) => {
-            console.log("GET ALL CONTACTS RES ===>" , data.contacts)
-            this.setState({
-               isLoading: false,
-               contacts: this.filterContacts(data.contacts)
-            });
-         });
+      } else {
+         axios.get('/contacts')
+            .then(({ data }) => {
+               console.log(" GET ALL CONTACTS RES ===> ", data.contacts)
+               this.setState({
+                  isLoading: false,
+                  contacts: this.filterContacts(data.contacts)
+               });
+            })
+            .catch(err => {
+               console.error("error during get all contacts")
+            })
       }
    }
    render() {

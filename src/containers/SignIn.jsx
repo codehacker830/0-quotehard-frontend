@@ -22,7 +22,7 @@ class SignIn extends Component {
       else this.props.userSignIn({ email, password, isRemember });
    };
    componentDidMount() {
-      if (this.props.location.state) {
+      if (this.props.location.state && this.props.location.state.accountInfo) {
          const { accountInfo } = this.props.location.state;
          console.log(" invitation link validated data =>", accountInfo);
          const { _id, firstName, lastName, email, status, invitationStatus, accountCompany, invitedBy } = accountInfo;

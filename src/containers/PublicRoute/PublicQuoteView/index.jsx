@@ -31,8 +31,6 @@ import axios from '../../../util/Api';
 import { toast } from 'react-toastify';
 
 class PublicQuoteView extends Component {
-   mounted = false;
-
    constructor(props) {
       super(props);
       this.state = {
@@ -136,18 +134,15 @@ class PublicQuoteView extends Component {
       this.props.history.push(`/app/content/template/get/copy-to-template/${quoteId}`)
    }
    async componentDidMount() {
-      this.mounted = true;
       const entoken = this.props.match.params.entoken;
       localStorage.setItem('entoken', entoken);
       const { auth } = this.props;
-      if (this.mounted) {
-         await this.props.getPublicQuoteWithEntoken();
-         await this.props.getPublicAppearanceWithEntoken();
-         await this.props.getPublicViewPersonWithEntoken();
-         this.setState({ isMounting: false });
-         if (auth.authUser) {
-            this.props.getTeamMembers();
-         }
+      await this.props.getPublicQuoteWithEntoken();
+      await this.props.getPublicAppearanceWithEntoken();
+      await this.props.getPublicViewPersonWithEntoken();
+      this.setState({ isMounting: false });
+      if (auth.authUser) {
+         this.props.getTeamMembers();
       }
    }
    render() {

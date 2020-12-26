@@ -17,12 +17,12 @@ import { CONTACTS_PATH } from '../../../constants/PathNames';
 import NavCrumpLeft from '../../../components/NavCrump/NavCrumpLeft';
 import NavCrumpRight from '../../../components/NavCrump/NavCrumpRight';
 import ConfirmContactMergeBanner from './ConfirmContactMergeBanner';
+import RecentActivities from './RecentActivities';
 
 export default class ViewContact extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         showActivity: false,
          contact: {}
       };
    }
@@ -166,33 +166,7 @@ export default class ViewContact extends Component {
                      </div>
 
                      {/* Recent Activity */}
-                     <div className="row no-gutters mb-1">
-                        <div className="w-100 font-size-sm mb-1">
-                           <i className="far fa-xs fa-clock mr-1"></i>
-                           Recent Activity
-                        <button className={`btn btn-rounded btn-outline-info fa-xs px-2 py-0 ml-2 ${this.state.showActivity ? "" : "d-none"}`} onClick={() => this.setState({ showActivity: false })}>Hide</button>
-                        </div>
-                        <div className={`w-100 mb-1 ${this.state.showActivity ? "d-none" : ""}`}>
-                           <span className="w-100 text-gray font-size-sm mb-1">Edited by A Devom  –  September 21, 2020 at 11:26AM</span>
-                           <button className="btn btn-rounded btn-outline-info fa-xs px-2 py-0 ml-2" onClick={() => this.setState({ showActivity: true })}>All Activity</button>
-                        </div>
-                        <div className={`w-100 mt-2 ${this.state.showActivity ? "" : "d-none"}`}>
-                           <table className="table table-sm table-vcenter">
-                              <tbody>
-                                 {
-                                    recentActivities.map((item, index) => {
-                                       return (
-                                          <tr key={index}>
-                                             <td className="bg-light-gray font-size-sm p-2" style={{ width: "30%" }}>{item.date}</td>
-                                             <td className="font-size-sm p-2">{item.content}</td>
-                                          </tr>
-                                       );
-                                    })
-                                 }
-                              </tbody>
-                           </table>
-                        </div>
-                     </div>
+                     <RecentActivities contact={contact} />
                   </div>
                </div>
             </div>
