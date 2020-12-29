@@ -147,6 +147,8 @@ class GetQuote extends Component {
          for (let i = 0; i < toPeopleList.length; i++) {
             toPeopleIdList.push(toPeopleList[i]._id);
          }
+         console.log(" __ Save  toPeopleList __ ", toPeopleList)
+         console.log(" __ Save  toPeopleIdList __ ", toPeopleIdList)
          const payload = {
             status: "draft",
             toPeopleList: toPeopleIdList,

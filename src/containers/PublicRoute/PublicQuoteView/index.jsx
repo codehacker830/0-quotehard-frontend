@@ -448,7 +448,6 @@ class PublicQuoteView extends Component {
                   <PublicVisiableOnlyAuthTeamMember>
                      <StatusShowCase />
                   </PublicVisiableOnlyAuthTeamMember>
-
                   <PreviewBanner />
 
                   <div className={`${SwitchQuoteLayoutClass(appearanceSetting.contactDetailLayout, appearanceSetting.layout)}`}>
