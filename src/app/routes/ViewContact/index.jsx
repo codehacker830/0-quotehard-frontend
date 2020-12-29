@@ -76,7 +76,7 @@ export default class ViewContact extends Component {
                   <NavCrumpRight>
                      <ul className="choices" style={{ left: 50, top: 10 }}>
                         {
-                           this.state.contact.status === "current" &&
+                           this.state.contact.status === "current" ?
                            <li>
                               <button className="btn-in-action" onClick={this.onClickArchive}>
                                  <div className="icon-wrapper">
@@ -87,19 +87,16 @@ export default class ViewContact extends Component {
                                  </div>
                               </button>
                            </li>
-                        }
-                        {
-                           this.state.contact.status === "archived" &&
-                           <li>
-                              <button className="btn-in-action" onClick={this.onClickUnArchive}>
-                                 <div className="icon-wrapper">
-                                    <i className="fa fa-fw fa-archive text-secondary" />
-                                 </div>
-                                 <div className="media-body font-size-sm pr-2">
-                                    <span>Archive</span><span className="choices-undo"> ← undo</span>
-                                 </div>
-                              </button>
-                           </li>
+                           : <li>
+                           <button className="btn-in-action" onClick={this.onClickUnArchive}>
+                              <div className="icon-wrapper">
+                                 <i className="fa fa-fw fa-archive text-secondary" />
+                              </div>
+                              <div className="media-body font-size-sm pr-2">
+                                 <span>Archive</span><span className="choices-undo"> ← undo</span>
+                              </div>
+                           </button>
+                        </li>
                         }
                         <li>
                            <button className="btn-in-action" onClick={this.onClickDeleteAndMerge}>
