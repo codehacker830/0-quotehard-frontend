@@ -49,7 +49,7 @@ export default class TemplateItems extends Component {
                      <div className="col-md-6">
                         <div className="form-group px-1">
                            <div className="input-group">
-                              <input type="email" className="form-control" placeholder="Search by Quote Title, Number or Contact..." />
+                              <input type="email" className="form-control" placeholder="Search by Title or Item Description" />
                               <div className="input-group-append">
                                  <button type="button" className="btn btn-alt-dark">Search</button>
                               </div>

@@ -24,7 +24,7 @@ import {
 import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
 import { getQuoteDataById, getContentTemplateById, updateQuote, updateQuoteToPeopleList, updateQuoteSettings } from "../../../actions/Data";
 import QuoteSettings from "../../../components/QuoteSettings";
-import QuoteTitle from "./components/QuoteTitle";
+import TitleSection from "./components/TitleSection";
 import AddPriceItemBtn from "../../../components/AddPriceItemBtn";
 import QuoteToPeopleList from "./components/QuoteToPeopleList";
 import NotesSection from "./components/NotesSection";
@@ -355,7 +355,7 @@ class GetQuote extends Component {
                   </div>
 
                   {/* Template Title */}
-                  <QuoteTitle isValidWarning={this.state.isValidWarning} updateValidWarning={() => this.setState({ isValidWarning: false })} />
+                  <TitleSection isValidWarning={this.state.isValidWarning} updateValidWarning={() => this.setState({ isValidWarning: false })} />
 
                   {/* Items */}
                   <ItemsSection />

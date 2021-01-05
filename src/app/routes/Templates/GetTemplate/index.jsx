@@ -19,7 +19,7 @@ import {
 } from '../../../../constants/PathNames';
 import NotesSection from '../../GetQuote/components/NotesSection';
 import ItemsSection from '../../GetQuote/components/ItemsSection';
-import { QuoteTitle } from '../../GetQuote/components/QuoteTitle';
+import { TitleSection } from '../../GetQuote/components/TitleSection';
 import NavCrumpLeft from '../../../../components/NavCrump/NavCrumpLeft';
 import NavCrumpRight from '../../../../components/NavCrump/NavCrumpRight';
 
@@ -349,7 +349,7 @@ class GetTemplate extends Component {
                   <TemplateSettings isDefault={this.state.isDefault} />
 
                   {/* Template Title */}
-                  <QuoteTitle isValidWarning={this.state.isValidWarning} updateValidWarning={() => this.setState({ isValidWarning: false })} />
+                  <TitleSection isValidWarning={this.state.isValidWarning} updateValidWarning={() => this.setState({ isValidWarning: false })} />
 
                   {/* Items */}
                   <ItemsSection />

@@ -1,3 +1,4 @@
+import dateFormat from 'dateformat';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -41,6 +42,8 @@ class SignUp extends Component {
       if (nextProps.authUser) this.props.history.push('/app');
    }
    render() {
+      const now = Date.now();
+      const expireAt = new Date(now + 30 * 24 * 3600 * 1000);
       console.log(" Sing Up state = ", this.state);
       const {
          firstName,
@@ -65,7 +68,7 @@ class SignUp extends Component {
                         <div className="text-dark font-w700 font-size-h2 mb-2">Great decision, let’s get you started!</div>
                         <div className="d-flex justify-content-center m-auto" style={{ maxWidth: 650 }}>
                            <span className="font-size-h5">
-                              Your free trial starts today and expires October 11, 2020.
+                              Your free trial starts today and expires {dateFormat(expireAt, "mmmm dS, yyyy")}.
                               Already have an account?
                            <Link to="/sign-in" className="px-2">Sign in here.</Link>
                            </span>
@@ -91,7 +94,7 @@ class SignUp extends Component {
                               </div>
 
                               <div className="form-group">
-                                 <label className="font-w700 font-size-h4">Company InfoInColumns</label>
+                                 <label className="font-w700 font-size-h4">Company Info</label>
                                  <input type="text" className="form-control" placeholder="Name of Company or Organisation" value={companyName} onChange={(ev) => this.setState({ companyName: ev.target.value })} />
                               </div>
                               <div className="form-group">
@@ -387,7 +390,8 @@ class SignUp extends Component {
                               </button>
                               <p className="mt-4 mb-0 d-lg-flex justify-content-center">
                                  By creating an account, you agree to Quotehard’s
-                                 <a href="https://www.quotientapp.com/terms" className="px-1">Terms of Service.</a>
+                                 {/* <a href="https://www.quotientapp.com/terms" className="px-1">Terms of Service.</a> */}
+                                 <a href="#" className="px-1">Terms of Service.</a>
                               </p>
                            </div>
                         </div>

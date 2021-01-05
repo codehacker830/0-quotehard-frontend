@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import InlineHelp from '../../../components/InlineHelp';
 import TotalLabelFor from '../../../components/TotalLabelFor';
 import { QUOTE_GET_PATH } from '../../../constants/PathNames';
 import axios from '../../../util/Api';
 import Tr_Quotient from './Tr_Quotient';
 
-export default class Quotes extends Component {
+class Quotes extends Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -43,6 +44,8 @@ export default class Quotes extends Component {
    render() {
       console.log("Quotes state --", this.state);
       console.log("Quotes prpos --", this.props);
+      const { authUser, teamMembers } = this.props;
+      const currentUser = authUser.firstName;
       return (
          <div className="content">
             <div className="block block-rounded">
@@ -78,7 +81,7 @@ export default class Quotes extends Component {
                                  <select className="form-control" id="filter_from" name="filter_from">
                                     <option value="AllTeamMembers" defaultValue>All Team Members</option>
                                     <optgroup label="---------------------------">
-                                       <option value={52036}>A Devom</option>
+                                       <option value={52036}>{currentUser}</option>
                                     </optgroup>
                                  </select>
                               </div>
@@ -137,3 +140,10 @@ export default class Quotes extends Component {
       );
    }
 }
+const mapStateToProps = ({ auth, teamSetting }) => {
+   const { authUser } = auth;
+   const { teamMembers } = teamSetting;
+   return { authUser, teamMembers };
+}
+
+export default connect(mapStateToProps)(Quotes);

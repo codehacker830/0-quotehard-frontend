@@ -1,12 +1,23 @@
 import React from 'react'
 import TextareaAutosize from 'react-autosize-textarea/lib';
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom';
 import { updateQuoteTitle } from '../../../../actions/Data';
 
-export const QuoteTitle = (props) => {
+export const TitleSection = (props) => {
     const title = useSelector(state => state.mainData.quote.title);
     const dispatch = useDispatch();
-
+    const location = useLocation();
+    console.log(" location ==> ", location);
+    let placeHolder = "";
+    switch (location.pathname) {
+        case "/app/content/template/get":
+            placeHolder = "Title of Template";
+            break;
+        default:
+            placeHolder = "Title of Quote";
+            break;
+    }
     const { isValidWarning } = props;
     return (
         <div className="row">
@@ -14,7 +25,7 @@ export const QuoteTitle = (props) => {
                 <TextareaAutosize
                     className={`form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2 my-4 ${isValidWarning ? "validWarning" : ""}`}
                     rows={1}
-                    placeholder="Title of Quote"
+                    placeholder={placeHolder}
                     value={title}
                     onChange={(ev) => {
                         props.updateValidWarning();
@@ -26,4 +37,4 @@ export const QuoteTitle = (props) => {
     )
 }
 
-export default QuoteTitle;
+export default TitleSection;
