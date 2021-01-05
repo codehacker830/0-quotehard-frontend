@@ -50,7 +50,7 @@ class Tr_Quotient extends Component {
                   <small className="text-gray">
                      <span className={`${item.viewedAt ? "text-danger" : "text-success"} mr-1`}>
                         {item.viewedAt ? `Viewed ` + formatDate(item.viewedAt) : `Unopened`}
-                     </span>
+                     </span>&nbsp;
                      {item.contactNameTo} by {item.userFrom}
                   </small>
                </div>
@@ -71,7 +71,7 @@ class Tr_Quotient extends Component {
                </div>
                <span className="float-right">
                   <small className="text-gray">
-                     <span className="dt-time">{formatDate(item.createdAt)}</span>
+                     <span className="dt-time">{formatDate(item.createdAt)}</span>&nbsp;
                      <span className="label label-draft">{item.status}</span>
                   </small>
                </span>

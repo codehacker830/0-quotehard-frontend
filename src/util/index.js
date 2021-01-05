@@ -22,8 +22,7 @@ export const alterTypeVariableStr = (str) => {
          return "Twitter";
       case "fax":
          return "Fax";
-
-      case "priamryAddress":
+      case "primaryAddress":
          return "Priamry Address";
       case "postalAddress":
          return "Postal Address";
@@ -33,7 +32,17 @@ export const alterTypeVariableStr = (str) => {
          return str;
    }
 }
+export const deriveAddressStr = (item) => {
+   let content = "";
+   const { street, stateOrRegion, city, postCode, country } = item;
+   if (typeof street !== "undefined" && street !== "") content += street;
+   if (typeof stateOrRegion !== "undefined" && stateOrRegion !== "") content += ", " + stateOrRegion;
+   if (typeof city !== "undefined" && city !== "") content += ", " + city;
+   if (typeof postCode !== "undefined" && postCode !== "") content += " " + postCode;
+   if (typeof country !== "undefined" && country !== "") content += ", " + country;
 
+   return content;
+}
 export const parseDate = (dtObj) => {
    if (isValidDateObj(dtObj)) {
       const year = dtObj.getFullYear();
