@@ -31,6 +31,7 @@ export default class Contacts extends Component {
    }
    componentDidMount() {
       if (this.search) {
+         this.setState({ loading: true });
          axios.get(`/contacts/search/${this.search}`).then(({ data }) => {
             this.setState({
                isLoading: false,
@@ -38,6 +39,7 @@ export default class Contacts extends Component {
             });
          });
       } else {
+         this.setState({ loading: true });
          axios.get('/contacts')
             .then(({ data }) => {
                console.log(" GET ALL CONTACTS RES ===> ", data.contacts)
