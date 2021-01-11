@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import {
    useStripe,
    useElements,
@@ -7,7 +7,6 @@ import {
    CardCvcElement,
    CardExpiryElement
 } from "@stripe/react-stripe-js";
-
 import useResponsiveFontSize from "./useResponsiveFontSize";
 import { toast } from "react-toastify";
 import axios from "../../../../util/Api";
@@ -39,6 +38,7 @@ const useOptions = () => {
 };
 
 const SplitCardElementForm = () => {
+   const history = useHistory();
    const { state } = useLocation();
    const stripe = useStripe();
    const elements = useElements();
@@ -64,6 +64,8 @@ const SplitCardElementForm = () => {
          if (payload.paymentMethod) {
             let subscription = await axios.post('/settings/payment/subscription', { paymentMethodId: payload.paymentMethod.id, name });
             console.log("subscription _________", subscription);
+            toast.success("Payment added");
+            history('/app/settings/billing-overview');
          } else {
             toast.success(payload.error.message);
          }
