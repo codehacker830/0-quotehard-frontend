@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export const AddOns = (props) => {
    return (
-      <>
+      <React.Fragment>
          <h3 className="settings-title">Add-ons</h3>
          <Link className="set-option" to="/app/add-ons/follow-ups">
             <span className="label label-on float-right">ON</span>
@@ -43,7 +43,7 @@ export const AddOns = (props) => {
             <img src="https://asset.quotientapp.com/image/integration-02/fav-icon-01/webhooks.png" alt="Webhooks" />
                         Webhooks
                      </Link>
-      </>
+      </React.Fragment>
    )
 }
 

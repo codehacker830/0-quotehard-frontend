@@ -6,9 +6,9 @@ import { getTeamMembers } from '../../../actions/Team'
 import NavCrump from '../../../components/NavCrump'
 
 export const BillingOverview = (props) => {
-   // useEffect(() => {
-   //    props.getTeamMembers();
-   // }, [])
+   useEffect(() => {
+
+   }, [])
    const { accountCompany } = props;
    return (
       <React.Fragment>
