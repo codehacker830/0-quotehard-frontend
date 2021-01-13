@@ -27,7 +27,7 @@ class AwaitingSection extends Component {
                                  <span className="dt-time">{formatDate(item.createdAt)}</span>
                                  {
                                     item.status === "editing" &&
-                                    <span class="quotes-label label-sent label-editing">Editing</span>
+                                    <span className="quotes-label label-sent label-editing">Editing</span>
                                  }
                               </small>
                            </span>

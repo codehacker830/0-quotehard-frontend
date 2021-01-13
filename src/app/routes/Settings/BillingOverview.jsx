@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { getTeamMembers } from '../../../actions/Team'
 import NavCrump from '../../../components/NavCrump'
 import { toFixedFloat } from '../../../util'
@@ -9,6 +9,7 @@ import axios from '../../../util/Api'
 import dateFormat from 'dateformat';
 import { toInteger } from 'lodash'
 import ContentLoader from "react-content-loader"
+import { toast } from 'react-toastify'
 
 export const MyLoader = (props) => (
    <ContentLoader
@@ -67,7 +68,10 @@ const PaymentDetails = ({ card }) => {
    </React.Fragment>;
 }
 export const BillingOverview = (props) => {
+   const history = useHistory();
    const [isLoading, setLoading] = useState(false);
+   const [isProcessing, setProcessing] = useState(false);
+   const [isAlertOpen, setAlertOpen] = useState(false)
    const [currency, setCurrency] = useState("")
    const [amount, setAmount] = useState("")
    const [paymentDate, setPaymentDate] = useState(null);
@@ -75,6 +79,7 @@ export const BillingOverview = (props) => {
       brand: "",
       last4: ""
    });
+   const [isEmailInvoiceEnabled, setEmailInvoiceEnabled] = useState(false)
    useEffect(() => {
       setLoading(true);
       axios.get('/settings/payment')
@@ -103,11 +108,47 @@ export const BillingOverview = (props) => {
             setLoading(false);
          });
    }, []);
+   const onClickDeactivate = () => {
+      axios.put('/account-company/deactivate')
+         .then(({ data }) => {
+            console.log(" $$$$$$$$$$$$ ", data);
+            history.push('/sign-in/reactivate/notify');
+         })
+         .catch(error => {
+            toast.error("Error during deactivate account.");
+         })
+   }
+   const scrollToTop = () => {
+      window.scrollTo({
+         top: 0,
+         behavior: "smooth"
+      });
+   }
    return (
       <React.Fragment>
          <NavCrump linkTo={`/app/settings`}>
             Settings
          </NavCrump>
+         <div id="AlerterPage">
+            {
+               isAlertOpen ?
+                  <div className="alertBar alertBar-prompt">
+                     <div className="container">
+                        <h4>Confirm Account Deactivation</h4>
+                        <p>
+                           Your credit card will <strong>no longer be charged</strong> for this account.
+                           <br />
+                           You can reactivate within the next 12 months.  After this time, your account data may be deleted.
+                        </p>
+                        <div className="btnSet">
+                           <button className="btn btn-danger mr-2" onClick={onClickDeactivate}>Deactivate</button>
+                           <button className="btn" onClick={() => setAlertOpen(false)}>Or, I’ll decide later…</button>
+                        </div>
+                     </div>
+                  </div>
+                  : null
+            }
+         </div>
          <div className="content">
             <div className="maxWidth-800">
                <h1>Billing Overview</h1>
@@ -160,7 +201,6 @@ export const BillingOverview = (props) => {
                   </div>
                </div>
 
-
                <div className="mb-5">
                   <h3 className="mb-2">Payment History</h3>
                   <table className="table">
@@ -174,14 +214,46 @@ export const BillingOverview = (props) => {
                <div className="mb-5">
                   <h3 className="mb-2">Email a Copy of Invoices</h3>
                   <p className="mb-3">
-                     Send a copy to <strong>A Devom</strong> (Account Owner).
+                     Send a copy to <strong>{props.authUser.firstName + " " + props.authUser.lastName}</strong> (Account Owner).
                   </p>
-                  <button className="btn btn-alt-secondary">Enable Email Invoices</button>
+                  {
+                     isEmailInvoiceEnabled ?
+                        <div>
+                           <span className="text-success mr-2"><strong><i className="fa fa-fw fa-check" /> Enabled</strong></span>
+                           <button className="btn btn-alt-secondary" disabled={isProcessing} onClick={() => {
+                              setProcessing(true);
+                              setTimeout(() => {
+                                 setEmailInvoiceEnabled(false);
+                                 setProcessing(false);
+                                 toast.success("Disabled");
+                              }, 1500);
+                           }}>
+                              {isProcessing && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
+                              Disable…
+                        </button>
+                        </div>
+                        :
+                        <button className="btn btn-alt-secondary" disabled={isProcessing} onClick={() => {
+                           setProcessing(true);
+                           setTimeout(() => {
+                              setEmailInvoiceEnabled(true);
+                              setProcessing(false);
+                              toast.success("Email invoices enabled.");
+                           }, 1500);
+                        }}>
+                           {isProcessing && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
+                           Enable Email Invoices
+                        </button>
+                  }
+
                </div>
                <div className="mb-5">
                   <div className="border border-danger p-4">
                      <h3 className="mb-4">Cancel Account</h3>
-                     <button className="btn btn-danger btn-lg">
+                     <button className="btn btn-danger btn-lg" onClick={() => {
+                        setAlertOpen(true);
+                        scrollToTop();
+                     }}>
                         Deactivate, Confirm…
                      </button>
                   </div>
@@ -193,10 +265,10 @@ export const BillingOverview = (props) => {
 }
 
 const mapStateToProps = ({ auth, teamSetting }) => {
-   const { accountCompany } = auth;
+   const { accountCompany, authUser } = auth;
    const { teamMembers } = teamSetting;
-   return { accountCompany, teamMembers };
+   return { accountCompany, authUser, teamMembers };
 };
-// const mapDispatchToProps = { getTeamMembers };
+// const mapDispatchToProps = {getTeamMembers};
 
 export default connect(mapStateToProps)(BillingOverview);
