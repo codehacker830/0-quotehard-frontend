@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom'
 import NavCrumpLeft from './NavCrumpLeft';
 import qs from 'qs';
 
-export const NavCrump = (props) => {
+const NavCrump = (props) => {
    const queryObj = qs.parse(props.location.search, { ignoreQueryPrefix: true });
    const { merge_loser } = queryObj;
    const isMergeMode = merge_loser ? true : false;

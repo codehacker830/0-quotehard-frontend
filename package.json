@@ -26,6 +26,8 @@
       "react": "^16.13.1",
       "react-autosize-textarea": "^7.1.0",
       "react-content-loader": "^5.1.4",
+      "react-csv": "^2.0.3",
+      "react-csv-reader": "^3.1.2",
       "react-dom": "^16.13.1",
       "react-minimal-pie-chart": "^8.0.1",
       "react-placeholder": "^4.0.3",
