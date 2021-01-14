@@ -44,7 +44,7 @@ const Statement = (props) => {
    else return <li><strong>There is no undo.</strong></li>;
 }
 
-export default function ImportContactsConfirm() {
+export default function ImportPriceItemsConfirm() {
    const { state } = useLocation();
    const history = useHistory();
 

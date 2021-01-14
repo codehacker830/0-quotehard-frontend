@@ -4,10 +4,13 @@ import { Switch, Route } from 'react-router-dom';
 import { getTeamMembers } from '../../../actions/Team';
 import Team from './Team';
 import asyncComponent from '../../../util/asyncComponent';
+import { getSalesCategories, getSalesTaxes } from '../../../actions/GlobalSetting';
 
 class Settings extends Component {
-   componentDidMount() {
-      this.props.getTeamMembers();
+   async componentDidMount() {
+      await this.props.getTeamMembers();
+      await this.props.getSalesCategories('current');
+      await this.props.getSalesTaxes('current');
    }
    render() {
       return (
@@ -31,7 +34,9 @@ class Settings extends Component {
             <Route exact path="/app/settings/your-data" component={asyncComponent(() => import("./YourData"))} />
             <Route exact path="/app/settings/your-data/import/contacts" component={asyncComponent(() => import("./YourData/Import/ImportContacts"))} />
             <Route exact path="/app/settings/your-data/import/contacts/confirm" component={asyncComponent(() => import("./YourData/Import/ImportContactsConfirm"))} />
-            
+            <Route exact path="/app/settings/your-data/import/price-items" component={asyncComponent(() => import("./YourData/Import/ImportPriceItems"))} />
+            <Route exact path="/app/settings/your-data/import/price-items/confirm" component={asyncComponent(() => import("./YourData/Import/ImportPriceItemsConfirm"))} />
+
             <Route exact path="/app/settings/sales-category/create-new" component={asyncComponent(() => import("./SalesCategory"))} />
             <Route exact path="/app/settings/sales-category/:id" component={asyncComponent(() => import("./SalesCategory"))} />
 
@@ -44,5 +49,5 @@ class Settings extends Component {
    }
 }
 
-const mapDispatchToProps = { getTeamMembers };
+const mapDispatchToProps = { getTeamMembers, getSalesCategories, getSalesTaxes };
 export default connect(() => ({}), mapDispatchToProps)(Settings)

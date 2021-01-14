@@ -1017,6 +1017,11 @@ a.nav-link.active {
    font-weight: 700;
    margin-bottom: 6px;
    line-height: 1.7;
+
+   ul li {
+      font-weight: 400;
+      font-size: 110%;
+   }
 }
 
 .import-ul {

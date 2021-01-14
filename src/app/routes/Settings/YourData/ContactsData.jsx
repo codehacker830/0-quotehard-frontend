@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { CSVLink } from "react-csv";
 import axios from '../../../../util/Api';
 import dateFormat from 'dateformat';
@@ -40,7 +40,7 @@ export default function ContactsData() {
                   state: contact.addresses.length > 0 ? contact.addresses[0]["stateOrRegion"] : "",
                   postCode: contact.addresses.length > 0 ? contact.addresses[0]["postCode"] : "",
                   country: contact.addresses.length > 0 ? contact.addresses[0]["country"] : "",
-                  updatedAt: dateFormat(new Date(contact.updatedAt), "mm/dd/yyyy HH:MM") ,
+                  updatedAt: dateFormat(new Date(contact.updatedAt), "mm/dd/yyyy HH:MM"),
                }
             });
             console.log("arrData ==>", arrData)

@@ -44,7 +44,7 @@ const papaparseOptions = {
       }
    }
 };
-export default function ImportContacts() {
+export default function ImportPriceItems() {
    const history = useHistory();
    const [isLoading, setLoading] = useState(false);
    const onFileLoaded = (dataArr, fileInfo) => {
@@ -87,7 +87,7 @@ export default function ImportContacts() {
             Import / Export
          </NavCrump>
          <div className="content">
-            <h3 className="my-4">Import Contacts</h3>
+            <h3 className="my-4">Import Price Items</h3>
 
             <div className="mb-4">
                <ol className="import-info-ul">
@@ -99,7 +99,14 @@ export default function ImportContacts() {
                            headers={headers}
                            filename={"Example Contacts.csv"}
                            className="buttonLink"
-                        >an empty template</CSVLink>
+                        >an empty template</CSVLink>&nbsp;
+                        or an&nbsp;
+                        <CSVLink
+                              data={[]}
+                              headers={headers}
+                              filename={"Example Contacts.csv"}
+                              className="buttonLink"
+                           >export of items</CSVLink> (to make updates).
                         </li>
                      </ul>
                   </li>
