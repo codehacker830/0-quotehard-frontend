@@ -30,6 +30,7 @@ const papaparseOptions = {
    skipEmptyLines: true,
    transformHeader: header => {
       switch (header) {
+         case "Item ÏĐ": return "_id";
          case "Item ID": return "_id";
          case "Item code": return "itemCode";
          case "Item title": return "productHeading";
@@ -39,8 +40,8 @@ const papaparseOptions = {
          case "Quantity": return "quantity";
          case "Discount": return "discount";
          case "Item total": return "itemTotal";
-         case "Sales category": return "salesCategory";
-         case "Tax rate": return "taxRate";
+         case "Sales category": return "salesCategoryName";
+         case "Tax rate": return "salesTaxName";
          case "Subscription": return "subscription";
          case "Editable quantity": return "editableQuantity";
          case "Optional": return "optional";
@@ -58,26 +59,35 @@ export default function ImportPriceItems() {
          return;
       }
       setLoading(true);
-      axios.post('/contacts/import/check', { csvArrData: dataArr }).then(({ data }) => {
-         console.log(" import CHECKED DATA : ", data);
+      console.log(" CSV DATA : ", dataArr)
+      axios.post('/templates/priceitem/import/check', { csvArrData: dataArr }).then(({ data }) => {
+         console.log(" CHECKED DATA RESPONSE : ", data);
          const {
-            errorNum,
-            exisitNum,
-            availableRows,
-            errorMessages
+            skipNum,
+            createAvailableRows,
+            updateAvailableRows,
+            errorMessages,
          } = data;
-         const filteredArr = dataArr.filter((item, index) => {
-            return availableRows.includes(index);
+         console.log(" skipNum : ", skipNum)
+         console.log(" createAvailableRows : ", createAvailableRows)
+         console.log(" updateAvailableRows : ", updateAvailableRows)
+         console.log(" errorMessages : ", errorMessages)
+         const createAvailableData = dataArr.filter((item, index) => {
+            return createAvailableRows.includes(index);
          });
+         const updateAvailableData = dataArr.filter((item, index) => {
+            return updateAvailableRows.includes(index);
+         });
+         console.log(" createAvailableData: ", createAvailableData)
+         console.log(" updateAvailableData: ", updateAvailableData)
          history.push({
-            pathname: '/app/settings/your-data/import/contacts/confirm',
+            pathname: '/app/settings/your-data/import/price-items/confirm',
             state: {
                data: {
-                  errorNum,
-                  exisitNum,
-                  availableRows,
+                  skipNum,
                   errorMessages,
-                  csvArrData: filteredArr
+                  createAvailableData: createAvailableData,
+                  updateAvailableData: updateAvailableData,
                }
             }
          });
@@ -137,7 +147,7 @@ export default function ImportPriceItems() {
 
             <div className="mx-3">
                {/* use label to trigger manually input of CSVReader  */}
-               <label htmlFor="react-csv-reader-input" className="btn btn-primary">
+               <label htmlFor="react-csv-reader-input" className="btn btn-primary" disable={`${isLoading}`}>
                   {
                      isLoading ? <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />
                         : <i className="fa fa-fw fa-paperclip mr-1" />

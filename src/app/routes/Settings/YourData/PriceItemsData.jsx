@@ -16,8 +16,8 @@ export const PriceItemsCSVLink = (props) => {
       { label: "Quantity", key: "quantity" },
       { label: "Discount", key: "discount" },
       { label: "Item total", key: "itemTotal" },
-      { label: "Sales category", key: "salesCategory" },
-      { label: "Tax rate", key: "taxRate" },
+      { label: "Sales category", key: "salesCategoryName" },
+      { label: "Tax rate", key: "salesTaxName" },
       { label: "Subscription", key: "subscription" },
       { label: "Editable quantity", key: "editableQuantity" },
       { label: "Optional", key: "optional" },
@@ -28,18 +28,18 @@ export const PriceItemsCSVLink = (props) => {
    const { salesCatgories, salesTaxes } = useSelector(state => state.globalSetting);
 
    const decryptSalesCategoryDes = (item) => {
-      let salesCategoryDes = "";
+      let salesCategoryName = "";
       if (item.salesCategory) {
-         const iSC = salesCatgories.find(it => it._id === item.salesCategory);
-         if (iSC) salesCategoryDes = iSC.description;
+         const salesCategory = salesCatgories.find(it => it._id === item.salesCategory);
+         if (salesCategory) salesCategoryName = salesCategory.categoryName;
       }
-      return salesCategoryDes;
+      return salesCategoryName;
    }
    const decryptSalesTaxName = (item) => {
       let salesTaxName = "";
       if (item.salesTax) {
-         const iST = salesTaxes.find(it => it._id === item.salesTax);
-         if (iST) salesTaxName = iST.taxName;
+         const salexTax = salesTaxes.find(it => it._id === item.salesTax);
+         if (salexTax) salesTaxName = salexTax.taxName;
       }
       return salesTaxName;
    }
@@ -54,15 +54,14 @@ export const PriceItemsCSVLink = (props) => {
    const decryptEditableQuantity = (item) => {
       let DEString = "";
       const { isEditableQuantity } = item;
-      DEString = `${isEditableQuantity ? "editable" : ""}`;
+      DEString = `${isEditableQuantity ? "Editable" : ""}`;
       return DEString;
    }
    const decryptOptional = (item) => {
       let DOString = "";
-      const { isOptional, isOptionSelected } = item;
-      if (isOptional) {
-         DOString = `Optional${isOptionSelected ? ", selected" : ""}`
-      }
+      const { isOptional, isOptionSelected, isMultipleChoice, isChoiceSelected } = item;
+      if (isOptional) DOString = `Optional${isOptionSelected ? ", selected" : ""}`;
+      else if (isMultipleChoice) DOString = `Multiple choice${isChoiceSelected ? ", selected" : ""}`;
       return DOString;
    }
    const onClickDownload = () => {

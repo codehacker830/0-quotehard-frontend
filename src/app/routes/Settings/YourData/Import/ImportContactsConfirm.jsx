@@ -6,30 +6,30 @@ import NavCrump from '../../../../../components/NavCrump'
 import axios from '../../../../../util/Api';
 
 const WillCreateStatement = (props) => {
-   const { availableRows } = props;
-   if (availableRows && availableRows.length) return (
-      <li><span className="u-bold">{availableRows.length}</span>{availableRows.length > 1 ? " contacts" : " contact"} will be <strong>created</strong></li>
+   const { createAvailableRows } = props;
+   if (createAvailableRows && createAvailableRows.length) return (
+      <li><span className="u-bold">{createAvailableRows.length}</span>{createAvailableRows.length > 1 ? " contacts" : " contact"} will be <strong>created</strong></li>
    );
    else return null;
 }
 const WillSkipStatementByExist = (props) => {
-   const { exisitNum } = props;
-   if (exisitNum) {
-      return <li><span className="u-bold">{exisitNum}</span>{exisitNum > 1 ? " contacts" : " contact"} will be <strong>skipped</strong>{exisitNum > 1 ? " as they already exist." : " as it already exist."}</li>;
+   const { skipNum } = props;
+   if (skipNum) {
+      return <li><span className="u-bold">{skipNum}</span>{skipNum > 1 ? " contacts" : " contact"} will be <strong>skipped</strong>{skipNum > 1 ? " as they already exist." : " as it already exist."}</li>;
    }
    else return null;
 }
 const WillSkipStatementByError = (props) => {
-   const { errorNum, errorMessages } = props;
-   if (errorNum) return (
+   const { errorMessages } = props;
+   if (errorMessages && errorMessages.length) return (
       <li>
-         <span className="u-bold">{errorNum}</span>{errorNum > 1 ? " contacts" : " contact"} will be <strong>skipped</strong> because of{errorNum > 1 ? " an error" : " errors"}:
+         <span className="u-bold">{errorMessages.length}</span>{errorMessages.length > 1 ? " contacts" : " contact"} will be <strong>skipped</strong> because of{errorMessages.length > 1 ? " an error" : " errors"}:
          {
             errorMessages && errorMessages.length &&
             <ul>
                {
                   errorMessages.map((item, index) => {
-                     return <li key={index}><span className="import-row-num">Row {item.rowIndex}</span> {item.message}</li>
+                     return <li key={index}><span className="import-row-num">Row {item.rowIndex + 1}</span> {item.message}</li>
                   })
                }
             </ul>
@@ -39,8 +39,8 @@ const WillSkipStatementByError = (props) => {
    else return null;
 }
 const Statement = (props) => {
-   const { availableRows } = props;
-   if (availableRows && availableRows.length) return <li className="pt-3"><strong>There is no undo.</strong></li>;
+   const { createAvailableRows } = props;
+   if (createAvailableRows && createAvailableRows.length) return <li className="pt-3"><strong>There is no undo.</strong></li>;
    else return <li><strong>There is no undo.</strong></li>;
 }
 
@@ -48,23 +48,20 @@ export default function ImportContactsConfirm() {
    const { state } = useLocation();
    const history = useHistory();
 
-   const [errorNum, setErrorNum] = useState(null);
-   const [exisitNum, setExisitNum] = useState(null);
-   const [availableRows, setAvailableRows] = useState([]);
+   const [skipNum, setSkipNum] = useState(null);
+   const [createAvailableRows, setAvailableRows] = useState([]);
    const [errorMessages, setErrorMessages] = useState([]);
    const [csvArrData, setCsvArrData] = useState([]);
    useEffect(() => {
       if (state && state.data) {
          // const {
-         //    errorNum,
-         //    exisitNum,
-         //    availableRows,
+         //    skipNum,
+         //    createAvailableRows,
          //    errorMessages,
          //    csvArrData
          // } = state.data;
-         setErrorNum(state.data.errorNum);
-         setExisitNum(state.data.exisitNum);
-         setAvailableRows(state.data.availableRows);
+         setSkipNum(state.data.skipNum);
+         setAvailableRows(state.data.createAvailableRows);
          setErrorMessages(state.data.errorMessages);
          setCsvArrData(state.data.csvArrData);
       } else history.push('/app/settings/your-data');
@@ -76,29 +73,29 @@ export default function ImportContactsConfirm() {
             Import / Export
          </NavCrump>
          <div className="content">
-            
-            <TopStatement availableRows={availableRows}/>
+
+            <TopStatement createAvailableRows={createAvailableRows} />
             <div className="mb-4">
                <ul className="import-ul">
-                  <WillCreateStatement availableRows={availableRows} />
-                  <WillSkipStatementByExist exisitNum={exisitNum} />
-                  <WillSkipStatementByError errorNum={errorNum} errorMessages={errorMessages} />
-                  <Statement availableRows={availableRows} />
+                  <WillCreateStatement createAvailableRows={createAvailableRows} />
+                  <WillSkipStatementByExist skipNum={skipNum} />
+                  <WillSkipStatementByError errorMessages={errorMessages} />
+                  <Statement createAvailableRows={createAvailableRows} />
                </ul>
             </div>
-            <FooterActions availableRows={availableRows} csvArrData={csvArrData} />
+            <FooterActions createAvailableRows={createAvailableRows} csvArrData={csvArrData} />
          </div>
       </React.Fragment>
    )
 }
 const TopStatement = (props) => {
-   const { availableRows } = props;
-   if(availableRows && availableRows.length)  return (<h3 className="my-4">The following changes will be made:</h3>);
+   const { createAvailableRows } = props;
+   if (createAvailableRows && createAvailableRows.length) return (<h3 className="my-4">The following changes will be made:</h3>);
    else return (<h3 className="my-4">No changes to be made.</h3>);
 }
 
 const FooterActions = (props) => {
-   const { availableRows, csvArrData } = props;
+   const { createAvailableRows, csvArrData } = props;
    const history = useHistory();
    const [isLoading, setLoading] = useState(false);
    const onClickConfirmChanges = () => {
@@ -117,7 +114,7 @@ const FooterActions = (props) => {
       <div className="mx-3">
          {/* use label to trigger manually input of CSVReader  */}
          {
-            availableRows && availableRows.length ?
+            createAvailableRows && createAvailableRows.length ?
                <button className="btn btn-primary mr-2" onClick={onClickConfirmChanges} disabled={isLoading}>
                   {isLoading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
                   &nbsp;Confirm Changes
@@ -125,7 +122,7 @@ const FooterActions = (props) => {
                : null
          }
          {
-            availableRows && availableRows.length ?
+            createAvailableRows && createAvailableRows.length ?
                <Link to="/app/settings/your-data/import/contacts" className="btn btn-secondary">
                   &nbsp;Cancel, go back
                </Link>

@@ -56,21 +56,19 @@ export default function ImportContacts() {
       axios.post('/contacts/import/check', { csvArrData: dataArr }).then(({ data }) => {
          console.log(" import CHECKED DATA : ", data);
          const {
-            errorNum,
-            exisitNum,
-            availableRows,
+            skipNum,
+            createAvailableRows,
             errorMessages
          } = data;
          const filteredArr = dataArr.filter((item, index) => {
-            return availableRows.includes(index);
+            return createAvailableRows.includes(index);
          });
          history.push({
             pathname: '/app/settings/your-data/import/contacts/confirm',
             state: {
                data: {
-                  errorNum,
-                  exisitNum,
-                  availableRows,
+                  skipNum,
+                  createAvailableRows,
                   errorMessages,
                   csvArrData: filteredArr
                }

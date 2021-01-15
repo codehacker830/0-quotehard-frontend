@@ -5,31 +5,38 @@ import { toast } from 'react-toastify';
 import NavCrump from '../../../../../components/NavCrump'
 import axios from '../../../../../util/Api';
 
+const WillUpdateStatement = (props) => {
+   const { updateAvailableData } = props;
+   if (updateAvailableData && updateAvailableData.length) return (
+      <li><span className="u-bold">{updateAvailableData.length}</span>{updateAvailableData.length > 1 ? " items" : " item"} will be <strong>updated</strong></li>
+   );
+   else return null;
+}
 const WillCreateStatement = (props) => {
-   const { availableRows } = props;
-   if (availableRows && availableRows.length) return (
-      <li><span className="u-bold">{availableRows.length}</span>{availableRows.length > 1 ? " contacts" : " contact"} will be <strong>created</strong></li>
+   const { createAvailableData } = props;
+   if (createAvailableData && createAvailableData.length) return (
+      <li><span className="u-bold">{createAvailableData.length}</span>{createAvailableData.length > 1 ? " items" : " item"} will be <strong>created</strong></li>
    );
    else return null;
 }
 const WillSkipStatementByExist = (props) => {
-   const { exisitNum } = props;
-   if (exisitNum) {
-      return <li><span className="u-bold">{exisitNum}</span>{exisitNum > 1 ? " contacts" : " contact"} will be <strong>skipped</strong>{exisitNum > 1 ? " as they already exist." : " as it already exist."}</li>;
+   const { skipNum } = props;
+   if (skipNum) {
+      return <li><span className="u-bold">{skipNum}</span>{skipNum > 1 ? " contacts" : " contact"} will be <strong>skipped</strong>{skipNum > 1 ? " as they have not changed." : " as it have not changed."}</li>;
    }
    else return null;
 }
 const WillSkipStatementByError = (props) => {
-   const { errorNum, errorMessages } = props;
-   if (errorNum) return (
+   const { errorMessages } = props;
+   if (errorMessages && errorMessages.length) return (
       <li>
-         <span className="u-bold">{errorNum}</span>{errorNum > 1 ? " contacts" : " contact"} will be <strong>skipped</strong> because of{errorNum > 1 ? " an error" : " errors"}:
+         <span className="u-bold">{errorMessages.length}</span>{errorMessages.length > 1 ? " contacts" : " contact"} will be <strong>skipped</strong> because of{errorMessages.length > 1 ? " an error" : " errors"}:
          {
             errorMessages && errorMessages.length &&
             <ul>
                {
                   errorMessages.map((item, index) => {
-                     return <li key={index}><span className="import-row-num">Row {item.rowIndex}</span> {item.message}</li>
+                     return <li key={index}><span className="import-row-num">Row {item.rowIndex + 1}</span> {item.message}</li>
                   })
                }
             </ul>
@@ -39,8 +46,8 @@ const WillSkipStatementByError = (props) => {
    else return null;
 }
 const Statement = (props) => {
-   const { availableRows } = props;
-   if (availableRows && availableRows.length) return <li className="pt-3"><strong>There is no undo.</strong></li>;
+   const { createAvailableData } = props;
+   if (createAvailableData && createAvailableData.length) return <li className="pt-3"><strong>There is no undo.</strong></li>;
    else return <li><strong>There is no undo.</strong></li>;
 }
 
@@ -48,25 +55,23 @@ export default function ImportPriceItemsConfirm() {
    const { state } = useLocation();
    const history = useHistory();
 
-   const [errorNum, setErrorNum] = useState(null);
-   const [exisitNum, setExisitNum] = useState(null);
-   const [availableRows, setAvailableRows] = useState([]);
+   const [skipNum, setSkipNum] = useState(null);
    const [errorMessages, setErrorMessages] = useState([]);
-   const [csvArrData, setCsvArrData] = useState([]);
+   const [createAvailableData, setCreateAvaialbleData] = useState([]);
+   const [updateAvailableData, setUpdateAvailableData] = useState([]);
+
    useEffect(() => {
       if (state && state.data) {
          // const {
-         //    errorNum,
-         //    exisitNum,
-         //    availableRows,
+         //    skipNum,
          //    errorMessages,
-         //    csvArrData
+         //    createAvailableData
+         //    updateAvailableData
          // } = state.data;
-         setErrorNum(state.data.errorNum);
-         setExisitNum(state.data.exisitNum);
-         setAvailableRows(state.data.availableRows);
+         setSkipNum(state.data.skipNum);
          setErrorMessages(state.data.errorMessages);
-         setCsvArrData(state.data.csvArrData);
+         setCreateAvaialbleData(state.data.createAvailableData);
+         setUpdateAvailableData(state.data.updateAvailableData);
       } else history.push('/app/settings/your-data');
    }, []);
 
@@ -79,28 +84,32 @@ export default function ImportPriceItemsConfirm() {
             <h3 className="my-4">The following changes will be made:</h3>
             <div className="mb-4">
                <ul className="import-ul">
-                  <WillCreateStatement availableRows={availableRows} />
-                  <WillSkipStatementByExist exisitNum={exisitNum} />
-                  <WillSkipStatementByError errorNum={errorNum} errorMessages={errorMessages} />
-                  <Statement availableRows={availableRows} />
+                  <WillUpdateStatement updateAvailableData={updateAvailableData} />
+                  <WillCreateStatement createAvailableData={createAvailableData} />
+                  <WillSkipStatementByExist skipNum={skipNum} />
+                  <WillSkipStatementByError errorMessages={errorMessages} />
+                  <Statement createAvailableData={createAvailableData} />
                </ul>
             </div>
-            <FooterActions availableRows={availableRows} csvArrData={csvArrData} />
+            <FooterActions createAvailableData={createAvailableData} updateAvailableData={updateAvailableData} />
          </div>
       </React.Fragment>
    )
 }
 
 const FooterActions = (props) => {
-   const { availableRows, csvArrData } = props;
+   const { createAvailableData, updateAvailableData } = props;
    const history = useHistory();
    const [isLoading, setLoading] = useState(false);
    const onClickConfirmChanges = () => {
-      if (!csvArrData) { toast.success("Data was not defined."); return; }
+      if (!createAvailableData && !updateAvailableData) { toast.success("Data was not defined."); return; }
+      if (!Array.isArray(createAvailableData) || !Array.isArray(updateAvailableData)) { toast.success("Data is invalid."); return; }
+      console.log(" createAvailableData : ", createAvailableData)
+      console.log(" updateAvailableData : ", updateAvailableData)
       setLoading(true);
-      axios.post('/contacts/import/create', { csvArrData })
+      axios.post('/templates/priceitem/import/create', { createAvailableData, updateAvailableData })
          .then(({ data }) => {
-            history.push('/app/c/contacts');
+            history.push('/app/content/item-price/browse');
             setLoading(false);
          })
          .catch(error => {
@@ -111,7 +120,7 @@ const FooterActions = (props) => {
       <div className="mx-3">
          {/* use label to trigger manually input of CSVReader  */}
          {
-            availableRows && availableRows.length ?
+            createAvailableData && createAvailableData.length ?
                <button className="btn btn-primary mr-2" onClick={onClickConfirmChanges} disabled={isLoading}>
                   {isLoading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
                   &nbsp;Confirm Changes
@@ -119,11 +128,11 @@ const FooterActions = (props) => {
                : null
          }
          {
-            availableRows && availableRows.length ?
-               <Link to="/app/settings/your-data/import/contacts" className="btn btn-secondary">
+            createAvailableData && createAvailableData.length ?
+               <Link to="/app/settings/your-data/import/price-items" className="btn btn-secondary">
                   &nbsp;Cancel, go back
                </Link>
-               : <Link className="btn btn-default" to="/app/settings/your-data/import/contacts">Go back</Link>
+               : <Link className="btn btn-default" to="/app/settings/your-data/import/price-items">Go back</Link>
          }
       </div>
    );
