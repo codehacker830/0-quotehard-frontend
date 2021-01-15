@@ -45,7 +45,7 @@ export default function TextItemsData() {
                ref={csvLinkRef}
                data={csvData}
                headers={headers}
-               filename={"HardQuote - Text Items.csv"}
+               filename={"QuoteHard - Text Items.csv"}
                className="btn btn-sm btn-alt-dark mr-2"
                style={{ display: 'none' }}
             ></CSVLink>

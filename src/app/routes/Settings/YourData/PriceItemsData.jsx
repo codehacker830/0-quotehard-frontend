@@ -3,30 +3,30 @@ import { CSVLink } from "react-csv";
 import axios from '../../../../util/Api';
 import dateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-const headers = [
-   { label: "Item ID", key: "_id" },
-   { label: "Item code", key: "itemCode" },
-   { label: "Item title", key: "productHeading" },
-   { label: "Long description", key: "longDescription" },
-   { label: "Cost price", key: "costPrice" },
-   { label: "Unit price", key: "unitPrice" },
-   { label: "Quantity", key: "quantity" },
-   { label: "Discount", key: "discount" },
-   { label: "Item total", key: "itemTotal" },
-   { label: "Sales category", key: "salesCategory" },
-   { label: "Tax rate", key: "taxRate" },
-   { label: "Subscription", key: "subscription" },
-   { label: "Editable quantity", key: "editableQuantity" },
-   { label: "Optional", key: "optional" },
-   { label: "Last changed", key: "updatedAt" }
-];
-
-export default function PriceItemsData() {
+export const PriceItemsCSVLink = (props) => {
+   const headers = [
+      { label: "Item ID", key: "_id" },
+      { label: "Item code", key: "itemCode" },
+      { label: "Item title", key: "productHeading" },
+      { label: "Long description", key: "longDescription" },
+      { label: "Cost price", key: "costPrice" },
+      { label: "Unit price", key: "unitPrice" },
+      { label: "Quantity", key: "quantity" },
+      { label: "Discount", key: "discount" },
+      { label: "Item total", key: "itemTotal" },
+      { label: "Sales category", key: "salesCategory" },
+      { label: "Tax rate", key: "taxRate" },
+      { label: "Subscription", key: "subscription" },
+      { label: "Editable quantity", key: "editableQuantity" },
+      { label: "Optional", key: "optional" },
+      { label: "Last changed", key: "updatedAt" }
+   ];
    const [csvData, setCsvData] = useState([]);
    const csvLinkRef = useRef();
    const { salesCatgories, salesTaxes } = useSelector(state => state.globalSetting);
+
    const decryptSalesCategoryDes = (item) => {
       let salesCategoryDes = "";
       if (item.salesCategory) {
@@ -98,18 +98,26 @@ export default function PriceItemsData() {
          });
    }
    return (
+      <React.Fragment>
+         <button type="button" className={props.cssClassName} onClick={onClickDownload}>{props.showIcon && <i className="fa fa-fw fa-download" />} {props.linkName}</button>
+         <CSVLink
+            ref={csvLinkRef}
+            data={csvData}
+            headers={headers}
+            filename={"QuoteHard - Price Items.csv"}
+            className="btn btn-sm btn-alt-dark mr-2"
+            style={{ display: 'none' }}
+         ></CSVLink>
+      </React.Fragment>
+   );
+}
+
+export default function PriceItemsData() {
+   return (
       <div className="mb-3">
          <strong>Price Items</strong>
          <div className="row no-gutters">
-            <button type="button" className="btn btn-sm btn-alt-dark mr-2" onClick={onClickDownload}><i className="fa fa-fw fa-download" /> Download CSV</button>
-            <CSVLink
-               ref={csvLinkRef}
-               data={csvData}
-               headers={headers}
-               filename={"HardQuote - Price Items.csv"}
-               className="btn btn-sm btn-alt-dark mr-2"
-               style={{ display: 'none' }}
-            ></CSVLink>
+            <PriceItemsCSVLink cssClassName="btn btn-sm btn-alt-dark mr-2" linkName="Download CSV" showIcon={true} />
             <Link to="/app/settings/your-data/import/price-items" className="btn btn-sm btn-alt-info">Import...</Link>
          </div>
       </div>

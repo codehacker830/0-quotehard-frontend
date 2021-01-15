@@ -5,40 +5,45 @@ import { Link, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import NavCrump from '../../../../../components/NavCrump';
 import axios from '../../../../../util/Api';
+import { PriceItemsCSVLink } from '../PriceItemsData';
 
 const headers = [
-   { label: "Contact ID", key: "_id" },
-   { label: "First name", key: "firstName" },
-   { label: "Last name", key: "lastName" },
-   { label: "Company name", key: "companyName" },
-   { label: "Email", key: "email" },
-   { label: "Phone", key: "phone" },
-   { label: "Address", key: "address" },
-   { label: "City", key: "city" },
-   { label: "State", key: "state" },
-   { label: "Zip", key: "postCode" },
-   { label: "Country", key: "country" },
+   { label: "Item ID", key: "_id" },
+   { label: "Item code", key: "itemCode" },
+   { label: "Item title", key: "productHeading" },
+   { label: "Long description", key: "longDescription" },
+   { label: "Cost price", key: "costPrice" },
+   { label: "Unit price", key: "unitPrice" },
+   { label: "Quantity", key: "quantity" },
+   { label: "Discount", key: "discount" },
+   { label: "Item total", key: "itemTotal" },
+   { label: "Sales category", key: "salesCategory" },
+   { label: "Tax rate", key: "taxRate" },
+   { label: "Subscription", key: "subscription" },
+   { label: "Editable quantity", key: "editableQuantity" },
+   { label: "Optional", key: "optional" },
    { label: "Last changed", key: "updatedAt" }
 ];
-
 const papaparseOptions = {
    header: true,
    dynamicTyping: false,
    skipEmptyLines: true,
    transformHeader: header => {
       switch (header) {
-         case "Contact ÏĐ": return "_id";
-         case "Contact ID": return "_id";
-         case "First name": return "firstName";
-         case "Last name": return "lastName";
-         case "Company name": return "companyName";
-         case "Email": return "email";
-         case "Phone": return "phone";
-         case "Address": return "street";
-         case "City": return "city";
-         case "State": return "state";
-         case "Zip": return "postCode";
-         case "Country": return "country";
+         case "Item ID": return "_id";
+         case "Item code": return "itemCode";
+         case "Item title": return "productHeading";
+         case "Long description": return "longDescription";
+         case "Cost price": return "costPrice";
+         case "Unit price": return "unitPrice";
+         case "Quantity": return "quantity";
+         case "Discount": return "discount";
+         case "Item total": return "itemTotal";
+         case "Sales category": return "salesCategory";
+         case "Tax rate": return "taxRate";
+         case "Subscription": return "subscription";
+         case "Editable quantity": return "editableQuantity";
+         case "Optional": return "optional";
          case "Last changed": return "updatedAt";
          default: return header;
       }
@@ -97,35 +102,33 @@ export default function ImportPriceItems() {
                         <li>Start from <CSVLink
                            data={[]}
                            headers={headers}
-                           filename={"Example Contacts.csv"}
+                           filename={"Example PriceItem.csv"}
                            className="buttonLink"
-                        >an empty template</CSVLink>&nbsp;
-                        or an&nbsp;
-                        <CSVLink
-                              data={[]}
-                              headers={headers}
-                              filename={"Example Contacts.csv"}
-                              className="buttonLink"
-                           >export of items</CSVLink> (to make updates).
+                        >an empty template</CSVLink> or an
+                           <PriceItemsCSVLink cssClassName="buttonLink" linkName="export of items" showIcon={false} /> (to make updates).
                         </li>
                      </ul>
                   </li>
                   <li>
-                     Use a spreadsheet to copy contacts.
+                     Use a spreadsheet to update/copy items.
                      <ul>
                         <li>
                            Leave the first row of field names untouched, as this is needed to import.
                         </li>
                         <li>
-                           Contacts will NEVER be deleted.
+                           To update items, use the ‘Item ID’ or ‘Item Code’. <a href="https://www.quotientapp.com/help/import-export-price-items">Learn more…</a>
                         </li>
                         <li>
-                           A maximum of 1,000 contacts can be imported at a time.
+                           Items will NEVER be deleted.
+                        </li>
+                        <li>
+                           A maximum of 1,000 items can be imported at a time.
                            <br />
-                           (a limit of 5,000 contacts in total are supported in Quotient)
+                           (a limit of 5,000 items in total are supported in Quotient)
                         </li>
                      </ul>
                   </li>
+
                   <li>
                      Select your updated file and confirm…
                   </li>

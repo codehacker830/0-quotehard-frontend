@@ -76,7 +76,8 @@ export default function ImportContactsConfirm() {
             Import / Export
          </NavCrump>
          <div className="content">
-            <h3 className="my-4">The following changes will be made:</h3>
+            
+            <TopStatement availableRows={availableRows}/>
             <div className="mb-4">
                <ul className="import-ul">
                   <WillCreateStatement availableRows={availableRows} />
@@ -89,6 +90,11 @@ export default function ImportContactsConfirm() {
          </div>
       </React.Fragment>
    )
+}
+const TopStatement = (props) => {
+   const { availableRows } = props;
+   if(availableRows && availableRows.length)  return (<h3 className="my-4">The following changes will be made:</h3>);
+   else return (<h3 className="my-4">No changes to be made.</h3>);
 }
 
 const FooterActions = (props) => {

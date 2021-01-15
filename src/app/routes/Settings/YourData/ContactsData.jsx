@@ -60,7 +60,7 @@ export default function ContactsData() {
                ref={csvLinkRef}
                data={csvData}
                headers={headers}
-               filename={"HardQuote - Contacts.csv"}
+               filename={"QuoteHard - Contacts.csv"}
                className="btn btn-sm btn-alt-dark mr-2"
                style={{ display: 'none' }}
             ></CSVLink>

@@ -87,7 +87,7 @@ export default function QuotesData() {
                   ref={csvLinkRef}
                   data={csvData}
                   headers={headers}
-                  filename={"HardQuote - Quotes.csv"}
+                  filename={"QuoteHard - Quotes.csv"}
                   className="btn btn-sm btn-alt-dark mr-2"
                   style={{ display: 'none' }}
                ></CSVLink>
