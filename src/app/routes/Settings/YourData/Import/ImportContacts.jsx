@@ -60,7 +60,7 @@ export default function ImportContacts() {
             createAvailableRows,
             errorMessages
          } = data;
-         const filteredArr = dataArr.filter((item, index) => {
+         const createAvailableData = dataArr.filter((item, index) => {
             return createAvailableRows.includes(index);
          });
          history.push({
@@ -68,9 +68,8 @@ export default function ImportContacts() {
             state: {
                data: {
                   skipNum,
-                  createAvailableRows,
+                  createAvailableData,
                   errorMessages,
-                  csvArrData: filteredArr
                }
             }
          });

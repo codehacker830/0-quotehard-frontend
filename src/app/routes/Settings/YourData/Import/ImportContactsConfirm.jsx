@@ -6,9 +6,9 @@ import NavCrump from '../../../../../components/NavCrump'
 import axios from '../../../../../util/Api';
 
 const WillCreateStatement = (props) => {
-   const { createAvailableRows } = props;
-   if (createAvailableRows && createAvailableRows.length) return (
-      <li><span className="u-bold">{createAvailableRows.length}</span>{createAvailableRows.length > 1 ? " contacts" : " contact"} will be <strong>created</strong></li>
+   const { createAvailableData } = props;
+   if (Array.isArray(createAvailableData) && createAvailableData.length) return (
+      <li><span className="u-bold">{createAvailableData.length}</span>{createAvailableData.length > 1 ? " contacts" : " contact"} will be <strong>created</strong></li>
    );
    else return null;
 }
@@ -21,27 +21,24 @@ const WillSkipStatementByExist = (props) => {
 }
 const WillSkipStatementByError = (props) => {
    const { errorMessages } = props;
-   if (errorMessages && errorMessages.length) return (
+   if (Array.isArray(errorMessages) && errorMessages.length) return (
       <li>
          <span className="u-bold">{errorMessages.length}</span>{errorMessages.length > 1 ? " contacts" : " contact"} will be <strong>skipped</strong> because of{errorMessages.length > 1 ? " an error" : " errors"}:
-         {
-            errorMessages && errorMessages.length &&
-            <ul>
-               {
-                  errorMessages.map((item, index) => {
-                     return <li key={index}><span className="import-row-num">Row {item.rowIndex + 1}</span> {item.message}</li>
-                  })
-               }
-            </ul>
-         }
+         <ul>
+            {
+               errorMessages.map((item, index) => {
+                  return <li key={index}><span className="import-row-num">Row {item.rowIndex + 1}</span> {item.message}</li>
+               })
+            }
+         </ul>
       </li>
    );
    else return null;
 }
 const Statement = (props) => {
-   const { createAvailableRows } = props;
-   if (createAvailableRows && createAvailableRows.length) return <li className="pt-3"><strong>There is no undo.</strong></li>;
-   else return <li><strong>There is no undo.</strong></li>;
+   const { createAvailableData } = props;
+   if (Array.isArray(createAvailableData) && createAvailableData.length) return <li className="pt-3"><strong>There is no undo.</strong></li>;
+   else return <li><strong>There is nothing to do.</strong></li>;
 }
 
 export default function ImportContactsConfirm() {
@@ -49,21 +46,18 @@ export default function ImportContactsConfirm() {
    const history = useHistory();
 
    const [skipNum, setSkipNum] = useState(null);
-   const [createAvailableRows, setAvailableRows] = useState([]);
    const [errorMessages, setErrorMessages] = useState([]);
-   const [csvArrData, setCsvArrData] = useState([]);
+   const [createAvailableData, setCreateAvailableData] = useState([]);
    useEffect(() => {
       if (state && state.data) {
          // const {
          //    skipNum,
-         //    createAvailableRows,
+         //    createAvailableData,
          //    errorMessages,
-         //    csvArrData
          // } = state.data;
          setSkipNum(state.data.skipNum);
-         setAvailableRows(state.data.createAvailableRows);
+         setCreateAvailableData(state.data.createAvailableData);
          setErrorMessages(state.data.errorMessages);
-         setCsvArrData(state.data.csvArrData);
       } else history.push('/app/settings/your-data');
    }, []);
 
@@ -74,34 +68,34 @@ export default function ImportContactsConfirm() {
          </NavCrump>
          <div className="content">
 
-            <TopStatement createAvailableRows={createAvailableRows} />
+            <TopStatement createAvailableData={createAvailableData} />
             <div className="mb-4">
                <ul className="import-ul">
-                  <WillCreateStatement createAvailableRows={createAvailableRows} />
+                  <WillCreateStatement createAvailableData={createAvailableData} />
                   <WillSkipStatementByExist skipNum={skipNum} />
                   <WillSkipStatementByError errorMessages={errorMessages} />
-                  <Statement createAvailableRows={createAvailableRows} />
+                  <Statement createAvailableData={createAvailableData} />
                </ul>
             </div>
-            <FooterActions createAvailableRows={createAvailableRows} csvArrData={csvArrData} />
+            <FooterActions createAvailableData={createAvailableData} />
          </div>
       </React.Fragment>
    )
 }
 const TopStatement = (props) => {
-   const { createAvailableRows } = props;
-   if (createAvailableRows && createAvailableRows.length) return (<h3 className="my-4">The following changes will be made:</h3>);
+   const { createAvailableData } = props;
+   if (createAvailableData && createAvailableData.length) return (<h3 className="my-4">The following changes will be made:</h3>);
    else return (<h3 className="my-4">No changes to be made.</h3>);
 }
 
 const FooterActions = (props) => {
-   const { createAvailableRows, csvArrData } = props;
+   const { createAvailableData } = props;
    const history = useHistory();
    const [isLoading, setLoading] = useState(false);
    const onClickConfirmChanges = () => {
-      if (!csvArrData) { toast.success("Data was not defined."); return; }
+      if (!createAvailableData || !Array.isArray(createAvailableData)) { toast.success("Data was not defined."); return; }
       setLoading(true);
-      axios.post('/contacts/import/create', { csvArrData })
+      axios.post('/contacts/import/create', { csvArrData: createAvailableData })
          .then(({ data }) => {
             history.push('/app/c/contacts');
             setLoading(false);
@@ -114,7 +108,7 @@ const FooterActions = (props) => {
       <div className="mx-3">
          {/* use label to trigger manually input of CSVReader  */}
          {
-            createAvailableRows && createAvailableRows.length ?
+            createAvailableData && createAvailableData.length ?
                <button className="btn btn-primary mr-2" onClick={onClickConfirmChanges} disabled={isLoading}>
                   {isLoading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
                   &nbsp;Confirm Changes
@@ -122,7 +116,7 @@ const FooterActions = (props) => {
                : null
          }
          {
-            createAvailableRows && createAvailableRows.length ?
+            createAvailableData && createAvailableData.length ?
                <Link to="/app/settings/your-data/import/contacts" className="btn btn-secondary">
                   &nbsp;Cancel, go back
                </Link>

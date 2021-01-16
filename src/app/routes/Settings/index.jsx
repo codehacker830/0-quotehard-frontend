@@ -31,12 +31,17 @@ class Settings extends Component {
 
             <Route exact path="/app/settings/billing-overview" component={asyncComponent(() => import("./BillingOverview"))} />
             <Route exact path="/app/settings/account-information" component={asyncComponent(() => import("./AccountInformation"))} />
+            
             <Route exact path="/app/settings/your-data" component={asyncComponent(() => import("./YourData"))} />
             <Route exact path="/app/settings/your-data/import/contacts" component={asyncComponent(() => import("./YourData/Import/ImportContacts"))} />
             <Route exact path="/app/settings/your-data/import/contacts/confirm" component={asyncComponent(() => import("./YourData/Import/ImportContactsConfirm"))} />
+            
             <Route exact path="/app/settings/your-data/import/price-items" component={asyncComponent(() => import("./YourData/Import/ImportPriceItems"))} />
             <Route exact path="/app/settings/your-data/import/price-items/confirm" component={asyncComponent(() => import("./YourData/Import/ImportPriceItemsConfirm"))} />
-
+            
+            <Route exact path="/app/settings/your-data/import/text-items" component={asyncComponent(() => import("./YourData/Import/ImportTextItems"))} />
+            <Route exact path="/app/settings/your-data/import/text-items/confirm" component={asyncComponent(() => import("./YourData/Import/ImportTextItemsConfirm"))} />
+            
             <Route exact path="/app/settings/sales-category/create-new" component={asyncComponent(() => import("./SalesCategory"))} />
             <Route exact path="/app/settings/sales-category/:id" component={asyncComponent(() => import("./SalesCategory"))} />
 

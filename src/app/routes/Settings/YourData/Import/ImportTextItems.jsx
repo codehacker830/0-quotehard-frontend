@@ -5,23 +5,12 @@ import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import NavCrump from '../../../../../components/NavCrump';
 import axios from '../../../../../util/Api';
-import { PriceItemsCSVLink } from '../PriceItemsData';
+import { TextItemsCSVLink } from '../TextItemsData';
 
 const headers = [
    { label: "Item ID", key: "_id" },
-   { label: "Item code", key: "itemCode" },
-   { label: "Item title", key: "productHeading" },
+   { label: "Text heading", key: "textHeading" },
    { label: "Long description", key: "longDescription" },
-   { label: "Cost price", key: "costPrice" },
-   { label: "Unit price", key: "unitPrice" },
-   { label: "Quantity", key: "quantity" },
-   { label: "Discount", key: "discount" },
-   { label: "Item total", key: "itemTotal" },
-   { label: "Sales category", key: "salesCategory" },
-   { label: "Tax rate", key: "taxRate" },
-   { label: "Subscription", key: "subscription" },
-   { label: "Editable quantity", key: "editableQuantity" },
-   { label: "Optional", key: "optional" },
    { label: "Last changed", key: "updatedAt" }
 ];
 const papaparseOptions = {
@@ -32,25 +21,14 @@ const papaparseOptions = {
       switch (header) {
          case "Item ÏĐ": return "_id";
          case "Item ID": return "_id";
-         case "Item code": return "itemCode";
-         case "Item title": return "productHeading";
+         case "Text heading": return "textHeading";
          case "Long description": return "longDescription";
-         case "Cost price": return "costPrice";
-         case "Unit price": return "unitPrice";
-         case "Quantity": return "quantity";
-         case "Discount": return "discount";
-         case "Item total": return "itemTotal";
-         case "Sales category": return "salesCategoryName";
-         case "Tax rate": return "salesTaxName";
-         case "Subscription": return "subscription";
-         case "Editable quantity": return "editableQuantity";
-         case "Optional": return "optional";
          case "Last changed": return "updatedAt";
          default: return header;
       }
    }
 };
-export default function ImportPriceItems() {
+export default function ImportTextItems() {
    const history = useHistory();
    const [isLoading, setLoading] = useState(false);
    const onFileLoaded = (dataArr, fileInfo) => {
@@ -58,9 +36,9 @@ export default function ImportPriceItems() {
          toast.success('A maximum of 1,000 contacts can be imported at a time.');
          return;
       }
-      setLoading(true);
       console.log(" CSV DATA : ", dataArr)
-      axios.post('/templates/priceitem/import/check', { csvArrData: dataArr }).then(({ data }) => {
+      setLoading(true);
+      axios.post('/templates/textitem/import/check', { csvArrData: dataArr }).then(({ data }) => {
          console.log(" CHECKED DATA RESPONSE : ", data);
          const {
             skipNum,
@@ -81,7 +59,7 @@ export default function ImportPriceItems() {
          console.log(" createAvailableData: ", createAvailableData)
          console.log(" updateAvailableData: ", updateAvailableData)
          history.push({
-            pathname: '/app/settings/your-data/import/price-items/confirm',
+            pathname: '/app/settings/your-data/import/text-items/confirm',
             state: {
                data: {
                   skipNum,
@@ -102,7 +80,7 @@ export default function ImportPriceItems() {
             Import / Export
          </NavCrump>
          <div className="content">
-            <h3 className="my-4">Import Price Items</h3>
+            <h3 className="my-4">Import Text Items</h3>
 
             <div className="mb-4">
                <ol className="import-info-ul">
@@ -112,10 +90,10 @@ export default function ImportPriceItems() {
                         <li>Start from <CSVLink
                            data={[]}
                            headers={headers}
-                           filename={"Example Price Items.csv"}
+                           filename={"Example Text Items.csv"}
                            className="buttonLink"
                         >an empty template</CSVLink> or an
-                           <PriceItemsCSVLink cssClassName="buttonLink" linkName="export of items" showIcon={false} /> (to make updates).
+                        <TextItemsCSVLink cssClassName="buttonLink" linkName="export of items" showIcon={false} /> (to make updates).
                         </li>
                      </ul>
                   </li>
@@ -126,7 +104,7 @@ export default function ImportPriceItems() {
                            Leave the first row of field names untouched, as this is needed to import.
                         </li>
                         <li>
-                           To update items, use the ‘Item ID’ or ‘Item Code’. <a href="https://www.quotientapp.com/help/import-export-price-items">Learn more…</a>
+                           To update items, use the ‘Item ID’. <a href="https://www.quotientapp.com/help/import-export-text-items">Learn more…</a>
                         </li>
                         <li>
                            Items will NEVER be deleted.
@@ -138,7 +116,6 @@ export default function ImportPriceItems() {
                         </li>
                      </ul>
                   </li>
-
                   <li>
                      Select your updated file and confirm…
                   </li>

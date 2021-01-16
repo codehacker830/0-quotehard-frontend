@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify';
@@ -54,7 +53,7 @@ const Statement = (props) => {
    else return <li><strong>There is nothing to do.</strong></li>;
 }
 
-export default function ImportPriceItemsConfirm() {
+export default function ImportTextItemsConfirm() {
    const { state } = useLocation();
    const history = useHistory();
 
@@ -110,9 +109,9 @@ const FooterActions = (props) => {
       console.log(" createAvailableData : ", createAvailableData)
       console.log(" updateAvailableData : ", updateAvailableData)
       setLoading(true);
-      axios.post('/templates/priceitem/import/create', { createAvailableData, updateAvailableData })
+      axios.post('/templates/textitem/import/create', { createAvailableData, updateAvailableData })
          .then(({ data }) => {
-            history.push('/app/content/item-price/browse');
+            history.push('/app/content/item-text/browse');
             setLoading(false);
          })
          .catch(error => {
