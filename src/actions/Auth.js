@@ -52,16 +52,18 @@ export const userSignIn = ({ email, password, isRemember }) => {
          dispatch({ type: USER_DATA, payload: data.account });
       }).catch((err) => {
          // if(error.response.status === 422) dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
-         // toast.error('Email or password is invalid.');
          // console.log("Error****:", err.message);
-         dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
-         toast.error("Email or password is invalid.");
-         // ToastErrorNotification(errors);
+         dispatch({ type: FETCH_ERROR, payload: "Error during login request." });
+         if (err.response.status === 422) {
+            const { errors } = err.response.data;
+            if (errors) ToastErrorNotification(errors);
+         }
       });
    }
 };
 
 export const userSignUp = ({ firstName, lastName, email, password, companyName, location }) => {
+   console.log(" user Sign Up data =>", firstName, lastName, email, password, companyName, location)
    return (dispatch) => {
       dispatch({ type: FETCH_START });
       axios.post('/account', {
@@ -78,9 +80,14 @@ export const userSignUp = ({ firstName, lastName, email, password, companyName, 
          dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
          dispatch({ type: USER_DATA, payload: data.account });
       }).catch((err) => {
-         console.log("Error****:", err.response.data);
-         dispatch({ type: FETCH_ERROR, payload: err.response.data });
-
+         dispatch({ type: FETCH_ERROR, payload: "Error duing account registeration request." });
+         console.log("Error****:", err);
+         console.log("err.response****:", err.response);
+         console.log("err.response.data****:", err.response.data);
+         if (err.response.status === 422) {
+            const { errors } = err.response.data;
+            if (errors) ToastErrorNotification(errors);
+         }
       });
    }
 };

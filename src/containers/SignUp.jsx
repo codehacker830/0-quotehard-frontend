@@ -32,7 +32,7 @@ class SignUp extends Component {
          || companyName === ""
          || location === ""
       ) {
-         toast.error("Please fill up all fields.", { autoClose: false });
+         toast.success("Please fill up all fields.", { autoClose: false });
          return;
       }
       this.props.userSignUp({ ...this.state });

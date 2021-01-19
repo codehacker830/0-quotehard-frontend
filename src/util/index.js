@@ -321,7 +321,7 @@ export const ToastErrorNotification = (errors) => {
    const errKeys = Object.keys(errors);
    errKeys.map(err => {
       const errMsg = `${err} ${errors[err]}`;
-      toast.error(errMsg.charAt(0).toUpperCase() + errMsg.slice(1))
+      toast.success(errMsg.charAt(0).toUpperCase() + errMsg.slice(1))
    });
 }
 
