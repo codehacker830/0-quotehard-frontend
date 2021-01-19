@@ -64,8 +64,8 @@ const SplitCardElementForm = () => {
          if (payload.paymentMethod) {
             let subscription = await axios.post('/settings/payment/subscription', { paymentMethodId: payload.paymentMethod.id, name });
             console.log("subscription _________", subscription);
-            toast.success("Payment added");
-            history('/app/settings/billing-overview');
+            toast.success("Payment details saved - thank you for your continued support.");
+            history.push('/app/settings/billing-overview');
          } else {
             toast.success(payload.error.message);
          }
