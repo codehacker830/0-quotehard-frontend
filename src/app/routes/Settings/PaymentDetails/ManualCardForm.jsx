@@ -20,7 +20,7 @@ export default function ManualCardForm() {
          || !name
       ) { toast.success("Please fill in all fields."); return; }
       setLoading(true);
-      axios.post('/settings/payment/subscription', {
+      axios.post('/settings/payment/subscribe', {
          number,
          expMonth,
          expYear,
