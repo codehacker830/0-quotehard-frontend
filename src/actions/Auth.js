@@ -6,8 +6,8 @@ import {
    INIT_URL,
    SHOW_MESSAGE,
    SIGNOUT_USER_SUCCESS,
-   USER_DATA,
-   COMPANY_DATA,
+   AUTH_USER_DATA,
+   ACCOUNT_COMPANY_DATA,
    PERSON_DATA,
    USER_TOKEN_SET,
 
@@ -26,11 +26,13 @@ export const getUser = () => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
+         const token = JSON.parse(localStorage.getItem('token'));
+         axios.defaults.headers.common['Authorization'] = "Bearer " + token;
          const { data } = await axios.get('/account');
          console.log("get User res => : ", data);
+         dispatch({ type: AUTH_USER_DATA, payload: data.account });
+         dispatch({ type: ACCOUNT_COMPANY_DATA, payload: data.accountCompany });
          dispatch({ type: FETCH_SUCCESS });
-         dispatch({ type: USER_DATA, payload: data.account });
-         dispatch({ type: COMPANY_DATA, payload: data.accountCompany });
       } catch (err) {
          localStorage.clear();
          dispatch({ type: SIGNOUT_USER_SUCCESS });
@@ -41,15 +43,16 @@ export const getUser = () => {
 };
 
 export const userSignIn = ({ email, password, isRemember }) => {
-   return (dispatch) => {
+   return async (dispatch) => {
       dispatch({ type: FETCH_START });
       axios.post('/account/login', { email, password, isRemember }
       ).then(({ data }) => {
          localStorage.setItem("token", JSON.stringify(data.access_token));
          axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
-         dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
-         dispatch({ type: USER_DATA, payload: data.account });
+         dispatch({ type: ACCOUNT_COMPANY_DATA, payload: data.accountCompany });
+         dispatch({ type: AUTH_USER_DATA, payload: data.account });
+         dispatch({ type: FETCH_SUCCESS });
       }).catch((err) => {
          // if(error.response.status === 422) dispatch({ type: FETCH_ERROR, payload: "Email or password is invalid." });
          // console.log("Error****:", err.message);
@@ -63,8 +66,8 @@ export const userSignIn = ({ email, password, isRemember }) => {
 };
 
 export const userSignUp = (payload) => {
-   const { firstName, lastName, email, password, companyName, location } = payload;
-   return (dispatch) => {
+   const { firstName, lastName, email, password, companyName, location, history } = payload;
+   return async (dispatch) => {
       dispatch({ type: FETCH_START });
       axios.post('/account', {
          firstName,
@@ -76,9 +79,13 @@ export const userSignUp = (payload) => {
       }).then(({ data }) => {
          localStorage.setItem("token", JSON.stringify(data.access_token));
          axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
-         dispatch({ type: FETCH_SUCCESS });
+         console.error(" axios.defaults.headers.common  === ", axios.defaults.headers.common)
          dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
-         dispatch({ type: USER_DATA, payload: data.account });
+         dispatch({ type: ACCOUNT_COMPANY_DATA, payload: data.accountCompany });
+         dispatch({ type: AUTH_USER_DATA, payload: data.account });
+         dispatch({ type: FETCH_SUCCESS });
+         history.push('/app/settings/quick-start');
+         // history.push('/app');
       }).catch((err) => {
          dispatch({ type: FETCH_ERROR, payload: "Error duing account registeration request." });
          console.log("Error****:", err);
@@ -92,8 +99,6 @@ export const userSignUp = (payload) => {
    }
 };
 
-
-
 export const userSignUpByInvitation = ({ _id, accountCompany, firstName, lastName, email, password, history }) => {
    return (dispatch) => {
       dispatch({ type: FETCH_START });
@@ -104,7 +109,7 @@ export const userSignUpByInvitation = ({ _id, accountCompany, firstName, lastNam
             axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
-            dispatch({ type: USER_DATA, payload: data.account });
+            dispatch({ type: AUTH_USER_DATA, payload: data.account });
             history.push('/app');
          } else {
             console.log("payload: data.error", data.error);
@@ -151,7 +156,7 @@ export const userUpdate = ({ firstName, lastName, email, image, password }) => {
          if (data.account) {
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
-            dispatch({ type: USER_DATA, payload: data.account });
+            dispatch({ type: AUTH_USER_DATA, payload: data.account });
          } else {
             console.log("payload: data.error", data.error);
             dispatch({ type: FETCH_ERROR, payload: "Network Error" });
@@ -171,7 +176,7 @@ export const userResetPassword = ({ entoken, password }, ownProps) => {
    return (dispatch) => {
       dispatch({ type: FETCH_START });
       // dispatch({ type: USER_TOKEN_SET, payload: null });
-      // dispatch({ type: USER_DATA, payload: null });
+      // dispatch({ type: AUTH_USER_DATA, payload: null });
       axios.post('/reset-password', { entoken, password }
       ).then(({ data }) => {
          if (data.isValid) {
@@ -179,7 +184,7 @@ export const userResetPassword = ({ entoken, password }, ownProps) => {
             axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
-            dispatch({ type: USER_DATA, payload: data.account });
+            dispatch({ type: AUTH_USER_DATA, payload: data.account });
             ownProps.history.push('/app');
          } else {
             console.log(" User Reset password error ========> ", data);
@@ -203,7 +208,7 @@ export const updateAccountInfo = (payload, history) => {
       try {
          const { data } = await axios.put('/account-company', { companyName, companyDisplayName, owner, location, timeZone, dateFormat });
          dispatch({ type: FETCH_SUCCESS });
-         dispatch({ type: COMPANY_DATA, payload: data.accountCompany });
+         dispatch({ type: ACCOUNT_COMPANY_DATA, payload: data.accountCompany });
          history.push('/app/settings');
       } catch (err) {
          console.log("Error****:", err.response.data);

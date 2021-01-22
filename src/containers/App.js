@@ -44,11 +44,7 @@ class App extends Component {
       }
    }
    async componentDidMount() {
-      if (this.props.token) {
-         console.error(" >>>>>> Get User in componentDidMount ")
-         axios.defaults.headers.common['Authorization'] = "Bearer " + this.props.token;
-         await this.props.getUser();
-      }
+      await this.props.getUser();
    }
    render() {
       const { match, location, token, initURL } = this.props;

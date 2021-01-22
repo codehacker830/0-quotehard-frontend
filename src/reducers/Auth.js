@@ -1,8 +1,8 @@
 import {
    INIT_URL,
    SIGNOUT_USER_SUCCESS,
-   USER_DATA,
-   COMPANY_DATA,
+   AUTH_USER_DATA,
+   ACCOUNT_COMPANY_DATA,
    PERSON_DATA,
    USER_TOKEN_SET
 } from "../constants/ActionTypes";
@@ -30,13 +30,13 @@ export default (state = INIT_STATE, action) => {
             initURL: ''
          }
       }
-      case USER_DATA: {
+      case AUTH_USER_DATA: {
          return {
             ...state,
             authUser: action.payload,
          };
       }
-      case COMPANY_DATA: {
+      case ACCOUNT_COMPANY_DATA: {
          return {
             ...state,
             accountCompany: action.payload,

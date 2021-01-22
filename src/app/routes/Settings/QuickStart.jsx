@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { removeLogo, updateAppearanceSetting, uploadLogo } from '../../../actions/AppearanceSetting';
 import { getQuoteDefaultSetting, updateQuoteDefaultSetting } from '../../../actions/QuoteDefautSetting';
 import { getDefaultSalesTax } from '../../../actions/SalesSetting';
-import { COMPANY_DATA, GET_SALES_TAXES, LOGO_URL } from '../../../constants/ActionTypes';
+import { ACCOUNT_COMPANY_DATA, GET_SALES_TAXES, LOGO_URL } from '../../../constants/ActionTypes';
 import axios from '../../../util/Api';
 
 export const QuickStart = (props) => {
@@ -24,7 +24,6 @@ export const QuickStart = (props) => {
       dispatch(getDefaultSalesTax());
    }, [])
    const defaultSalexTax = salesSetting.salesTaxes.find(item => item._id === salesSetting.defaultSalesTax);
-   console.log("object", defaultSalexTax)
    const handleClickFileOpen = () => {
       hiddenFileInput.current.click();
    }
@@ -86,7 +85,7 @@ export const QuickStart = (props) => {
                <div className="ml-3 mb-5">
                   <select className="form-control rounded-0 maxWidth-550" id="timeZone" name="timeZone"
                      value={timeZone}
-                     onChange={(ev) => dispatch({ type: COMPANY_DATA, payload: { ...accountCompany, timeZone: ev.target.value } })}
+                     onChange={(ev) => dispatch({ type: ACCOUNT_COMPANY_DATA, payload: { ...accountCompany, timeZone: ev.target.value } })}
                   >
                      <optgroup label=" –––––– US &amp; Canada">
                         <option value={10001}>Hawaii (GMT-10:00)</option>
@@ -516,28 +515,28 @@ export const QuickStart = (props) => {
                      <label htmlFor="pLayout[_s][comp_name]">Company or Organization</label>
                      <input type="text" className="form-control rounded-0" id="pLayout[_s][comp_name]" name="pLayout[_s][comp_name]" placeholder="ACME Corp."
                         value={companyDisplayName}
-                        onChange={(ev) => dispatch({ type: COMPANY_DATA, payload: { ...accountCompany, companyDisplayName: ev.target.value } })}
+                        onChange={(ev) => dispatch({ type: ACCOUNT_COMPANY_DATA, payload: { ...accountCompany, companyDisplayName: ev.target.value } })}
                      />
                   </div>
                   <div className="maxWidth-550 mb-2">
                      <label htmlFor="pLayout__s_comp_address">Address</label>
                      <TextareaAutosize type="text" className="form-control rounded-0" id="pLayout__s_comp_address" name="pLayout__s_comp_address" rows={3} placeholder="Postal and Physical address"
                         value={address}
-                        onChange={(ev) => dispatch({ type: COMPANY_DATA, payload: { ...accountCompany, address: ev.target.value } })}
+                        onChange={(ev) => dispatch({ type: ACCOUNT_COMPANY_DATA, payload: { ...accountCompany, address: ev.target.value } })}
                      />
                   </div>
                   <div className="maxWidth-550 mb-2">
                      <label htmlFor="pLayout__s_comp_website">Website</label>
                      <input type="text" className="form-control rounded-0" id="pLayout__s_comp_website" name="pLayout__s_comp_website" placeholder="www.example.com"
                         value={website}
-                        onChange={(ev) => dispatch({ type: COMPANY_DATA, payload: { ...accountCompany, website: ev.target.value } })}
+                        onChange={(ev) => dispatch({ type: ACCOUNT_COMPANY_DATA, payload: { ...accountCompany, website: ev.target.value } })}
                      />
                   </div>
                   <div className="maxWidth-550 mb-2">
                      <label htmlFor="pLayout__s_comp_phone">Phone</label>
                      <input type="text" className="form-control rounded-0" id="pLayout__s_comp_phone" name="pLayout__s_comp_phone" placeholder=""
                         value={phone}
-                        onChange={(ev) => dispatch({ type: COMPANY_DATA, payload: { ...accountCompany, phone: ev.target.value } })}
+                        onChange={(ev) => dispatch({ type: ACCOUNT_COMPANY_DATA, payload: { ...accountCompany, phone: ev.target.value } })}
                      />
                   </div>
                </div>

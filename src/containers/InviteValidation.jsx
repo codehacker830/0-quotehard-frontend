@@ -5,7 +5,7 @@ import { getUser } from '../actions/Auth';
 import axios from '../util/Api';
 import _ from 'lodash';
 import InvitationWentWrong from './InvitationWentWrong';
-import { COMPANY_DATA, USER_DATA } from '../constants/ActionTypes';
+import { ACCOUNT_COMPANY_DATA, AUTH_USER_DATA } from '../constants/ActionTypes';
 
 function usePrevious(value) {
    const ref = useRef();
@@ -30,8 +30,8 @@ const InviteValidation = (props) => {
             console.log(" account information from invitation link =>", data);
             setAccountInfo(data.account);
             axios.get('/account').then(() => {
-               dispatch({ type: USER_DATA, payload: data.account });
-               dispatch({ type: COMPANY_DATA, payload: data.accountCompany });
+               dispatch({ type: AUTH_USER_DATA, payload: data.account });
+               dispatch({ type: ACCOUNT_COMPANY_DATA, payload: data.accountCompany });
 
                setAlreadyHaveAccess(true);
                setLoading(false);

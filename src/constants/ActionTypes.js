@@ -13,9 +13,9 @@ export const SIGNIN_USER_SUCCESS = 'signin_user_success';
 export const SIGNOUT_USER = 'signout_user';
 export const SIGNOUT_USER_SUCCESS = 'signout_user_success';
 export const INIT_URL = 'init_url';
-export const USER_DATA = 'user_data';
+export const AUTH_USER_DATA = 'auth_user_data';
 export const PERSON_DATA = 'person_data';
-export const COMPANY_DATA = 'company_data';
+export const ACCOUNT_COMPANY_DATA = 'account_company_data';
 export const USER_TOKEN_SET = 'user_token_set';
 
 
