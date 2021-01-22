@@ -48,13 +48,13 @@ export const QuickStart = (props) => {
          accountCompany: {
             logo,
             timeZone,
-            currency,
             companyDisplayName,
             address,
             website,
             phone
          },
          quoteDefaultSetting: {
+            currency,
             taxMode,
          },
          appearanceSetting: {
