@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify';
 import { allCurrencyArr } from '../constants/Dump';
+import parse from 'html-react-parser';
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
    "July", "August", "September", "October", "November", "December"
@@ -452,3 +453,11 @@ export const showCurrencyCode = (displayCurrencyCodeInTotal, currencyInd) => {
    if (displayCurrencyCodeInTotal) return allCurrencyArr[currencyInd - 1];
    else return "";
 }
+
+export const parseHtml = (str) => {
+   return parse(str.replace(/(?:\r\n|\r|\n)/g, '<br>'))
+}
+
+// export const parseHtml = (str) => {
+//    return parse(str.replace(/(?:\r\n|\r|\n)/g, '<br>'))
+// }

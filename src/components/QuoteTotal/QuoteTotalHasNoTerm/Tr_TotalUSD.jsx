@@ -16,7 +16,7 @@ class Tr_TotalUSD extends Component {
             displayCurrencyCodeInTotal,
             salesTaxes
         } = this.props;
-        console.log('this.props', this.props)
+        console.log('Tr_TotalUSD.props -------------------->', this.props)
         console.log('displayCurrencyCodeInTotal', displayCurrencyCodeInTotal)
         const currencyCode = showCurrencyCode(displayCurrencyCodeInTotal, settings.currency);
         const amountAre = switchAmountAreDes(settings.taxMode);

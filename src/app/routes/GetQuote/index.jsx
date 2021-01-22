@@ -117,14 +117,15 @@ class GetQuote extends Component {
             displayItemCode
          };
          this.props.updateQuoteSettings({ ...this.props.settings, ...defaultSetting });
-      } else if (this.props.match.path === QUOTE_GET_DUPLICATE_PATH
+      } else if (
+         this.props.match.path === QUOTE_GET_DUPLICATE_PATH
          || this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH
       ) {
-         console.log(" TTTTTTTTTTTTTTTTTTTTT 22", expirationQuoteAfter)
-         const defaultSetting = {
+         console.log(" TTTTTTTTTTTTTTTTTTTTT 22", expirationQuoteAfter);
+         this.props.updateQuoteSettings({
+            ...this.props.settings,
             validUntil: new Date(Date.now() + 1000 * 3600 * 24 * parseInt(expirationQuoteAfter))
-         };
-         this.props.updateQuoteSettings({ ...this.props.settings, ...defaultSetting });
+         });
       }
 
    }

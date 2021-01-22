@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, NavLink, withRouter } from 'react-router-dom';
 import qs from 'qs';
+import clsx from 'clsx';
 
 class SubHeader extends Component {
    render() {
@@ -8,7 +9,7 @@ class SubHeader extends Component {
       const queryObj = qs.parse(location.search, { ignoreQueryPrefix: true });
       const { merge_loser } = queryObj;
       const isMergeMode = merge_loser ? true : false;
-      let hidden = false;
+      let isHidden = false;
       if (
          location.pathname === "/app/content/template/get"
          || location.pathname.includes("/app/content/template/")
@@ -22,10 +23,10 @@ class SubHeader extends Component {
          || location.pathname.includes("/app/content/item-text/duplicate/")
 
          || isMergeMode
-      ) hidden = true;
+      ) isHidden = true;
       // this.props.match.path === '/app/content/item-text/duplicate/:id'
       return (
-         <div className={`bg-body-light border-top border-bottom ${hidden ? "d-none" : ""}`}>
+         <div className={clsx("bg-body-light border-top border-bottom", isHidden && "d-none")}>
             <div className="container px-5 py-3">
                <div className="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
                   <ul className="nav-main nav-main-horizontal">

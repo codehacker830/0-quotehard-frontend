@@ -1,63 +1,69 @@
 import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { updateAccountInfo } from '../../../actions/Auth';
 import NavCrump from '../../../components/NavCrump';
 
 export const AccountInformation = (props) => {
    const [accountCompany, setAccountCompany] = useState(props.accountCompany);
+   const dispatch = useDispatch();
+   const history = useHistory();
    const onHandleSave = () => {
-      const {
-         companyName,
-         owner,
-         location,
-         timeZone,
-         dateFormat
-      } = accountCompany;
       const payload = {
-         companyName,
-         owner,
-         location,
-         timeZone,
-         dateFormat
+         companyName: accountCompany.companyName,
+         companyDisplayName: accountCompany.companyDisplayName,
+         owner: accountCompany.owner,
+         location: accountCompany.location,
+         timeZone: accountCompany.timeZone,
+         dateFormat: accountCompany.dateFormat
       };
-      if (companyName === "") {
+      if (accountCompany.companyName === "") {
          toast.success(" Please enter an Account Name");
          return;
       }
-      props.updateAccountInfo(payload);
+      dispatch(updateAccountInfo(payload, history))
    }
    useEffect(() => {
-      const { accountCompany } = props;
-      setAccountCompany(accountCompany);
+      setAccountCompany({
+         companyName: props.accountCompany.companyName,
+         companyDisplayName: props.accountCompany.companyDisplayName,
+         owner: props.accountCompany.owner,
+         location: props.accountCompany.location,
+         timeZone: props.accountCompany.timeZone,
+         dateFormat: props.accountCompany.dateFormat,
+      });
    }, [props]);
    console.log("Account information props ===>", props);
    return (
       <React.Fragment>
          <NavCrump linkTo={`/app/settings`}>
-            Settings
+            Account Setttings
          </NavCrump>
          <div className="content">
             <div className="maxWidth-800">
-               <h1>Account Information</h1>
-
+               <h1>Account Preferences</h1>
                <div className="mb-4">
-                  <label htmlFor="quotientAccountName">Quotehard Account Name</label>
-                  <input type="text" className="form-control rounded-0 font-size-h4 font-w700" id="quotientAccountName" name="quotientAccountName"
+                  <label htmlFor="accountName">Name of Account</label>
+                  <input type="text" className="form-control rounded-0" id="accountName" name="accountName"
                      value={accountCompany.companyName}
                      onChange={(ev) => {
                         const dt = { ...accountCompany, companyName: ev.target.value }
                         setAccountCompany(dt);
                      }}
                   />
-                  <div className="font-size-sm text-sendary mb-2">
-                     To change your company name as displayed on your quotes, see:
-                     <br />
-                     <i>Settings &gt; Layout, Style and Company Information</i>.
-                     </div>
                </div>
-
-               <div className="mb-5">
+               <div className="mb-4">
+                  <label htmlFor="companyDisplayName">Company Name (displayed on Quotes)</label>
+                  <input type="text" className="form-control rounded-0" id="companyDisplayName" name="companyDisplayName"
+                     value={accountCompany.companyDisplayName}
+                     onChange={(ev) => {
+                        const dt = { ...accountCompany, companyDisplayName: ev.target.value }
+                        setAccountCompany(dt);
+                     }}
+                  />
+               </div>
+               <div className="mb-4">
                   <label htmlFor="accountOwner">Account Owner</label>
                   <select className="form-control rounded-0 maxWidth-550" id="accountOwner" name="accountOwner"
                      value={accountCompany.owner}
@@ -76,8 +82,6 @@ export const AccountInformation = (props) => {
                      To qualify for the Multi-Account 20% Discount, accounts must have the same Account Owner.
                   </div>
                </div>
-
-               <h3 className="mb-4">Account Defaults</h3>
                <div className="mb-4">
                   <label htmlFor="countryCode">Country</label>
                   <select className="form-control rounded-0 maxWidth-550" id="countryCode" name="countryCode"
@@ -534,10 +538,4 @@ const mapStateToProps = ({ auth, teamSetting }) => {
    const { teamMembers } = teamSetting;
    return { accountCompany, teamMembers };
 };
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-   return {
-      updateAccountInfo: accountCompany => dispatch(updateAccountInfo(accountCompany, ownProps)),
-   };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(AccountInformation)
+export default connect(mapStateToProps)(AccountInformation)

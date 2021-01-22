@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import NavCrump from '../../../components/NavCrump';
 import clsx from 'clsx';
 import axios from '../../../util/Api';
+import { toast } from 'react-toastify';
 
 const extractEmails = (words) => {
    const pWords = words.map(word => {
@@ -48,12 +49,12 @@ export default class EmailNotifications extends Component {
       this.setState({ isLoading: true });
       axios.post('/settings/notifications', { isViewedNotificationEnabled, quoteSentNotificationEmails, quoteAccptedNotificationEmails })
          .then(({ data }) => {
-            console.log(" RRRRRRRRRRRRRRR ", data)
             if (data.success) {
                this.setState({
                   isLoading: false,
                   invalidEmails: []
                })
+               toast.success("Saved.");
                this.props.history.push('/app/settings');
             } else {
                this.setState({
@@ -63,8 +64,9 @@ export default class EmailNotifications extends Component {
             }
          })
          .catch(error => {
+            console.error("Fetch error for email notification settings");
             this.setState({ isLoading: false });
-            this.props.history.push('/app/settings');
+            // this.props.history.push('/app/settings');
          });
    }
    componentDidMount() {

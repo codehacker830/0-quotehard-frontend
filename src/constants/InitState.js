@@ -3,7 +3,7 @@ export const initQuoteSettings = {
    sentAt: null,
    userFrom: "",
    discount: 0,
-   currency: "156",
+   currency: 156,
    taxMode: "exclusive_including",
    pricingDisplayLevel: "itemQuantityAndTotal",
    displayItemCode: true,
@@ -11,7 +11,7 @@ export const initQuoteSettings = {
 
 export const initTemplateSettings = {
    discount: 0,
-   currency: "156",
+   currency: 156,
    taxMode: "exclusive_including",
    pricingDisplayLevel: "itemQuantityAndTotal",
    displayItemCode: true,

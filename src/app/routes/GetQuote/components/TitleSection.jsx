@@ -6,6 +6,7 @@ import { updateQuoteTitle } from '../../../../actions/Data';
 
 export const TitleSection = (props) => {
     const title = useSelector(state => state.mainData.quote.title);
+    console.log(" QUOTE TITLE ===> ", title)
     const dispatch = useDispatch();
     const location = useLocation();
     console.log(" location ==> ", location);
@@ -31,7 +32,7 @@ export const TitleSection = (props) => {
                         props.updateValidWarning();
                         dispatch(updateQuoteTitle(ev.target.value));
                     }}
-                ></TextareaAutosize>
+                />
             </div>
         </div>
     )

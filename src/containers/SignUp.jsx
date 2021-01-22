@@ -12,7 +12,7 @@ class SignUp extends Component {
       email: "",
       password: "",
       companyName: "",
-      location: "232",
+      location: 232,
    };
    onHandleSubmit = (ev) => {
       ev.preventDefault();
@@ -32,10 +32,10 @@ class SignUp extends Component {
          || companyName === ""
          || location === ""
       ) {
-         toast.success("Please fill up all fields.", { autoClose: false });
+         toast.success("Please fill up all fields.");
          return;
       }
-      this.props.userSignUp({ ...this.state });
+      this.props.userSignUp({ firstName, lastName, email, password, companyName, location });
    }
    componentWillReceiveProps(nextProps) {
       console.error(" next props : ", nextProps);

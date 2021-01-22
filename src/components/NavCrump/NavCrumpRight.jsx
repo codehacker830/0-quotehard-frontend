@@ -28,7 +28,7 @@ class NavCrumpRight extends Component {
 
       return (
          <div className={`dropdown d-inline-block ${isShow ? "" : "d-none"}`} ref={this.actionsContainer}>
-            <button type="button" className="btn btn-dual" onClick={() => this.setState({ show: !this.state.show })}>
+            <button type="button" className="btn" onClick={() => this.setState({ show: !this.state.show })}>
                <span className="text-primary">Actions</span>
                <i className="fa fa-fw fa-angle-down ml-1 text-primary" />
             </button>

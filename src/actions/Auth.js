@@ -62,8 +62,8 @@ export const userSignIn = ({ email, password, isRemember }) => {
    }
 };
 
-export const userSignUp = ({ firstName, lastName, email, password, companyName, location }) => {
-   console.log(" user Sign Up data =>", firstName, lastName, email, password, companyName, location)
+export const userSignUp = (payload) => {
+   const { firstName, lastName, email, password, companyName, location } = payload;
    return (dispatch) => {
       dispatch({ type: FETCH_START });
       axios.post('/account', {
@@ -97,7 +97,7 @@ export const userSignUp = ({ firstName, lastName, email, password, companyName, 
 export const userSignUpByInvitation = ({ _id, accountCompany, firstName, lastName, email, password, history }) => {
    return (dispatch) => {
       dispatch({ type: FETCH_START });
-      axios.post('/invited-account', { _id, accountCompany, firstName, lastName, email, password }
+      axios.post('/account/invited', { _id, accountCompany, firstName, lastName, email, password }
       ).then(({ data }) => {
          if (data.account) {
             localStorage.setItem("token", JSON.stringify(data.access_token));
@@ -196,14 +196,15 @@ export const userResetPassword = ({ entoken, password }, ownProps) => {
    }
 }
 
-export const updateAccountInfo = (accountCompany, ownProps) => {
+export const updateAccountInfo = (payload, history) => {
+   const { companyName, companyDisplayName, owner, location, timeZone, dateFormat } = payload;
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
-         const { data } = await axios.put('/account-company', accountCompany);
+         const { data } = await axios.put('/account-company', { companyName, companyDisplayName, owner, location, timeZone, dateFormat });
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: COMPANY_DATA, payload: data.accountCompany });
-         ownProps.history.push('/app/settings');
+         history.push('/app/settings');
       } catch (err) {
          console.log("Error****:", err.response.data);
          dispatch({ type: FETCH_ERROR, payload: err.response.data });

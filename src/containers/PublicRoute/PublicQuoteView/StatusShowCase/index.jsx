@@ -19,20 +19,6 @@ class StatusShowCase extends Component {
          activityData: null
       };
    }
-   onClickSend = () => {
-      const payload = {
-         quoteId: this.props.quote._id
-      };
-      axios.post('/quotes/send', payload)
-         .then(({ data }) => {
-            toast.success("Quote email was sent.");
-            this.props.history.push(`/q/${data.entoken}`);
-         })
-         .catch(err => {
-            console.error(" error => ", err);
-            toast.error("Failed to send quote.");
-         });
-   }
    onClickEditDraft = () => {
       this.props.history.push(`/app/quote/${this.props.quote._id}`);
    }
@@ -56,7 +42,7 @@ class StatusShowCase extends Component {
                         <div className="author-stat-spacer" />
                         <div className="pull-left">
                            <div className="author-edit">
-                              <button type="button" className="btn btn-primary rounded-0 mr-2" onClick={this.onClickSend}>Send...</button>
+                              <button type="button" className="btn btn-primary rounded-0 mr-2" onClick={this.props.onClickConfirmSend}>Send...</button>
                               <button type="button" className="btn btn-outline-secondary rounded-0" onClick={this.onClickEditDraft}>Edit Draft</button>
                            </div>
                         </div>

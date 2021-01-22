@@ -24,12 +24,13 @@ class AppRoot extends Component {
          || location.pathname.includes("/app/c/contacts/create/")
          || location.pathname.includes("/app/c/contacts/view/")
          || location.pathname.includes("/app/c/contacts/edit/")
+         || location.pathname.includes("/app/settings/customer-email-change/")
          || location.pathname === "/app/content/templates"
          || location.pathname === "/app/content/item-price/browse"
          || location.pathname === "/app/content/item-text/browse"
       ) isBgGray = true;
       return (
-         <main id="main-container" className={isBgGray ? "" : "bg-white"}>
+         <main id="main-container" className={isBgGray ? "bg-app" : "bg-white"}>
             <Header />
             <Switch>
                <Route exact path="/app" component={asyncComponent(() => import("./routes/Dashabord/index"))} />

@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import NavCrump from '../../../components/NavCrump';
-import ProgressBar from '../../../components/ProgressBar';
-import { checkIfTeamMember, formatDate, formatDateTime, toFixedFloat } from '../../../util';
+import { checkIfTeamMember, formatDate, formatDateTime, parseHtml, toFixedFloat } from '../../../util';
 import { connect } from 'react-redux';
 import { getPublicViewPersonWithEntoken, setInitUrl, userSignOut } from '../../../actions/Auth';
 import { getTeamMembers } from '../../../actions/Team';
@@ -29,6 +28,9 @@ import AcceptBox from './AcceptBox';
 import PreviewBanner from './PreviewBanner';
 import axios from '../../../util/Api';
 import { toast } from 'react-toastify';
+import clsx from 'clsx';
+import TextareaAutosize from 'react-autosize-textarea/lib';
+import QuoteViewSend from './QuoteViewSend';
 
 class PublicQuoteView extends Component {
    constructor(props) {
@@ -42,7 +44,8 @@ class PublicQuoteView extends Component {
          isWithdrawAlertOpen: false,
          isUndoWithdrawAlertOpen: false,
 
-         isManualAcceptBoxShow: false
+         isManualAcceptBoxShow: false,
+         isViewMode: true,
       };
       this.screenEnd = React.createRef();
 
@@ -169,7 +172,7 @@ class PublicQuoteView extends Component {
       }
       else return (
          <React.Fragment>
-            <main id="main-container">
+            <main id="main-container" className="bg-app">
                <PublicVisiableOnlyAuthTeamMember>
                   <NavCrump>
                      <NavCrumpLeft linkTo={linkTo}>
@@ -334,119 +337,100 @@ class PublicQuoteView extends Component {
                   </NavCrump>
 
                   <div id="AlerterPage">
-                     {
-                        this.state.isEditAlertOpen ?
-                           <div className="alertBar alertBar-prompt">
-                              <div className="container">
-                                 <h4>Edit Quote?</h4>
-                                 <p>
-                                    While editing, the details of this Quote will be hidden from your customer.
-                                    <br />
-                                    Once saved, <strong>edits cannot be undone</strong>. Consider creating a copy instead (Actions &gt; Copy).
-                                 </p>
-                                 <div className="btnSet">
-                                    <button className="btn btn-secondary mr-2" onClick={this.onClickEditQuote}>Take offline and edit quote</button>
-                                    <button className="btn" onClick={() => this.setState({
-                                       isEditAlertOpen: false,
-                                       isUndoAcceptanceAlertOpen: false,
-                                       isDeclineAlertOpen: false,
-                                       isWithdrawAlertOpen: false,
-                                       isUndoWithdrawAlertOpen: false
-                                    })}>Cancel</button>
-                                 </div>
-                              </div>
+                     <div className={clsx("alertBar alertBar-prompt", !this.state.isEditAlertOpen && "d-none")}>
+                        <div className="container">
+                           <h4>Edit Quote?</h4>
+                           <p>While editing, the details of this Quote will be hidden from your customer.<br />
+                              Once saved, <strong>edits cannot be undone</strong>. Consider creating a copy instead (Actions &gt; Copy).
+                           </p>
+                           <div className="btnSet">
+                              <button className="btn btn-secondary mr-2" onClick={this.onClickEditQuote}>Take offline and edit quote</button>
+                              <button className="btn" onClick={() => this.setState({
+                                 isEditAlertOpen: false,
+                                 isUndoAcceptanceAlertOpen: false,
+                                 isDeclineAlertOpen: false,
+                                 isWithdrawAlertOpen: false,
+                                 isUndoWithdrawAlertOpen: false
+                              })}>Cancel</button>
                            </div>
-                           : null
-                     }
-                     {
-                        this.state.isUndoAcceptanceAlertOpen ?
-                           <div className="alertBar alertBar-prompt">
-                              <div className="container">
-                                 <h4>Undo the Acceptance?</h4>
-                                 <ul><li>The Order/reference number and any additional comments <strong>will be removed</strong>.</li></ul>
-                                 <div className="btnSet">
-                                    <button className="btn btn-secondary mr-2" onClick={this.undoAcceptance}>Undo acceptance</button>
-                                    <button className="btn" onClick={() => this.setState({
-                                       isEditAlertOpen: false,
-                                       isUndoAcceptanceAlertOpen: false,
-                                       isDeclineAlertOpen: false,
-                                       isWithdrawAlertOpen: false,
-                                       isUndoWithdrawAlertOpen: false
-                                    })}>Cancel</button>
-                                 </div>
-                              </div>
+                        </div>
+                     </div>
+                     <div className={clsx("alertBar alertBar-prompt", !this.state.isUndoAcceptanceAlertOpen && "d-none")}>
+                        <div className="container">
+                           <h4>Undo the Acceptance?</h4>
+                           <ul><li>The Order/reference number and any additional comments <strong>will be removed</strong>.</li></ul>
+                           <div className="btnSet">
+                              <button className="btn btn-secondary mr-2" onClick={this.undoAcceptance}>Undo acceptance</button>
+                              <button className="btn" onClick={() => this.setState({
+                                 isEditAlertOpen: false,
+                                 isUndoAcceptanceAlertOpen: false,
+                                 isDeclineAlertOpen: false,
+                                 isWithdrawAlertOpen: false,
+                                 isUndoWithdrawAlertOpen: false
+                              })}>Cancel</button>
                            </div>
-                           : null
-                     }
-                     {
-                        this.state.isDeclineAlertOpen ?
-                           <div className="alertBar alertBar-prompt">
-                              <div className="container">
-                                 <h4>Mark as declined?</h4>
+                        </div>
+                     </div>
+                     <div className={clsx("alertBar alertBar-prompt", !this.state.isDeclineAlertOpen && "d-none")}>
+                        <div className="container">
+                           <h4>Mark as declined?</h4>
 
-                                 <div className="btnSet">
-                                    <button className="btn btn-secondary mr-2" onClick={this.onClickDecline}>Decline Quote</button>
-                                    <button className="btn" onClick={() => this.setState({
-                                       isEditAlertOpen: false,
-                                       isUndoAcceptanceAlertOpen: false,
-                                       isDeclineAlertOpen: false,
-                                       isWithdrawAlertOpen: false,
-                                       isUndoWithdrawAlertOpen: false
-                                    })}>Cancel</button>
-                                 </div>
-                              </div>
+                           <div className="btnSet">
+                              <button className="btn btn-secondary mr-2" onClick={this.onClickDecline}>Decline Quote</button>
+                              <button className="btn" onClick={() => this.setState({
+                                 isEditAlertOpen: false,
+                                 isUndoAcceptanceAlertOpen: false,
+                                 isDeclineAlertOpen: false,
+                                 isWithdrawAlertOpen: false,
+                                 isUndoWithdrawAlertOpen: false
+                              })}>Cancel</button>
                            </div>
-                           : null
-                     }
-                     {
-                        this.state.isWithdrawAlertOpen ?
-                           <div className="alertBar alertBar-prompt">
-                              <div className="container">
-                                 <h4>Are you sure you want to withdraw this quote?</h4>
-                                 <ul>
-                                    <li>Quote items and pricing <strong>will be hidden</strong> from your customer’s view.</li>
-                                    <li>This quote will <strong>no longer be counted</strong> in your Dashboard stats.</li>
-                                 </ul>
-                                 <div className="btnSet">
-                                    <button className="btn btn-secondary mr-2" onClick={this.onClickWithdraw}>Withdraw Quote</button>
-                                    <button className="btn" onClick={() => this.setState({
-                                       isEditAlertOpen: false,
-                                       isUndoAcceptanceAlertOpen: false,
-                                       isDeclineAlertOpen: false,
-                                       isWithdrawAlertOpen: false,
-                                       isUndoWithdrawAlertOpen: false
-                                    })}>Cancel</button>
-                                 </div>
-                              </div>
+                        </div>
+                     </div>
+                     <div className={clsx("alertBar alertBar-prompt", !this.state.isWithdrawAlertOpen && "d-none")}>
+                        <div className="container">
+                           <h4>Are you sure you want to withdraw this quote?</h4>
+                           <ul>
+                              <li>Quote items and pricing <strong>will be hidden</strong> from your customer’s view.</li>
+                              <li>This quote will <strong>no longer be counted</strong> in your Dashboard stats.</li>
+                           </ul>
+                           <div className="btnSet">
+                              <button className="btn btn-secondary mr-2" onClick={this.onClickWithdraw}>Withdraw Quote</button>
+                              <button className="btn" onClick={() => this.setState({
+                                 isEditAlertOpen: false,
+                                 isUndoAcceptanceAlertOpen: false,
+                                 isDeclineAlertOpen: false,
+                                 isWithdrawAlertOpen: false,
+                                 isUndoWithdrawAlertOpen: false
+                              })}>Cancel</button>
                            </div>
-                           : null
-                     }
-
-                     {
-                        this.state.isUndoWithdrawAlertOpen ?
-                           <div className="alertBar alertBar-prompt">
-                              <div className="container">
-                                 <h4>Undo and make available to your customer again?</h4>
-                                 <div className="btnSet">
-                                    <button className="btn btn-secondary mr-2" onClick={this.onClickUndoWithdrawn}>Undo</button>
-                                    <button className="btn" onClick={() => this.setState({
-                                       isEditAlertOpen: false,
-                                       isUndoAcceptanceAlertOpen: false,
-                                       isDeclineAlertOpen: false,
-                                       isWithdrawAlertOpen: false,
-                                       isUndoWithdrawAlertOpen: false
-                                    })}>Cancel</button>
-                                 </div>
-                              </div>
+                        </div>
+                     </div>
+                     <div className={clsx("alertBar alertBar-prompt", !this.state.isUndoWithdrawAlertOpen && "d-none")}>
+                        <div className="container">
+                           <h4>Undo and make available to your customer again?</h4>
+                           <div className="btnSet">
+                              <button className="btn btn-secondary mr-2" onClick={this.onClickUndoWithdrawn}>Undo</button>
+                              <button className="btn" onClick={() => this.setState({
+                                 isEditAlertOpen: false,
+                                 isUndoAcceptanceAlertOpen: false,
+                                 isDeclineAlertOpen: false,
+                                 isWithdrawAlertOpen: false,
+                                 isUndoWithdrawAlertOpen: false
+                              })}>Cancel</button>
                            </div>
-                           : null
-                     }
+                        </div>
+                     </div>
                   </div>
                </PublicVisiableOnlyAuthTeamMember>
 
-               <div className="quoteCanvas-bg" style={{ backgroundColor: appearanceSetting.colors.background }}>
+               {/* QuoteViewSend */}
+               <QuoteViewSend isViewMode={this.state.isViewMode} setViewMode={(val) => this.setState({ isViewMode: val })} />
+
+               {/* QuoteView */}
+               <div className={clsx("quoteCanvas-bg", !this.state.isViewMode && "d-none")} style={{ backgroundColor: appearanceSetting.colors.background }}>
                   <PublicVisiableOnlyAuthTeamMember>
-                     <StatusShowCase />
+                     <StatusShowCase onClickConfirmSend={() => this.setState({ isViewMode: false })} />
                   </PublicVisiableOnlyAuthTeamMember>
                   <PreviewBanner />
 
@@ -459,7 +443,7 @@ class PublicQuoteView extends Component {
                            </PublicQuoteDetailWrapper>
 
                            <PublicQuoteItemWrapper>
-                              <h1 className="quoteCanvas-title">{quote.title}</h1>
+                              <h1 className="quoteCanvas-title">{parseHtml(quote.title)}</h1>
                               <div id="form_message" />
                               <div className="clear" />
 

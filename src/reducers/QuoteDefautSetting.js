@@ -4,7 +4,7 @@ const initialState = {
    expirationQuoteAfter: "",
    currentQuoteNumber: "",
    nextQuoteNumber: "",
-   currency: "",
+   currency: null,
    taxMode: "",
    pricingDisplayLevel: "",
    displayItemCode: true,
