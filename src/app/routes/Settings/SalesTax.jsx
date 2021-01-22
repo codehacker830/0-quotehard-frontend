@@ -14,10 +14,7 @@ export const SalesTax = (props) => {
    const [status, setStatus] = useState("");
    const [taxName, setTaxName] = useState("");
    const [taxRate, setTaxRate] = useState("");
-   const globalSetting = useSelector(state => {
-      const { defaultSalesTax } = state.globalSetting;
-      return { defaultSalesTax };
-   })
+   const defaultSalesTax = useSelector(state => state.globalSetting.defaultSalesTax);
    const onClickSave = () => {
       if (props.match.path === SALES_TAX_UPDATE_PATH) {
          axios.put(`/settings/sales-tax/${id}`, { taxName, taxRate })
@@ -40,7 +37,6 @@ export const SalesTax = (props) => {
             });
       }
    }
-   const { defaultSalesTax } = globalSetting;
 
    const dispatch = useDispatch();
    useEffect(() => {
