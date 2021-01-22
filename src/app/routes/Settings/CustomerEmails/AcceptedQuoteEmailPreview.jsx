@@ -8,7 +8,7 @@ export const AcceptedQuoteEmailPreview = () => {
    const data = useSelector(state => state.customerEmailSetting.acceptedQuote);
    return (
       <div className="mb-3">
-         <h3 className="mb-2">Accepted Quote</h3>
+         <h4 className="mb-2">Accepted Quote</h4>
          <div className="p-4 maxWidth-800 u-preview-shadow mb-2">
             <div className="emailPreviewSubject">
                {parse(previewMessageStr(data.subject))}
@@ -28,7 +28,7 @@ export const AcceptedQuoteEmailPreview = () => {
             </div>
          </div>
          <div className="mb-6">
-            <Link className="btn btn-alt-dark" to={`/app/settings/customer-email-change/1`}>Edit</Link>
+            <Link className="btn btn-alt-dark" to={`/app/settings/customer-email-change/2`}>Edit</Link>
          </div>
       </div>
    )

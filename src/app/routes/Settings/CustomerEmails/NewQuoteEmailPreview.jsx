@@ -9,7 +9,7 @@ export const NewQuoteEmailPreview = () => {
    console.log(" DATA : ", data);
    return (
       <div className="mb-3">
-         <h3 className="mb-2">New Quote</h3>
+         <h4 className="mb-2">New Quote</h4>
          <div className="p-4 maxWidth-800 u-preview-shadow mb-2">
             <div className="emailPreviewSubject">
                {parse(previewMessageStr(data.subject))}

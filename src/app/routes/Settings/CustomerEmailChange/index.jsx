@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import NavCrump from '../../../../components/NavCrump';
 import TextareaAutosize from 'react-autosize-textarea';
 import axios from '../../../../util/Api';
+import { toast } from 'react-toastify';
 
 function insertAtIndex(str, index, val) {
    let validIndex = index;
@@ -97,6 +98,11 @@ export default function CustomerEmailChange(props) {
       }
    }
    const onClickSave = () => {
+      const regex = /(?:\r\n|\r|\n)/g;
+      if (subject.match(regex)) {
+         toast.success("You may not have line breaks in the Subject.");
+         return;
+      }
       setLoading(true);
       const payload = { subject, msgHeader, msgFooter };
       // New Quote

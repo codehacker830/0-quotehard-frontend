@@ -459,7 +459,8 @@ export const parseHtml = (str) => {
 }
 export const previewMessageStr = (str) => {
    let pStr = str;
-   pStr = pStr.replaceAll(/(?:\r\n|\r|\n)/g, '<br>');
+   const regex = /(?:\r\n|\r|\n)/g;
+   pStr = pStr.replaceAll(regex, '<br>');
    pStr = pStr.replaceAll('[Quote-title]', '<span class="u-highlight-tag">Quote Title</span>');
    pStr = pStr.replaceAll('[Your-name]', '<span class="u-highlight-tag">Your Name</span>');
    pStr = pStr.replaceAll('[Your-first-name]', '<span class="u-highlight-tag">Your First Name</span>');
