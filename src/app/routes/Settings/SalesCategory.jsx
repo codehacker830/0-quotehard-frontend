@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify';
-import { getDefaultSalesCategory, getSalesTaxes, updateDefaultSalesCategory } from '../../../actions/GlobalSetting';
+import { getDefaultSalesCategory, getSalesTaxes, setSalesCategoryAsDefault } from '../../../actions/SalesSetting';
 import NavCrump from '../../../components/NavCrump'
 import axios from '../../../util/Api';
 import { SALES_CATEGORY_CREATE_PATH, SALES_CATEGORY_UPDATE_PATH, SALES_TAX_CATEGORIES_PATH } from '../../../constants/PathNames';
@@ -16,8 +16,8 @@ export const SalesCategory = (props) => {
    const [description, setDescription] = useState("");
    const [defaultSalesTax, setDefaultSalesTax] = useState("0");
 
-   const globalSetting = useSelector(state => {
-      const { defaultSalesCategory, salesTaxes } = state.globalSetting;
+   const salesSetting = useSelector(state => {
+      const { defaultSalesCategory, salesTaxes } = state.salesSetting;
       return { defaultSalesCategory, salesTaxes };
    });
    const onClickSave = () => {
@@ -42,7 +42,7 @@ export const SalesCategory = (props) => {
             });
       }
    }
-   const { defaultSalesCategory, salesTaxes } = globalSetting;
+   const { defaultSalesCategory, salesTaxes } = salesSetting;
    const dispatch = useDispatch();
    useEffect(() => {
       dispatch(getSalesTaxes("current"));
@@ -102,7 +102,7 @@ export const SalesCategory = (props) => {
    }
    const onClickDefault = () => {
       if (status === "current") {
-         dispatch(updateDefaultSalesCategory(id));
+         dispatch(setSalesCategoryAsDefault(id));
       } else {
          toast.success('You may not make the archived one as default.');
       }

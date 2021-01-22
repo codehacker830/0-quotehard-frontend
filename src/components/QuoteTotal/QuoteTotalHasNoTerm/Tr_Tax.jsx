@@ -22,9 +22,9 @@ class Tr_tax extends Component {
       );
    }
 }
-const mapStateToProps = ({ mainData, globalSetting, appearanceSetting }) => {
+const mapStateToProps = ({ mainData, salesSetting, appearanceSetting }) => {
    const { quote } = mainData;
-   const { salesTaxes } = globalSetting;
+   const { salesTaxes } = salesSetting;
    const {
       describeTaxAs
    } = appearanceSetting;

@@ -1,25 +1,30 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import TextareaAutosize from 'react-autosize-textarea/lib';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { removeLogo, updateAppearanceSetting, uploadLogo } from '../../../actions/AppearanceSetting';
-import { updateQuoteDefaultSetting } from '../../../actions/QuoteDefautSetting';
-import { COMPANY_DATA, LOGO_URL } from '../../../constants/ActionTypes';
+import { getQuoteDefaultSetting, updateQuoteDefaultSetting } from '../../../actions/QuoteDefautSetting';
+import { getDefaultSalesTax } from '../../../actions/SalesSetting';
+import { COMPANY_DATA, GET_SALES_TAXES, LOGO_URL } from '../../../constants/ActionTypes';
 import axios from '../../../util/Api';
 
 export const QuickStart = (props) => {
-   const [defaultTaxRate, setDefaultTaxRate] = useState(10);
-   const accountCompany = useSelector(state => state.auth.accountCompany);
-   const appearanceSetting = useSelector(state => state.appearanceSetting);
-   const quoteDefaultSetting = useSelector(state => state.quoteDefaultSetting);
-   const commonData = useSelector(state => state.commonData);
-
-   const logo = useSelector(state => appearanceSetting.logo);
    const dispatch = useDispatch();
    const history = useHistory();
    const hiddenFileInput = useRef();
-
+   const accountCompany = useSelector(state => state.auth.accountCompany);
+   const appearanceSetting = useSelector(state => state.appearanceSetting);
+   const quoteDefaultSetting = useSelector(state => state.quoteDefaultSetting);
+   const salesSetting = useSelector(state => state.salesSetting);
+   const commonData = useSelector(state => state.commonData);
+   const logo = useSelector(state => appearanceSetting.logo);
+   useEffect(() => {
+      dispatch(getQuoteDefaultSetting());
+      dispatch(getDefaultSalesTax());
+   }, [])
+   const defaultSalexTax = salesSetting.salesTaxes.find(item => item._id === salesSetting.defaultSalesTax);
+   console.log("object", defaultSalexTax)
    const handleClickFileOpen = () => {
       hiddenFileInput.current.click();
    }
@@ -32,25 +37,17 @@ export const QuickStart = (props) => {
    } = accountCompany;
    const {
       describeTaxAs,
-      displayCurrencySymbolInTotal,
-      displayCurrencyCodeInTotal,
    } = appearanceSetting;
    const {
-      expirationQuoteAfter,
-      currentQuoteNumber,
-      nextQuoteNumber,
       currency,
       taxMode,
-      pricingDisplayLevel,
-      displayItemCode,
-      showCostPriceMarginAlways,
-      defaultMargin
    } = quoteDefaultSetting;
 
    const onClickSave = () => {
       if (!companyDisplayName) { toast.success("Please enter an Company Name"); return; }
       const payload = {
          accountCompany: {
+            logo,
             timeZone,
             currency,
             companyDisplayName,
@@ -63,14 +60,15 @@ export const QuickStart = (props) => {
          },
          appearanceSetting: {
             describeTaxAs
-         }
+         },
+         defaultSalesTaxRate: defaultSalexTax.taxRate
       };
       console.log(" PAYLOAD --", payload)
       axios.post('/settings/quick-start', payload)
          .then(({ data }) => {
-
+            history.push('/app');
          }).catch(err => {
-
+            console.error("Failed to setup quick start setting.")
          });
    }
    return (
@@ -460,8 +458,14 @@ export const QuickStart = (props) => {
                      <div className="input-group maxWidth-180">
                         <input type="text" className="form-control rounded-0" id="defaultTaxRate" name="defaultTaxRate"
                            disabled={props.match.path === "/settings/sales-category/:id"}
-                           value={defaultTaxRate}
-                           onChange={(ev) => setDefaultTaxRate(ev.target.value)}
+                           value={defaultSalexTax && defaultSalexTax.taxRate}
+                           onChange={(ev) => {
+                              const newSalesTaxes = salesSetting.salesTaxes.map(item => {
+                                 if (item._id === salesSetting.defaultSalesTax) return { ...item, taxRate: ev.target.value };
+                                 else return item;
+                              });
+                              dispatch({ type: GET_SALES_TAXES, payload: newSalesTaxes });
+                           }}
                         />
                         <div className="input-group-append">
                            <span className="input-group-text rounded-0">%</span>

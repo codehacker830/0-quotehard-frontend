@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import Auth from './Auth';
 import Common from './Common';
-import GlobalSetting from './GlobalSetting';
+import SalesSetting from './SalesSetting';
 import AppearanceSetting from './AppearanceSetting';
 import QuoteDefautSetting from './QuoteDefautSetting';
 import Team from './Team';
@@ -13,7 +13,7 @@ export default (history) => combineReducers({
    router: connectRouter(history),
    auth: Auth,
    commonData: Common,
-   globalSetting: GlobalSetting,
+   salesSetting: SalesSetting,
    appearanceSetting: AppearanceSetting,
    quoteDefaultSetting: QuoteDefautSetting,
    teamSetting: Team,

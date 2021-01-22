@@ -25,7 +25,7 @@ export const PriceItemsCSVLink = (props) => {
    ];
    const [csvData, setCsvData] = useState([]);
    const csvLinkRef = useRef();
-   const { salesCatgories, salesTaxes } = useSelector(state => state.globalSetting);
+   const { salesCatgories, salesTaxes } = useSelector(state => state.salesSetting);
 
    const decryptSalesCategoryDes = (item) => {
       let salesCategoryName = "";

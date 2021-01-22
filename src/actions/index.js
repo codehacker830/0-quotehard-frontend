@@ -1,6 +1,6 @@
 export * from './Auth';
 export * from './Common';
-export * from './GlobalSetting';
+export * from './SalesSetting';
 export * from './AppearanceSetting';
 export * from './QuoteDefautSetting';
 export * from './Team';

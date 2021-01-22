@@ -4,7 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import { getTeamMembers } from '../../../actions/Team';
 import Team from './Team';
 import asyncComponent from '../../../util/asyncComponent';
-import { getSalesCategories, getSalesTaxes } from '../../../actions/GlobalSetting';
+import { getSalesCategories, getSalesTaxes } from '../../../actions/SalesSetting';
 import { getQuoteDefaultSetting } from '../../../actions/QuoteDefautSetting';
 
 class Settings extends Component {
@@ -12,7 +12,6 @@ class Settings extends Component {
       await this.props.getTeamMembers();
       await this.props.getSalesCategories('current');
       await this.props.getSalesTaxes('current');
-      await this.props.getQuoteDefaultSetting();
    }
    render() {
       return (

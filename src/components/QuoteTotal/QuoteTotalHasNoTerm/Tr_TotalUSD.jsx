@@ -38,13 +38,13 @@ class Tr_TotalUSD extends Component {
         )
     }
 }
-const mapStateToProps = ({ appearanceSetting, globalSetting }) => {
+const mapStateToProps = ({ appearanceSetting, salesSetting }) => {
     const {
         describeTaxAs,
         displayCurrencySymbolInTotal,
         displayCurrencyCodeInTotal
     } = appearanceSetting;
-    const { salesTaxes } = globalSetting;
+    const { salesTaxes } = salesSetting;
     return {
         describeTaxAs,
         displayCurrencySymbolInTotal,

@@ -12,7 +12,7 @@ import {
 import AddNoteBtn from "../../../components/AddNoteBtn";
 import QuoteTotal from "../../../components/QuoteTotal";
 import { connect } from "react-redux";
-import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from "../../../actions/GlobalSetting";
+import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from "../../../actions/SalesSetting";
 import NavCrumpLeft from "../../../components/NavCrump/NavCrumpLeft";
 import {
    QUOTE_GET_FROM_TEMPLATE_PATH,
@@ -407,10 +407,10 @@ class GetQuote extends Component {
       );
    }
 }
-const mapStateToProps = ({ auth, globalSetting, quoteDefaultSetting, mainData }) => {
+const mapStateToProps = ({ auth, salesSetting, quoteDefaultSetting, mainData }) => {
    const { authUser } = auth;
    const { quote } = mainData;
-   const { defaultSalesTax, defaultSalesCategory } = globalSetting;
+   const { defaultSalesTax, defaultSalesCategory } = salesSetting;
    return { authUser, quote, quoteDefaultSetting, defaultSalesTax, defaultSalesCategory }
 }
 const mapDispatchToProps = {

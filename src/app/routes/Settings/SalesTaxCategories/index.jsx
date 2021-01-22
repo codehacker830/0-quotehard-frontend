@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
-import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../../actions/GlobalSetting';
+import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from '../../../../actions/SalesSetting';
 import NavCrump from '../../../../components/NavCrump'
 import SalesCategoryTable from './SalesCategoryTable';
 import SalesTaxTable from './SalesTaxTable';
 
 export const SalesTaxCategories = (props) => {
    const [status, setStatus] = useState("current");
-   const globalSetting = useSelector(state => {
-      const { salesCatgories, salesTaxes, defaultSalesCategory, defaultSalesTax } = state.globalSetting;
+   const salesSetting = useSelector(state => {
+      const { salesCatgories, salesTaxes, defaultSalesCategory, defaultSalesTax } = state.salesSetting;
       return { salesCatgories, salesTaxes, defaultSalesCategory, defaultSalesTax };
    });
    const dispatch = useDispatch();
@@ -22,8 +22,8 @@ export const SalesTaxCategories = (props) => {
       dispatch(getSalesTaxes(status));
    }, [status]);
 
-   const { salesCatgories, salesTaxes, defaultSalesCategory, defaultSalesTax } = globalSetting;
-   console.log("SETTTINGS   ->", globalSetting);
+   const { salesCatgories, salesTaxes, defaultSalesCategory, defaultSalesTax } = salesSetting;
+   console.log("SETTTINGS   ->", salesSetting);
    console.log("status   ->", status);
    return (
       <React.Fragment>

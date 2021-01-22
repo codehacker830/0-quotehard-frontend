@@ -42,7 +42,7 @@ export const getDefaultSalesTax = () => {
    }
 }
 
-export const updateDefaultSalesCategory = (id) => {
+export const setSalesCategoryAsDefault = (id) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
@@ -60,7 +60,7 @@ export const updateDefaultSalesCategory = (id) => {
    }
 }
 
-export const updateDefaultSalesTax = (id) => {
+export const setSalesTaxAsDefault = (id) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
@@ -77,6 +77,7 @@ export const updateDefaultSalesTax = (id) => {
       }
    }
 }
+
 export const getSalesCategories = (status) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
