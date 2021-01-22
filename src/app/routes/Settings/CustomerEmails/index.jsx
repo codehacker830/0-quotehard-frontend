@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import NavCrump from '../../../../components/NavCrump';
 import NewQuoteEmailPreview from './NewQuoteEmailPreview';
 import AcceptedQuoteEmailPreview from './AcceptedQuoteEmailPreview';
 import FirstFollowUpEmailPreview from './FirstFollowUpEmailPreview';
 import SecondFollowUpEmailPreview from './SecondFollowUpEmailPreview';
 import AskForReviewEmailPreview from './/AskForReviewEmailPreview';
+import { getCustomerEmailSetting } from '../../../../actions/CustomerEmailSetting';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const CustomerEmails = (props) => {
+   const dispatch = useDispatch();
+   const customerEmailSetting = useSelector(state => state.customerEmailSetting);
+   console.log(" customerEmailSetting ===> ", customerEmailSetting)
+   useEffect(() => {
+      dispatch(getCustomerEmailSetting());
+   }, [])
    return (
       <React.Fragment>
          <NavCrump linkTo={`/app/settings`}>

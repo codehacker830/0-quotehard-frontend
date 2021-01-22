@@ -457,7 +457,20 @@ export const showCurrencyCode = (displayCurrencyCodeInTotal, currencyInd) => {
 export const parseHtml = (str) => {
    return parse(str.replace(/(?:\r\n|\r|\n)/g, '<br>'))
 }
-
-// export const parseHtml = (str) => {
-//    return parse(str.replace(/(?:\r\n|\r|\n)/g, '<br>'))
-// }
+export const previewMessageStr = (str) => {
+   let pStr = str;
+   pStr = pStr.replaceAll(/(?:\r\n|\r|\n)/g, '<br>');
+   pStr = pStr.replaceAll('[Quote-title]', '<span class="u-highlight-tag">Quote Title</span>');
+   pStr = pStr.replaceAll('[Your-name]', '<span class="u-highlight-tag">Your Name</span>');
+   pStr = pStr.replaceAll('[Your-first-name]', '<span class="u-highlight-tag">Your First Name</span>');
+   pStr = pStr.replaceAll('[Your-email]', '<span class="u-highlight-tag">Your Email Address</span>');
+   pStr = pStr.replaceAll('[Your-company-name]', '<span class="u-highlight-tag">Your Company Name</span>');
+   pStr = pStr.replaceAll('[Customer-given-names]', '<span class="u-highlight-tag">Customer Given Name(s)</span>');
+   pStr = pStr.replaceAll('[Customer-company]', '<span class="u-highlight-tag">Customer Company</span>');
+   pStr = pStr.replaceAll('[Quote-number]', '<span class="u-highlight-tag">Quote Number</span>');
+   pStr = pStr.replaceAll('[Customer-comment]', '<span class="u-highlight-tag">Customer Comment</span>');
+   pStr = pStr.replaceAll('[Customer-order-number]', '<span class="u-highlight-tag">Customer Order Number</span>');
+   
+   console.log(" previewMessageStr ====>  ", pStr)
+   return pStr;
+}

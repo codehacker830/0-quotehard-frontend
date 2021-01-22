@@ -45,3 +45,11 @@ export const UPDATE_QUOTE_DISCUSSIONS = 'update_quote_discussions';
 
 export const UPDATE_PRICEITEM_STATUS = 'update_priceitem_status';
 export const UPDATE_TEXTITEM_STATUS = 'update_textitem_status';
+
+// CustomerEmailSetting
+export const GET_CUSTOMEREMAIL_SETTING = 'get_customeremail_setting';
+export const GET_NEWQUOTE_CUSTOMEREMAIL_SETTING = 'get_newquote_customeremail_setting';
+export const GET_ACCEPTEDQUOTE_CUSTOMEREMAIL_SETTING = 'get_acceptedquote_customeremail_setting';
+export const GET_FIRSTFOLLOWUP_CUSTOMEREMAIL_SETTING = 'get_firstfollowup_customeremail_setting';
+export const GET_SECONDFOLLOWUP_CUSTOMEREMAIL_SETTING = 'get_secondfollowup_customeremail_setting';
+export const GET_ASKFORREVIEW_CUSTOMEREMAIL_SETTING = 'get_askforreview_customeremail_setting';

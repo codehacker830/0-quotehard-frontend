@@ -5,6 +5,7 @@ import Common from './Common';
 import SalesSetting from './SalesSetting';
 import AppearanceSetting from './AppearanceSetting';
 import QuoteDefautSetting from './QuoteDefautSetting';
+import CustomerEmailSetting from './CustomerEmailSetting';
 import Team from './Team';
 import Data from './Data';
 
@@ -16,6 +17,7 @@ export default (history) => combineReducers({
    salesSetting: SalesSetting,
    appearanceSetting: AppearanceSetting,
    quoteDefaultSetting: QuoteDefautSetting,
+   customerEmailSetting: CustomerEmailSetting,
    teamSetting: Team,
    mainData: Data,
 });

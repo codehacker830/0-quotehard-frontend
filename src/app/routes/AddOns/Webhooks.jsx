@@ -19,7 +19,7 @@ export default class Webhooks extends Component {
                      </p>
 
                      <div className="form-group">
-                        <label htmlFor="webhook-url">Your Webhook URL <span class="badge badge-pill badge-secondary">REQUIRED</span></label>
+                        <label htmlFor="webhook-url">Your Webhook URL <span className="badge badge-pill badge-secondary">REQUIRED</span></label>
                         <input type="text" className="form-control rounded-0 mb-2" id="webhook-url" name="webhook-url" />
                         <button className="btn btn-primary">Save</button>
                      </div>

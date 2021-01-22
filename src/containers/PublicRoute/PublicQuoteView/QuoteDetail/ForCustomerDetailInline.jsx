@@ -21,7 +21,7 @@ class ForCustomerDetailInline extends Component {
                      </div>
                      <div>
                         <label>To</label>&nbsp;
-                        <span class="quote-detail-block">
+                        <span className="quote-detail-block">
                            <PersonContactLink contact={firstPerson} />
                         </span>
                      </div>

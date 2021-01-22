@@ -1,23 +1,20 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
+import parse from 'html-react-parser';
+import { previewMessageStr } from '../../../../util';
 
 export const SecondFollowUpEmailPreview = () => {
+   const data = useSelector(state => state.customerEmailSetting.secondFollowup);
    return (
       <div className="mb-3">
          <h3 className="mb-2">First Follow-up</h3>
          <div className="p-4 maxWidth-800 u-preview-shadow mb-2">
             <div className="emailPreviewSubject">
-               Following up: <span className="u-highlight-tag">Quote Title</span>
+               {parse(previewMessageStr(data.subject))}
             </div>
             <div className="emailPreviewMessage">
-               Hi <span className="u-highlight-tag">Customer Given Name(s)</span>,<br />
-               <br />
-               This is just a quick reminder about the quote I prepared for you recently. If you have any questions I’d be happy to help. You can ask me anything direct in the quote by clicking the link below. Or feel free to call me.
-               <br />
-               <br />
-               If you’re ready to proceed, simply click the ‘Accept’ button at the bottom of the quote and I’ll get the ball rolling. I look forward to hearing from you.
-               <br />
-               <br />
+               {parse(previewMessageStr(data.msgHeader))}
             </div>
             <div className="emailPreviewMessage">
                <button className="btn btn-primary">View Quote</button>
@@ -25,6 +22,9 @@ export const SecondFollowUpEmailPreview = () => {
                <br />
                Captivating Title of Quote
                <span className="emailWording-small">CompanyName  #12345678</span>
+            </div>
+            <div className="emailPreviewMessage">
+               {parse(previewMessageStr(data.msgFooter))}
             </div>
          </div>
          <div className="mb-6">
