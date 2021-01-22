@@ -3,7 +3,7 @@ import TextareaAutosize from 'react-autosize-textarea/lib';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { removeLogo, updateAppearanceSetting, uploadLogo } from '../../../actions/AppearanceSetting';
+import { getAppearanceSetting, removeLogo, updateAppearanceSetting, uploadLogo } from '../../../actions/AppearanceSetting';
 import { getQuoteDefaultSetting, updateQuoteDefaultSetting } from '../../../actions/QuoteDefautSetting';
 import { getDefaultSalesTax } from '../../../actions/SalesSetting';
 import { ACCOUNT_COMPANY_DATA, GET_SALES_TAXES, LOGO_URL } from '../../../constants/ActionTypes';
@@ -18,10 +18,10 @@ export const QuickStart = (props) => {
    const quoteDefaultSetting = useSelector(state => state.quoteDefaultSetting);
    const salesSetting = useSelector(state => state.salesSetting);
    const commonData = useSelector(state => state.commonData);
-   const logo = useSelector(state => appearanceSetting.logo);
    useEffect(() => {
       dispatch(getQuoteDefaultSetting());
       dispatch(getDefaultSalesTax());
+      dispatch(getAppearanceSetting());
    }, [])
    const defaultSalexTax = salesSetting.salesTaxes.find(item => item._id === salesSetting.defaultSalesTax);
    const handleClickFileOpen = () => {
@@ -29,13 +29,14 @@ export const QuickStart = (props) => {
    }
    const {
       timeZone,
+   } = accountCompany;
+   const {
+      logo,
+      describeTaxAs,
       companyDisplayName,
       address,
       website,
       phone
-   } = accountCompany;
-   const {
-      describeTaxAs,
    } = appearanceSetting;
    const {
       currency,
@@ -46,19 +47,19 @@ export const QuickStart = (props) => {
       if (!companyDisplayName) { toast.success("Please enter an Company Name"); return; }
       const payload = {
          accountCompany: {
-            logo,
             timeZone,
-            companyDisplayName,
-            address,
-            website,
-            phone
          },
          quoteDefaultSetting: {
             currency,
             taxMode,
          },
          appearanceSetting: {
-            describeTaxAs
+            logo,
+            describeTaxAs,
+            companyDisplayName,
+            address,
+            website,
+            phone
          },
          defaultSalesTaxRate: defaultSalexTax.taxRate
       };
@@ -515,28 +516,40 @@ export const QuickStart = (props) => {
                      <label htmlFor="pLayout[_s][comp_name]">Company or Organization</label>
                      <input type="text" className="form-control rounded-0" id="pLayout[_s][comp_name]" name="pLayout[_s][comp_name]" placeholder="ACME Corp."
                         value={companyDisplayName}
-                        onChange={(ev) => dispatch({ type: ACCOUNT_COMPANY_DATA, payload: { ...accountCompany, companyDisplayName: ev.target.value } })}
+                        onChange={(ev) => dispatch(updateAppearanceSetting({
+                           ...appearanceSetting,
+                           companyDisplayName: ev.target.value
+                        }))}
                      />
                   </div>
                   <div className="maxWidth-550 mb-2">
                      <label htmlFor="pLayout__s_comp_address">Address</label>
                      <TextareaAutosize type="text" className="form-control rounded-0" id="pLayout__s_comp_address" name="pLayout__s_comp_address" rows={3} placeholder="Postal and Physical address"
                         value={address}
-                        onChange={(ev) => dispatch({ type: ACCOUNT_COMPANY_DATA, payload: { ...accountCompany, address: ev.target.value } })}
+                        onChange={(ev) => dispatch(updateAppearanceSetting({
+                           ...appearanceSetting,
+                           address: ev.target.value
+                        }))}
                      />
                   </div>
                   <div className="maxWidth-550 mb-2">
                      <label htmlFor="pLayout__s_comp_website">Website</label>
                      <input type="text" className="form-control rounded-0" id="pLayout__s_comp_website" name="pLayout__s_comp_website" placeholder="www.example.com"
                         value={website}
-                        onChange={(ev) => dispatch({ type: ACCOUNT_COMPANY_DATA, payload: { ...accountCompany, website: ev.target.value } })}
+                        onChange={(ev) => dispatch(updateAppearanceSetting({
+                           ...appearanceSetting,
+                           website: ev.target.value
+                        }))}
                      />
                   </div>
                   <div className="maxWidth-550 mb-2">
                      <label htmlFor="pLayout__s_comp_phone">Phone</label>
                      <input type="text" className="form-control rounded-0" id="pLayout__s_comp_phone" name="pLayout__s_comp_phone" placeholder=""
                         value={phone}
-                        onChange={(ev) => dispatch({ type: ACCOUNT_COMPANY_DATA, payload: { ...accountCompany, phone: ev.target.value } })}
+                        onChange={(ev) => dispatch(updateAppearanceSetting({
+                           ...appearanceSetting,
+                           phone: ev.target.value
+                        }))}
                      />
                   </div>
                </div>
