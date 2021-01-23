@@ -454,7 +454,7 @@ export const showCurrencyCode = (displayCurrencyCodeInTotal, currencyInd) => {
    else return "";
 }
 
-export const parseHtml = (str) => {
+export const parseStrIntoHtml = (str) => {
    const regex = /(?:\r\n|\r|\n)/g;
    return parse(str.replaceAll(regex, '<br>'))
 }
@@ -465,7 +465,6 @@ export const previewMessageStr = (str) => {
    pStr = pStr.replaceAll('[Quote-title]', '<span class="u-highlight-tag">Quote Title</span>');
    pStr = pStr.replaceAll('[Your-name]', '<span class="u-highlight-tag">Your Name</span>');
    pStr = pStr.replaceAll('[Your-first-name]', '<span class="u-highlight-tag">Your First Name</span>');
-   pStr = pStr.replaceAll('[Your-email]', '<span class="u-highlight-tag">Your Email Address</span>');
    pStr = pStr.replaceAll('[Your-company-name]', '<span class="u-highlight-tag">Your Company Name</span>');
    pStr = pStr.replaceAll('[Customer-given-names]', '<span class="u-highlight-tag">Customer Given Name(s)</span>');
    pStr = pStr.replaceAll('[Customer-company]', '<span class="u-highlight-tag">Customer Company</span>');

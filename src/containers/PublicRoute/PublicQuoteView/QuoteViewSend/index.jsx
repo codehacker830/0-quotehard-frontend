@@ -4,7 +4,7 @@ import TextareaAutosize from 'react-autosize-textarea/lib'
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { parseHtml } from '../../../../util';
+import { parseStrIntoHtml } from '../../../../util';
 import axios from '../../../../util/Api';
 
 const previewMessageStr = (str) => {
@@ -48,21 +48,21 @@ export default function QuoteViewSend(props) {
          });
    }
    const onClickDismiss = () => { };
-   const onClickCancel = () => props.setViewMode(true);
    useEffect(() => {
       axios.get('/settings/customer-email/new-quote')
          .then(({ data }) => {
             console.log(" YYYYYYYYYYY : ", data)
-            setSubject(parseHtml(data.subject));
-            setMsgHeader(parseHtml(data.msgHeader));
-            setMsgFooter(parseHtml(data.msgFooter));
+            setSubject(parseStrIntoHtml(data.subject));
+            setMsgHeader(parseStrIntoHtml(data.msgHeader));
+            setMsgFooter(parseStrIntoHtml(data.msgFooter));
          }).catch(err => {
             console.error(" Fetch error during customer email setting .")
          });
       return () => { }
    }, []);
+   const { isViewMode, onClickCancel } = props;
    return (
-      <div data-tg-control="QuoteViewSend" className={clsx("sendEmail-bg no_print", props.isViewMode && "d-none")}>
+      <div data-tg-control="QuoteViewSend" className={clsx("sendEmail-bg no_print", isViewMode && "d-none")}>
          <div className="container">
             <form acceptCharset="UTF-8">
                <div className={clsx("mb-4", isLoading ? "isHidden" : "")}>

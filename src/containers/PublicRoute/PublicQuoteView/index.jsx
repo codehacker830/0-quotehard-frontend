@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import NavCrump from '../../../components/NavCrump';
-import { checkIfTeamMember, formatDate, formatDateTime, parseHtml, toFixedFloat } from '../../../util';
+import { checkIfTeamMember, formatDate, formatDateTime, parseStrIntoHtml, toFixedFloat } from '../../../util';
 import { connect } from 'react-redux';
 import { getPublicViewPersonWithEntoken, setInitUrl, userSignOut } from '../../../actions/Auth';
 import { getTeamMembers } from '../../../actions/Team';
@@ -443,7 +443,7 @@ class PublicQuoteView extends Component {
                            </PublicQuoteDetailWrapper>
 
                            <PublicQuoteItemWrapper>
-                              <h1 className="quoteCanvas-title">{parseHtml(quote.title)}</h1>
+                              <h1 className="quoteCanvas-title">{parseStrIntoHtml(quote.title)}</h1>
                               <div id="form_message" />
                               <div className="clear" />
 
