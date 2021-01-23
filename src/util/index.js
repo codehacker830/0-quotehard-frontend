@@ -455,7 +455,8 @@ export const showCurrencyCode = (displayCurrencyCodeInTotal, currencyInd) => {
 }
 
 export const parseHtml = (str) => {
-   return parse(str.replace(/(?:\r\n|\r|\n)/g, '<br>'))
+   const regex = /(?:\r\n|\r|\n)/g;
+   return parse(str.replaceAll(regex, '<br>'))
 }
 export const previewMessageStr = (str) => {
    let pStr = str;

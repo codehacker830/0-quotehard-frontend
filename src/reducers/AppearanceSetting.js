@@ -6,7 +6,7 @@ const initialState = {
    colors: {
       buttonsAndLinks: "#2176C7",
       highlights: "#E9F1F9",
-      background: "#fff1f5"
+      background: "#f9f9f9"
    },
 
    contactDetailLayout: 0,

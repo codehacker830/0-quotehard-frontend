@@ -7,6 +7,24 @@ import { toast } from 'react-toastify';
 import { parseHtml } from '../../../../util';
 import axios from '../../../../util/Api';
 
+const previewMessageStr = (str) => {
+   let pStr = str;
+   const regex = /(?:\r\n|\r|\n)/g;
+   pStr = pStr.replaceAll(regex, '<br>');
+   pStr = pStr.replaceAll('[Quote-title]', '<span class="u-highlight-tag">Quote Title</span>');
+   pStr = pStr.replaceAll('[Your-name]', '<span class="u-highlight-tag">Your Name</span>');
+   pStr = pStr.replaceAll('[Your-first-name]', '<span class="u-highlight-tag">Your First Name</span>');
+   pStr = pStr.replaceAll('[Your-email]', '<span class="u-highlight-tag">Your Email Address</span>');
+   pStr = pStr.replaceAll('[Your-company-name]', '<span class="u-highlight-tag">Your Company Name</span>');
+   pStr = pStr.replaceAll('[Customer-given-names]', '<span class="u-highlight-tag">Customer Given Name(s)</span>');
+   pStr = pStr.replaceAll('[Customer-company]', '<span class="u-highlight-tag">Customer Company</span>');
+   pStr = pStr.replaceAll('[Quote-number]', '<span class="u-highlight-tag">Quote Number</span>');
+
+   console.log(" previewMessageStr ====>  ", pStr)
+   return pStr;
+}
+
+
 export default function QuoteViewSend(props) {
    const [isLoading, setLoading] = useState(false);
    const [subject, setSubject] = useState();
@@ -16,6 +34,7 @@ export default function QuoteViewSend(props) {
    const quote = useSelector(state => state.mainData.quote);
    console.error("AAAAAAAAAAAAAAAAA", quote);
    const onClickSendNow = () => {
+      setLoading(true);
       const quoteId = quote._id;
       axios.post('/quotes/send', { quoteId, subject, msgHeader, msgFooter })
          .then(({ data }) => {
@@ -23,6 +42,7 @@ export default function QuoteViewSend(props) {
             history.push(`/q/${data.entoken}`);
          })
          .catch(err => {
+            setLoading(false);
             console.error(" error => ", err);
             toast.error("Failed to send quote.");
          });
@@ -30,7 +50,6 @@ export default function QuoteViewSend(props) {
    const onClickDismiss = () => { };
    const onClickCancel = () => props.setViewMode(true);
    useEffect(() => {
-      console.log(" LLLLLLLL ")
       axios.get('/settings/customer-email/new-quote')
          .then(({ data }) => {
             console.log(" YYYYYYYYYYY : ", data)

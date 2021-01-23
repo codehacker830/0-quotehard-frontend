@@ -465,12 +465,12 @@ class PublicQuoteView extends Component {
                            </PublicQuoteItemWrapper>
                         </PublicViewFullWrapper>
                      </div>
-                     {/* <div className="no_print">
-                        <a className="powered-by powered-by-bg" href="http://www.qoutehard.com/">
+                     <div className="no_print">
+                        <a className={clsx("powered-by", true && "powered-by-no", "powered-by-bg")} href="http://www.qoutehard.com/">
                            <img className="powered-by-black" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-black-01.png" alt="Quotehard. Simply Smarter Quotes." />
                            <img className="powered-by-white" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-white-01.png" alt="Quotehard. Simply Smarter Quotes." />
                         </a>
-                     </div> */}
+                     </div>
                   </div>
                </div>
             </main>
