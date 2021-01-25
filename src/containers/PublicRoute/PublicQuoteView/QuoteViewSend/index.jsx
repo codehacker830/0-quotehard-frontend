@@ -4,26 +4,20 @@ import TextareaAutosize from 'react-autosize-textarea/lib'
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { parseStrIntoHtml } from '../../../../util';
 import axios from '../../../../util/Api';
+import _ from "lodash";
 
-const previewMessageStr = (str) => {
-   let pStr = str;
-   const regex = /(?:\r\n|\r|\n)/g;
-   pStr = pStr.replaceAll(regex, '<br>');
-   pStr = pStr.replaceAll('[Quote-title]', '<span class="u-highlight-tag">Quote Title</span>');
-   pStr = pStr.replaceAll('[Your-name]', '<span class="u-highlight-tag">Your Name</span>');
-   pStr = pStr.replaceAll('[Your-first-name]', '<span class="u-highlight-tag">Your First Name</span>');
-   pStr = pStr.replaceAll('[Your-email]', '<span class="u-highlight-tag">Your Email Address</span>');
-   pStr = pStr.replaceAll('[Your-company-name]', '<span class="u-highlight-tag">Your Company Name</span>');
-   pStr = pStr.replaceAll('[Customer-given-names]', '<span class="u-highlight-tag">Customer Given Name(s)</span>');
-   pStr = pStr.replaceAll('[Customer-company]', '<span class="u-highlight-tag">Customer Company</span>');
-   pStr = pStr.replaceAll('[Quote-number]', '<span class="u-highlight-tag">Quote Number</span>');
-
-   console.log(" previewMessageStr ====>  ", pStr)
-   return pStr;
+const makeStrFromNameArr = (nameArr) => {
+   let str = "";
+   if (Array.isArray(nameArr)) {
+      for (let i = 0; i < nameArr.length; i++) {
+         str += nameArr[i];
+         if (i === nameArr.length - 1) str += "";
+         else str += ", ";
+      }
+      return str;
+   } else return "";
 }
-
 
 export default function QuoteViewSend(props) {
    const [isLoading, setLoading] = useState(false);
@@ -32,7 +26,14 @@ export default function QuoteViewSend(props) {
    const [msgFooter, setMsgFooter] = useState();
    const history = useHistory();
    const quote = useSelector(state => state.mainData.quote);
+   const accountCompany = useSelector(state => state.auth.accountCompany);
    console.error("AAAAAAAAAAAAAAAAA", quote);
+   const sendEmailTo = makeStrFromNameArr(quote.toPeopleList.map(person => {
+      if (person) return person.firstName + " " + person.lastName;
+   }));
+   const { userFrom } = quote.settings;
+   const sendEmailFrom = userFrom.firstName + " " + userFrom.lastName;
+   console.log("sendEmailTo =>", sendEmailTo);
    const onClickSendNow = () => {
       setLoading(true);
       const quoteId = quote._id;
@@ -51,16 +52,35 @@ export default function QuoteViewSend(props) {
    useEffect(() => {
       axios.get('/settings/customer-email/new-quote')
          .then(({ data }) => {
-            console.log(" YYYYYYYYYYY : ", data)
-            setSubject(parseStrIntoHtml(data.subject));
-            setMsgHeader(parseStrIntoHtml(data.msgHeader));
-            setMsgFooter(parseStrIntoHtml(data.msgFooter));
+            setSubject(replacePlaceholdersWithQuoteData(data.subject));
+            setMsgHeader(replacePlaceholdersWithQuoteData(data.msgHeader));
+            setMsgFooter(replacePlaceholdersWithQuoteData(data.msgFooter));
          }).catch(err => {
             console.error(" Fetch error during customer email setting .")
          });
       return () => { }
    }, []);
-   const { isViewMode, onClickCancel } = props;
+   const replacePlaceholdersWithQuoteData = (str) => {
+      let pStr = str;
+      const customerGivenNames = makeStrFromNameArr(quote.toPeopleList.map(person => {
+         if (person) return person.firstName;
+      }));
+      const firstCustomer = _.head(quote.toPeopleList)
+      pStr = pStr.replaceAll('[Quote-title]', quote.title);
+      pStr = pStr.replaceAll('[Your-name]', sendEmailFrom);
+      pStr = pStr.replaceAll('[Your-first-name]', userFrom.firstName);
+      pStr = pStr.replaceAll('[Your-email]', userFrom.email);
+      pStr = pStr.replaceAll('[Your-company-name]', accountCompany.companyDisplayName);
+      pStr = pStr.replaceAll('[Customer-given-names]', customerGivenNames);
+      pStr = pStr.replaceAll('[Customer-company]', firstCustomer ? firstCustomer.company.companyName : "");
+      pStr = pStr.replaceAll('[Quote-number]', quote.number);
+
+      return pStr;
+   }
+   const { isViewMode, setViewMode } = props;
+   console.log(" subject ____", subject)
+   console.log(" msgHeader ____", msgHeader);
+   console.log(" msgFooter ____", msgFooter);
    return (
       <div data-tg-control="QuoteViewSend" className={clsx("sendEmail-bg no_print", isViewMode && "d-none")}>
          <div className="container">
@@ -68,7 +88,7 @@ export default function QuoteViewSend(props) {
                <div className={clsx("mb-4", isLoading ? "isHidden" : "")}>
                   <button type="button" className="btn btn-primary rounded-0 mr-2" onClick={onClickSendNow}>Send Now</button>
                   <button type="button" className="btn btn-outline-secondary rounded-0 mr-2 isHidden" onClick={onClickDismiss}>Dismiss</button>
-                  <button type="button" className="btn btn-light text-primary rounded-0" onClick={onClickCancel}>Cancel</button>
+                  <button type="button" className="btn btn-light text-primary rounded-0" onClick={() => setViewMode(true)}>Cancel</button>
                </div>
                <div className={clsx("mb-4", isLoading ? "" : "isHidden")}>
                   <button type="button" className="btn btn-secondary rounded-0 mr-2" disabled>Send...</button>
@@ -77,23 +97,23 @@ export default function QuoteViewSend(props) {
 
                <div className="form-group maxWidth-800">
                   <div className="sendEmail-toFrom">
-                     <span className="lighter">To:</span> Wanda Romano, Money Owner &nbsp;
-                              <span className="lighter">From:</span> A Devom
-                           </div>
+                     <span className="lighter">To:</span>&nbsp;{sendEmailTo}&nbsp;&nbsp;
+                     <span className="lighter">From:</span>&nbsp;{sendEmailFrom}
+                  </div>
                   <label htmlFor="input_custom_email_subject">Subject</label>
                   <TextareaAutosize
                      className="form-control emailWording-subject rounded-0"
                      id="input_custom_email_subject"
                      name="input_custom_email_subject"
-                     value={`New quote: [Quote-title]`}
-                     onChange={ev => { }}
+                     value={subject}
+                     onChange={ev => setSubject(ev.target.value)}
                   />
                   <div className="emailWording-body">
                      <TextareaAutosize className="form-control sendEmail-part1"
                         rows={3}
                         style={{ height: 90 }}
-                        value={`Hi [Customer-given-names],\n\n[Your-name] of [Your-company-name] has prepared the following quote for you:`}
-                        onChange={ev => { }}
+                        value={msgHeader}
+                        onChange={ev => setMsgHeader(ev.target.value)}
                      />
                      <div className="emailWording-nonEdit">
                         <button className="btn btn-primary">View Quote</button>
@@ -105,8 +125,8 @@ export default function QuoteViewSend(props) {
                      <TextareaAutosize className="form-control sendEmail-part2"
                         rows={3}
                         style={{ height: 105 }}
-                        value={`TTTTTT\n\naaaaaaaaaa`}
-                        onChange={ev => { }}
+                        value={msgFooter}
+                        onChange={ev => setMsgFooter(ev.target.value)}
                      />
                   </div>
                </div>
