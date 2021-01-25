@@ -137,20 +137,22 @@ class PublicQuoteView extends Component {
       this.props.history.push(`/app/content/template/get/copy-to-template/${quoteId}`)
    }
    async componentDidMount() {
-      const entoken = this.props.match.params.entoken;
+      const { entoken } = this.props.match.params;
       localStorage.setItem('entoken', entoken);
       const { auth } = this.props;
+      this.setState({ isMounting: true });
       await this.props.getPublicQuoteWithEntoken();
       await this.props.getPublicAppearanceWithEntoken();
       await this.props.getPublicViewPersonWithEntoken();
-      this.setState({ isMounting: false });
       if (auth.authUser) {
-         this.props.getTeamMembers();
+         await this.props.getTeamMembers();
       }
+      this.setState({ isMounting: false });
    }
    render() {
       console.log(" ----------- PublicQuoteView state ------", this.state);
       console.log(" ----------- PublicQuoteView props ------", this.props);
+      const { entoken } = this.props.match.params;
       const { isMounting } = this.state;
       const { location } = this.props;
       const { appearanceSetting, teamSetting, quote } = this.props;
@@ -164,11 +166,12 @@ class PublicQuoteView extends Component {
       console.error("QUOTE AUTHOR IS TEAM MEMBER ? ", isMember);
 
       if (isMounting) return <div>loading...</div>;
-      else if (this.props.match.path === '/q/:entoken/author-discuss') {
-         if (isMember) {
-            this.props.setInitUrl(`/q/${this.props.match.params.entoken}`);
+      else if (this.props.match.path === '/q/:entoken/author') {
+         if (isMember) return <Redirect to={`/q/${entoken}`} />
+         else {
+            this.props.setInitUrl(`/q/${entoken}`);
             return <Redirect to="/sign-in" />
-         } else return <Redirect to={`/q/${this.props.match.params.entoken}`} />
+         }
       }
       else return (
          <React.Fragment>

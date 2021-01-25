@@ -14,6 +14,6 @@ const token = JSON.parse(localStorage.getItem('token'));
 console.error("__ token __", token);
 
 if (token) axios.defaults.headers.common['Authorization'] = "Bearer " + token;
-else axios.defaults.headers.common['Authorization'] = null;
+else axios.defaults.headers.common['Authorization'] = "";
 
 export default axios;

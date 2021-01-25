@@ -27,7 +27,7 @@ export const getUser = () => {
       dispatch({ type: FETCH_START });
       try {
          const token = JSON.parse(localStorage.getItem('token'));
-         axios.defaults.headers.common['Authorization'] = "Bearer " + token;
+         if (token) axios.defaults.headers.common['Authorization'] = "Bearer " + token;
          const { data } = await axios.get('/account');
          console.log("get User res => : ", data);
          dispatch({ type: AUTH_USER_DATA, payload: data.account });
@@ -48,7 +48,7 @@ export const userSignIn = ({ email, password, isRemember }) => {
       axios.post('/account/login', { email, password, isRemember }
       ).then(({ data }) => {
          localStorage.setItem("token", JSON.stringify(data.access_token));
-         axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
+         if (data.access_token) axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
          dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
          dispatch({ type: ACCOUNT_COMPANY_DATA, payload: data.accountCompany });
          dispatch({ type: AUTH_USER_DATA, payload: data.account });
@@ -78,7 +78,7 @@ export const userSignUp = (payload) => {
          location
       }).then(({ data }) => {
          localStorage.setItem("token", JSON.stringify(data.access_token));
-         axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
+         if (data.access_token) axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
          console.error(" axios.defaults.headers.common  === ", axios.defaults.headers.common)
          dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
          dispatch({ type: ACCOUNT_COMPANY_DATA, payload: data.accountCompany });
@@ -106,7 +106,7 @@ export const userSignUpByInvitation = ({ _id, accountCompany, firstName, lastNam
       ).then(({ data }) => {
          if (data.account) {
             localStorage.setItem("token", JSON.stringify(data.access_token));
-            axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
+            if (data.access_token) axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
             dispatch({ type: AUTH_USER_DATA, payload: data.account });
@@ -181,7 +181,7 @@ export const userResetPassword = ({ entoken, password }, ownProps) => {
       ).then(({ data }) => {
          if (data.isValid) {
             localStorage.setItem("token", JSON.stringify(data.access_token));
-            axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
+            if (data.access_token) axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
             dispatch({ type: AUTH_USER_DATA, payload: data.account });

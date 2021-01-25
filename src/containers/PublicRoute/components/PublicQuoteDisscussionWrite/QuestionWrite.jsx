@@ -127,4 +127,4 @@ const mapStateToProps = ({ }) => {
 const mapDispatchToProps = {
     updateQuoteDiscussions
 }
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(QuestionWrite));
+export default connect(() => ({}), mapDispatchToProps) (withRouter(QuestionWrite));
