@@ -143,7 +143,7 @@ class PublicQuoteView extends Component {
       this.setState({ isMounting: true });
       await this.props.getPublicQuoteWithEntoken();
       await this.props.getPublicAppearanceWithEntoken();
-      await this.props.getPublicViewPersonWithEntoken();
+      // await this.props.getPublicViewPersonWithEntoken();
       if (auth.authUser) {
          await this.props.getTeamMembers();
       }

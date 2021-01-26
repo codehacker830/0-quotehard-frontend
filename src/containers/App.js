@@ -44,7 +44,7 @@ class App extends Component {
       }
    }
    async componentDidMount() {
-      await this.props.getUser();
+      if (this.props.token) await this.props.getUser();
    }
    render() {
       const { match, location, token, initURL } = this.props;
