@@ -428,7 +428,9 @@ class PublicQuoteView extends Component {
                </PublicVisiableOnlyAuthTeamMember>
 
                {/* QuoteViewSend */}
-               <QuoteViewSend isViewMode={this.state.isViewMode} setViewMode={(val) => this.setState({ isViewMode: val })} />
+               <PublicVisiableOnlyAuthTeamMember>
+                  <QuoteViewSend isViewMode={this.state.isViewMode} setViewMode={(val) => this.setState({ isViewMode: val })} />
+               </PublicVisiableOnlyAuthTeamMember>
 
                {/* QuoteView */}
                <div className={clsx("quoteCanvas-bg", !this.state.isViewMode && "d-none")} style={{ backgroundColor: appearanceSetting.colors.background }}>
