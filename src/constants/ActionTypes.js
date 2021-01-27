@@ -18,6 +18,8 @@ export const PERSON_DATA = 'person_data';
 export const ACCOUNT_COMPANY_DATA = 'account_company_data';
 export const USER_TOKEN_SET = 'user_token_set';
 
+export const EMAIL_NOTIFICATION_SETTING = 'email_notification_setting';
+
 
 // Settings
 export const QUOTE_DEFAULT_SETTING = 'quote_default_setting';

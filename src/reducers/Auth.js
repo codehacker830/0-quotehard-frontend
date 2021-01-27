@@ -1,10 +1,12 @@
+import { act } from "react-dom/test-utils";
 import {
    INIT_URL,
    SIGNOUT_USER_SUCCESS,
    AUTH_USER_DATA,
    ACCOUNT_COMPANY_DATA,
    PERSON_DATA,
-   USER_TOKEN_SET
+   USER_TOKEN_SET,
+   EMAIL_NOTIFICATION_SETTING
 } from "../constants/ActionTypes";
 
 const INIT_STATE = {
@@ -53,6 +55,15 @@ export default (state = INIT_STATE, action) => {
             ...state,
             token: action.payload,
          };
+      }
+      case EMAIL_NOTIFICATION_SETTING: {
+         return {
+            ...state,
+            accountCompany: {
+               ...state.accountCompany,
+               emailNotificationSetting: action.payload
+            }
+         }
       }
       default:
          return state;

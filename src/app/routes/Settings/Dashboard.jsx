@@ -13,7 +13,7 @@ export const Settings = (props) => {
       <div className="content py-5" >
          <div className="row">
             <div className="col-md-6 col-sm-12">
-               <h1 className="pt-5 px-2 mb-5">{accountCompany && accountCompany.companyName} </h1>
+               <h1 className="pt-5 px-2 mb-5">{accountCompany && accountCompany.companyName}</h1>
 
                <SettingQuote />
 
@@ -61,5 +61,6 @@ export const Settings = (props) => {
       </div>
    );
 }
+
 const mapStateToProps = ({ auth }) => ({ authUser: auth.authUser, accountCompany: auth.accountCompany });
 export default connect(mapStateToProps)(Settings)

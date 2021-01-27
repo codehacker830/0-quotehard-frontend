@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
 import { countDecimals } from '../../../../util';
 import Highcharts from 'highcharts';
+import DashMessages from './DashMessages';
 
 export default class QuoteOverview extends Component {
    render() {
@@ -46,6 +47,7 @@ export default class QuoteOverview extends Component {
       }
       return (
          <div className="col-md-6">
+            <DashMessages />
             <div className="mb-4">
                <div className="pt-4">
                   {/* Circle chart section */}

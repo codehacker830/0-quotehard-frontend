@@ -10,7 +10,6 @@ import {
    ACCOUNT_COMPANY_DATA,
    PERSON_DATA,
    USER_TOKEN_SET,
-
 } from "../constants/ActionTypes";
 import { ToastErrorNotification } from "../util";
 import axios from '../util/Api'

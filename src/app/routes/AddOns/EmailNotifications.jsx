@@ -5,6 +5,8 @@ import NavCrump from '../../../components/NavCrump';
 import clsx from 'clsx';
 import axios from '../../../util/Api';
 import { toast } from 'react-toastify';
+import { updateEmailNotificationSetting } from '../../../actions';
+import { connect } from 'react-redux';
 
 const extractEmails = (words) => {
    const pWords = words.map(word => {
@@ -25,7 +27,22 @@ const makeStrFromEmails = (emails) => {
       return str;
    } else return "";
 }
-export default class EmailNotifications extends Component {
+
+const filterInvalidEmailsArray = (emailArr) => {
+   let invalidEmails = [];
+   if (Array.isArray(emailArr)) {
+      for (let i = 0; i < emailArr.length; i++) {
+         if (!emailIsValid(emailArr[i])) invalidEmails.push(emailArr[i]);
+      }
+   }
+   return invalidEmails;
+}
+
+const emailIsValid = (email) => {
+   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
+class EmailNotifications extends Component {
    state = {
       isLoading: false,
 
@@ -44,8 +61,7 @@ export default class EmailNotifications extends Component {
       const words2 = isAcceptedNotificationEnabled ? quoteAccptedNotificationEmailsStr.split(",") : [];
       const quoteSentNotificationEmails = extractEmails(words1);
       const quoteAccptedNotificationEmails = extractEmails(words2);
-      console.log(" quoteSentNotificationEmails : ", quoteSentNotificationEmails)
-      console.log(" quoteAccptedNotificationEmails : ", quoteAccptedNotificationEmails);
+
       this.setState({ isLoading: true });
       axios.post('/settings/notifications', { isViewedNotificationEnabled, quoteSentNotificationEmails, quoteAccptedNotificationEmails })
          .then(({ data }) => {
@@ -55,6 +71,11 @@ export default class EmailNotifications extends Component {
                   invalidEmails: []
                })
                toast.success("Saved.");
+               this.props.updateEmailNotificationSetting({
+                  isQuoteViewedNotificationToAuthorEnabled: isViewedNotificationEnabled,
+                  quoteSentNotificationEmails: quoteAccptedNotificationEmails,
+                  quoteAccptedNotificationEmails: quoteSentNotificationEmails
+               });
                this.props.history.push('/app/settings');
             } else {
                this.setState({
@@ -188,3 +209,5 @@ export default class EmailNotifications extends Component {
       );
    }
 }
+const mapDispatchToProps = { updateEmailNotificationSetting }
+export default connect(() => ({}), mapDispatchToProps)(EmailNotifications);

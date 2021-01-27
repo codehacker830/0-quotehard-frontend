@@ -1,7 +1,13 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-export const AddOns = (props) => {
+const AddOns = (props) => {
+   const accountCompany = useSelector(state => state.auth.accountCompany);
+   const { isQuoteViewedNotificationToAuthorEnabled, quoteAccptedNotificationEmails, quoteSentNotificationEmails } = accountCompany.emailNotificationSetting;
+   const isEmailNotifications = isQuoteViewedNotificationToAuthorEnabled
+      || (quoteAccptedNotificationEmails.length > 0)
+      || (quoteSentNotificationEmails.length > 0);
    return (
       <React.Fragment>
          <h3 className="settings-title">Add-ons</h3>
@@ -11,7 +17,11 @@ export const AddOns = (props) => {
                         Follow-ups
                      </Link>
          <Link className="set-option" to="/app/add-ons/notifications">
-            <span className="label label-on float-right">ON</span>
+            {
+               isEmailNotifications ?
+                  <span className="label label-on float-right">ON</span>
+                  : <span className="label label-off float-right">OFF</span>
+            }
             <img src="https://asset.quotientapp.com/image/integration-02/fav-icon-01/notifications.png"
                alt="Email Notifications" />
                         Email Notifications

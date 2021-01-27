@@ -6,3 +6,4 @@ export * from './QuoteDefautSetting';
 export * from './CustomerEmailSetting';
 export * from './Team';
 export * from './Data';
+export * from './EmailNotificationSetting';
