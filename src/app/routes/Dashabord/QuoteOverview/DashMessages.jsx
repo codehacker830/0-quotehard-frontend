@@ -5,6 +5,18 @@ export default function DashMessages() {
    return (
       <div className="dash-messages">
          <div className="dash-messages-row">
+            <div className="avatar-48" style={{ marginRight: 10, backgroundImage: 'url(https://asset.quotientapp.com/file-s/1/avatar-v2/128/dbd5efede42790d7b57bc6d3146c5f76)' }} />                    <div className="u-overflow-hidden">
+               <p>
+                  <strong>Raffale</strong> accepted your invite.
+               </p>
+               <p>
+                  <Link className="btn btn-outline-primary btn-sm" to="/">Okay, got that</Link>
+               </p>
+            </div>
+            <div className="clear"> </div>
+         </div>
+
+         <div className="dash-messages-row">
             <div className="avatar-48"
                style={{ marginRight: 10, backgroundImage: 'url(https://secure.gravatar.com/avatar/458f2adb72c2856d24e4f2c2bd73623d?r=g&s=48&d=https%3A%2F%2Fasset.quotientapp.com%2Fimage%2Fcontact%2Fperson1.png)' }}>
             </div>
