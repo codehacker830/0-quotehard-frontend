@@ -10,7 +10,7 @@ export default function DashMessages() {
                   <strong>Raffale</strong> accepted your invite.
                </p>
                <p>
-                  <Link className="btn btn-outline-primary btn-sm" to="/">Okay, got that</Link>
+                  <Link className="btn btn-outline-primary btn-sm" to="/app">Okay, got that</Link>
                </p>
             </div>
             <div className="clear"> </div>
@@ -31,7 +31,7 @@ export default function DashMessages() {
                      I am Orsino Is this fair calculation? </small>
                </p>
                <p>
-                  <Link className="btn btn-sm btn-primary" to="/">Answer Question</Link>
+                  <Link className="btn btn-sm btn-primary" to="/app">Answer Question</Link>
                </p>
             </div>
             <div className="clear"> </div>
@@ -51,8 +51,7 @@ export default function DashMessages() {
                      I am Raul I have a question for this. </small>
                </p>
                <p>
-                  <Link className="btn btn-sm btn-primary" to="/">Answer
-                    Question</Link>
+                  <Link className="btn btn-sm btn-primary" to="/app">Answer Question</Link>
                </p>
             </div>
             <div className="clear"> </div>

@@ -135,17 +135,23 @@ class PublicQuoteView extends Component {
       this.props.history.push(`/app/content/template/get/copy-to-template/${quoteId}`)
    }
    async componentDidMount() {
-      this.setState({ isMounting: true });
       if (this.props.auth.authUser) {
          await this.props.getTeamMembers();
       }
-      this.setState({ isMounting: false });
+   }
+   closeAllAlert = () => {
+      this.setState({
+         isEditAlertOpen: false,
+         isUndoAcceptanceAlertOpen: false,
+         isDeclineAlertOpen: false,
+         isWithdrawAlertOpen: false,
+         isUndoWithdrawAlertOpen: false
+      });
    }
    render() {
       console.log(" ----------- PublicQuoteView state ------", this.state);
       console.log(" ----------- PublicQuoteView props ------", this.props);
       const { entoken } = this.props.match.params;
-      const { isMounting } = this.state;
       const { location } = this.props;
       const { appearanceSetting, teamSetting, quote } = this.props;
       const { teamMembers } = teamSetting;
@@ -157,7 +163,7 @@ class PublicQuoteView extends Component {
       const isMember = checkIfTeamMember(quote.author, teamMembers);
       console.error("QUOTE AUTHOR IS TEAM MEMBER ? ", isMember);
 
-      if (isMounting) return <div>loading...</div>;
+      if (this.props.loading) return <div>Loading...</div>;
       else if (this.props.match.path === '/q/:entoken/author') {
          if (isMember) return <Redirect to={`/q/${entoken}`} />
          else {
@@ -332,7 +338,7 @@ class PublicQuoteView extends Component {
                   </NavCrump>
 
                   <div id="AlerterPage">
-                     <div className={clsx("alertBar alertBar-prompt", !this.state.isEditAlertOpen && "d-none")}>
+                     <div className={clsx("alertBar alertBar-prompt", !this.state.isEditAlertOpen && "isHidden")}>
                         <div className="container">
                            <h4>Edit Quote?</h4>
                            <p>While editing, the details of this Quote will be hidden from your customer.<br />
@@ -340,49 +346,31 @@ class PublicQuoteView extends Component {
                            </p>
                            <div className="btnSet">
                               <button className="btn btn-secondary mr-2" onClick={this.onClickEditQuote}>Take offline and edit quote</button>
-                              <button className="btn" onClick={() => this.setState({
-                                 isEditAlertOpen: false,
-                                 isUndoAcceptanceAlertOpen: false,
-                                 isDeclineAlertOpen: false,
-                                 isWithdrawAlertOpen: false,
-                                 isUndoWithdrawAlertOpen: false
-                              })}>Cancel</button>
+                              <button className="btn" onClick={this.closeAllAlert}>Cancel</button>
                            </div>
                         </div>
                      </div>
-                     <div className={clsx("alertBar alertBar-prompt", !this.state.isUndoAcceptanceAlertOpen && "d-none")}>
+                     <div className={clsx("alertBar alertBar-prompt", !this.state.isUndoAcceptanceAlertOpen && "isHidden")}>
                         <div className="container">
                            <h4>Undo the Acceptance?</h4>
                            <ul><li>The Order/reference number and any additional comments <strong>will be removed</strong>.</li></ul>
                            <div className="btnSet">
                               <button className="btn btn-secondary mr-2" onClick={this.undoAcceptance}>Undo acceptance</button>
-                              <button className="btn" onClick={() => this.setState({
-                                 isEditAlertOpen: false,
-                                 isUndoAcceptanceAlertOpen: false,
-                                 isDeclineAlertOpen: false,
-                                 isWithdrawAlertOpen: false,
-                                 isUndoWithdrawAlertOpen: false
-                              })}>Cancel</button>
+                              <button className="btn" onClick={this.closeAllAlert}>Cancel</button>
                            </div>
                         </div>
                      </div>
-                     <div className={clsx("alertBar alertBar-prompt", !this.state.isDeclineAlertOpen && "d-none")}>
+                     <div className={clsx("alertBar alertBar-prompt", !this.state.isDeclineAlertOpen && "isHidden")}>
                         <div className="container">
-                           <h4>Mark as declined?</h4>
-
+                           <h4 className="mb-2">Mark as declined?</h4>
+                           <p>This quote will also be archived.</p>
                            <div className="btnSet">
                               <button className="btn btn-secondary mr-2" onClick={this.onClickDecline}>Decline Quote</button>
-                              <button className="btn" onClick={() => this.setState({
-                                 isEditAlertOpen: false,
-                                 isUndoAcceptanceAlertOpen: false,
-                                 isDeclineAlertOpen: false,
-                                 isWithdrawAlertOpen: false,
-                                 isUndoWithdrawAlertOpen: false
-                              })}>Cancel</button>
+                              <button className="btn" onClick={this.closeAllAlert}>Cancel</button>
                            </div>
                         </div>
                      </div>
-                     <div className={clsx("alertBar alertBar-prompt", !this.state.isWithdrawAlertOpen && "d-none")}>
+                     <div className={clsx("alertBar alertBar-prompt", !this.state.isWithdrawAlertOpen && "isHidden")}>
                         <div className="container">
                            <h4>Are you sure you want to withdraw this quote?</h4>
                            <ul>
@@ -391,28 +379,16 @@ class PublicQuoteView extends Component {
                            </ul>
                            <div className="btnSet">
                               <button className="btn btn-secondary mr-2" onClick={this.onClickWithdraw}>Withdraw Quote</button>
-                              <button className="btn" onClick={() => this.setState({
-                                 isEditAlertOpen: false,
-                                 isUndoAcceptanceAlertOpen: false,
-                                 isDeclineAlertOpen: false,
-                                 isWithdrawAlertOpen: false,
-                                 isUndoWithdrawAlertOpen: false
-                              })}>Cancel</button>
+                              <button className="btn" onClick={this.closeAllAlert}>Cancel</button>
                            </div>
                         </div>
                      </div>
-                     <div className={clsx("alertBar alertBar-prompt", !this.state.isUndoWithdrawAlertOpen && "d-none")}>
+                     <div className={clsx("alertBar alertBar-prompt", !this.state.isUndoWithdrawAlertOpen && "isHidden")}>
                         <div className="container">
                            <h4>Undo and make available to your customer again?</h4>
                            <div className="btnSet">
                               <button className="btn btn-secondary mr-2" onClick={this.onClickUndoWithdrawn}>Undo</button>
-                              <button className="btn" onClick={() => this.setState({
-                                 isEditAlertOpen: false,
-                                 isUndoAcceptanceAlertOpen: false,
-                                 isDeclineAlertOpen: false,
-                                 isWithdrawAlertOpen: false,
-                                 isUndoWithdrawAlertOpen: false
-                              })}>Cancel</button>
+                              <button className="btn" onClick={this.closeAllAlert}>Cancel</button>
                            </div>
                         </div>
                      </div>
@@ -476,8 +452,8 @@ class PublicQuoteView extends Component {
    }
 }
 
-const mapStateToProps = ({ auth, appearanceSetting, teamSetting, mainData }) => {
-   return { auth, appearanceSetting, teamSetting, quote: mainData.quote };
+const mapStateToProps = ({ commonData, auth, appearanceSetting, teamSetting, mainData }) => {
+   return { loading: commonData.loading, auth, appearanceSetting, teamSetting, quote: mainData.quote };
 }
 const mapDispatchToProps = {
    setInitUrl, userSignOut,
