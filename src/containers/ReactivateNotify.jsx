@@ -1,7 +1,15 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useHistory } from 'react-router-dom'
+import { userSignOut } from '../actions';
 
 export default function ReactivateNotify() {
+   const dispatch = useDispatch();
+   const history = useHistory();
+   const onClickSignOut = () => {
+      dispatch(userSignOut());
+      history.push('/sign-in');
+   }
    return (
       <main id="main-container">
          <div className="row no-gutters">
@@ -23,7 +31,7 @@ export default function ReactivateNotify() {
                         <p>
                            <Link className="btn btn-primary mr-2" to="/app/settings">Personal Settings…</Link>
                            &nbsp;
-                           <Link className="btn btn-light" to="/sign-in/exit">Sign out</Link>
+                           <button className="btn btn-light" onClick={onClickSignOut}>Sign out</button>
                         </p>
                      </div>
                   </div>

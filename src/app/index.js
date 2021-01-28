@@ -45,6 +45,16 @@ class AppRoot extends Component {
       ) isBgGray = true;
 
       if (!authUser || !accountCompany) return <>Loading...</>;
+      else if (accountCompany.status === "deactivated") return (
+         <main id="main-container" className={isBgGray ? "bg-app" : "bg-white"}>
+            <Header />
+            <Switch>
+               <Redirect exact path="/app" to="/app/settings" />
+               <Route path="/app/settings" component={asyncComponent(() => import("./routes/Settings"))} />
+               <Route component={Error404} />
+            </Switch>
+         </main>
+      );
       else return (
          <main id="main-container" className={isBgGray ? "bg-app" : "bg-white"}>
             <Header />
@@ -58,7 +68,7 @@ class AppRoot extends Component {
                <Route path="/app/content" component={asyncComponent(() => import("./routes/Templates"))} />
                <Route path="/app/settings" component={asyncComponent(() => import("./routes/Settings"))} />
                <Route path="/app/add-ons" component={asyncComponent(() => import("./routes/AddOns"))} />
-               
+
                <Route component={Error404} />
             </Switch>
          </main>

@@ -60,21 +60,6 @@ export const getAppearanceSetting = () => {
    }
 }
 
-export const getPublicAppearanceWithEntoken = () => {
-   const entoken = localStorage.getItem('entoken');
-   return async (dispatch) => {
-      dispatch({ type: FETCH_START });
-      try {
-         const { data } = await axios.post('/quotes/view-public/appearance', { entoken });
-         dispatch({ type: FETCH_SUCCESS });
-         dispatch({ type: APPEARANCE_SETTING, payload: data.appearanceSetting });
-      } catch (err) {
-         dispatch({ type: FETCH_ERROR, payload: err.message });
-         console.log("Error****:", err.message);
-      }
-   }
-}
-
 export const updateAppearanceSetting = (setting) => {
    return (dispatch) => dispatch({ type: APPEARANCE_SETTING, payload: setting });
 }

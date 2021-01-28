@@ -63,12 +63,12 @@ class App extends Component {
                <Switch>
                   <RestrictedRoute path='/app' token={token} component={asyncComponent(() => import("../app"))} />
                   <Route path='/q/:entoken' component={asyncComponent(() => import("./PublicRoute"))} />
+                  
                   <Route exact path='/sign-in' component={SignIn} />
                   <Route exact path='/sign-in/invite/create' component={InviteCreate} />
                   <Route exact path='/sign-in/invite/existing' component={InviteExisting} />
                   <Route exact path='/sign-in/invite/i/:invitationEntoken' component={InviteValidation} />
                   <Route exact path='/sign-in/reactivate/notify' component={ReactivateNotify} />
-                  
                   <Route exact path='/sign-in/an-email/verification-sent' component={VerificationEmailSent} />
 
                   <Route exact path='/new-account' component={SignUp} />
@@ -76,6 +76,8 @@ class App extends Component {
                   <Route exact path='/request-password/sent' component={RequestPasswordSent} />
                   <Route exact path='/request-password/new/expired' component={RequestPasswordExpired} />
                   <Route exact path='/request-password/change/:entoken' component={ChangePassword} />
+
+                  <Route exact path="/error404" component={Error404} />
                   <Route component={Error404} />
                </Switch>
             </div>

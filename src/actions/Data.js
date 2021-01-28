@@ -18,22 +18,6 @@ import {
 import { toast } from 'react-toastify';
 import { initPriceItem, initTextItem } from '../constants/InitState';
 
-export const getPublicQuoteWithEntoken = () => {
-   const entoken = localStorage.getItem('entoken');
-   return async (dispatch) => {
-      dispatch({ type: FETCH_START });
-      try {
-         const { data } = await axios.post('/quotes/view-public/quote', { entoken });
-         console.log("========== Publick overview did mount get quote =========", data);
-         dispatch({ type: FETCH_SUCCESS });
-         dispatch({ type: GET_QUOTE, payload: data.quote });
-      } catch (err) {
-         dispatch({ type: FETCH_ERROR, payload: err.message });
-         console.log("Error****:", err.message);
-      }
-   }
-};
-
 export const getQuoteDataById = (quoteId) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });

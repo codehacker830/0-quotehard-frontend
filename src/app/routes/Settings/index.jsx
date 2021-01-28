@@ -6,7 +6,6 @@ import Team from './Team';
 import asyncComponent from '../../../util/asyncComponent';
 import { getSalesCategories, getSalesTaxes } from '../../../actions/SalesSetting';
 import { getQuoteDefaultSetting } from '../../../actions/QuoteDefautSetting';
-import Error404 from '../../../components/Error404';
 
 class Settings extends Component {
    async componentDidMount() {
@@ -51,12 +50,10 @@ class Settings extends Component {
             <Route exact path="/app/settings/sales-tax/:id" component={asyncComponent(() => import("./SalesTax"))} />
 
             <Route exact path="/app/settings/payment-details" component={asyncComponent(() => import("./PaymentDetails"))} />
-
-            <Route component={Error404} />
          </Switch>
       );
    }
 }
 
-const mapDispatchToProps = { getTeamMembers, getSalesCategories, getSalesTaxes, getQuoteDefaultSetting };
+const mapDispatchToProps = { getTeamMembers, getSalesCategories, getSalesTaxes };
 export default connect(() => ({}), mapDispatchToProps)(Settings)

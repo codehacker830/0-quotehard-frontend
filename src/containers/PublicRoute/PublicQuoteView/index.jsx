@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom'
 import NavCrump from '../../../components/NavCrump';
 import { checkIfTeamMember, formatDate, formatDateTime, parseStrIntoHtml, toFixedFloat } from '../../../util';
 import { connect } from 'react-redux';
-import { getPublicViewPersonWithEntoken, setInitUrl, userSignOut } from '../../../actions/Auth';
+import { setInitUrl, userSignOut } from '../../../actions/Auth';
 import { getTeamMembers } from '../../../actions/Team';
 import QuoteLogo from '../components/QuoteLogo';
 import QuoteDetail from './QuoteDetail';
@@ -13,7 +13,6 @@ import PublicViewFullWrapper from '../components/PublicViewFullWrapper';
 import PublicQuoteDetailWrapper from '../components/PublicQuoteDetailWrapper';
 import PublicQuoteItemWrapper from '../components/PublicQuoteItemWrapper';
 import { SwitchQuoteLayoutClass } from '../../../util';
-import { getPublicQuoteWithEntoken } from '../../../actions/Data';
 import PublicVisiableOnlyAuthTeamMember from '../components/PublicVisiableOnlyAuthTeamMember';
 import DeclineCommentShow from '../components/DeclineCommentShow';
 import PublicQuoteViewTotalWrap from '../components/PublicQuoteViewTotalWrap';
@@ -22,7 +21,6 @@ import NavCrumpLeft from '../../../components/NavCrump/NavCrumpLeft';
 import NavCrumpRight from '../../../components/NavCrump/NavCrumpRight';
 import PublicQuoteItemList from '../components/PublicQuoteItemList';
 import PublicQuoteDiscussionList from '../components/PublicQuoteDiscussionList';
-import { getPublicAppearanceWithEntoken } from '../../../actions/AppearanceSetting';
 import PublicQuoteDisscussionWrite from '../components/PublicQuoteDisscussionWrite';
 import AcceptBox from './AcceptBox';
 import PreviewBanner from './PreviewBanner';
@@ -137,14 +135,8 @@ class PublicQuoteView extends Component {
       this.props.history.push(`/app/content/template/get/copy-to-template/${quoteId}`)
    }
    async componentDidMount() {
-      const { entoken } = this.props.match.params;
-      localStorage.setItem('entoken', entoken);
-      const { auth } = this.props;
       this.setState({ isMounting: true });
-      await this.props.getPublicQuoteWithEntoken();
-      await this.props.getPublicAppearanceWithEntoken();
-      // await this.props.getPublicViewPersonWithEntoken();
-      if (auth.authUser) {
+      if (this.props.auth.authUser) {
          await this.props.getTeamMembers();
       }
       this.setState({ isMounting: false });
@@ -489,7 +481,6 @@ const mapStateToProps = ({ auth, appearanceSetting, teamSetting, mainData }) => 
 }
 const mapDispatchToProps = {
    setInitUrl, userSignOut,
-   getPublicQuoteWithEntoken, getPublicAppearanceWithEntoken, getPublicViewPersonWithEntoken,
    getTeamMembers
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);

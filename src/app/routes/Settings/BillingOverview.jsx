@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import { getTeamMembers } from '../../../actions/Team'
 import NavCrump from '../../../components/NavCrump'
@@ -10,8 +10,44 @@ import dateFormat from 'dateformat';
 import { toInteger } from 'lodash'
 import ContentLoader from "react-content-loader"
 import { toast } from 'react-toastify'
+import clsx from 'clsx'
+import { ACCOUNT_COMPANY_DATA } from '../../../constants/ActionTypes'
 
-export const MyLoader = (props) => (
+function useEventListener(eventName, handler, element = window) {
+   // Create a ref that stores handler
+   const savedHandler = useRef();
+
+   // Update ref.current value if handler changes.
+   // This allows our effect below to always get latest handler ...
+   // ... without us needing to pass it in effect deps array ...
+   // ... and potentially cause effect to re-run every render.
+   useEffect(() => {
+      savedHandler.current = handler;
+   }, [handler]);
+
+   useEffect(
+      () => {
+         // Make sure element supports addEventListener
+         // On 
+         const isSupported = element && element.addEventListener;
+         if (!isSupported) return;
+
+         // Create event listener that calls handler function stored in ref
+         const eventListener = event => savedHandler.current(event);
+
+         // Add event listener
+         element.addEventListener(eventName, eventListener);
+
+         // Remove event listener on cleanup
+         return () => {
+            element.removeEventListener(eventName, eventListener);
+         };
+      },
+      [eventName, element] // Re-run if eventName or element changes
+   );
+};
+
+const MyLoader = (props) => (
    <ContentLoader
       speed={2}
       width={340}
@@ -69,7 +105,9 @@ const PaymentDetails = ({ card }) => {
 }
 export const BillingOverview = (props) => {
    const history = useHistory();
+   const dispatch = useDispatch();
    const [isLoading, setLoading] = useState(false);
+   const [isDeleteBtnFocused, setDeleteBtnFocused] = useState(false);
    const [isProcessing, setProcessing] = useState(false);
    const [isAlertOpen, setAlertOpen] = useState(false)
    const [currency, setCurrency] = useState("")
@@ -79,7 +117,21 @@ export const BillingOverview = (props) => {
       brand: "",
       last4: ""
    });
-   const [isEmailInvoiceEnabled, setEmailInvoiceEnabled] = useState(false)
+   const toggleBtnContainer = useRef();
+   const [isEmailInvoiceEnabled, setEmailInvoiceEnabled] = useState(false);
+   // Event handler utilizing useCallback ...
+   // ... so that reference never changes.
+   const onClickOutsideHandler = useCallback(
+      (event) => {
+         if (isDeleteBtnFocused && !toggleBtnContainer.current.contains(event.target)) {
+            setDeleteBtnFocused(false);
+         }
+      },
+      [isDeleteBtnFocused]
+   );
+
+   // Add event listener using our hook
+   useEventListener('click', onClickOutsideHandler);
    useEffect(() => {
       setLoading(true);
       axios.get('/settings/payment')
@@ -113,6 +165,7 @@ export const BillingOverview = (props) => {
       axios.put('/account-company/deactivate')
          .then(({ data }) => {
             console.log(" $$$$$$$$$$$$ ", data);
+            dispatch({ type: ACCOUNT_COMPANY_DATA, payload: data.accountCompany });
             history.push('/sign-in/reactivate/notify');
          })
          .catch(error => {
@@ -125,6 +178,30 @@ export const BillingOverview = (props) => {
          top: 0,
          behavior: "smooth"
       });
+   }
+   const submitReactivate = () => {
+      console.log(" $$$$$$$$$$$$ submitReactivate",);
+      axios.put('/account-company/reactivate')
+         .then(({ data }) => {
+            toast.success("Welcome back!")
+            dispatch({ type: ACCOUNT_COMPANY_DATA, payload: data.accountCompany });
+            history.push('/app');
+         })
+         .catch(error => {
+            toast.error("Error during reactivate account.")
+         });
+   }
+   const submitDeleteAccount = () => {
+      console.log(" $$$$$$$$$$$$ submitDeleteAccount",);
+      axios.put('/account-company/delete')
+         .then(({ data }) => {
+            toast.success("Account cancelled and all data deleted.");
+            dispatch({ type: ACCOUNT_COMPANY_DATA, payload: data.accountCompany });
+            history.push('/app/settings');
+         })
+         .catch(error => {
+            toast.error("Error during delete account data.")
+         });
    }
    return (
       <React.Fragment>
@@ -250,15 +327,39 @@ export const BillingOverview = (props) => {
 
                </div>
                <div className="mb-5">
-                  <div className="border border-danger p-4">
-                     <h3 className="mb-4">Cancel Account</h3>
-                     <button className="btn btn-danger btn-lg" onClick={() => {
-                        setAlertOpen(true);
-                        scrollToTop();
-                     }}>
-                        Deactivate, Confirm…
-                     </button>
-                  </div>
+                  {props.accountCompany.status === "active" ?
+                     <div className="border border-danger p-4">
+                        <h3 className="mb-4">Cancel Account</h3>
+                        <button className="btn btn-danger btn-lg" onClick={() => {
+                           setAlertOpen(true);
+                           scrollToTop();
+                        }}>
+                           Deactivate, Confirm…
+                        </button>
+                     </div>
+                     : <div className="border border-danger p-4">
+                        <div className={clsx("mb-4", props.accountCompany.status === "deleted" && "d-none")}>
+                           <h3 className="mb-2">Reactivate, and carry on where you left off</h3>
+                           <button className="btn btn-primary btn-lg" onClick={submitReactivate}>
+                              Reactivate
+                           </button>
+                        </div>
+                        <div>
+                           <h3 className="mb-2">Permanently delete account</h3>
+                           <p>All account data will be removed. <strong>WARNING there is no undo…</strong></p>
+                           <button className="btn btn-danger btn-lg" ref={toggleBtnContainer} onClick={() => {
+                              if (isDeleteBtnFocused) submitDeleteAccount();
+                              else setDeleteBtnFocused(true);
+                           }}>
+                              {
+                                 isDeleteBtnFocused ?
+                                    <>Really?</>
+                                    : <><i className="fab fa-fw fa-gripfire" /> Delete Forever</>
+                              }
+                           </button>
+                        </div>
+                     </div>
+                  }
                </div>
             </div>
          </div>

@@ -27,7 +27,6 @@ export default function QuoteViewSend(props) {
    const history = useHistory();
    const quote = useSelector(state => state.mainData.quote);
    const accountCompany = useSelector(state => state.auth.accountCompany);
-   console.error("AAAAAAAAAAAAAAAAA", quote);
    const sendEmailTo = makeStrFromNameArr(quote.toPeopleList.map(person => {
       if (person) return person.firstName + " " + person.lastName;
    }));
