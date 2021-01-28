@@ -19,7 +19,7 @@ export default class Leads extends Component {
                m = s.getElementsByTagName(o)[0];
                a.async = 1; a.src = g; w._qLead = function(){};
                m.parentNode.insertBefore(a, m);
-            })(window, document, 'script', 'https://www.quotientapp.com/e/39310-1d2ce4e9213f4170a3ceb990d0ae61f5/form/embed.js');
+            })(window, document, 'script', 'https://quotehard.com/e/39310-1d2ce4e9213f4170a3ceb990d0ae61f5/form/embed.js');
             _qLead.id = 'quotient-lead-form';
       </script>
       <!-- End Quotehard Lead Form -->`;
@@ -48,19 +48,19 @@ export default class Leads extends Component {
                      <div className="form-group">
                         <label htmlFor="lead-url">
                            Copy and paste to use.
-                           <Link to={`https://www.quotientapp.com/e/39310-1d2ce4e9213f4170a3ceb990d0ae61f5/form`}> Preview…</Link>
+                           <Link to={`https://quotehard.com/e/39310-1d2ce4e9213f4170a3ceb990d0ae61f5/form`}> Preview…</Link>
                         </label>
                         <input type="email"
                            className="form-control p-4 rounded-0"
                            id="lead-url" name="lead-url"
-                           value={`https://www.quotientapp.com/e/39310-1d2ce4e9213f4170a3ceb990d0ae61f5/form`}
+                           value={`https://quotehard.com/e/39310-1d2ce4e9213f4170a3ceb990d0ae61f5/form`}
                         />
                      </div>
                      {
                         this.state.isShowCode ?
                            <div>
                               <p> Copy and paste into the your HTML to embed your Lead Form.</p>
-                              <Link to="https://www.quotientapp.com/help/leads">Learn more in the support article.</Link>
+                              <Link to="https://quotehard.com/help/leads">Learn more in the support article.</Link>
                               <TextareaAutosize className="form-control p-4 rounded-0 mb-2">
                                  {this.leadFormCode}
                               </TextareaAutosize>

@@ -126,7 +126,7 @@ export default function ImportPriceItems() {
                            Leave the first row of field names untouched, as this is needed to import.
                         </li>
                         <li>
-                           To update items, use the ‘Item ID’ or ‘Item Code’. <a href="https://www.quotientapp.com/help/import-export-price-items">Learn more…</a>
+                           To update items, use the ‘Item ID’ or ‘Item Code’. <a href="https://quotehard.com/help/import-export-price-items">Learn more…</a>
                         </li>
                         <li>
                            Items will NEVER be deleted.

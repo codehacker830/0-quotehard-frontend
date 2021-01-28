@@ -3,11 +3,11 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function StarterTips() {
-    const isAddLogoDone = true;
-    const isFirstQuoteSent = true;
-    const isFirstQuoteAccepted = true;
-    const isAddOnEnabled = true;
-    const isTeamMemberInvited = true;
+    const isAddLogoDone = false;
+    const isFirstQuoteSent = false;
+    const isFirstQuoteAccepted = false;
+    const isAddOnEnabled = false;
+    const isTeamMemberInvited = false;
     const onHandleClick = () => {
 
     }

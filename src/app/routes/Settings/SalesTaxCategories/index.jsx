@@ -43,7 +43,7 @@ export const SalesTaxCategories = (props) => {
             <h3 className="text-gray font-w400 p-5">
                Create new Sales Taxes and Categories. You can also set the default Sales Tax and Sales Categories for new Quote Items.
                <br />
-               <a target="_blank" rel="noreferrer" className="font-size-sm" href="https://www.quotientapp.com/help/sales-taxes-categories">Read more in the Help Article…
+               <a target="_blank" rel="noreferrer" className="font-size-sm" href="https://quotehard.com/help/sales-taxes-categories">Read more in the Help Article…
                 </a>
             </h3>
             <div className="row">

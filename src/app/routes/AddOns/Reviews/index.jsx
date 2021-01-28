@@ -20,7 +20,7 @@ export default class Reviews extends Component {
               m = s.getElementsByTagName(o)[0];
               a.async = 1; a.src = g; w._qReviewForm = function(){};
               m.parentNode.insertBefore(a, m);
-          })(window, document, 'script', 'https://www.quotientapp.com/e/39310-e00e6ab738d94571b39bc1db4f0c019d/reviews/form-embed.js');
+          })(window, document, 'script', 'https://quotehard.com/e/39310-e00e6ab738d94571b39bc1db4f0c019d/reviews/form-embed.js');
           _qReviewForm.id = 'quotient-review-form';
       </script>
       <!-- End Quotehard Ask for Review Form -->`;
@@ -32,7 +32,7 @@ export default class Reviews extends Component {
               m = s.getElementsByTagName(o)[0];
               a.async = 1; a.src = g; w._qReviewPage = function(){};
               m.parentNode.insertBefore(a, m);
-          })(window, document, 'script', 'https://www.quotientapp.com/e/39310-e00e6ab738d94571b39bc1db4f0c019d/reviews/page-embed.js');
+          })(window, document, 'script', 'https://quotehard.com/e/39310-e00e6ab738d94571b39bc1db4f0c019d/reviews/page-embed.js');
           _qReviewPage.id = 'quotient-reviews-page';
       </script>
       <!-- End Quotehard Reviews Page -->`;
@@ -58,7 +58,7 @@ export default class Reviews extends Component {
                      <h4>Ask for Reviews Form</h4>
                      <div className="form-group">
                         <div className="row no-gutters mb-1">
-                           <Link to={`https://www.quotientapp.com/e/39310-1d2ce4e9213f4170a3ceb990d0ae61f5/form`}>Review Form</Link>
+                           <Link to={`https://quotehard.com/e/39310-1d2ce4e9213f4170a3ceb990d0ae61f5/form`}>Review Form</Link>
                         </div>
                         <label htmlFor="reviewForm-link">
                            Copy the below link to your Review Form.
@@ -66,14 +66,14 @@ export default class Reviews extends Component {
                         <input type="email"
                            className="form-control p-4 rounded-0"
                            id="reviewForm-link" name="reviewForm-link"
-                           value={`https://www.quotientapp.com/e/39310-e00e6ab738d94571b39bc1db4f0c019d/reviews/new`}
+                           value={`https://quotehard.com/e/39310-e00e6ab738d94571b39bc1db4f0c019d/reviews/new`}
                         />
                      </div>
                      {
                         this.state.isShowReviewFormCode ?
                            <div>
                               <p>Copy and paste into the your HTML to embed your Reviews.</p>
-                              <Link to="https://www.quotientapp.com/help/reviews">Learn more in the support article.</Link>
+                              <Link to="https://quotehard.com/help/reviews">Learn more in the support article.</Link>
                               <TextareaAutosize className="form-control p-4 rounded-0 mb-2">
                                  {this.reviewPageCode}
                               </TextareaAutosize>
@@ -112,7 +112,7 @@ export default class Reviews extends Component {
                      <h4>Share Your Reviews</h4>
                      <div className="form-group">
                         <div className="row no-gutters mb-1">
-                           <Link to={`https://www.quotientapp.com/e/39310-e00e6ab738d94571b39bc1db4f0c019d/reviews`}>Your Reviews Page</Link>
+                           <Link to={`https://quotehard.com/e/39310-e00e6ab738d94571b39bc1db4f0c019d/reviews`}>Your Reviews Page</Link>
                         </div>
                         <label htmlFor="reviewPage-link">
                            Copy the below link to your Reviews Page.
@@ -120,14 +120,14 @@ export default class Reviews extends Component {
                         <input type="email"
                            className="form-control p-4 rounded-0"
                            id="reviewPage-link" name="reviewPage-link"
-                           value={`https://www.quotientapp.com/e/39310-e00e6ab738d94571b39bc1db4f0c019d/reviews`}
+                           value={`https://quotehard.com/e/39310-e00e6ab738d94571b39bc1db4f0c019d/reviews`}
                         />
                      </div>
                      {
                         this.state.isShowReviewPageCode ?
                            <div>
                               <p>Copy and paste into the your HTML to embed your Reviews.</p>
-                              <a href="https://www.quotientapp.com/help/reviews">Learn more in the support article.</a>
+                              <a href="https://quotehard.com/help/reviews">Learn more in the support article.</a>
                               <TextareaAutosize className="form-control p-4 rounded-0 mb-2">
                                  {this.reviewFormCode}
                               </TextareaAutosize>

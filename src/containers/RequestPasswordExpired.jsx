@@ -15,7 +15,6 @@ export default class RequestPasswordExpired extends Component {
                               <div className="form-group">
                                  <h1 className="font-w700">Password change expired.</h1>
                                  <p className="font-size-h4">For security reasons the password change request is valid for up to <strong>10 minutes</strong> only.</p>
-
                               </div>
                            </div>
                            <div className="form-group text-center">

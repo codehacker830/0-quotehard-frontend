@@ -16,6 +16,7 @@ import InviteValidation from './InviteValidation';
 import InviteCreate from './InviteCreate';
 import InviteExisting from './InviteExisting';
 import VerificationEmailSent from './VerificationEmailSent';
+import ReactivateNotify from './ReactivateNotify';
 
 const RestrictedRoute = ({ component: Component, token, ...rest }) => {
    return (
@@ -33,7 +34,6 @@ const RestrictedRoute = ({ component: Component, token, ...rest }) => {
       />
    );
 }
-
 
 class App extends Component {
    constructor(props) {
@@ -67,7 +67,8 @@ class App extends Component {
                   <Route exact path='/sign-in/invite/create' component={InviteCreate} />
                   <Route exact path='/sign-in/invite/existing' component={InviteExisting} />
                   <Route exact path='/sign-in/invite/i/:invitationEntoken' component={InviteValidation} />
-
+                  <Route exact path='/sign-in/reactivate/notify' component={ReactivateNotify} />
+                  
                   <Route exact path='/sign-in/an-email/verification-sent' component={VerificationEmailSent} />
 
                   <Route exact path='/new-account' component={SignUp} />

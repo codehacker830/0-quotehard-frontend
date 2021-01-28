@@ -31,8 +31,7 @@ export default function DashMessages() {
                      I am Orsino Is this fair calculation? </small>
                </p>
                <p>
-                  <Link className="btn btn-sm btn-primary" to="/">Answer
-                    Question</Link>
+                  <Link className="btn btn-sm btn-primary" to="/">Answer Question</Link>
                </p>
             </div>
             <div className="clear"> </div>

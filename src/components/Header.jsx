@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { NavLink, Link, withRouter } from 'react-router-dom';
 import { userSignOut } from '../actions/Auth';
 import qs from 'qs';
+import clsx from 'clsx';
 
 class Header extends Component {
    constructor(props) {
@@ -39,6 +40,7 @@ class Header extends Component {
          || location.pathname === "/app/content/item-text/browse"
          || location.pathname === "/app/settings"
       ) isShow = true;
+
       return (
          <header id="page-header" className={`bg-dark ${isShow && !isMergeMode ? "" : "d-none"}`}>
             {/* Header Content */}
@@ -73,8 +75,8 @@ class Header extends Component {
                <div className="d-flex align-items-center">
                   <div className="dropdown d-inline-block" ref={this.toggleContainer}>
                      <button type="button" className="btn btn-dark dropdown-toggle" onClick={() => this.setState({ isOpen: !isOpen })}>
-                        <img className="img-avatar img-avatar32 img-avatar-thumb" src={authUser && `${authUser.image}`} alt="avatar" />
-                        <span className="d-none d-sm-inline ml-1">{accountCompany && `${accountCompany.companyName}`}</span>
+                        <img className="img-avatar img-avatar32 img-avatar-thumb" src={authUser.image} alt="avatar" />
+                        <span className="d-none d-sm-inline ml-1">{accountCompany.companyName}</span>
                      </button>
                      {/* Toggle Dropdown */}
                      <div className={`dropdown-menu dropdown-menu-right dropdown-menu-lg p-0 ${isOpen ? "show" : ""}`}>
@@ -89,7 +91,7 @@ class Header extends Component {
                               Settings
                               <i className="fa fa-fw fa-cog text-black-50 ml-1" />
                            </Link>
-                           <a className="dropdown-item d-flex justify-content-between align-items-center" href="https://www.quotientapp.com/support">
+                           <a className="dropdown-item d-flex justify-content-between align-items-center" href="https://quotehard.com/support">
                               Help & Support
                               <i className="fa fa-fw fa-hand-holding-heart text-black-50 ml-1" />
                            </a>

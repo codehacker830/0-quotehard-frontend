@@ -5,15 +5,6 @@ import asyncComponent from '../util/asyncComponent';
 import { connect } from 'react-redux';
 
 class AppRoot extends Component {
-
-   componentWillReceiveProps(nextProps) {
-      console.log(" NEXT PROPS => ", nextProps);
-      // if (nextProps.authUser) {
-      //     const { email_verified_at, plan_id } = nextProps.authUser;
-      //     if (email_verified_at === null) this.props.history.push('/verification');
-      //     if (plan_id === null) this.props.history.push('/subscription');
-      // }
-   }
    render() {
       const { match, location } = this.props;
 
@@ -29,7 +20,9 @@ class AppRoot extends Component {
          || location.pathname === "/app/content/item-price/browse"
          || location.pathname === "/app/content/item-text/browse"
       ) isBgGray = true;
-      return (
+
+      if (!this.props.authUser || !this.props.accountCompany) return <>Loading...</>;
+      else return (
          <main id="main-container" className={isBgGray ? "bg-app" : "bg-white"}>
             <Header />
             <Switch>
@@ -56,7 +49,7 @@ class AppRoot extends Component {
    }
 }
 const mapStateToProps = ({ auth }) => {
-   const { authUser } = auth;
-   return { authUser }
+   const { authUser, accountCompany } = auth;
+   return { authUser, accountCompany }
 }
 export default connect(mapStateToProps)(AppRoot);

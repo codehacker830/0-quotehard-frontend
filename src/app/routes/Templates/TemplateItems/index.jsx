@@ -85,7 +85,7 @@ export default class TemplateItems extends Component {
                            Templates are collections of items.
                         <br />Save time and improve consistency by making your ideal quote reusable.
                         <br />
-                           <a className="font-size-h5" target="_blank" href="https://www.quotientapp.com/help/templates-getting-started">Read more in the Help Article…</a>
+                           <a className="font-size-h5" target="_blank" href="https://quotehard.com/help/templates-getting-started">Read more in the Help Article…</a>
                         </InlineHelp> : <React.Fragment>
                            <table className="quotient-table">
                               <tbody className="rowClick">

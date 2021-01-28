@@ -109,12 +109,14 @@ export const BillingOverview = (props) => {
          });
    }, []);
    const onClickDeactivate = () => {
+      setLoading(true);
       axios.put('/account-company/deactivate')
          .then(({ data }) => {
             console.log(" $$$$$$$$$$$$ ", data);
             history.push('/sign-in/reactivate/notify');
          })
          .catch(error => {
+            setLoading(false);
             toast.error("Error during deactivate account.");
          })
    }
@@ -182,7 +184,7 @@ export const BillingOverview = (props) => {
                      <br />
                      5 Team Members are included in your plan. Additional Team Members are $6 each per month.
                      <br />
-                     For more information, see the <a target="_blank" rel="noreferrer" href="https://www.quotientapp.com/pricing">pricing page</a>.
+                     For more information, see the <a target="_blank" rel="noreferrer" href="https://quotehard.com/pricing">pricing page</a>.
                   </div>
                   <div className="mb-5">
                      <h3 className="mb-2">Payment Details</h3>
