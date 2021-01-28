@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Followingups from './FollowingUps';
 import EmailNotifications from './EmailNotifications';
 import Leads from './Leads';
@@ -18,6 +18,7 @@ import Mailchimp from './Mailchimp';
 import Capsule from './Capsule';
 import Insightly from './Insightly';
 import Highrise from './Highrise';
+import Error404 from '../../../components/Error404';
 
 
 export default class AddOns extends Component {
@@ -25,6 +26,7 @@ export default class AddOns extends Component {
       return (
          <React.Fragment>
             <Switch>
+               <Redirect exact path="/app/add-ons" to="/app/settings" />
                <Route exact path="/app/add-ons/follow-ups" component={Followingups} />
                <Route exact path="/app/add-ons/notifications" component={EmailNotifications} />
 
@@ -46,7 +48,8 @@ export default class AddOns extends Component {
                <Route exact path="/app/add-ons/capsule" component={Capsule} />
                <Route exact path="/app/add-ons/insightly" component={Insightly} />
                <Route exact path="/app/add-ons/highrise" component={Highrise} />
-               
+
+               <Route component={Error404} />
             </Switch>
          </React.Fragment>
 

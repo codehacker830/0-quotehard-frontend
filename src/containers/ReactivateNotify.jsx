@@ -21,7 +21,7 @@ export default function ReactivateNotify() {
                            To delete your account data, see Personal Settings &gt; Deactivated Accounts.
                         </p>
                         <p>
-                           <Link className="btn btn-primary mr-2" to="/personal-settings">Personal Settings…</Link>
+                           <Link className="btn btn-primary mr-2" to="/app/settings">Personal Settings…</Link>
                            &nbsp;
                            <Link className="btn btn-light" to="/sign-in/exit">Sign out</Link>
                         </p>
