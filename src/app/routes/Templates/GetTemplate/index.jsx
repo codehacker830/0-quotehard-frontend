@@ -22,6 +22,7 @@ import ItemsSection from '../../GetQuote/components/ItemsSection';
 import { TitleSection } from '../../GetQuote/components/TitleSection';
 import NavCrumpLeft from '../../../../components/NavCrump/NavCrumpLeft';
 import NavCrumpRight from '../../../../components/NavCrump/NavCrumpRight';
+import clsx from 'clsx';
 
 class GetTemplate extends Component {
    constructor(props) {
@@ -250,72 +251,70 @@ class GetTemplate extends Component {
                <NavCrumpLeft linkTo={linkTo}>
                   {linkName}
                </NavCrumpLeft>
-               {
-                  this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH &&
-                  <NavCrumpRight>
-                     <ul className="choices" style={{ left: 45, top: 10 }}>
-                        <li>
-                           <button className="btn-in-action" onClick={() => {
-                              if (this.props.quote.status === "current") this.onClickArchive();
-                              else if (this.props.quote.status === "archived") this.onClickUnArchive();
-                           }}>
-                              <div className="icon-wrapper">
-                                 <i className="fa fa-fw fa-archive text-secondary" />
-                              </div>
-                              <div className="media-body font-size-sm pr-2">
-                                 {this.props.quote.status === "current" && <span>Archive</span>}
-                                 {this.props.quote.status === "archived" && <span>Archived<span className="choices-undo"> ← undo</span></span>}
-                              </div>
-                           </button>
-                        </li>
-                        {
-                           this.state.isDefault ?
-                              <li>
-                                 <button className="btn-in-action" onClick={this.onClickUndoDefault}>
-                                    <div className="icon-wrapper">
-                                       <i className="fa fa-fw fa-star text-secondary" />
-                                    </div>
-                                    <div className="media-body font-size-sm pr-2">
-                                       <span>Make default<span className="choices-undo"> ← undo</span></span>
-                                    </div>
-                                 </button>
-                              </li>
-                              : <li>
-                                 <button className="btn-in-action" onClick={this.onClickDefault}>
-                                    <div className="icon-wrapper">
-                                       <i className="fa fa-fw fa-star text-secondary" />
-                                    </div>
-                                    <div className="media-body font-size-sm pr-2">
-                                       <span>Make default</span>
-                                    </div>
-                                 </button>
-                              </li>
-                        }
+               <NavCrumpRight>
+                  <ul className="choices" style={{ left: 45, top: 10 }}>
+                     <li>
+                        <button className="btn-in-action" onClick={() => {
+                           if (this.props.quote.status === "current") this.onClickArchive();
+                           else if (this.props.quote.status === "archived") this.onClickUnArchive();
+                        }}>
+                           <div className="icon-wrapper">
+                              <i className="fa fa-fw fa-archive text-secondary" />
+                           </div>
+                           <div className="media-body font-size-sm pr-2">
+                              {this.props.quote.status === "current" && <span>Archive</span>}
+                              {this.props.quote.status === "archived" && <span>Archived<span className="choices-undo"> ← undo</span></span>}
+                           </div>
+                        </button>
+                     </li>
+                     {
+                        this.state.isDefault ?
+                           <li>
+                              <button className="btn-in-action" onClick={this.onClickUndoDefault}>
+                                 <div className="icon-wrapper">
+                                    <i className="fa fa-fw fa-star text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm pr-2">
+                                    <span>Make default<span className="choices-undo"> ← undo</span></span>
+                                 </div>
+                              </button>
+                           </li>
+                           : <li>
+                              <button className="btn-in-action" onClick={this.onClickDefault}>
+                                 <div className="icon-wrapper">
+                                    <i className="fa fa-fw fa-star text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm pr-2">
+                                    <span>Make default</span>
+                                 </div>
+                              </button>
+                           </li>
+                     }
 
 
-                        <li>
-                           <button className="btn-in-action" onClick={this.onClickCopy}>
-                              <div className="icon-wrapper">
-                                 <i className="fa fa-fw fa-copy text-secondary" />
-                              </div>
-                              <div className="media-body font-size-sm pr-2">
-                                 <span>Copy</span>
-                              </div>
-                           </button>
-                        </li>
-                        <li>
-                           <button className="btn-in-action" onClick={() => this.setState({ isDeleteAlertOpen: true })}>
-                              <div className="icon-wrapper">
-                                 <i className="fa fa-fw fa-trash-alt text-secondary" />
-                              </div>
-                              <div className="media-body font-size-sm pr-2">
-                                 <span>Delete</span>
-                              </div>
-                           </button>
-                        </li>
-                     </ul>
-                  </NavCrumpRight>
-               }
+                     <li>
+                        <button className="btn-in-action" onClick={this.onClickCopy}>
+                           <div className="icon-wrapper">
+                              <i className="fa fa-fw fa-copy text-secondary" />
+                           </div>
+                           <div className="media-body font-size-sm pr-2">
+                              <span>Copy</span>
+                           </div>
+                        </button>
+                     </li>
+                     <li>
+                        <button className="btn-in-action" onClick={() => this.setState({ isDeleteAlertOpen: true })}>
+                           <div className="icon-wrapper">
+                              <i className="fa fa-fw fa-trash-alt text-secondary" />
+                           </div>
+                           <div className="media-body font-size-sm pr-2">
+                              <span>Delete</span>
+                           </div>
+                        </button>
+                     </li>
+                  </ul>
+               </NavCrumpRight>
+
             </NavCrump>
             {/* <div id="AlerterPage" className="">
                <div className="alertBar alertBar-general">

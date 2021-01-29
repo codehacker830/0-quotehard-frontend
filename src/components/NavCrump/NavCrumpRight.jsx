@@ -1,5 +1,7 @@
+import clsx from 'clsx';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { QUOTE_GET_PATH, QUOTE_GET_DUPLICATE_PATH, CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_GET_COPYTOTEMPLATE_PATH } from '../../constants/PathNames';
 
 class NavCrumpRight extends Component {
    constructor(props) {
@@ -21,19 +23,19 @@ class NavCrumpRight extends Component {
       window.removeEventListener('click', this.onClickOutsideHandler);
    }
    render() {
-      let isShow = true;
-      if (
-         this.props.match.path === "/app/quote/get/duplicate/:id"
-      ) isShow = false;
-
+      const hideActions = (
+         this.props.match.path === QUOTE_GET_PATH
+         || this.props.match.path === QUOTE_GET_DUPLICATE_PATH
+         || this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH
+         || this.props.match.path === CONTENT_TEMPLATE_GET_COPYTOTEMPLATE_PATH
+      );
       return (
-         <div className={`dropdown d-inline-block ${isShow ? "" : "d-none"}`} ref={this.actionsContainer}>
-            <button type="button" className="btn" onClick={() => this.setState({ show: !this.state.show })}>
+         <div className={clsx("dropdown", hideActions ? "d-none" : "")} ref={this.actionsContainer}>
+            <button type="button" className="btn btn-sm" style={{ boxShadow: "none" }} onClick={() => this.setState({ show: !this.state.show })}>
                <span className="text-primary">Actions</span>
                <i className="fa fa-fw fa-angle-down ml-1 text-primary" />
             </button>
-
-            <div className={`dropdown-menu dropdown-menu-right p-0 ${this.state.show ? "show" : ""}`} style={{ minWidth: 250 }}>
+            <div className={clsx("dropdown-menu dropdown-menu-right p-0", this.state.show ? "show" : "")} style={{ minWidth: 250 }}>
                {this.props.children}
             </div>
          </div>

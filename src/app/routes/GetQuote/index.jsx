@@ -31,6 +31,7 @@ import NotesSection from "./components/NotesSection";
 import ItemsSection from "./components/ItemsSection";
 import { getQuoteDefaultSetting } from "../../../actions/QuoteDefautSetting";
 import _ from 'lodash';
+import clsx from "clsx";
 
 class GetQuote extends Component {
    constructor(props) {
@@ -272,65 +273,64 @@ class GetQuote extends Component {
    render() {
       console.log(" ^^^^^^^ GET QUOTE state ^^^^^^^^^^ ", this.state);
       console.log(" ^^^^^^^ GET QUOTE props ^^^^^^^^^^ ", this.props);
-      const { location } = this.props;
+      const { location, quote } = this.props;
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
       if (location.state && location.state.from === QUOTES_PATH) linkName = "Quotes";
 
+      const hideDelete = (quote.status === "editing");
       return (
          <React.Fragment>
             <NavCrump>
                <NavCrumpLeft linkTo={linkTo}>
                   {linkName}
                </NavCrumpLeft>
-               {
-                  this.props.match.path === QUOTE_BY_ID_PATH &&
-                  <NavCrumpRight>
-                     <ul className="choices" style={{ left: 25, top: 10 }}>
-                        <li>
-                           <button className="btn-in-action" onClick={this.onClickMarkAsSent}>
-                              <div className="icon-wrapper">
-                                 <i className="fa fa-fw fa-arrow-alt-circle-right text-secondary" />
-                              </div>
-                              <div className="media-body font-size-sm pr-2">
-                                 <span>Mark as Sent (don't email)</span>
-                              </div>
-                           </button>
-                        </li>
-                        <li className="choices-break" />
-                        <li>
-                           <button className="btn-in-action" onClick={this.onClickCopy}>
-                              <div className="icon-wrapper">
-                                 <i className="fa fa-fw fa-copy text-secondary" />
-                              </div>
-                              <div className="media-body font-size-sm pr-2">
-                                 <span>Copy</span>
-                              </div>
-                           </button>
-                        </li>
-                        <li>
-                           <button className="btn-in-action" onClick={this.onClickCopyToTemplate}>
-                              <div className="icon-wrapper">
-                                 <i className="fa fa-fw fa-plus-circle text-secondary" />
-                              </div>
-                              <div className="media-body font-size-sm pr-2">
-                                 <span>Copy to Template</span>
-                              </div>
-                           </button>
-                        </li>
-                        <li>
-                           <button className="btn-in-action" onClick={() => this.setState({ isDeleteAlertOpen: true })}>
-                              <div className="icon-wrapper">
-                                 <i className="fa fa-fw fa-trash-alt text-secondary" />
-                              </div>
-                              <div className="media-body font-size-sm pr-2">
-                                 <span>Delete</span>
-                              </div>
-                           </button>
-                        </li>
-                     </ul>
-                  </NavCrumpRight>
-               }
+               <NavCrumpRight>
+                  <ul className="choices" style={{ left: 25, top: 10 }}>
+                     <li>
+                        <button className="btn-in-action" onClick={this.onClickMarkAsSent}>
+                           <div className="icon-wrapper">
+                              <i className="fa fa-fw fa-arrow-alt-circle-right text-secondary" />
+                           </div>
+                           <div className="media-body font-size-sm pr-2">
+                              <span>Mark as Sent (don't email)</span>
+                           </div>
+                        </button>
+                     </li>
+                     <li className="choices-break" />
+                     <li>
+                        <button className="btn-in-action" onClick={this.onClickCopy}>
+                           <div className="icon-wrapper">
+                              <i className="fa fa-fw fa-copy text-secondary" />
+                           </div>
+                           <div className="media-body font-size-sm pr-2">
+                              <span>Copy</span>
+                           </div>
+                        </button>
+                     </li>
+                     <li>
+                        <button className="btn-in-action" onClick={this.onClickCopyToTemplate}>
+                           <div className="icon-wrapper">
+                              <i className="fa fa-fw fa-plus-circle text-secondary" />
+                           </div>
+                           <div className="media-body font-size-sm pr-2">
+                              <span>Copy to Template</span>
+                           </div>
+                        </button>
+                     </li>
+                     <li className={clsx(hideDelete && "d-none")}>
+                        <button className="btn-in-action" onClick={() => this.setState({ isDeleteAlertOpen: true })}>
+                           <div className="icon-wrapper">
+                              <i className="fa fa-fw fa-trash-alt text-secondary" />
+                           </div>
+                           <div className="media-body font-size-sm pr-2">
+                              <span>Delete</span>
+                           </div>
+                        </button>
+                     </li>
+                  </ul>
+
+               </NavCrumpRight>
             </NavCrump>
             <div id="AlerterPage">
                {

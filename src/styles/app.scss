@@ -1053,10 +1053,19 @@ a.nav-link.active {
    box-shadow: inset 0 -5px 20px rgba(0, 0, 0, .06);
 }
 
+body {
+   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+   color: #333;
+   background-color: #fff;
+   font-size: 15px;
+   line-height: 1.4666;
+}
+
 body .qCustomCss,
 body .qCustomCss textarea,
 body .qCustomCss select,
 body .qCustomCss input,
-body .qCustomCss label {
+body .qCustomCss label,
+p {
    font-family: "Helvetica Neue", Helvetica, Arial;
 }
