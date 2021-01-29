@@ -47,6 +47,8 @@ export const UPDATE_QUOTE_DISCUSSIONS = 'update_quote_discussions';
 
 export const UPDATE_PRICEITEM_STATUS = 'update_priceitem_status';
 export const UPDATE_TEXTITEM_STATUS = 'update_textitem_status';
+export const UPDATE_ADDITIOINAL_COMMENT = 'update_additional_comment';
+export const UPDATE_ORDERREFERENCE_NUMBER = 'update_orderreferene_number';
 
 // CustomerEmailSetting
 export const GET_CUSTOMEREMAIL_SETTING = 'get_customeremail_setting';

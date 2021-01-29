@@ -22,7 +22,7 @@ import {
    QUOTES_PATH
 } from "../../../constants/PathNames";
 import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
-import { getQuoteDataById, getContentTemplateById, updateQuote, updateQuoteToPeopleList, updateQuoteSettings } from "../../../actions/Data";
+import { getQuoteDataById, getContentTemplateById, updateQuote, updateQuoteToPeopleList, updateQuoteSettings, markAsSentQuote } from "../../../actions/Data";
 import QuoteSettings from "../../../components/QuoteSettings";
 import TitleSection from "./components/TitleSection";
 import AddPriceItemBtn from "../../../components/AddPriceItemBtn";
@@ -51,13 +51,7 @@ class GetQuote extends Component {
       }
       if (toPeopleList.length === 0) { toast.info("You must add at least one contact."); return; }
       const quoteId = this.props.match.params.id;
-
-      axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
-         toast.success('Not emailed, marked as sent.');
-         this.props.history.push(`/q/${data.entoken}`);
-      }).catch(err => {
-         toast.error('Quote failed to mark as sent.');
-      });
+      this.props.markAsSentQuote(quoteId);
    }
    onClickCopy = () => {
       const quoteId = this.props.match.params.id;
@@ -424,5 +418,6 @@ const mapDispatchToProps = {
    updateQuoteToPeopleList,
    getQuoteDefaultSetting,
    updateQuoteSettings,
+   markAsSentQuote
 };
 export default connect(mapStateToProps, mapDispatchToProps)(GetQuote);

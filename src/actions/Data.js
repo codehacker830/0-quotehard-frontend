@@ -13,11 +13,16 @@ import {
    UPDATE_QUOTE_NOTES,
    INITIALIZE_QUOTE,
    UPDATE_PRICEITEM_STATUS,
-   UPDATE_TEXTITEM_STATUS
+   UPDATE_TEXTITEM_STATUS,
+   UPDATE_ADDITIOINAL_COMMENT,
+   UPDATE_ORDERREFERENCE_NUMBER
 } from '../constants/ActionTypes';
 import { toast } from 'react-toastify';
 import { initPriceItem, initTextItem } from '../constants/InitState';
 
+export const setQuote = (quote) => {
+   return (dispatch) => dispatch({ type: GET_QUOTE, payload: quote });
+}
 export const getQuoteDataById = (quoteId) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
@@ -75,8 +80,8 @@ export const getContentTemplateById = (quoteTemplateId) => {
             ],
             discussions: []
          };
-         dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: GET_QUOTE, payload: payload });
+         dispatch({ type: FETCH_SUCCESS });
       } catch (err) {
          dispatch({ type: FETCH_ERROR, payload: err.message });
          console.log("Error****:", err.message);
@@ -90,8 +95,8 @@ export const getDuplicateTemplateById = (quoteTemplateId) => {
          const { data } = await axios.get(`/templates/id/${quoteTemplateId}`);
          const { title, settings, items, notes } = data.template;
          const payload = { status: "current", title, settings, items, notes };
-         dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: GET_QUOTE, payload: payload });
+         dispatch({ type: FETCH_SUCCESS });
       } catch (err) {
          dispatch({ type: FETCH_ERROR, payload: err.message });
          console.log("Error****:", err.message);
@@ -199,3 +204,43 @@ export const unArchiveQuote = (quoteId) => {
       }
    }
 };
+export const markAsSentQuote = (quoteId) => {
+   return async (dispatch) => {
+      dispatch({ type: FETCH_START });
+      try {
+         const { data } = await axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" });
+         toast.success('Not emailed, marked as sent.');
+         dispatch({ type: GET_QUOTE, payload: data.quote });
+         dispatch({ type: FETCH_SUCCESS });
+      } catch (err) {
+         toast.error('Quote failed to mark as sent.');
+         dispatch({ type: FETCH_ERROR, payload: err.message });
+         console.log("Error****:", err.message);
+      }
+   }
+};
+export const acceptQuote = (quoteId) => {
+   return async (dispatch) => {
+      dispatch({ type: FETCH_START });
+      try {
+         const { data } = await axios.put(`/quotes/status/${quoteId}`, { status: "accepted" });
+         toast.success('Quote accpeted.');
+         dispatch({ type: GET_QUOTE, payload: data.quote });
+         dispatch({ type: FETCH_SUCCESS });
+      } catch (err) {
+         toast.error('Quote failed to accept quote.');
+         dispatch({ type: FETCH_ERROR, payload: err.message });
+         console.log("Error****:", err.message);
+      }
+   }
+};
+
+
+
+export const updateAdditionalComment = (payload) => {
+   return (dispatch) => dispatch({ type: UPDATE_ADDITIOINAL_COMMENT, payload: payload });
+}
+
+export const updateOrderReferenceNumber = (payload) => {
+   return (dispatch) => dispatch({ type: UPDATE_ORDERREFERENCE_NUMBER, payload: payload });
+}

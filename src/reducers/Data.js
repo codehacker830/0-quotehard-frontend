@@ -10,6 +10,8 @@ import {
    INITIALIZE_QUOTE,
    UPDATE_PRICEITEM_STATUS,
    UPDATE_TEXTITEM_STATUS,
+   UPDATE_ADDITIOINAL_COMMENT,
+   UPDATE_ORDERREFERENCE_NUMBER,
 } from '../constants/ActionTypes';
 import { initPriceItem, initQuoteSettings, initTextItem } from '../constants/InitState';
 
@@ -31,7 +33,10 @@ const initialSettings = {
             textItem: { ...initTextItem }
          }
       ],
-      discussions: []
+      discussions: [],
+      orderReferenceNumber: "",
+      additionalComment: "",
+      declinedComment: ""
    }
 };
 
@@ -122,6 +127,22 @@ export default (state = initialSettings, action) => {
                   ...state.quote.notes[0],
                   textItem: { ...state.quote.notes[0].textItem, status: action.payload }
                }]
+            }
+         };
+      case UPDATE_ADDITIOINAL_COMMENT:
+         return {
+            ...state,
+            quote: {
+               ...state.quote,
+               additionalComment: action.payload
+            }
+         };
+      case UPDATE_ORDERREFERENCE_NUMBER:
+         return {
+            ...state,
+            quote: {
+               ...state.quote,
+               orderReferenceNumber: action.payload
             }
          };
       default:

@@ -28,7 +28,8 @@ import axios from '../../../util/Api';
 import { toast } from 'react-toastify';
 import clsx from 'clsx';
 import QuoteViewSend from './QuoteViewSend';
-import { archiveQuote, unArchiveQuote } from '../../../actions/Data';
+import { archiveQuote, setQuote, unArchiveQuote } from '../../../actions/Data';
+import { GET_QUOTE } from '../../../constants/ActionTypes';
 
 class PublicQuoteView extends Component {
    constructor(props) {
@@ -52,15 +53,16 @@ class PublicQuoteView extends Component {
    onClickUpdateOnly = () => {
       const quoteId = this.props.quote._id;
       axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
+         this.props.setQuote(data.quote);
          toast.success('Update – back online, not emailed.');
-         this.props.history.push(`/q/${data.entoken}`);
       }).catch(err => {
          toast.error('Quote failed to mark as sent.');
       });
    }
    onClickEditQuote = () => {
       const quoteId = this.props.quote._id;
-      axios.put(`/quotes/status/${quoteId}`, { status: "editing" }).then(() => {
+      axios.put(`/quotes/status/${quoteId}`, { status: "editing" }).then(({ data }) => {
+         this.props.setQuote(data.quote);
          this.props.history.push(`/app/quote/${quoteId}`)
       }).catch(err => {
          console.error("Error during update status :", err)
@@ -74,7 +76,7 @@ class PublicQuoteView extends Component {
       if (this.props.quote.state === "archived") this.props.unArchiveQuote(quoteId);
       else this.props.archiveQuote(quoteId);
    }
-   onClickAccept = () => {
+   onClickAcceptTab = () => {
       if (this.props.quote.status === "accepted") this.setState({ isUndoAcceptanceAlertOpen: true });
       else this.setState({ isManualAcceptBoxShow: true }, () => {
          this.screenEnd.current.scrollIntoView({ behavior: "smooth" });
@@ -82,16 +84,22 @@ class PublicQuoteView extends Component {
    }
    onClickUndoAcceptance = () => {
       const quoteId = this.props.quote._id;
-      axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
-         this.props.history.push(`/q/${data.entoken}`);
+      axios.put(`/quotes/undo-acceptance/${quoteId}`).then(({ data }) => {
+         toast.success("Acceptance Undone.")
+         this.setState({
+            isUndoAcceptanceAlertOpen: false,
+            isManualAcceptBoxShow: false
+         });
+         this.props.setQuote(data.quote);
       }).catch(err => {
          console.error("Error during update status :", err)
       });
+
    }
    onClickDecline = () => {
       const quoteId = this.props.quote._id;
       axios.put(`/quotes/status/${quoteId}`, { status: "declined" }).then(({ data }) => {
-         this.props.history.push(`/q/${data.entoken}`);
+         this.props.setQuote(data.quote);
       }).catch(err => {
          console.error("Error during update status :", err)
       });
@@ -99,7 +107,7 @@ class PublicQuoteView extends Component {
    onClickUndoDecline = () => {
       const quoteId = this.props.quote._id;
       axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
-         this.props.history.push(`/q/${data.entoken}`);
+         this.props.setQuote(data.quote);
       }).catch(err => {
          console.error("Error during update status :", err)
       });
@@ -107,7 +115,7 @@ class PublicQuoteView extends Component {
    onClickWithdraw = () => {
       const quoteId = this.props.quote._id;
       axios.put(`/quotes/status/${quoteId}`, { status: "withdrawn" }).then(({ data }) => {
-         this.props.history.push(`/q/${data.entoken}`);
+         this.props.setQuote(data.quote);
       }).catch(err => {
          console.error("Error during update status :", err)
       });
@@ -115,7 +123,7 @@ class PublicQuoteView extends Component {
    onClickUndoWithdrawn = () => {
       const quoteId = this.props.quote._id;
       axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
-         this.props.history.push(`/q/${data.entoken}`);
+         this.props.setQuote(data.quote);
       }).catch(err => {
          console.error("Error during update status :", err)
       });
@@ -159,11 +167,11 @@ class PublicQuoteView extends Component {
       console.error("QUOTE AUTHOR IS TEAM MEMBER ? ", isMember);
 
       const hideUpdateOnly = (quote.status !== "editing");
-      const hideEditeQuote = (quote.status === "editing" || quote.status === "withdrawn");
-      const hideSendFollowup = (quote.status === "editing" || quote.status === "withdrawn");
+      const hideEditeQuote = (quote.status === "editing" || quote.status === "withdrawn" || quote.status === "accepted");
+      const hideSendFollowup = (quote.status === "editing" || quote.status === "withdrawn" || quote.status === "accepted");
       const hideArchive = (quote.status === "editing");
       const hideAccept = (quote.status === "editing" || quote.status === "withdrawn");
-      const hideDecline = (quote.status === "editing" || quote.status === "withdrawn");
+      const hideDecline = (quote.status === "editing" || quote.status === "withdrawn" || quote.status === "accepted");
       const hideWithdraw = (quote.status === "editing");
 
       if (this.props.loading) return <div>Loading...</div>;
@@ -234,7 +242,7 @@ class PublicQuoteView extends Component {
                               </button>
                            </li>
                            <li className={clsx(hideAccept && "d-none")}>
-                              <button className="btn-in-action" onClick={this.onClickAccept}>
+                              <button className="btn-in-action" onClick={this.onClickAcceptTab}>
                                  <div className="icon-wrapper">
                                     <i className="fa fa-fw fa-check text-secondary" />
                                  </div>
@@ -420,7 +428,7 @@ class PublicQuoteView extends Component {
                                  <PublicQuoteDiscussionList />
                                  <PublicQuoteDisscussionWrite />
                               </div>
-                              <AcceptBox isManualAcceptBoxShow={this.state.isManualAcceptBoxShow} />
+                              <AcceptBox isManualAcceptBoxShow={this.state.isManualAcceptBoxShow} hideManualAcceptBox={() => this.setState({ isManualAcceptBoxShow: false })} />
                               <div style={{ float: "left", clear: "both" }} ref={this.screenEnd} />
                               <DeclineCommentShow />
 
@@ -447,6 +455,7 @@ const mapStateToProps = ({ commonData, auth, appearanceSetting, teamSetting, mai
 const mapDispatchToProps = {
    setInitUrl, userSignOut,
    getTeamMembers,
-   archiveQuote, unArchiveQuote
+   archiveQuote, unArchiveQuote,
+   setQuote,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);
