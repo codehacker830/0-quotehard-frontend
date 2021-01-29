@@ -169,3 +169,33 @@ export const submitDismiss = (qaId) => {
       }
    }
 };
+export const archiveQuote = (quoteId) => {
+   return async (dispatch) => {
+      dispatch({ type: FETCH_START });
+      try {
+         const { data } = await axios.put(`/quotes/archive/${quoteId}`);
+         toast.success('Update – archived.')
+         dispatch({ type: GET_QUOTE, payload: data.quote });
+         dispatch({ type: FETCH_SUCCESS });
+      } catch (err) {
+         toast.error('Quote failed to archive.');
+         dispatch({ type: FETCH_ERROR, payload: err.message });
+         console.log("Error****:", err.message);
+      }
+   }
+};
+export const unArchiveQuote = (quoteId) => {
+   return async (dispatch) => {
+      dispatch({ type: FETCH_START });
+      try {
+         const { data } = await axios.put(`/quotes/un-archive/${quoteId}`);
+         toast.success('Update – unarchived.')
+         dispatch({ type: GET_QUOTE, payload: data.quote });
+         dispatch({ type: FETCH_SUCCESS });
+      } catch (err) {
+         toast.error('Quote failed to unarchive.');
+         dispatch({ type: FETCH_ERROR, payload: err.message });
+         console.log("Error****:", err.message);
+      }
+   }
+};

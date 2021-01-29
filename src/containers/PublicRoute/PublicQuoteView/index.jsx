@@ -28,6 +28,7 @@ import axios from '../../../util/Api';
 import { toast } from 'react-toastify';
 import clsx from 'clsx';
 import QuoteViewSend from './QuoteViewSend';
+import { archiveQuote, unArchiveQuote } from '../../../actions/Data';
 
 class PublicQuoteView extends Component {
    constructor(props) {
@@ -38,6 +39,7 @@ class PublicQuoteView extends Component {
          isEditAlertOpen: false,
          isUndoAcceptanceAlertOpen: false,
          isDeclineAlertOpen: false,
+         isUndoDeclineAlertOpen: false,
          isWithdrawAlertOpen: false,
          isUndoWithdrawAlertOpen: false,
 
@@ -69,31 +71,16 @@ class PublicQuoteView extends Component {
    }
    onClickArchive = () => {
       const quoteId = this.props.quote._id;
-      if (this.props.quote.state === "archived") {
-         axios.put(`/quotes/un-archive/${quoteId}`).then(({ data }) => {
-            toast.success('Update – unarchived.')
-            this.props.history.push(`/q/${data.entoken}`);
-         }).catch(err => {
-            toast.error('Quote failed to unarchive.');
-         });
-      } else {
-         axios.put(`/quotes/archive/${quoteId}`).then(({ data }) => {
-            toast.success('Update – archived.')
-            this.props.history.push(`/q/${data.entoken}`);
-         }).catch(err => {
-            toast.error('Quote failed to archive.');
-         });
-      }
+      if (this.props.quote.state === "archived") this.props.unArchiveQuote(quoteId);
+      else this.props.archiveQuote(quoteId);
    }
    onClickAccept = () => {
       if (this.props.quote.status === "accepted") this.setState({ isUndoAcceptanceAlertOpen: true });
-      else {
-         this.setState({ isManualAcceptBoxShow: true }, () => {
-            this.screenEnd.current.scrollIntoView({ behavior: "smooth" });
-         });
-      }
+      else this.setState({ isManualAcceptBoxShow: true }, () => {
+         this.screenEnd.current.scrollIntoView({ behavior: "smooth" });
+      });
    }
-   undoAcceptance = () => {
+   onClickUndoAcceptance = () => {
       const quoteId = this.props.quote._id;
       axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
          this.props.history.push(`/q/${data.entoken}`);
@@ -104,6 +91,14 @@ class PublicQuoteView extends Component {
    onClickDecline = () => {
       const quoteId = this.props.quote._id;
       axios.put(`/quotes/status/${quoteId}`, { status: "declined" }).then(({ data }) => {
+         this.props.history.push(`/q/${data.entoken}`);
+      }).catch(err => {
+         console.error("Error during update status :", err)
+      });
+   }
+   onClickUndoDecline = () => {
+      const quoteId = this.props.quote._id;
+      axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
          this.props.history.push(`/q/${data.entoken}`);
       }).catch(err => {
          console.error("Error during update status :", err)
@@ -143,6 +138,7 @@ class PublicQuoteView extends Component {
          isEditAlertOpen: false,
          isUndoAcceptanceAlertOpen: false,
          isDeclineAlertOpen: false,
+         isUndoDeclineAlertOpen: false,
          isWithdrawAlertOpen: false,
          isUndoWithdrawAlertOpen: false
       });
@@ -169,7 +165,7 @@ class PublicQuoteView extends Component {
       const hideAccept = (quote.status === "editing" || quote.status === "withdrawn");
       const hideDecline = (quote.status === "editing" || quote.status === "withdrawn");
       const hideWithdraw = (quote.status === "editing");
-      
+
       if (this.props.loading) return <div>Loading...</div>;
       else if (this.props.match.path === '/q/:entoken/author') {
          if (isMember) return <Redirect to={`/q/${entoken}`} />
@@ -232,11 +228,8 @@ class PublicQuoteView extends Component {
                                     <i className="fa fa-fw fa-archive text-secondary" />
                                  </div>
                                  <div className="media-body font-size-sm pr-2">
-                                    {
-                                       quote.state === "archived" ?
-                                          <span>Archived<span className="choices-undo"> ← undo</span></span>
-                                          : <span>Archive</span>
-                                    }
+                                    <span className={clsx(quote.state === "archived" ? "" : "d-none")}>Archived<span className="choices-undo"> ← undo</span></span>
+                                    <span className={clsx(quote.state === "archived" ? "d-none" : "")}>Archive</span>
                                  </div>
                               </button>
                            </li>
@@ -256,19 +249,15 @@ class PublicQuoteView extends Component {
                            </li>
                            <li className={clsx(hideDecline && "d-none")}>
                               <button className="btn-in-action" onClick={() => {
-                                 this.setState({
-                                    isEditAlertOpen: false,
-                                    isUndoAcceptanceAlertOpen: false,
-                                    isDeclineAlertOpen: true,
-                                    isWithdrawAlertOpen: false,
-                                    isUndoWithdrawAlertOpen: false
-                                 });
+                                 if (quote.status === "declined") this.setState({ isUndoDeclineAlertOpen: true });
+                                 else this.setState({ isDeclineAlertOpen: true });
                               }}>
                                  <div className="icon-wrapper">
                                     <i className="fa fa-fw fa-minus-circle text-secondary" />
                                  </div>
                                  <div className="media-body font-size-sm pr-2">
-                                    <span>Decline</span>
+                                    <span className={clsx(quote.status === "declined" ? "d-none" : "")}>Decline</span>
+                                    <span className={clsx(quote.status === "declined" ? "" : "d-none")}>Declined<span className="choices-undo"> ← undo</span></span>
                                  </div>
                               </button>
                            </li>
@@ -330,22 +319,22 @@ class PublicQuoteView extends Component {
                   <div id="AlerterPage">
                      <div className={clsx("alertBar alertBar-prompt", !this.state.isEditAlertOpen && "isHidden")}>
                         <div className="container">
-                           <h4>Edit Quote?</h4>
+                           <h4 className="mb-2">Edit Quote?</h4>
                            <p>While editing, the details of this Quote will be hidden from your customer.<br />
                               Once saved, <strong>edits cannot be undone</strong>. Consider creating a copy instead (Actions &gt; Copy).
                            </p>
                            <div className="btnSet">
-                              <button className="btn btn-secondary mr-2" onClick={this.onClickEditQuote}>Take offline and edit quote</button>
+                              <button className="btn btn-dark" onClick={this.onClickEditQuote}>Take offline and edit quote</button>
                               <button className="btn" onClick={this.closeAllAlert}>Cancel</button>
                            </div>
                         </div>
                      </div>
                      <div className={clsx("alertBar alertBar-prompt", !this.state.isUndoAcceptanceAlertOpen && "isHidden")}>
                         <div className="container">
-                           <h4>Undo the Acceptance?</h4>
+                           <h4 className="mb-2">Undo the Acceptance?</h4>
                            <ul><li>The Order/reference number and any additional comments <strong>will be removed</strong>.</li></ul>
                            <div className="btnSet">
-                              <button className="btn btn-secondary mr-2" onClick={this.undoAcceptance}>Undo acceptance</button>
+                              <button className="btn btn-dark" onClick={this.onClickUndoAcceptance}>Undo acceptance</button>
                               <button className="btn" onClick={this.closeAllAlert}>Cancel</button>
                            </div>
                         </div>
@@ -355,29 +344,39 @@ class PublicQuoteView extends Component {
                            <h4 className="mb-2">Mark as declined?</h4>
                            <p>This quote will also be archived.</p>
                            <div className="btnSet">
-                              <button className="btn btn-secondary mr-2" onClick={this.onClickDecline}>Decline Quote</button>
+                              <button className="btn btn-dark" onClick={this.onClickDecline}>Decline Quote</button>
                               <button className="btn" onClick={this.closeAllAlert}>Cancel</button>
                            </div>
                         </div>
                      </div>
+                     <div className={clsx("alertBar alertBar-prompt", !this.state.isUndoDeclineAlertOpen && "isHidden")}>
+                        <div className="container">
+                           <h4 className="mb-2">Undo and make available to your customer again?</h4>
+                           <div className="btnSet">
+                              <button className="btn btn-dark" onClick={this.onClickUndoDecline}>Undo</button>
+                              <button className="btn" onClick={this.closeAllAlert}>Cancel</button>
+                           </div>
+                        </div>
+                     </div>
+
                      <div className={clsx("alertBar alertBar-prompt", !this.state.isWithdrawAlertOpen && "isHidden")}>
                         <div className="container">
-                           <h4>Are you sure you want to withdraw this quote?</h4>
+                           <h4 className="mb-2">Are you sure you want to withdraw this quote?</h4>
                            <ul>
                               <li>Quote items and pricing <strong>will be hidden</strong> from your customer’s view.</li>
                               <li>This quote will <strong>no longer be counted</strong> in your Dashboard stats.</li>
                            </ul>
                            <div className="btnSet">
-                              <button className="btn btn-secondary mr-2" onClick={this.onClickWithdraw}>Withdraw Quote</button>
+                              <button className="btn btn-dark" onClick={this.onClickWithdraw}>Withdraw Quote</button>
                               <button className="btn" onClick={this.closeAllAlert}>Cancel</button>
                            </div>
                         </div>
                      </div>
                      <div className={clsx("alertBar alertBar-prompt", !this.state.isUndoWithdrawAlertOpen && "isHidden")}>
                         <div className="container">
-                           <h4>Undo and make available to your customer again?</h4>
+                           <h4 className="mb-2">Undo and make available to your customer again?</h4>
                            <div className="btnSet">
-                              <button className="btn btn-secondary mr-2" onClick={this.onClickUndoWithdrawn}>Undo</button>
+                              <button className="btn btn-dark" onClick={this.onClickUndoWithdrawn}>Undo</button>
                               <button className="btn" onClick={this.closeAllAlert}>Cancel</button>
                            </div>
                         </div>
@@ -447,6 +446,7 @@ const mapStateToProps = ({ commonData, auth, appearanceSetting, teamSetting, mai
 }
 const mapDispatchToProps = {
    setInitUrl, userSignOut,
-   getTeamMembers
+   getTeamMembers,
+   archiveQuote, unArchiveQuote
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);
