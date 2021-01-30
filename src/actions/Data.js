@@ -219,11 +219,11 @@ export const markAsSentQuote = (quoteId) => {
       }
    }
 };
-export const acceptOnBehalfQuote = ({ quoteId, additionalComment, orderReferenceNumber, onBehalfOfPersonId, isAcceptEmailNotify }) => {
+export const acceptOnBehalfQuote = ({ quoteId, additionalComment, orderReferenceNumber, onBehalfOfPersonId, isAcceptanceEmailNotification }) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
-         const { data } = await axios.post(`/quotes/accept-on-behalf`, { quoteId, additionalComment, orderReferenceNumber, onBehalfOfPersonId, isAcceptEmailNotify });
+         const { data } = await axios.post(`/quotes/accept-on-behalf`, { quoteId, additionalComment, orderReferenceNumber, onBehalfOfPersonId, isAcceptanceEmailNotification });
          toast.success('Quote accpeted.');
          dispatch({ type: GET_QUOTE, payload: data.quote });
          dispatch({ type: FETCH_SUCCESS });

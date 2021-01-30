@@ -15,7 +15,7 @@ export default function AcceptOnBehalfBox() {
    const { orderReferenceNumber, additionalComment } = quote;
 
    const [onBehalfOfPersonId, setOnBehalfOfPersonId] = useState(null);
-   const [isAcceptEmailNotify, setAcceptEmailNotify] = useState(false);
+   const [isAcceptanceEmailNotification, setAcceptEmailNotify] = useState(false);
 
    useEffect(() => {
       const firstRecipient = _.head(quote.toPeopleList);
@@ -28,7 +28,7 @@ export default function AcceptOnBehalfBox() {
          additionalComment,
          orderReferenceNumber,
          onBehalfOfPersonId,
-         isAcceptEmailNotify
+         isAcceptanceEmailNotification
       }));
       // this.props.hideManualAcceptBox();
    }
@@ -60,8 +60,8 @@ export default function AcceptOnBehalfBox() {
             <div className="acceptCb-left">
                <label className="acceptCb-label-box" htmlFor="accept_email_notify">
                   <input name="accept[email_notify]" type="checkbox" id="accept_email_notify"
-                     checked={isAcceptEmailNotify}
-                     onChange={() => setAcceptEmailNotify(!isAcceptEmailNotify)}
+                     checked={isAcceptanceEmailNotification}
+                     onChange={() => setAcceptEmailNotify(!isAcceptanceEmailNotification)}
                   />
                </label>
             </div>

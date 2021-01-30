@@ -1,4 +1,3 @@
-import { settings } from 'nprogress';
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { swichDescribeTaxAs, switchAmountAreDes, showCurrencyCode, calculateSubTotal, calculateQuoteTotal } from '../../../util'
@@ -31,7 +30,7 @@ class Tr_TotalUSD extends Component {
                 </td>
                 <td className="total-price">
                     <span className="quoteTotal-gTotal" style={{}}>
-                        {currencySymbol} {calculateQuoteTotal(items, settings, salesTaxes)}
+                        {currencySymbol} {calculateQuoteTotal({ items, settings }, salesTaxes)}
                     </span>
                 </td>
             </tr>

@@ -7,6 +7,7 @@ import AcceptSummary from '../AcceptSummary';
 import AdditionalComments from '../AdditionalComments';
 import OrderReferenceNumber from '../OrderReferenceNumber';
 import _ from 'lodash';
+import { showExampleIgnoreMessage } from '../../../../../actions';
 
 export default function AcceptPreviewBox() {
    const dispatch = useDispatch();
@@ -16,26 +17,27 @@ export default function AcceptPreviewBox() {
    const [isAgreeChecked, setAgreeChecked] = useState(false);
    const [isLoading, setLoading] = useState(false);
    const onClickAccept = () => {
-      if (!isAgreeChecked) { toast.success("Check the agree box to accept."); return; }
-      const isPreviewMode = this.props.match.path === "/q/:entoken/preview";
-      if (isPreviewMode) {
-         toast.warn("This is just a preview.");
-         return;
-      }
-      const { entoken } = this.props.match.params;
-      const { orderReferenceNumber, additionalComment } = this.props.quote;
+      dispatch(showExampleIgnoreMessage());
+      // if (!isAgreeChecked) { toast.success("Check the agree box to accept."); return; }
+      // const isPreviewMode = this.props.match.path === "/q/:entoken/preview";
+      // if (isPreviewMode) {
+      //    toast.warn("This is just a preview.");
+      //    return;
+      // }
+      // const { entoken } = this.props.match.params;
+      // const { orderReferenceNumber, additionalComment } = this.props.quote;
 
-      setLoading(true);
-      axios.post('/quotes/accept', { entoken, orderReferenceNumber, additionalComment })
-         .then(() => {
-            setLoading(false);
-            toast.success('Quote was Accepted, Thank you.');
-            this.props.history.push(`/q/${entoken}/accepted`);
-         })
-         .catch(err => {
-            setLoading(false);
-            toast.error('Failed during quote acception request.,');
-         });
+      // setLoading(true);
+      // axios.post('/quotes/accept', { entoken, orderReferenceNumber, additionalComment })
+      //    .then(() => {
+      //       setLoading(false);
+      //       toast.success('Quote was Accepted, Thank you.');
+      //       this.props.history.push(`/q/${entoken}/accepted`);
+      //    })
+      //    .catch(err => {
+      //       setLoading(false);
+      //       toast.error('Failed during quote acception request.,');
+      //    });
    }
    const onClickDecline = () => {
 
@@ -65,7 +67,7 @@ export default function AcceptPreviewBox() {
                   </label>
                   <div className="acceptCb-prompt isHidden">
                      <span className="glyphicon glyphicon-arrow-up" /> Check the box to accept.
-                        </div>
+                  </div>
                </div>
             </div>
          </div>

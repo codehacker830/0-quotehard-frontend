@@ -1,7 +1,7 @@
 import { set } from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { caculateTotalTax, swichDescribeTaxAs, toFixedFloat, getTaxRateFromId } from '../../../util';
+import { caculateTotalTax, getTaxRateFromId, swichDescribeTaxAs, toFixedFloat } from '../../../util';
 
 class Tr_tax extends Component {
    render() {

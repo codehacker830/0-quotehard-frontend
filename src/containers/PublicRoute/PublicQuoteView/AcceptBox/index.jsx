@@ -15,6 +15,7 @@ import clsx from 'clsx';
 import _ from 'lodash';
 import AcceptOnBehalfBox from './AcceptOnBehalfBox';
 import AcceptPreviewBox from './AcceptPreviewBox';
+import AcceptedBox from './AcceptedBox';
 
 class AcceptBox extends Component {
     constructor(props) {
@@ -23,7 +24,7 @@ class AcceptBox extends Component {
             loading: false,
             isAgree: false,
             onBehalfOfPersonId: null,
-            isAcceptEmailNotify: false
+            isAcceptanceEmailNotification: false
         };
 
     }
@@ -44,49 +45,7 @@ class AcceptBox extends Component {
         const isPreviewMode = (this.props.match.path === "/q/:entoken/preview");
         if (this.props.isAcceptOnBehalfBoxShow) return <AcceptOnBehalfBox />;
         else if ((!isMember && quote.status === "awaiting") || isPreviewMode) return <AcceptPreviewBox />
-        else if (quote.status === "accepted") return (
-            <div className="acceptBox no_print" style={{ backgroundColor: `${colors.highlights}` }}>
-                <h3 className="quote-box-h3-accept">{quote.title}</h3>
-                <AcceptSummary />
-
-                <div className="fingerDetail isHidden">
-                    <div className="fingerDetail-table">
-                        <div className="fingerDetail-left isImage">
-                            <img src="https://asset.quotientapp.com/image/app/accept-fingerprint.jpg" alt="Accept fingerprint mark" />
-                        </div>
-                        <div className="fingerDetail-left">
-                            <h3 className="u-pad-top-5">Digital Fingerprint</h3>
-                            <div className="u-section-4">
-                                <strong>Timestamp:</strong>
-                                <div>Tuesday 8th of December 2020 04:31:35 AM UTC </div>
-                            </div>
-                            <div className="u-section-4">
-                                <strong>IP Address:</strong>
-                                <div>89.187.161.220 </div>
-                            </div>
-                            <div><strong>Device information:</strong></div>
-                            <div><small>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 </small></div>
-                        </div>
-                    </div>
-                </div>
-                <AcceptedAdditionalComments />
-                <AcceptedOrderReferenceNumber />
-                {/* acceptCb */}
-                <div className="form-group-half">
-                    <div className="acceptCb">
-                        <div className="acceptCb-left">
-                            <label className="acceptCb-label-box">
-                                <input disabled="disabled" name="dummy-not-used" defaultChecked="checked" type="checkbox" id="dummy-not-used" /></label>
-                        </div>
-                        <div className="acceptCb-right">
-                            <label className="acceptCb-label-done">
-                                Yes, I {customerFullName} agree to and accept this quote{quote.acceptedAt ? <>, on <span className="dt-time">{formatDateTime(quote.acceptedAt)}</span>.</> : null}
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
+        else if (quote.status === "accepted") return <AcceptedBox />
         else return null;
     }
 }

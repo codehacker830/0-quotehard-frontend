@@ -375,13 +375,14 @@ export const FilterSeqItemsForPartSubTotal = (items, ind) => {
    return resArr;
 }
 
-export const getTaxRateFromId = (salesTaxId, salesTaxes) => {
+export function getTaxRateFromId(salesTaxId, salesTaxes) {
    const taxObj = salesTaxes.find(item => item._id === salesTaxId);
    const taxRate = taxObj && taxObj.taxRate ? taxObj.taxRate : 0;
    return taxRate;
 }
 
-export const calculateQuoteTotal = (items, settings, salesTaxes) => {
+export function calculateQuoteTotal(quote, salesTaxes) {
+   const { items, settings } = quote;
    if (!items.length) return 0;
    let total = 0;
    items.forEach(item => {
@@ -471,7 +472,7 @@ export const previewMessageStr = (str) => {
    pStr = pStr.replaceAll('[Quote-number]', '<span class="u-highlight-tag">Quote Number</span>');
    pStr = pStr.replaceAll('[Customer-comment]', '<span class="u-highlight-tag">Customer Comment</span>');
    pStr = pStr.replaceAll('[Customer-order-number]', '<span class="u-highlight-tag">Customer Order Number</span>');
-   
+
    console.log(" previewMessageStr ====>  ", pStr)
    return pStr;
 }
