@@ -43,7 +43,7 @@ export default function QuoteViewFollowUp(props) {
    const onClickSendFollowUp = () => {
       setLoading(true);
       const quoteId = quote._id;
-      axios.post('/quotes/send', { quoteId, subject, msgHeader, msgFooter })
+      axios.post('/quotes/send/follow-up', { quoteId, subject, msgHeader, msgFooter })
          .then(({ data }) => {
             toast.success("Follow-up sent.");
             history.push(`/q/${entoken}`);

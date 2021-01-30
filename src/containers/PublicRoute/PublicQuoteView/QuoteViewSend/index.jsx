@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
 import TextareaAutosize from 'react-autosize-textarea/lib'
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from '../../../../util/Api';
 import _ from "lodash";
@@ -25,6 +25,8 @@ export default function QuoteViewSend(props) {
    const [msgHeader, setMsgHeader] = useState();
    const [msgFooter, setMsgFooter] = useState();
    const history = useHistory();
+   const match = useRouteMatch();
+   const { entoken } = match.params;
    const quote = useSelector(state => state.mainData.quote);
    const accountCompany = useSelector(state => state.auth.accountCompany);
    const sendEmailTo = makeStrFromNameArr(quote.toPeopleList.map(person => {
@@ -39,7 +41,7 @@ export default function QuoteViewSend(props) {
       axios.post('/quotes/send', { quoteId, subject, msgHeader, msgFooter })
          .then(({ data }) => {
             toast.success("Quote email was sent.");
-            history.push(`/q/${data.entoken}`);
+            history.push(`/q/${entoken}`);
          })
          .catch(err => {
             setLoading(false);

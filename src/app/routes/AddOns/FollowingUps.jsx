@@ -1,12 +1,44 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import NavCrump from '../../../components/NavCrump';
+import axios from '../../../util/Api';
 
 export default class Followingups extends Component {
    state = {
-      isChecked: true,
-      followFirstDelayedDays: 3,
-      followSecondDelayedDays: 12
+      isFollowUpDashboardAlertEnabled: false,
+      firstFollowUpAfter: 3,
+      secondFollowUpAfter: 14
+   }
+   componentDidMount() {
+      axios.get('/settings/follow-up')
+         .then(({ data }) => {
+            this.setState({
+               isFollowUpDashboardAlertEnabled: data.isFollowUpDashboardAlertEnabled,
+               firstFollowUpAfter: data.firstFollowUpAfter,
+               secondFollowUpAfter: data.secondFollowUpAfter
+            })
+         })
+         .catch(err => {
+            console.error("Error during fetch follow-up setting data.");
+         });
+   }
+   onClickSave = () => {
+      const {
+         isViewedNotificationEnabled,
+         firstFollowUpAfter,
+         secondFollowUpAfter
+      } = this.state;
+      axios.post('/settings/follow-up', {
+         isViewedNotificationEnabled,
+         firstFollowUpAfter,
+         secondFollowUpAfter
+      })
+         .then(({ data }) => {
+            this.props.history.push('/app/settings');
+         })
+         .catch(err => {
+            console.error("Error during fetch follow-up setting data.");
+         });
    }
    render() {
       return (
@@ -26,21 +58,21 @@ export default class Followingups extends Component {
                      <input type="checkbox"
                         className="custom-control-input"
                         id="follow-ups" name="follow-ups"
-                        checked={this.state.isChecked}
-                        onChange={(ev) => this.setState({ isChecked: !this.state.isChecked })}
+                        checked={this.state.isFollowUpDashboardAlertEnabled}
+                        onChange={() => this.setState({ isFollowUpDashboardAlertEnabled: !this.state.isFollowUpDashboardAlertEnabled })}
                      />
                      <label className="custom-control-label" htmlFor="follow-ups">
-                        {this.state.isChecked ? "Alert on Dashboard: " : "Enable Follow-ups…"}
+                        {this.state.isFollowUpDashboardAlertEnabled ? "Alert on Dashboard: " : "Enable Follow-ups…"}
                      </label>
                   </div>
-                  <div className={`${this.state.isChecked ? "" : "d-none"}`}>
+                  <div className={`${this.state.isFollowUpDashboardAlertEnabled ? "" : "d-none"}`}>
                      <div className="row no-gutters ml-4 mb-2" style={{ lineHeight: "32px" }}>
                         If not accepted after
                         <input type="number"
                            className="form-control rounded-0 width-70 mx-1"
                            id="upopened" name="upopened" placeholder=""
-                           value={this.state.followFirstDelayedDays}
-                           onChange={(ev) => this.setState({ followFirstDelayedDays: ev.target.value })}
+                           value={this.state.firstFollowUpAfter}
+                           onChange={(ev) => this.setState({ firstFollowUpAfter: ev.target.value })}
                         />
                         days OR if unopened after 12 hours
                      </div>
@@ -49,15 +81,15 @@ export default class Followingups extends Component {
                         <input type="number"
                            className="form-control rounded-0 width-70 mx-1"
                            id="unaccepted" name="unaccepted" placeholder=""
-                           value={this.state.followSecondDelayedDays}
-                           onChange={(ev) => this.setState({ followSecondDelayedDays: ev.target.value })}
+                           value={this.state.secondFollowUpAfter}
+                           onChange={(ev) => this.setState({ secondFollowUpAfter: ev.target.value })}
                         />
                         days
                      </div>
                   </div>
                </div>
                <div className="mt-5">
-                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1">Save</button>
+                  <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.onClickSave}>Save</button>
                   <Link className="btn btn-lg btn-rounded btn-hero-secondary" to="/app/settings" >Cancel</Link>
                </div>
             </div>
