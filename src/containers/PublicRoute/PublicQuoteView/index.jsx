@@ -31,6 +31,7 @@ import QuoteViewSend from './QuoteViewSend';
 import { archiveQuote, setQuote, unArchiveQuote } from '../../../actions/Data';
 import { GET_QUOTE } from '../../../constants/ActionTypes';
 import ExampleIgnoreMessage from './ExampleIgnoreMessage';
+import QuoteViewFollowUp from './QuoteViewFollowUp';
 
 class PublicQuoteView extends Component {
    constructor(props) {
@@ -70,7 +71,8 @@ class PublicQuoteView extends Component {
       });
    }
    onClickSendFollowUp = () => {
-
+      const { entoken } = this.props.match.params;
+      this.props.history.push(`/q/${entoken}/?do-follow-up=&returnTo=quote`);
    }
    onClickArchive = () => {
       const quoteId = this.props.quote._id;
@@ -329,7 +331,7 @@ class PublicQuoteView extends Component {
                      </NavCrumpRight>
                   </NavCrump>
                </PublicVisiableOnlyAuthTeamMember>
-               
+
                <ExampleIgnoreMessage />
                <div id="AlerterPage">
                   <div className={clsx("alertBar alertBar-prompt", !this.state.isEditAlertOpen && "isHidden")}>
@@ -401,6 +403,11 @@ class PublicQuoteView extends Component {
                {/* QuoteViewSend */}
                <PublicVisiableOnlyAuthTeamMember>
                   <QuoteViewSend isViewMode={this.state.isViewMode} setViewMode={(val) => this.setState({ isViewMode: val })} />
+               </PublicVisiableOnlyAuthTeamMember>
+
+               {/* QuoteViewFollowUp */}
+               <PublicVisiableOnlyAuthTeamMember>
+                  <QuoteViewFollowUp />
                </PublicVisiableOnlyAuthTeamMember>
 
                {/* QuoteView */}
