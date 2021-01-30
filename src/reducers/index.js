@@ -8,6 +8,7 @@ import QuoteDefautSetting from './QuoteDefautSetting';
 import CustomerEmailSetting from './CustomerEmailSetting';
 import Team from './Team';
 import Data from './Data';
+import AlertMessage from './AlertMessage';
 
 
 export default (history) => combineReducers({
@@ -20,4 +21,5 @@ export default (history) => combineReducers({
    customerEmailSetting: CustomerEmailSetting,
    teamSetting: Team,
    mainData: Data,
+   alertMessage: AlertMessage,
 });

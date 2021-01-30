@@ -6,14 +6,15 @@ import { toast } from 'react-toastify';
 import { acceptOnBehalfQuote } from '../../../../actions/Data';
 import { checkIfTeamMember, formatDateTime } from '../../../../util';
 import axios from '../../../../util/Api';
-import { AcceptSummary } from './AcceptSummary';
+import AcceptSummary from './AcceptSummary';
 import AdditionalComments from './AdditionalComments';
 import OrderReferenceNumber from './OrderReferenceNumber';
 import AcceptedOrderReferenceNumber from './AcceptedOrderReferenceNumber';
 import AcceptedAdditionalComments from './AcceptedAdditionalComments';
 import clsx from 'clsx';
 import _ from 'lodash';
-import AcceptOnBehalfBox from './AcceptOnBehalfBox.jsx';
+import AcceptOnBehalfBox from './AcceptOnBehalfBox';
+import AcceptPreviewBox from './AcceptPreviewBox';
 
 class AcceptBox extends Component {
     constructor(props) {
@@ -25,28 +26,6 @@ class AcceptBox extends Component {
             isAcceptEmailNotify: false
         };
 
-    }
-    onClickAccept = () => {
-        if (!this.state.isAgree) { toast.success("Check the agree box to accept."); return; }
-        const isPreviewMode = this.props.match.path === "/q/:entoken/preview";
-        if (isPreviewMode) {
-            toast.warn("This is just a preview.");
-            return;
-        }
-        const { entoken } = this.props.match.params;
-        const { orderReferenceNumber, additionalComment } = this.props.quote;
-
-        this.setState({ loading: true });
-        axios.post('/quotes/accept', { entoken, orderReferenceNumber, additionalComment })
-            .then(() => {
-                this.setState({ loading: false });
-                toast.success('Quote was Accepted, Thank you.');
-                this.props.history.push(`/q/${entoken}/accepted`);
-            })
-            .catch(err => {
-                this.setState({ loading: false });
-                toast.error('Failed during quote acception request.,');
-            });
     }
     onClickDecline = () => {
         const isPreviewMode = (this.props.match.path === "/q/:entoken/preview");
@@ -64,54 +43,7 @@ class AcceptBox extends Component {
         const isMember = checkIfTeamMember(quote.author, teamMembers);
         const isPreviewMode = (this.props.match.path === "/q/:entoken/preview");
         if (this.props.isAcceptOnBehalfBoxShow) return <AcceptOnBehalfBox />;
-        else if ((!isMember && quote.status === "awaiting") || isPreviewMode) return (
-            <div className="acceptBox no_print" style={{ backgroundColor: `${colors.highlights}` }}>
-                <h3 className="quote-box-h3-accept">{quote.title}</h3>
-
-                <AcceptSummary />
-                <AdditionalComments />
-                <OrderReferenceNumber />
-                {/* acceptCb */}
-                <div className="form-group-half">
-                    <div className="acceptCb">
-                        <div className="acceptCb-left">
-                            <label className="acceptCb-label-box" htmlFor="accept__confirm">
-                                <input className="quote-accept-checkbox" name="accept[_confirm]" type="checkbox" id="accept__confirm"
-                                    checked={this.state.isAgree}
-                                    onChange={() => this.setState({ isAgree: !this.state.isAgree })}
-                                />
-                            </label>
-                        </div>
-                        <div className="acceptCb-right">
-                            <label className="acceptCb-label" htmlFor="accept__confirm">
-                                Yes, I {customerFullName} agree to and accept this quote
-                            {
-                                    quote.acceptedAt ?
-                                        <>, on <span className="dt-time">{formatDateTime(quote.acceptedAt)}</span>.</>
-                                        : null
-                                }
-                            </label>
-                            <div className="acceptCb-prompt isHidden">
-                                <span className="glyphicon glyphicon-arrow-up" /> Check the box to accept.
-                        </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="clear" />
-
-                {/* accept button box */}
-                <div className="quote-box-accept">
-                    <button className="btn btn-save btnAccept btn-lg" disabled={this.state.loading} onClick={this.onClickAccept}>
-                        {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
-                    Accept
-                </button>
-                    <span className="quote-box-decline-wrap">
-                        <button className="btn btn-lg btn-lg-skinny" onClick={this.onClickDecline}>Decline</button>
-                    </span>
-                </div>
-            </div>
-        );
+        else if ((!isMember && quote.status === "awaiting") || isPreviewMode) return <AcceptPreviewBox />
         else if (quote.status === "accepted") return (
             <div className="acceptBox no_print" style={{ backgroundColor: `${colors.highlights}` }}>
                 <h3 className="quote-box-h3-accept">{quote.title}</h3>

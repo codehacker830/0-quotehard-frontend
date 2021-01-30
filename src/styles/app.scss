@@ -1069,3 +1069,27 @@ body .qCustomCss label,
 p {
    font-family: "Helvetica Neue", Helvetica, Arial;
 }
+
+.acceptSummary {
+   p {
+      margin-bottom: 0px !important;
+   }
+}
+
+.example-ignore-message {
+   position: fixed;
+   max-width: 66%;
+   z-index: 10000;
+   left: 0;
+   top: 20%;
+}
+
+.example-ignore-message .inner {
+   text-align: center;
+   font-size: 130%;
+   margin-left: 0;
+   padding: 20px 30px;
+   color: #fff;
+   background: #191919;
+   opacity: .85;
+}

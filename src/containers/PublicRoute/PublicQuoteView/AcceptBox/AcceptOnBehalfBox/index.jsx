@@ -40,8 +40,8 @@ export default function AcceptOnBehalfBox() {
       <div className="acceptBox" style={{ backgroundColor: `${colors.highlights}` }}>
          <h3 className="quote-box-h3-accept">Accept on behalf</h3>
          <div className="acceptSummary">
-            <p className="mb-0"><strong>{quote.title}</strong></p>
-            <p className="summaryWrapzFixedCost mb-0">
+            <p className=""><strong>{quote.title}</strong></p>
+            <p className="summaryWrapzFixedCost">
                Total including tax $<span className="summaryPartTotal">1,100.00</span>
             </p>
          </div>

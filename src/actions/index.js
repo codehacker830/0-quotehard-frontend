@@ -8,3 +8,4 @@ export * from './Team';
 export * from './Data';
 export * from './EmailNotificationSetting';
 export * from './AcceptBox';
+export * from './AlertMessage';

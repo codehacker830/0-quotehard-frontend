@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-export class AcceptSummary extends Component {
+class AcceptSummary extends Component {
     render() {
         return (
             <div className="acceptSummary">
-                <p className="summaryWrap20000100000 hasTerm">
+                <p className="summaryWrap hasTerm">
                     Total USD including TAX $<span className="summaryPartTotal">XXX</span> per month
                 </p>
-                {/* <p className="summaryWrap20000100006 hasTerm">
+                {/* <p className="summaryWrap hasTerm">
                     Total USD including TAX $<span className="summaryPartTotal">148.50</span> per month (for 6 months) (<span className="summaryPartOption">1 of 1</span> options selected)
                 </p>
                 <p className="summaryWrapzFixedCost">

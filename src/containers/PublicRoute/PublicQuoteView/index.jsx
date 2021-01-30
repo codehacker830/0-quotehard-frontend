@@ -30,6 +30,7 @@ import clsx from 'clsx';
 import QuoteViewSend from './QuoteViewSend';
 import { archiveQuote, setQuote, unArchiveQuote } from '../../../actions/Data';
 import { GET_QUOTE } from '../../../constants/ActionTypes';
+import ExampleIgnoreMessage from './ExampleIgnoreMessage';
 
 class PublicQuoteView extends Component {
    constructor(props) {
@@ -327,7 +328,7 @@ class PublicQuoteView extends Component {
                         </ul>
                      </NavCrumpRight>
                   </NavCrump>
-
+                  <ExampleIgnoreMessage />
                   <div id="AlerterPage">
                      <div className={clsx("alertBar alertBar-prompt", !this.state.isEditAlertOpen && "isHidden")}>
                         <div className="container">

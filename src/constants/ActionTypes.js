@@ -57,3 +57,7 @@ export const GET_ACCEPTEDQUOTE_CUSTOMEREMAIL_SETTING = 'get_acceptedquote_custom
 export const GET_FIRSTFOLLOWUP_CUSTOMEREMAIL_SETTING = 'get_firstfollowup_customeremail_setting';
 export const GET_SECONDFOLLOWUP_CUSTOMEREMAIL_SETTING = 'get_secondfollowup_customeremail_setting';
 export const GET_ASKFORREVIEW_CUSTOMEREMAIL_SETTING = 'get_askforreview_customeremail_setting';
+
+// AlertMessage
+export const SHOW_EXAMPLE_IGNORE_MESSAGE = "show_example_ignore_message";
+export const HIDE_EXAMPLE_IGNORE_MESSAGE = "hide_example_ignore_message";

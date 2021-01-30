@@ -42,45 +42,39 @@ class Header extends Component {
       ) isShow = true;
 
       return (
-         <header id="page-header" className={`bg-dark ${isShow && !isMergeMode ? "" : "d-none"}`}>
+         <header id="page-header" className={clsx("bg-dark", isShow && !isMergeMode ? "" : "d-none")}>
             {/* Header Content */}
             <div className="container content-header">
                {/* Left Section */}
-               <div>
-                  {
-                     accountCompany.status === "active" ?
-                        <ul className="nav nav-pills justify-content-center justify-content-md-start">
-                           <li className="nav-item mr-1">
-                              <NavLink exact to="/app" className="nav-link">
-                                 <i className="fa fa-building fa-fw" /> <span className="d-none d-md-inline ml-1">Dashboard</span>
-                              </NavLink>
-                           </li>
-                           <li className="nav-item mr-1">
-                              <NavLink to="/app/quotes" className="nav-link">
-                                 <i className="fa fa-quote-left fa-fw" /> <span className="d-none d-md-inline ml-1">Quotes</span>
-                              </NavLink>
-                           </li>
-                           <li className="nav-item mr-1">
-                              <NavLink to="/app/c/contacts" className="nav-link">
-                                 <i className="fa fa-phone-square fa-fw" /> <span className="d-none d-md-inline ml-1">Contacts</span>
-                              </NavLink>
-                           </li>
-                           <li className="nav-item mr-1">
-                              <NavLink to="/app/content/templates" className="nav-link">
-                                 <i className="fa fa-suitcase fa-fw" /> <span className="d-none d-md-inline ml-1">Templates &amp; Items</span>
-                              </NavLink>
-                           </li>
-                        </ul>
-                        : <ul className="nav nav-pills justify-content-center justify-content-md-start">
-                           <li className="nav-item mr-1">
-                              <NavLink exact to="/app/settings" className="nav-link">
-                                 <i className="fa fa-building fa-fw" /> <span className="d-none d-md-inline ml-1">Dashboard</span>
-                              </NavLink>
-                           </li>
-                        </ul>
-                  }
-
-               </div>
+               <ul className={clsx("nav nav-pills justify-content-center justify-content-md-start", accountCompany.status === "active" ? "" : "d-none")}>
+                  <li className="nav-item mr-1">
+                     <NavLink exact to="/app" className="nav-link">
+                        <i className="fa fa-building fa-fw" /> <span className="d-none d-md-inline ml-1">Dashboard</span>
+                     </NavLink>
+                  </li>
+                  <li className="nav-item mr-1">
+                     <NavLink to="/app/quotes" className="nav-link">
+                        <i className="fa fa-quote-left fa-fw" /> <span className="d-none d-md-inline ml-1">Quotes</span>
+                     </NavLink>
+                  </li>
+                  <li className="nav-item mr-1">
+                     <NavLink to="/app/c/contacts" className="nav-link">
+                        <i className="fa fa-phone-square fa-fw" /> <span className="d-none d-md-inline ml-1">Contacts</span>
+                     </NavLink>
+                  </li>
+                  <li className="nav-item mr-1">
+                     <NavLink to="/app/content/templates" className="nav-link">
+                        <i className="fa fa-suitcase fa-fw" /> <span className="d-none d-md-inline ml-1">Templates &amp; Items</span>
+                     </NavLink>
+                  </li>
+               </ul>
+               <ul className={clsx("nav nav-pills justify-content-center justify-content-md-start", accountCompany.status === "active" ? "d-none" : "")}>
+                  <li className="nav-item mr-1">
+                     <NavLink exact to="/app/settings" className="nav-link">
+                        <i className="fa fa-building fa-fw" /> <span className="d-none d-md-inline ml-1">Dashboard</span>
+                     </NavLink>
+                  </li>
+               </ul>
                {/* END Left Section */}
                {/* Right Section */}
                <div className="d-flex align-items-center">
