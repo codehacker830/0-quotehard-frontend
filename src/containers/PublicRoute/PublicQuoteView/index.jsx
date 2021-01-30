@@ -44,7 +44,7 @@ class PublicQuoteView extends Component {
          isWithdrawAlertOpen: false,
          isUndoWithdrawAlertOpen: false,
 
-         isManualAcceptBoxShow: false,
+         isAcceptOnBehalfBoxShow: false,
          isViewMode: true,
       };
       this.screenEnd = React.createRef();
@@ -78,7 +78,7 @@ class PublicQuoteView extends Component {
    }
    onClickAcceptTab = () => {
       if (this.props.quote.status === "accepted") this.setState({ isUndoAcceptanceAlertOpen: true });
-      else this.setState({ isManualAcceptBoxShow: true }, () => {
+      else this.setState({ isAcceptOnBehalfBoxShow: true }, () => {
          this.screenEnd.current.scrollIntoView({ behavior: "smooth" });
       });
    }
@@ -88,7 +88,7 @@ class PublicQuoteView extends Component {
          toast.success("Acceptance Undone.")
          this.setState({
             isUndoAcceptanceAlertOpen: false,
-            isManualAcceptBoxShow: false
+            isAcceptOnBehalfBoxShow: false
          });
          this.props.setQuote(data.quote);
       }).catch(err => {
@@ -100,6 +100,7 @@ class PublicQuoteView extends Component {
       const quoteId = this.props.quote._id;
       axios.put(`/quotes/status/${quoteId}`, { status: "declined" }).then(({ data }) => {
          this.props.setQuote(data.quote);
+         this.closeAllAlert();
       }).catch(err => {
          console.error("Error during update status :", err)
       });
@@ -108,6 +109,7 @@ class PublicQuoteView extends Component {
       const quoteId = this.props.quote._id;
       axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
          this.props.setQuote(data.quote);
+         this.closeAllAlert();
       }).catch(err => {
          console.error("Error during update status :", err)
       });
@@ -116,6 +118,7 @@ class PublicQuoteView extends Component {
       const quoteId = this.props.quote._id;
       axios.put(`/quotes/status/${quoteId}`, { status: "withdrawn" }).then(({ data }) => {
          this.props.setQuote(data.quote);
+         this.closeAllAlert();
       }).catch(err => {
          console.error("Error during update status :", err)
       });
@@ -124,6 +127,7 @@ class PublicQuoteView extends Component {
       const quoteId = this.props.quote._id;
       axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
          this.props.setQuote(data.quote);
+         this.closeAllAlert();
       }).catch(err => {
          console.error("Error during update status :", err)
       });
@@ -428,7 +432,7 @@ class PublicQuoteView extends Component {
                                  <PublicQuoteDiscussionList />
                                  <PublicQuoteDisscussionWrite />
                               </div>
-                              <AcceptBox isManualAcceptBoxShow={this.state.isManualAcceptBoxShow} hideManualAcceptBox={() => this.setState({ isManualAcceptBoxShow: false })} />
+                              <AcceptBox isAcceptOnBehalfBoxShow={this.state.isAcceptOnBehalfBoxShow} hideManualAcceptBox={() => this.setState({ isAcceptOnBehalfBoxShow: false })} />
                               <div style={{ float: "left", clear: "both" }} ref={this.screenEnd} />
                               <DeclineCommentShow />
 

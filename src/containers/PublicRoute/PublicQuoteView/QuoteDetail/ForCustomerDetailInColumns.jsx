@@ -74,7 +74,7 @@ class ForCustomerDetailInColumns extends Component {
                         toPeopleList.map((copyReceiver, index) => {
                            if (index === 0) return null;
                            else return (
-                              <React.Fragment>
+                              <React.Fragment key={index}>
                                  <PersonContactLink contact={copyReceiver} key={index} />
                                  <br />
                               </React.Fragment>

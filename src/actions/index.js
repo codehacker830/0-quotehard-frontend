@@ -7,3 +7,4 @@ export * from './CustomerEmailSetting';
 export * from './Team';
 export * from './Data';
 export * from './EmailNotificationSetting';
+export * from './AcceptBox';
