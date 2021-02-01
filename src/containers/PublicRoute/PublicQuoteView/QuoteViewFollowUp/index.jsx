@@ -67,7 +67,7 @@ export default function QuoteViewFollowUp(props) {
             setMsgHeader(replacePlaceholdersWithQuoteData(data.msgHeader));
             setMsgFooter(replacePlaceholdersWithQuoteData(data.msgFooter));
          }).catch(err => {
-            console.error(" Fetch error during customer email setting .")
+            console.error(" Fetch error during customer email for first followUp.")
          });
       return () => { }
    }, []);
@@ -118,11 +118,11 @@ export default function QuoteViewFollowUp(props) {
                      <span className="lighter">To:</span>&nbsp;{sendEmailTo}&nbsp;&nbsp;
                      <span className="lighter">From:</span>&nbsp;{sendEmailFrom}
                   </div>
-                  <label htmlFor="input_custom_email_subject">Subject</label>
+                  <label htmlFor="input_custom_email_subject_for_followup">Subject</label>
                   <TextareaAutosize
                      className="form-control emailWording-subject rounded-0"
-                     id="input_custom_email_subject"
-                     name="input_custom_email_subject"
+                     id="input_custom_email_subject_for_followup"
+                     name="input_custom_email_subject_for_followup"
                      value={subject}
                      onChange={ev => setSubject(ev.target.value)}
                   />

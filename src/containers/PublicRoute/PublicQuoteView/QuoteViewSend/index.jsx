@@ -21,9 +21,9 @@ const makeStrFromNameArr = (nameArr) => {
 
 export default function QuoteViewSend(props) {
    const [isLoading, setLoading] = useState(false);
-   const [subject, setSubject] = useState();
-   const [msgHeader, setMsgHeader] = useState();
-   const [msgFooter, setMsgFooter] = useState();
+   const [subject, setSubject] = useState("");
+   const [msgHeader, setMsgHeader] = useState("");
+   const [msgFooter, setMsgFooter] = useState("");
    const history = useHistory();
    const match = useRouteMatch();
    const { entoken } = match.params;
@@ -53,27 +53,34 @@ export default function QuoteViewSend(props) {
    useEffect(() => {
       axios.get('/settings/customer-email/new-quote')
          .then(({ data }) => {
+            console.log(" !@######### ", data);
+            console.log(" sdfsdf ", data.subject);
+            // console.log("11111", replacePlaceholdersWithQuoteData(data.subject));
+            // setSubject(data.subject);
             setSubject(replacePlaceholdersWithQuoteData(data.subject));
             setMsgHeader(replacePlaceholdersWithQuoteData(data.msgHeader));
             setMsgFooter(replacePlaceholdersWithQuoteData(data.msgFooter));
          }).catch(err => {
-            console.error(" Fetch error during customer email setting .")
+            console.error(" Fetch error during customer email for new quote.")
          });
       return () => { }
-   }, []);
+   }, [props.isViewMode]);
    const replacePlaceholdersWithQuoteData = (str) => {
+      console.log(" str : ", str)
       let pStr = str;
       const customerGivenNames = makeStrFromNameArr(quote.toPeopleList.map(person => {
          if (person) return person.firstName;
       }));
+      console.log(" customerGivenNames : ", customerGivenNames)
       const firstCustomer = _.head(quote.toPeopleList)
+      console.log(" firstCustomer : ", firstCustomer)
       pStr = pStr.replaceAll('[Quote-title]', quote.title);
       pStr = pStr.replaceAll('[Your-name]', sendEmailFrom);
       pStr = pStr.replaceAll('[Your-first-name]', userFrom.firstName);
       pStr = pStr.replaceAll('[Your-email]', userFrom.email);
       pStr = pStr.replaceAll('[Your-company-name]', accountCompany.companyDisplayName);
       pStr = pStr.replaceAll('[Customer-given-names]', customerGivenNames);
-      pStr = pStr.replaceAll('[Customer-company]', firstCustomer ? firstCustomer.company.companyName : "");
+      pStr = pStr.replaceAll('[Customer-company]', firstCustomer.company ? firstCustomer.company.companyName : "");
       pStr = pStr.replaceAll('[Quote-number]', quote.number);
 
       return pStr;
@@ -101,11 +108,11 @@ export default function QuoteViewSend(props) {
                      <span className="lighter">To:</span>&nbsp;{sendEmailTo}&nbsp;&nbsp;
                      <span className="lighter">From:</span>&nbsp;{sendEmailFrom}
                   </div>
-                  <label htmlFor="input_custom_email_subject">Subject</label>
+                  <label htmlFor="input_custom_email_subject_for_new_quote">Subject</label>
                   <TextareaAutosize
                      className="form-control emailWording-subject rounded-0"
-                     id="input_custom_email_subject"
-                     name="input_custom_email_subject"
+                     id="input_custom_email_subject_for_new_quote"
+                     name="input_custom_email_subject_for_new_quote"
                      value={subject}
                      onChange={ev => setSubject(ev.target.value)}
                   />
