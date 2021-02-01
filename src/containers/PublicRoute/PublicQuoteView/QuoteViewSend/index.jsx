@@ -53,10 +53,8 @@ export default function QuoteViewSend(props) {
    useEffect(() => {
       axios.get('/settings/customer-email/new-quote')
          .then(({ data }) => {
-            console.log(" !@######### ", data);
-            console.log(" sdfsdf ", data.subject);
-            // console.log("11111", replacePlaceholdersWithQuoteData(data.subject));
-            // setSubject(data.subject);
+            console.log(" data ---> ", data);
+            console.log(" data.subject ===> ", data.subject);
             setSubject(replacePlaceholdersWithQuoteData(data.subject));
             setMsgHeader(replacePlaceholdersWithQuoteData(data.msgHeader));
             setMsgFooter(replacePlaceholdersWithQuoteData(data.msgFooter));

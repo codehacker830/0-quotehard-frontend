@@ -8,39 +8,46 @@ import AdditionalComments from '../AdditionalComments';
 import OrderReferenceNumber from '../OrderReferenceNumber';
 import _ from 'lodash';
 import { showExampleIgnoreMessage } from '../../../../../actions';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
-export default function AcceptPreviewBox() {
+export default function AcceptanceBox() {
    const dispatch = useDispatch();
    const appearanceSetting = useSelector(state => state.appearanceSetting);
    const quote = useSelector(state => state.mainData.quote);
+   const match = useRouteMatch();
+   const history = useHistory();
    const { colors } = appearanceSetting;
    const [isAgreeChecked, setAgreeChecked] = useState(false);
    const [isLoading, setLoading] = useState(false);
-   const onClickAccept = () => {
-      dispatch(showExampleIgnoreMessage());
-      // if (!isAgreeChecked) { toast.success("Check the agree box to accept."); return; }
-      // const isPreviewMode = this.props.match.path === "/q/:entoken/preview";
-      // if (isPreviewMode) {
-      //    toast.warn("This is just a preview.");
-      //    return;
-      // }
-      // const { entoken } = this.props.match.params;
-      // const { orderReferenceNumber, additionalComment } = this.props.quote;
 
-      // setLoading(true);
-      // axios.post('/quotes/accept', { entoken, orderReferenceNumber, additionalComment })
-      //    .then(() => {
-      //       setLoading(false);
-      //       toast.success('Quote was Accepted, Thank you.');
-      //       this.props.history.push(`/q/${entoken}/accepted`);
-      //    })
-      //    .catch(err => {
-      //       setLoading(false);
-      //       toast.error('Failed during quote acception request.,');
-      //    });
+   const isPreviewMode = match.path === "/q/:entoken/preview";
+
+   const onClickAccept = () => {
+      if (!isAgreeChecked) { toast.success("Check the agree box to accept."); return; }
+      if (isPreviewMode) {
+         dispatch(showExampleIgnoreMessage());
+         return;
+      }
+      const { entoken } = match.params;
+      const { orderReferenceNumber, additionalComment } = quote;
+
+      setLoading(true);
+      axios.post('/quotes/accept', { entoken, orderReferenceNumber, additionalComment })
+         .then(() => {
+            setLoading(false);
+            toast.success('Quote was Accepted, Thank you.');
+            history.push(`/q/${entoken}/accepted`);
+         })
+         .catch(err => {
+            setLoading(false);
+            toast.error('Failed during quote acception request.,');
+         });
    }
    const onClickDecline = () => {
-
+      if (isPreviewMode) {
+         dispatch(showExampleIgnoreMessage());
+         return;
+      }
    }
    const firstRecipient = _.head(quote.toPeopleList);
    const firstRecipientFullName = firstRecipient ? firstRecipient.firstName + " " + firstRecipient.lastName : "";

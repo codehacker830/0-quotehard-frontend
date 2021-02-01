@@ -2,6 +2,7 @@ import React, { Component, createRef } from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { showExampleIgnoreMessage } from '../../../../actions';
 import { updateQuoteDiscussions } from '../../../../actions/Data';
 import { checkIfTeamMember } from '../../../../util';
 import CommentWrite from './CommentWrite';
@@ -20,7 +21,7 @@ class PublicQuoteDisscussionWrite extends Component {
     onClickAskQuestion = () => {
         const isPreviewMode = this.props.match.path === "/q/:entoken/preview";
         if (isPreviewMode) {
-            toast.warn("This is just a preview.");
+            this.props.showExampleIgnoreMessage();
             return;
         }
         this.setState({ questionSectionShow: true });
@@ -64,6 +65,7 @@ const mapStateToProps = ({ mainData, teamSetting }) => {
     return { quote, teamMembers };
 }
 const mapDispatchToProps = {
-    updateQuoteDiscussions
+    updateQuoteDiscussions,
+    showExampleIgnoreMessage
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PublicQuoteDisscussionWrite))

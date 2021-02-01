@@ -14,7 +14,7 @@ import AcceptedAdditionalComments from './AcceptedAdditionalComments';
 import clsx from 'clsx';
 import _ from 'lodash';
 import AcceptOnBehalfBox from './AcceptOnBehalfBox';
-import AcceptPreviewBox from './AcceptPreviewBox';
+import AcceptanceBox from './AcceptanceBox';
 import AcceptedBox from './AcceptedBox';
 
 class AcceptBox extends Component {
@@ -28,15 +28,6 @@ class AcceptBox extends Component {
         };
 
     }
-    onClickDecline = () => {
-        const isPreviewMode = (this.props.match.path === "/q/:entoken/preview");
-        if (isPreviewMode) {
-            toast.warn("This is just a preview.");
-            return;
-        }
-        const { entoken } = this.props.match.params;
-        this.props.history.push(`/q/${entoken}/decline`);
-    }
 
     render() {
         const { person, quote, teamMembers, colors } = this.props;
@@ -44,7 +35,8 @@ class AcceptBox extends Component {
         const isMember = checkIfTeamMember(quote.author, teamMembers);
         const isPreviewMode = (this.props.match.path === "/q/:entoken/preview");
         if (this.props.isAcceptOnBehalfBoxShow) return <AcceptOnBehalfBox />;
-        else if ((!isMember && quote.status === "awaiting") || isPreviewMode) return <AcceptPreviewBox />
+        else if (isPreviewMode) return <AcceptanceBox />
+        else if (!isMember && quote.status === "awaiting") return <AcceptanceBox />
         else if (quote.status === "accepted") return <AcceptedBox />
         else return null;
     }

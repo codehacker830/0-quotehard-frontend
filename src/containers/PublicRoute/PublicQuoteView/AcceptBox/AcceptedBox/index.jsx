@@ -29,9 +29,9 @@ export default function AcceptedBox() {
                   Total including tax $<span className="summaryPartTotal">{calculateQuoteTotal(quote, salesTaxes)}</span>
                </p>
                <div className="acceptBox-right no_print">
-                  <a className={clsx("acceptBox-fingerLink", hasFingerDetail ? "" : "d-none")} onClick={() => setFingerDetailShow(!isFingerDetailShow)}>
+                  {/* <a className={clsx("acceptBox-fingerLink", hasFingerDetail ? "" : "d-none")} onClick={() => setFingerDetailShow(!isFingerDetailShow)}>
                      Digital Fingerprint…
-                  </a>
+                  </a> */}
                   <span className="label acceptBox-label">Accepted</span>
                </div>
                <div className="clear" />

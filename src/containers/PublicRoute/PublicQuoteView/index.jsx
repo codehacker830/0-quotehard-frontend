@@ -28,8 +28,7 @@ import axios from '../../../util/Api';
 import { toast } from 'react-toastify';
 import clsx from 'clsx';
 import QuoteViewSend from './QuoteViewSend';
-import { archiveQuote, setQuote, unArchiveQuote } from '../../../actions/Data';
-import { GET_QUOTE } from '../../../constants/ActionTypes';
+import { archiveQuote, markAsSentQuote, setQuote, unArchiveQuote } from '../../../actions/Data';
 import ExampleIgnoreMessage from './ExampleIgnoreMessage';
 import QuoteViewFollowUp from './QuoteViewFollowUp';
 
@@ -51,6 +50,16 @@ class PublicQuoteView extends Component {
       };
       this.screenEnd = React.createRef();
 
+   }
+   onClickMarkAsSent = () => {
+      const { _id, toPeopleList, title } = this.props.quote;
+      if (title === "") {
+         toast.info("Missing a Quote Title.");
+         this.setState({ isValidWarning: true });
+         return;
+      }
+      if (toPeopleList.length === 0) { toast.info("You must add at least one contact."); return; }
+      this.props.markAsSentQuote(_id);
    }
    onClickUpdateOnly = () => {
       const quoteId = this.props.quote._id;
@@ -163,7 +172,7 @@ class PublicQuoteView extends Component {
       console.log(" ----------- PublicQuoteView props ------", this.props);
       const { entoken } = this.props.match.params;
       const { location } = this.props;
-      const { appearanceSetting, teamSetting, quote } = this.props;
+      const { loading, auth, appearanceSetting, teamSetting, quote } = this.props;
       const { teamMembers } = teamSetting;
 
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
@@ -173,10 +182,11 @@ class PublicQuoteView extends Component {
       const isMember = checkIfTeamMember(quote.author, teamMembers);
       console.error("QUOTE AUTHOR IS TEAM MEMBER ? ", isMember);
 
-      const hideUpdateOnly = (quote.status !== "editing");
-      const hideEditeQuote = (quote.status === "editing" || quote.status === "withdrawn" || quote.status === "accepted");
-      const hideSendFollowup = (quote.status === "editing" || quote.status === "withdrawn" || quote.status === "accepted");
-      const hideArchive = (quote.status === "editing");
+      const hideMarkAsSent = (quote.status !== "draft")
+      const hideUpdateOnly = (quote.status === "draft" || quote.status !== "editing");
+      const hideEditeQuote = (quote.status === "draft" || quote.status === "editing" || quote.status === "withdrawn" || quote.status === "accepted");
+      const hideSendFollowup = (quote.status === "draft" || quote.status === "editing" || quote.status === "withdrawn" || quote.status === "accepted");
+      const hideArchive = (quote.status === "draft" || quote.status === "editing");
       const hideAccept = (quote.status === "editing" || quote.status === "withdrawn");
       const hideDecline = (quote.status === "editing" || quote.status === "withdrawn" || quote.status === "accepted");
       const hideWithdraw = (quote.status === "editing");
@@ -199,6 +209,16 @@ class PublicQuoteView extends Component {
                      </NavCrumpLeft>
                      <NavCrumpRight>
                         <ul className="choices" style={{ left: 45, top: 10 }}>
+                           <li className={clsx(hideMarkAsSent && "d-none")}>
+                              <button className="btn-in-action" onClick={this.onClickMarkAsSent}>
+                                 <div className="icon-wrapper">
+                                    <i className="fa fa-fw fa-arrow-alt-circle-right text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm pr-2">
+                                    <span>Mark as Sent (don't email)</span>
+                                 </div>
+                              </button>
+                           </li>
                            <li className={clsx(hideUpdateOnly && "d-none")}>
                               <button className="btn-in-action" onClick={this.onClickUpdateOnly}>
                                  <div className="icon-wrapper">
@@ -468,7 +488,7 @@ const mapStateToProps = ({ commonData, auth, appearanceSetting, teamSetting, mai
 const mapDispatchToProps = {
    setInitUrl, userSignOut,
    getTeamMembers,
-   archiveQuote, unArchiveQuote,
+   markAsSentQuote, archiveQuote, unArchiveQuote,
    setQuote,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);
