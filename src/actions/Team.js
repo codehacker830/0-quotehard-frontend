@@ -20,3 +20,7 @@ export const getTeamMembers = () => {
       });
    }
 }
+
+export const setTeamMembers = (payload) => {
+   return (dispatch) => dispatch({ type: GET_TEAMMEMBERS, payload: payload });
+}

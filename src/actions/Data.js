@@ -15,7 +15,9 @@ import {
    UPDATE_PRICEITEM_STATUS,
    UPDATE_TEXTITEM_STATUS,
    UPDATE_ADDITIOINAL_COMMENT,
-   UPDATE_ORDERREFERENCE_NUMBER
+   UPDATE_ORDERREFERENCE_NUMBER,
+   APPEARANCE_SETTING,
+   PERSON_DATA
 } from '../constants/ActionTypes';
 import { toast } from 'react-toastify';
 import { initPriceItem, initTextItem } from '../constants/InitState';
@@ -243,4 +245,24 @@ export const updateAdditionalComment = (payload) => {
 
 export const updateOrderReferenceNumber = (payload) => {
    return (dispatch) => dispatch({ type: UPDATE_ORDERREFERENCE_NUMBER, payload: payload });
+}
+
+
+export const getQuoteFromEntoken = (entoken, history) => {
+   return async (dispatch) => {
+      dispatch({ type: FETCH_START });
+      try {
+         const { data } = await axios.post('/quotes/view-public/quote', { entoken });
+         console.log("========== PUBLIC DATA =========", data);
+         const { quote, person, appearanceSetting } = data;
+         dispatch({ type: APPEARANCE_SETTING, payload: appearanceSetting });
+         dispatch({ type: PERSON_DATA, payload: person });
+         dispatch({ type: GET_QUOTE, payload: quote });
+         dispatch({ type: FETCH_SUCCESS });
+      } catch (err) {
+         history.push('/error404');
+         dispatch({ type: FETCH_ERROR, payload: err.message });
+         console.log("Error****:", err.message);
+      }
+   }
 }

@@ -28,6 +28,7 @@ class Decline extends Component {
             });
     }
     render() {
+        const { entoken } = this.props.match.params;
         return (
             <main id="main-container">
                 <div className="row no-gutters">
@@ -47,7 +48,7 @@ class Decline extends Component {
                                                     {this.state.loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
                                                     Decline quote
                                                 </button>
-                                                <Link className="btn btn-lg btn-lg-skinny" disabled={this.state.loading} to={`/q/${this.props.match.params.entoken}`}>Cancel</Link>
+                                                <Link className="btn btn-lg btn-lg-skinny" disabled={this.state.loading} to={`/q/${entoken}`}>Cancel</Link>
                                             </div>
                                         </div>
                                     </div>

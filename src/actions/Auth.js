@@ -216,3 +216,7 @@ export const updateAccountInfo = (payload, history) => {
       }
    }
 }
+
+export const setPersonData = (payload) => {
+   return (dispatch) => dispatch({ type: PERSON_DATA, payload: payload });
+}

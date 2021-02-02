@@ -3,8 +3,8 @@ import { Link, Redirect } from 'react-router-dom'
 import NavCrump from '../../../components/NavCrump';
 import { checkIfTeamMember, formatDate, formatDateTime, parseStrIntoHtml, toFixedFloat } from '../../../util';
 import { connect } from 'react-redux';
-import { setInitUrl, userSignOut } from '../../../actions/Auth';
-import { getTeamMembers } from '../../../actions/Team';
+import { getUser, setInitUrl, setPersonData, userSignOut } from '../../../actions/Auth';
+import { getTeamMembers, setTeamMembers } from '../../../actions/Team';
 import QuoteLogo from '../components/QuoteLogo';
 import QuoteDetail from './QuoteDetail';
 import StatusShowCase from './StatusShowCase';
@@ -28,15 +28,18 @@ import axios from '../../../util/Api';
 import { toast } from 'react-toastify';
 import clsx from 'clsx';
 import QuoteViewSend from './QuoteViewSend';
-import { archiveQuote, markAsSentQuote, setQuote, unArchiveQuote } from '../../../actions/Data';
+import { archiveQuote, getQuoteFromEntoken, markAsSentQuote, setQuote, unArchiveQuote } from '../../../actions/Data';
 import ExampleIgnoreMessage from './ExampleIgnoreMessage';
 import QuoteViewFollowUp from './QuoteViewFollowUp';
+import { updateAppearanceSetting } from '../../../actions';
+import ErrorQuoteNotExist from '../ErrorQuoteNotExist.jsx';
 
 class PublicQuoteView extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         isMounting: true,
+         isLoading: true,
+         isInValid: false,
 
          isEditAlertOpen: false,
          isUndoAcceptanceAlertOpen: false,
@@ -152,9 +155,62 @@ class PublicQuoteView extends Component {
       const quoteId = this.props.quote._id;
       this.props.history.push(`/app/content/template/get/copy-to-template/${quoteId}`)
    }
-   async componentDidMount() {
-      if (this.props.auth.authUser) {
-         await this.props.getTeamMembers();
+   componentDidMount() {
+      this.setState({
+         isLoading: true,
+         isInValid: false,
+      });
+      const { entoken } = this.props.match.params;
+      if (this.props.match.path === '/q/:entoken/author') {
+         axios.get('/account').then((res) => {
+            axios.post('/quotes/view-public/quote', { entoken }).then((res) => {
+               const { quote, person, appearanceSetting } = res.data;
+               this.props.setQuote(quote);
+               this.props.setPersonData(person);
+               this.props.updateAppearanceSetting(appearanceSetting);
+               if (this.props.authUser) axios.get('/settings/team/real-members').then((res) => {
+                  const { members } = res.data;
+                  this.props.setTeamMembers(members);
+                  this.setState({
+                     isLoading: false,
+                     isInValid: false
+                  });
+               }).catch((err) => {
+                  console.error("Error during fetch team members.")
+               });
+            }).catch(err => {
+               this.setState({
+                  isLoading: false,
+                  isInValid: true
+               })
+            });
+         }).catch(err => {
+            this.props.setInitUrl(`/q/${entoken}`);
+            this.props.history.push('/sign-in');
+         });
+      }
+      else {
+         axios.post('/quotes/view-public/quote', { entoken }).then((res) => {
+            const { quote, person, appearanceSetting } = res.data;
+            this.props.setQuote(quote);
+            this.props.setPersonData(person);
+            this.props.updateAppearanceSetting(appearanceSetting);
+            if (this.props.authUser) axios.get('/settings/team/real-members').then((res) => {
+               const { members } = res.data;
+               this.props.setTeamMembers(members);
+               this.setState({
+                  isLoading: false,
+                  isInValid: false
+               });
+            }).catch((err) => {
+               console.error("Error during fetch team members.")
+            });
+         }).catch(err => {
+            this.setState({
+               isLoading: false,
+               isInValid: true
+            })
+         });
       }
    }
    closeAllAlert = () => {
@@ -172,15 +228,17 @@ class PublicQuoteView extends Component {
       console.log(" ----------- PublicQuoteView props ------", this.props);
       const { entoken } = this.props.match.params;
       const { location } = this.props;
-      const { loading, auth, appearanceSetting, teamSetting, quote } = this.props;
+      const { appearanceSetting, teamSetting, quote } = this.props;
       const { teamMembers } = teamSetting;
-
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
       if (location.state && location.state.from === QUOTES_PATH) linkName = "Quotes";
 
       const isMember = checkIfTeamMember(quote.author, teamMembers);
+      console.log(" quote.author => ", quote.author)
+      console.log(" teamMembers => ", teamMembers)
       console.error("QUOTE AUTHOR IS TEAM MEMBER ? ", isMember);
+      console.error("isLoading ? ", this.state.isLoading);
 
       const hideMarkAsSent = (quote.status !== "draft")
       const hideUpdateOnly = (quote.status === "draft" || quote.status !== "editing");
@@ -191,7 +249,8 @@ class PublicQuoteView extends Component {
       const hideDecline = (quote.status === "editing" || quote.status === "withdrawn" || quote.status === "accepted");
       const hideWithdraw = (quote.status === "editing");
 
-      if (this.props.loading) return <div>Loading...</div>;
+      if (this.state.isLoading) return <div>Loading...</div>;
+      else if (this.state.isInValid) return <ErrorQuoteNotExist />;
       else if (this.props.match.path === '/q/:entoken/author') {
          if (isMember) return <Redirect to={`/q/${entoken}`} />
          else {
@@ -482,13 +541,18 @@ class PublicQuoteView extends Component {
    }
 }
 
-const mapStateToProps = ({ commonData, auth, appearanceSetting, teamSetting, mainData }) => {
-   return { loading: commonData.loading, auth, appearanceSetting, teamSetting, quote: mainData.quote };
+const mapStateToProps = ({ auth, appearanceSetting, teamSetting, mainData }) => {
+   return { authUser: auth.authUser, appearanceSetting, teamSetting, quote: mainData.quote };
 }
 const mapDispatchToProps = {
    setInitUrl, userSignOut,
-   getTeamMembers,
+   // getUser, 
+   // getQuoteFromEntoken,
+   // getTeamMembers,
    markAsSentQuote, archiveQuote, unArchiveQuote,
    setQuote,
+   setPersonData,
+   updateAppearanceSetting,
+   setTeamMembers,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PublicQuoteView);
