@@ -155,68 +155,6 @@ class PublicQuoteView extends Component {
       const quoteId = this.props.quote._id;
       this.props.history.push(`/app/content/template/get/copy-to-template/${quoteId}`)
    }
-   componentDidMount() {
-      this.setState({
-         isLoading: true,
-         isInValid: false,
-      });
-      const { entoken } = this.props.match.params;
-      if (this.props.match.path === '/q/:entoken/author') {
-         axios.get('/account').then((res) => {
-            axios.post('/quotes/view-public/quote', { entoken }).then((res) => {
-               const { quote, person, appearanceSetting } = res.data;
-               this.props.setQuote(quote);
-               this.props.setPersonData(person);
-               this.props.updateAppearanceSetting(appearanceSetting);
-               if (this.props.authUser) axios.get('/settings/team/real-members').then((res) => {
-                  const { members } = res.data;
-                  this.props.setTeamMembers(members);
-                  this.setState({
-                     isLoading: false,
-                     isInValid: false
-                  });
-               }).catch((err) => {
-                  this.setState({
-                     isLoading: false,
-                     isInValid: false
-                  });
-                  console.error("Error during fetch team members.")
-               });
-            }).catch(err => {
-               this.setState({
-                  isLoading: false,
-                  isInValid: true
-               })
-            });
-         }).catch(err => {
-            this.props.setInitUrl(`/q/${entoken}`);
-            this.props.history.push('/sign-in');
-         });
-      }
-      else {
-         axios.post('/quotes/view-public/quote', { entoken }).then((res) => {
-            const { quote, person, appearanceSetting } = res.data;
-            this.props.setQuote(quote);
-            this.props.setPersonData(person);
-            this.props.updateAppearanceSetting(appearanceSetting);
-            if (this.props.authUser) axios.get('/settings/team/real-members').then((res) => {
-               const { members } = res.data;
-               this.props.setTeamMembers(members);
-               this.setState({
-                  isLoading: false,
-                  isInValid: false
-               });
-            }).catch((err) => {
-               console.error("Error during fetch team members.")
-            });
-         }).catch(err => {
-            this.setState({
-               isLoading: false,
-               isInValid: true
-            })
-         });
-      }
-   }
    closeAllAlert = () => {
       this.setState({
          isEditAlertOpen: false,
@@ -225,6 +163,58 @@ class PublicQuoteView extends Component {
          isUndoDeclineAlertOpen: false,
          isWithdrawAlertOpen: false,
          isUndoWithdrawAlertOpen: false
+      });
+   }
+   componentDidMount() {
+      this.setState({
+         isLoading: true,
+         isInValid: false,
+      });
+      const { entoken } = this.props.match.params;
+      if (this.props.match.path === '/q/:entoken/author') {
+         axios.get('/account').then((res) => {
+            console.log(" GET ACCOUNT DATA RES ====> ", res.data)
+            this.getInitializingQuoteData();
+         }).catch(err => {
+            this.props.setInitUrl(`/q/${entoken}`);
+            this.props.history.push('/sign-in');
+         });
+      }
+      else this.getInitializingQuoteData();
+   }
+   getInitializingQuoteData = () => {
+      const { entoken } = this.props.match.params;
+      axios.post('/quotes/view-public/quote', { entoken }).then((res) => {
+         const { quote, person, appearanceSetting } = res.data;
+         this.props.setQuote(quote);
+         this.props.setPersonData(person);
+         this.props.updateAppearanceSetting(appearanceSetting);
+         if (this.props.authUser) {
+            axios.get('/settings/team/real-members').then((res) => {
+               const { members } = res.data;
+               this.props.setTeamMembers(members);
+               this.setState({
+                  isLoading: false,
+                  isInValid: false
+               });
+            }).catch((err) => {
+               this.setState({
+                  isLoading: false,
+                  isInValid: false
+               });
+               console.error("Error during fetch team members.")
+            });
+         } else {
+            this.setState({
+               isLoading: false,
+               isInValid: false
+            })
+         }
+      }).catch(err => {
+         this.setState({
+            isLoading: false,
+            isInValid: true
+         })
       });
    }
    render() {
