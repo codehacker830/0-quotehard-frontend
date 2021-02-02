@@ -77,11 +77,10 @@ class CommentWrite extends Component {
             <div className={`discuss-row discuss-form ${commentShow ? "" : "isHidden"}`}>
                 <p>Send email to:</p>
                 <h3>
-                    {quote.toPeopleList.map((person, index) => {
-                        return (
-                            <span className="mr-2" key={index}>{person.firstName} {person.lastName},</span>
-                        );
-                    })}
+                    {quote.toPeopleList.reduce((accumulator, currentValue, index) => {
+                        if (index === (quote.toPeopleList.length - 1)) return accumulator + (currentValue.firstName + " " + currentValue.lastName);
+                        else return accumulator + (currentValue.firstName + " " + currentValue.lastName + ", ");
+                    }, "")}
                 </h3>
                 <TextareaAutosize
                     className="form-control mb-2"
