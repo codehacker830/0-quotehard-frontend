@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 
 const AddOns = (props) => {
    const accountCompany = useSelector(state => state.auth.accountCompany);
+   const { isFollowUpDashboardAlertEnabled, firstFollowUpAfter, secondFollowUpAfter } = accountCompany.followUpSetting;
    const { isQuoteViewedNotificationToAuthorEnabled, quoteAccptedNotificationEmails, quoteSentNotificationEmails } = accountCompany.emailNotificationSetting;
    const isEmailNotifications = isQuoteViewedNotificationToAuthorEnabled
       || (quoteAccptedNotificationEmails.length > 0)
@@ -12,7 +13,11 @@ const AddOns = (props) => {
       <React.Fragment>
          <h3 className="settings-title">Add-ons</h3>
          <Link className="set-option" to="/app/add-ons/follow-ups">
-            <span className="label label-on float-right">ON</span>
+            {
+               isFollowUpDashboardAlertEnabled ?
+                  <span className="label label-on float-right">ON</span>
+                  : <span className="label label-off float-right">OFF</span>
+            }
             <img src="https://asset.quotientapp.com/image/integration-02/fav-icon-01/follow-ups.png" alt="Follow-ups" />
                         Follow-ups
                      </Link>

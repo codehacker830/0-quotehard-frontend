@@ -10,35 +10,32 @@ export default class Followingups extends Component {
       secondFollowUpAfter: 14
    }
    componentDidMount() {
-      axios.get('/settings/follow-up')
-         .then(({ data }) => {
-            this.setState({
-               isFollowUpDashboardAlertEnabled: data.isFollowUpDashboardAlertEnabled,
-               firstFollowUpAfter: data.firstFollowUpAfter,
-               secondFollowUpAfter: data.secondFollowUpAfter
-            })
+      axios.get('/settings/follow-up').then(({ data }) => {
+         console.log(" ddddddddddd ", data)
+         this.setState({
+            isFollowUpDashboardAlertEnabled: data.isFollowUpDashboardAlertEnabled,
+            firstFollowUpAfter: data.firstFollowUpAfter,
+            secondFollowUpAfter: data.secondFollowUpAfter
          })
-         .catch(err => {
-            console.error("Error during fetch follow-up setting data.");
-         });
+      }).catch(err => {
+         console.error("Error during fetch follow-up setting data.");
+      });
    }
    onClickSave = () => {
       const {
-         isViewedNotificationEnabled,
+         isFollowUpDashboardAlertEnabled,
          firstFollowUpAfter,
          secondFollowUpAfter
       } = this.state;
       axios.post('/settings/follow-up', {
-         isViewedNotificationEnabled,
+         isFollowUpDashboardAlertEnabled,
          firstFollowUpAfter,
          secondFollowUpAfter
-      })
-         .then(({ data }) => {
-            this.props.history.push('/app/settings');
-         })
-         .catch(err => {
-            console.error("Error during fetch follow-up setting data.");
-         });
+      }).then(({ data }) => {
+         this.props.history.push('/app/settings');
+      }).catch(err => {
+         console.error("Error during fetch follow-up setting data.");
+      });
    }
    render() {
       return (

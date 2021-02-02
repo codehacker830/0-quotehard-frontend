@@ -47,7 +47,7 @@ class EmailNotifications extends Component {
       isLoading: false,
 
       isSentNotificationEnabled: true,
-      isViewedNotificationEnabled: true,
+      isQuoteViewedNotificationToAuthorEnabled: true,
       isAcceptedNotificationEnabled: false,
 
       quoteSentNotificationEmailsStr: "",
@@ -56,14 +56,14 @@ class EmailNotifications extends Component {
       invalidEmails: []
    }
    onHandleSubmit = () => {
-      const { isSentNotificationEnabled, isViewedNotificationEnabled, isAcceptedNotificationEnabled, quoteSentNotificationEmailsStr, quoteAccptedNotificationEmailsStr } = this.state;
+      const { isSentNotificationEnabled, isQuoteViewedNotificationToAuthorEnabled, isAcceptedNotificationEnabled, quoteSentNotificationEmailsStr, quoteAccptedNotificationEmailsStr } = this.state;
       const words1 = isSentNotificationEnabled ? quoteSentNotificationEmailsStr.split(",") : [];
       const words2 = isAcceptedNotificationEnabled ? quoteAccptedNotificationEmailsStr.split(",") : [];
       const quoteSentNotificationEmails = extractEmails(words1);
       const quoteAccptedNotificationEmails = extractEmails(words2);
 
       this.setState({ isLoading: true });
-      axios.post('/settings/notifications', { isViewedNotificationEnabled, quoteSentNotificationEmails, quoteAccptedNotificationEmails })
+      axios.post('/settings/notifications', { isQuoteViewedNotificationToAuthorEnabled, quoteSentNotificationEmails, quoteAccptedNotificationEmails })
          .then(({ data }) => {
             if (data.success) {
                this.setState({
@@ -72,9 +72,9 @@ class EmailNotifications extends Component {
                })
                toast.success("Saved.");
                this.props.updateEmailNotificationSetting({
-                  isQuoteViewedNotificationToAuthorEnabled: isViewedNotificationEnabled,
-                  quoteSentNotificationEmails: quoteAccptedNotificationEmails,
-                  quoteAccptedNotificationEmails: quoteSentNotificationEmails
+                  isQuoteViewedNotificationToAuthorEnabled: isQuoteViewedNotificationToAuthorEnabled,
+                  quoteSentNotificationEmails: quoteSentNotificationEmails,
+                  quoteAccptedNotificationEmails: quoteAccptedNotificationEmails
                });
                this.props.history.push('/app/settings');
             } else {
@@ -92,7 +92,7 @@ class EmailNotifications extends Component {
    }
    componentDidMount() {
       axios.get('/settings/notifications').then(({ data }) => {
-         console.log(" GET DATA ", data)
+         console.log(" notifications= ", data)
          const {
             isQuoteViewedNotificationToAuthorEnabled,
             quoteSentNotificationEmails,
@@ -101,7 +101,7 @@ class EmailNotifications extends Component {
 
          this.setState({
             isSentNotificationEnabled: Array.isArray(quoteSentNotificationEmails) && quoteSentNotificationEmails.length ? true : false,
-            isViewedNotificationEnabled: isQuoteViewedNotificationToAuthorEnabled,
+            isQuoteViewedNotificationToAuthorEnabled: isQuoteViewedNotificationToAuthorEnabled,
             isAcceptedNotificationEnabled: Array.isArray(quoteAccptedNotificationEmails) && quoteAccptedNotificationEmails.length ? true : false,
             quoteSentNotificationEmailsStr: makeStrFromEmails(quoteSentNotificationEmails),
             quoteAccptedNotificationEmailsStr: makeStrFromEmails(quoteAccptedNotificationEmails),
@@ -158,10 +158,10 @@ class EmailNotifications extends Component {
                      <p>When the customer views the quote multiple times within a 24 hour period, the first-view will trigger a notification only.</p>
                      <div className="form-check">
                         <input className="form-check-input" type="checkbox"
-                           id="isViewedNotificationEnabled" name="isViewedNotificationEnabled"
-                           checked={this.state.isViewedNotificationEnabled}
-                           onChange={() => this.setState({ isViewedNotificationEnabled: !this.state.isViewedNotificationEnabled })} />
-                        <label className="form-check-label" htmlFor="isViewedNotificationEnabled">Send notification to: Quote Author</label>
+                           id="isQuoteViewedNotificationToAuthorEnabled" name="isQuoteViewedNotificationToAuthorEnabled"
+                           checked={this.state.isQuoteViewedNotificationToAuthorEnabled}
+                           onChange={() => this.setState({ isQuoteViewedNotificationToAuthorEnabled: !this.state.isQuoteViewedNotificationToAuthorEnabled })} />
+                        <label className="form-check-label" htmlFor="isQuoteViewedNotificationToAuthorEnabled">Send notification to: Quote Author</label>
                      </div>
                   </div>
                </div>
