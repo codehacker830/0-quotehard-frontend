@@ -176,6 +176,10 @@ class PublicQuoteView extends Component {
                      isInValid: false
                   });
                }).catch((err) => {
+                  this.setState({
+                     isLoading: false,
+                     isInValid: false
+                  });
                   console.error("Error during fetch team members.")
                });
             }).catch(err => {
@@ -241,12 +245,12 @@ class PublicQuoteView extends Component {
       console.error("isLoading ? ", this.state.isLoading);
 
       const hideMarkAsSent = (quote.status !== "draft")
-      const hideUpdateOnly = (quote.status === "draft" || quote.status !== "editing");
-      const hideEditeQuote = (quote.status === "draft" || quote.status === "editing" || quote.status === "withdrawn" || quote.status === "accepted");
-      const hideSendFollowup = (quote.status === "draft" || quote.status === "editing" || quote.status === "withdrawn" || quote.status === "accepted");
+      const hideUpdateOnly = (quote.status !== "editing");
+      const hideEditeQuote = (quote.status !== "awaiting");
+      const hideSendFollowup = (quote.status !== "awaiting");
       const hideArchive = (quote.status === "draft" || quote.status === "editing");
       const hideAccept = (quote.status === "editing" || quote.status === "withdrawn");
-      const hideDecline = (quote.status === "editing" || quote.status === "withdrawn" || quote.status === "accepted");
+      const hideDecline = (quote.status === "editing" || quote.status === "accepted" || quote.status === "withdrawn");
       const hideWithdraw = (quote.status === "editing");
 
       if (this.state.isLoading) return <div>Loading...</div>;
