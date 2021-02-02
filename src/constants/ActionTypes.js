@@ -19,6 +19,7 @@ export const ACCOUNT_COMPANY_DATA = 'account_company_data';
 export const USER_TOKEN_SET = 'user_token_set';
 
 export const EMAIL_NOTIFICATION_SETTING = 'email_notification_setting';
+export const FOLLOW_UP_SETTING = 'follow_up_setting';
 
 
 // Settings

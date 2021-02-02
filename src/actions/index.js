@@ -6,6 +6,7 @@ export * from './QuoteDefautSetting';
 export * from './CustomerEmailSetting';
 export * from './Team';
 export * from './Data';
-export * from './EmailNotificationSetting';
 export * from './AcceptBox';
 export * from './AlertMessage';
+export * from './EmailNotificationSetting';
+export * from './FollowUpSetting';

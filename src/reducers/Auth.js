@@ -6,7 +6,8 @@ import {
    ACCOUNT_COMPANY_DATA,
    PERSON_DATA,
    USER_TOKEN_SET,
-   EMAIL_NOTIFICATION_SETTING
+   EMAIL_NOTIFICATION_SETTING,
+   FOLLOW_UP_SETTING
 } from "../constants/ActionTypes";
 
 const INIT_STATE = {
@@ -62,6 +63,15 @@ export default (state = INIT_STATE, action) => {
             accountCompany: {
                ...state.accountCompany,
                emailNotificationSetting: action.payload
+            }
+         }
+      }
+      case FOLLOW_UP_SETTING: {
+         return {
+            ...state,
+            accountCompany: {
+               ...state.accountCompany,
+               followUpSetting: action.payload
             }
          }
       }

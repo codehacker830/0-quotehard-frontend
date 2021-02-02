@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import NavCrump from '../../../components/NavCrump';
 import axios from '../../../util/Api';
+import { updateFollowUpSetting } from '../../../actions';
+import { connect } from 'react-redux';
 
-export default class Followingups extends Component {
+class Followingups extends Component {
    state = {
       isFollowUpDashboardAlertEnabled: false,
       firstFollowUpAfter: 3,
@@ -32,6 +34,11 @@ export default class Followingups extends Component {
          firstFollowUpAfter,
          secondFollowUpAfter
       }).then(({ data }) => {
+         this.props.updateFollowUpSetting({
+            isFollowUpDashboardAlertEnabled,
+            firstFollowUpAfter,
+            secondFollowUpAfter
+         });
          this.props.history.push('/app/settings');
       }).catch(err => {
          console.error("Error during fetch follow-up setting data.");
@@ -94,3 +101,7 @@ export default class Followingups extends Component {
       );
    }
 }
+const mapDispatchToProps = {
+   updateFollowUpSetting
+}
+export default connect(() => ({}), mapDispatchToProps)(Followingups)

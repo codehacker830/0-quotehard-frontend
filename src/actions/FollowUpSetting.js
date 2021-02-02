@@ -2,12 +2,12 @@ import {
    FETCH_ERROR,
    FETCH_START,
    FETCH_SUCCESS,
-   EMAIL_NOTIFICATION_SETTING
+   FOLLOW_UP_SETTING
 } from "../constants/ActionTypes";
 import axios from '../util/Api'
 
-export const updateEmailNotificationSetting = (payload) => {
+export const updateFollowUpSetting = (payload) => {
    return async (dispatch) => {
-      dispatch({ type: EMAIL_NOTIFICATION_SETTING, payload: payload });
+      dispatch({ type: FOLLOW_UP_SETTING, payload: payload });
    }
 }
