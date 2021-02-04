@@ -48,10 +48,10 @@ class Dashboard extends Component {
                         </div>
                      </div>
                      :
-                     <>
+                     <React.Fragment>
                         <QuoteTableShow quotes={this.state.quotes} />
                         <QuoteOverview quotes={this.state.quotes} />
-                     </>
+                     </React.Fragment>
                }
             </div>
             <div className="row py-5 justify-content-center">

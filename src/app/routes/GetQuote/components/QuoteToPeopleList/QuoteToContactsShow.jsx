@@ -3,17 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateQuoteToPeopleList } from '../../../../../actions/Data';
 
 export const QuoteToContactsShow = () => {
-   const toPeopleList = useSelector(state => {
-      const { toPeopleList } = state.mainData.quote;
-      return toPeopleList;
-   })
+   const toPeopleList = useSelector(state => state.mainData.quote.toPeopleList);
    const dispatch = useDispatch();
 
    const removeContact = (ind) => {
       const newCL = toPeopleList.filter((it, index) => index !== ind);
       dispatch(updateQuoteToPeopleList(newCL));
    }
-   console.log('toPeopleList', toPeopleList);
    return (
       <React.Fragment>
          {

@@ -63,7 +63,7 @@ export const QuickStart = (props) => {
          },
          defaultSalesTaxRate: defaultSalexTax.taxRate
       };
-      console.log(" PAYLOAD --", payload)
+      console.log(" PAYLOAD ----> ", payload)
       axios.post('/settings/quick-start', payload)
          .then(({ data }) => {
             history.push('/app');
@@ -424,7 +424,7 @@ export const QuickStart = (props) => {
                         <option value={164}>Zimbabwe Dollar</option>
                      </select>
                   </div>
-                  <div className="mb-2">
+                  {/* <div className="mb-2">
                      <label htmlFor="account_amounts_entered">Amounts Are:</label>
                      <select className="form-control rounded-0 maxWidth-300"
                         // defaultValue={`exclusive_excluding`}
@@ -452,7 +452,7 @@ export const QuickStart = (props) => {
                         <option value={5}>VAT</option>
                         <option value={6}>VAT/NHIL</option>
                      </select>
-                  </div>
+                  </div> */}
                   <div className="mb-2">
                      <label htmlFor="defaultTaxRate">Default Sales Tax</label>
                      <div className="input-group maxWidth-180">
