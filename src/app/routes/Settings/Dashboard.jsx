@@ -23,7 +23,7 @@ export const Settings = (props) => {
 
                <AddOns />
 
-               <ConnectWithOtherApps />
+               {/* <ConnectWithOtherApps /> */}
             </div>
 
             <div className="col-md-6 col-sm-12">
