@@ -20,41 +20,49 @@ class ContactsPanel extends Component {
    }
    onChangeCategory = (ev) => {
       this.category = ev.target.value;
-      const queryStr = this.makeQueryStr();
+      const query = this.makeQuery();
 
       this.props.history.push({
          pathname: "/app/c/contacts",
-         search: queryStr
+         search: query
       })
    }
    onChangeStatus = (ev) => {
       this.status = ev.target.value;
-      const queryStr = this.makeQueryStr();
+      const query = this.makeQuery();
 
       this.props.history.push({
          pathname: "/app/c/contacts",
-         search: queryStr
+         search: query
       })
+   }
+   onHandleKeyDown = (ev) => {
+      if(ev.keyCode === 13) {
+         // event when enter was clicked
+         this.onClickSearch();
+      }
    }
    onClickSearch = () => {
       this.search = this.state.search;
-      const queryStr = this.makeQueryStr();
+      const query = this.makeQuery();
 
       this.props.history.push({
          pathname: "/app/c/contacts",
-         search: queryStr
+         search: query
       })
    }
    onClickCancelSearch = () => {
       this.search = "";
-      const queryStr = this.makeQueryStr();
+      this.category = "peopleAndCompanies";
+      this.status = "current";
+      const query = this.makeQuery();
 
       this.props.history.push({
          pathname: "/app/c/contacts",
-         search: queryStr
+         search: query
       })
    }
-   makeQueryStr = () => {
+   makeQuery = () => {
       let queryObj = {};
       if (this.search) queryObj = { ...queryObj, search: this.search };
       if (this.category !== "peopleAndCompanies") queryObj = { ...queryObj, category: this.category };
@@ -62,6 +70,7 @@ class ContactsPanel extends Component {
       return qs.stringify(queryObj);
    }
    render() {
+      const isCancelButtonShow = this.search || this.category !== "peopleAndCompanies" || this.status !== "current";
       return (
          <div className="block block-rounded">
             <div className="block-content">
@@ -69,14 +78,15 @@ class ContactsPanel extends Component {
                   <div className="col-md-6">
                      <div className="form-group px-1">
                         <div className="input-group">
-                           <input type="email" className="form-control mr-1" placeholder="Search by Company, Person or Email..."
+                           <input type="text" className="form-control mr-1" placeholder="Search by Company, Person or Email..."
+                              onKeyDown={this.onHandleKeyDown}
                               value={this.state.search}
                               onChange={(ev) => this.setState({ search: ev.target.value })}
                            />
                            <div className="input-group-append">
                               <button type="button" className="btn btn-alt-dark mr-1" onClick={this.onClickSearch}><i className="fa fa-fw fa-search" /></button>
                               {
-                                 this.search &&
+                                 isCancelButtonShow &&
                                  <button type="button" className="btn btn-alt-dark" onClick={this.onClickCancelSearch}><i className="fa fa-fw fa-times" /></button>
                               }
                            </div>

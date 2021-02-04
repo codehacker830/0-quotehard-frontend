@@ -210,7 +210,7 @@ export const markAsSentQuote = (quoteId) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
-         const { data } = await axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" });
+         const { data } = await axios.put(`/quotes/status/${quoteId}`, { status: "sent" });
          toast.success('Not emailed, marked as sent.');
          dispatch({ type: GET_QUOTE, payload: data.quote });
          dispatch({ type: FETCH_SUCCESS });

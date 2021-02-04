@@ -66,7 +66,7 @@ class PublicQuoteView extends Component {
    }
    onClickUpdateOnly = () => {
       const quoteId = this.props.quote._id;
-      axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
+      axios.put(`/quotes/status/${quoteId}`, { status: "sent" }).then(({ data }) => {
          this.props.setQuote(data.quote);
          toast.success('Update – back online, not emailed.');
       }).catch(err => {
@@ -122,7 +122,7 @@ class PublicQuoteView extends Component {
    }
    onClickUndoDecline = () => {
       const quoteId = this.props.quote._id;
-      axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
+      axios.put(`/quotes/status/${quoteId}`, { status: "sent" }).then(({ data }) => {
          this.props.setQuote(data.quote);
          this.closeAllAlert();
       }).catch(err => {
@@ -140,7 +140,7 @@ class PublicQuoteView extends Component {
    }
    onClickUndoWithdrawn = () => {
       const quoteId = this.props.quote._id;
-      axios.put(`/quotes/status/${quoteId}`, { status: "awaiting" }).then(({ data }) => {
+      axios.put(`/quotes/status/${quoteId}`, { status: "sent" }).then(({ data }) => {
          this.props.setQuote(data.quote);
          this.closeAllAlert();
       }).catch(err => {
@@ -236,8 +236,8 @@ class PublicQuoteView extends Component {
 
       const hideMarkAsSent = (quote.status !== "draft")
       const hideUpdateOnly = (quote.status !== "editing");
-      const hideEditeQuote = (quote.status !== "awaiting");
-      const hideSendFollowup = (quote.status !== "awaiting");
+      const hideEditeQuote = (quote.status !== "sent");
+      const hideSendFollowup = (quote.status !== "sent");
       const hideArchive = (quote.status === "draft" || quote.status === "editing");
       const hideAccept = (quote.status === "editing" || quote.status === "withdrawn");
       const hideDecline = (quote.status === "editing" || quote.status === "accepted" || quote.status === "withdrawn");

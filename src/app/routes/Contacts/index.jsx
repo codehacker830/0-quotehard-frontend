@@ -5,14 +5,14 @@ import TotalLabelFor from '../../../components/TotalLabelFor';
 import axios from '../../../util/Api';
 import Tr_Contact from './Tr_Contact';
 import qs from 'qs';
-import ContactsPanel from './ContactsPanel';
+import ContactControlPanel from './ContactControlPanel';
 import SelectWinnerBrand from '../Templates/components/SelectWinnerBrand';
 
 export default class Contacts extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         loading: true,
+         isLoading: true,
          contacts: []
       };
 
@@ -31,33 +31,34 @@ export default class Contacts extends Component {
    }
    componentDidMount() {
       if (this.search) {
-         this.setState({ loading: true });
+         this.setState({ isLoading: true });
          axios.get(`/contacts/search/${this.search}`).then(({ data }) => {
+            console.log(" SEARCH RESULT ===> ", data)
             this.setState({
                isLoading: false,
                contacts: this.filterContacts(data.contacts)
             });
-         });
+         }).catch(err => {
+            console.error("error during search contacts")
+         })
       } else {
-         this.setState({ loading: true });
-         axios.get('/contacts')
-            .then(({ data }) => {
-               console.log(" GET ALL CONTACTS RES ===> ", data.contacts)
-               this.setState({
-                  isLoading: false,
-                  contacts: this.filterContacts(data.contacts)
-               });
-            })
-            .catch(err => {
-               console.error("error during get all contacts")
-            })
+         this.setState({ isLoading: true });
+         axios.get('/contacts').then(({ data }) => {
+            console.log(" GET ALL CONTACTS RES ===> ", data.contacts)
+            this.setState({
+               isLoading: false,
+               contacts: this.filterContacts(data.contacts)
+            });
+         }).catch(err => {
+            console.error("error during get all contacts")
+         })
       }
    }
    render() {
       return (
          <div className="content">
             <SelectWinnerBrand />
-            <ContactsPanel />
+            <ContactControlPanel />
             <div className="block block-rounded">
                <div className="block-content">
                   {

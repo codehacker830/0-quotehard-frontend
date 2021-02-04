@@ -24,12 +24,12 @@ class Tr_Quotient extends Component {
                   </small>
                </span>
                <div className="u-ellipsis">
-                  <small className="text-gray"> {item.contactNameTo} by {item.userFrom} </small>
+                  <small className="text-gray"> {item.contactNameTo} by {item.userFrom} #{item.number}</small>
                </div>
             </td>
          </tr>
       );
-      else if (item.status === "awaiting") return (
+      else if (item.status === "sent") return (
          <tr className="mod-white" onClick={() => this.props.history.push({
             pathname: `/q/${item.entoken}`,
             state: {
@@ -51,7 +51,7 @@ class Tr_Quotient extends Component {
                      <span className={`${item.viewedAt ? "text-danger" : "text-success"} mr-1`}>
                         {item.viewedAt ? `Viewed ` + formatDate(item.viewedAt) : `Unopened`}
                      </span>&nbsp;
-                     {item.contactNameTo} by {item.userFrom}
+                     {item.contactNameTo} by {item.userFrom} #{item.number}
                   </small>
                </div>
             </td>
@@ -77,10 +77,9 @@ class Tr_Quotient extends Component {
                </span>
                <div className="u-ellipsis">
                   <small className="text-gray">
-                     <span data-tg-control="{&quot;QuotesLastView&quot;:[1599451559]}">
-                        {/* <span className="text-danger mr-1">Viewed 1 hour ago</span> */}
+                     <span>
                         <span className="text-danger mr-1">Viewed {formatDate(item.viewedAt)}</span>
-                     </span>{item.contactNameTo} by {item.userFrom}</small>
+                     </span>{item.contactNameTo} by {item.userFrom} #{item.number}</small>
                </div>
             </td>
          </tr>

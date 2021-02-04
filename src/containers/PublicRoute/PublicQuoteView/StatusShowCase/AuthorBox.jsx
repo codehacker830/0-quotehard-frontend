@@ -9,7 +9,7 @@ export default function AuthorBox() {
    const onClickArchive = () => {
       dispatch(archiveQuote(quote._id));
    }
-   if (quote.status === "awaiting") return (
+   if (quote.status === "sent") return (
       <div className="author-box author-box-sent" >
          <h5 className="author-box-title">Sent</h5>
          <div><span className="dt-time">{formatDate(quote.settings.sentAt)}</span></div>

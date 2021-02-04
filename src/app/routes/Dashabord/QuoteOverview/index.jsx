@@ -7,7 +7,7 @@ import DashMessages from './DashMessages';
 
 export default class QuoteOverview extends Component {
    render() {
-      const awaitingQuotes = this.props.quotes.filter((it) => it.status === "awaiting");
+      const awaitingQuotes = this.props.quotes.filter((it) => it.status === "sent");
       const acceptedQuotes = this.props.quotes.filter((it) => it.status === "accepted");
       let awaitingTotal = 0;
       for (let i = 0; i < awaitingQuotes.length; i++) {

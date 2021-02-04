@@ -63,7 +63,7 @@ class AppRoot extends Component {
                <Route exact path="/app/quotes" component={asyncComponent(() => import("./routes/Quotes"))} />
 
                <Route path="/app/quote" component={QuoteRoutes} />
-               <Route path="/app/c" component={ContactRoutes} />
+               <Route path="/app/c/contacts" component={ContactRoutes} />
 
                <Route path="/app/content" component={asyncComponent(() => import("./routes/Templates"))} />
                <Route path="/app/settings" component={asyncComponent(() => import("./routes/Settings"))} />

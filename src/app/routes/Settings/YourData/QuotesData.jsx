@@ -22,7 +22,7 @@ const decryptStatus = (quote) => {
    switch (quote.status) {
       case "draft": return "Draft";
       case "editing": return "Editing";
-      case "awaiting": return "Accept awaiting";
+      case "sent": return "Accept sent";
       case "accepted": return "Accepted";
       case "declined": return "Declined";
       case "withdrawn": return "Withdrawn";

@@ -53,18 +53,14 @@ const CompleterContact = (props) => {
                            _id,
                            firstName,
                            lastName,
-                           companyName,
+                           company,
                            email
                         } = contact;
                         return (
                            <li key={index} className="border-top" onClick={() => addContact(contact)}>
                               <div className="u-ellipsis">
                                  {firstName + " " + lastName}
-                                 {
-                                    companyName ?
-                                       <small><em> - </em><strong>{companyName}</strong></small>
-                                       : null
-                                 }
+                                 {company ? <small><em> - </em><strong>{company.companyName}</strong></small> : null}
                               </div>
                               <div className="u-ellipsis">
                                  <small><strong>{email}</strong></small>

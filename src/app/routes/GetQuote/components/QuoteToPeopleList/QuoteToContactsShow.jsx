@@ -1,7 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { updateQuoteToPeopleList } from '../../../../../actions/Data';
-import CompanyNameShow from './CompanyNameShow';
 
 export const QuoteToContactsShow = () => {
    const toPeopleList = useSelector(state => {
@@ -25,7 +24,7 @@ export const QuoteToContactsShow = () => {
                         <span>×</span>
                      </button>
                      <strong className="text-black my-1 mr-1">{contact.firstName} {contact.lastName}</strong>
-                     <CompanyNameShow companyId={contact.company} />
+                     <span className="text-secondary">{contact.company ? contact.company.companyName : null}</span>
                      <p className="mb-0">{contact.email}</p>
                   </div>
                );

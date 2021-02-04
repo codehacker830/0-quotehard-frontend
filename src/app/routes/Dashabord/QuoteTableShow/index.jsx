@@ -10,7 +10,7 @@ class QuoteTableShow extends Component {
    render() {
       const { quotes } = this.props;
       const draftQuotes = quotes.filter((it) => it.status === "draft");
-      const awaitingQuotes = quotes.filter((it) => { return (it.status === "awaiting" || it.status === "editing") });
+      const awaitingQuotes = quotes.filter((it) => { return (it.status === "sent" || it.status === "editing") });
       const acceptedQuotes = quotes.filter((it) => it.status === "accepted");
       const declinedQuotes = quotes.filter((it) => it.status === "declined");
 

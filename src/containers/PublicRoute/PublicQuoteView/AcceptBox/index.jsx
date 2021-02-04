@@ -36,7 +36,7 @@ class AcceptBox extends Component {
         const isPreviewMode = (this.props.match.path === "/q/:entoken/preview");
         if (this.props.isAcceptOnBehalfBoxShow) return <AcceptOnBehalfBox />;
         else if (isPreviewMode) return <AcceptanceBox />
-        else if (!isMember && quote.status === "awaiting") return <AcceptanceBox />
+        else if (!isMember && quote.status === "sent") return <AcceptanceBox />
         else if (quote.status === "accepted") return <AcceptedBox />
         else return null;
     }
