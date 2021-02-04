@@ -20,7 +20,6 @@ export const AccountInformation = (props) => {
       };
       if (accountCompany.companyName === "") { toast.success("Please enter an Account Name"); return; }
       if (accountCompany.companyDisplayName === "") { toast.success("Please enter an Company Name"); return; }
-      console.log(" IIIIIIIII ", payload);
       dispatch(updateAccountInfo(payload, history))
    }
    useEffect(() => {

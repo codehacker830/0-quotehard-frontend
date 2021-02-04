@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export const ConnectWithOtherApps = (props) => {
    return (
-      <>
+      <React.Fragment>
          <h3 className="settings-title settings-title-sub">Connect with other Apps</h3>
          <Link className="set-option" to="/app/add-ons/quickbooks">
             <span className="label label-off float-right">OFF</span>
@@ -40,7 +40,7 @@ export const ConnectWithOtherApps = (props) => {
             <img src="https://asset.quotientapp.com/image/integration-02/fav-icon-01/highrise.png" alt="Highrise" />
                         Highrise
                      </Link>
-      </>
+      </React.Fragment>
    )
 }
 

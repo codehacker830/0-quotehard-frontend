@@ -20,6 +20,7 @@ export const USER_TOKEN_SET = 'user_token_set';
 
 export const EMAIL_NOTIFICATION_SETTING = 'email_notification_setting';
 export const FOLLOW_UP_SETTING = 'follow_up_setting';
+export const COMPANY_DISPLAY_NAME = 'company_display_name';
 
 
 // Settings

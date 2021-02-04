@@ -1,4 +1,4 @@
-import { APPEARANCE_SETTING, FETCH_ERROR, FETCH_START, FETCH_SUCCESS, LOGO_URL } from "../constants/ActionTypes"
+import { APPEARANCE_SETTING, COMPANY_DISPLAY_NAME, FETCH_ERROR, FETCH_START, FETCH_SUCCESS, LOGO_URL } from "../constants/ActionTypes"
 import axios from "../util/Api";
 
 
@@ -71,6 +71,7 @@ export const publishAppearanceSetting = (setting) => {
          const { data } = await axios.put("/settings/appearance", { setting });
          dispatch({ type: FETCH_SUCCESS });
          dispatch({ type: APPEARANCE_SETTING, payload: data.appearanceSetting });
+         dispatch({ type: COMPANY_DISPLAY_NAME, payload: data.appearanceSetting.companyDisplayName });
       } catch (err) {
          console.error("err during publish appearanceSetting.")
          dispatch({ type: FETCH_ERROR });
