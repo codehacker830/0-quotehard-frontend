@@ -40,7 +40,7 @@ class QuoteSettings extends Component {
                   <TaxMode />
                   <PricingDisplayLevel />
                </div>
-               <button type="button" className={`btn btn-sm btn-outline-dark ${this.state.show ? "d-none" : ""}`} onClick={() => this.setState({ show: true })}>Show All...</button>
+               <button type="button" className={`btn btn-sm btn-default ${this.state.show ? "d-none" : ""}`} onClick={() => this.setState({ show: true })}>Show All...</button>
             </div>
          </div>
       );
