@@ -9,6 +9,7 @@ import { CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_DUPLICATE_PATH, QUOTE_GET
 import { toFixedFloat } from '../util';
 import axios from '../util/Api';
 import _ from 'lodash';
+import ReactTooltip from 'react-tooltip';
 
 class PriceItemForm extends Component {
    fileObj = [];
@@ -401,12 +402,36 @@ class PriceItemForm extends Component {
                            </button>
                         </div>
                      </div>
-                     <button className="btn btn-light mr-1" disabled={this.props.isOrderUpDisabled} onClick={() => this.orderUpItem(this.props.index)}>
-                        <i className="fa fa-long-arrow-alt-up"></i>
-                     </button>
-                     <button className="btn btn-light mr-1" disabled={this.props.isOrderDownDisabled} onClick={() => this.orderDownItem(this.props.index)}>
-                        <i className="fa fa-long-arrow-alt-down"></i>
-                     </button>
+                     <ReactTooltip
+                        id="registerTip"
+                        place="top"
+                        type="dark"
+                        effect="solid"
+                        delayShow={600}
+                     />
+                     <span
+                        onMouseEnter={() => { ReactTooltip.show() }}
+                        onMouseLeave={() => { ReactTooltip.hide() }}
+                        data-tip="Move item up"
+                        data-for="registerTip"
+                     >
+                        <button className="btn btn-light mr-1"
+                           disabled={this.props.isOrderUpDisabled}
+                           onClick={() => this.orderUpItem(this.props.index)}>
+                           <i className="fa fa-long-arrow-alt-up"></i>
+                        </button>
+                     </span>
+                     <span
+                        ref={ref => this.fooRef = ref}
+                        onMouseEnter={() => { ReactTooltip.show() }}
+                        onMouseLeave={() => { ReactTooltip.hide() }}
+                        data-tip="Move item down"
+                        data-for="registerTip"
+                     >
+                        <button className="btn btn-light mr-1" disabled={this.props.isOrderDownDisabled} onClick={() => this.orderDownItem(this.props.index)}>
+                           <i className="fa fa-long-arrow-alt-down"></i>
+                        </button>
+                     </span>
                      {
                         this.state.isConfirmingDelete ?
                            <button className="btn btn-sm btn-danger" onClick={() => this.removeItem(this.props.index)}>Remove?</button>
@@ -714,7 +739,7 @@ class PriceItemForm extends Component {
                   </div>
                </div>
             </div>
-         </React.Fragment>
+         </React.Fragment >
       );
    }
 }

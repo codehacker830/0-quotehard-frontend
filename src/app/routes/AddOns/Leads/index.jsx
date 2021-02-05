@@ -48,7 +48,7 @@ export default class Leads extends Component {
                      <div className="form-group">
                         <label htmlFor="lead-url">
                            Copy and paste to use.
-                           <Link to={`https://quotehard.com/e/39310-1d2ce4e9213f4170a3ceb990d0ae61f5/form`}> Preview…</Link>
+                           <a href={`https://quotehard.com/e/39310-1d2ce4e9213f4170a3ceb990d0ae61f5/form`} target="_blank"> Preview…</a>
                         </label>
                         <input type="email"
                            className="form-control p-4 rounded-0"
@@ -60,7 +60,7 @@ export default class Leads extends Component {
                         this.state.isShowCode ?
                            <div>
                               <p> Copy and paste into the your HTML to embed your Lead Form.</p>
-                              <Link to="https://quotehard.com/help/leads">Learn more in the support article.</Link>
+                              <a href="https://quotehard.com/help/leads" target="_blank">Learn more in the support article.</a>
                               <TextareaAutosize className="form-control p-4 rounded-0 mb-2">
                                  {this.leadFormCode}
                               </TextareaAutosize>

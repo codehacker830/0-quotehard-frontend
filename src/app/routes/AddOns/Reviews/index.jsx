@@ -73,7 +73,7 @@ export default class Reviews extends Component {
                         this.state.isShowReviewFormCode ?
                            <div>
                               <p>Copy and paste into the your HTML to embed your Reviews.</p>
-                              <Link to="https://quotehard.com/help/reviews">Learn more in the support article.</Link>
+                              <a href="https://quotehard.com/help/reviews" target="_blank">Learn more in the support article.</a>
                               <TextareaAutosize className="form-control p-4 rounded-0 mb-2">
                                  {this.reviewPageCode}
                               </TextareaAutosize>
@@ -127,7 +127,7 @@ export default class Reviews extends Component {
                         this.state.isShowReviewPageCode ?
                            <div>
                               <p>Copy and paste into the your HTML to embed your Reviews.</p>
-                              <a href="https://quotehard.com/help/reviews">Learn more in the support article.</a>
+                              <a href="https://quotehard.com/help/reviews" target="_blank">Learn more in the support article.</a>
                               <TextareaAutosize className="form-control p-4 rounded-0 mb-2">
                                  {this.reviewFormCode}
                               </TextareaAutosize>

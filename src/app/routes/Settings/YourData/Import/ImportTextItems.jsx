@@ -104,7 +104,7 @@ export default function ImportTextItems() {
                            Leave the first row of field names untouched, as this is needed to import.
                         </li>
                         <li>
-                           To update items, use the ‘Item ID’. <a href="https://quotehard.com/help/import-export-text-items">Learn more…</a>
+                           To update items, use the ‘Item ID’. <a href="https://quotehard.com/help/import-export-text-items" target="_blank">Learn more…</a>
                         </li>
                         <li>
                            Items will NEVER be deleted.

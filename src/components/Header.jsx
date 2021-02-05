@@ -96,7 +96,7 @@ class Header extends Component {
                               Settings
                               <i className="fa fa-fw fa-cog text-black-50 ml-1" />
                            </Link>
-                           <a className="dropdown-item d-flex justify-content-between align-items-center" href="https://quotehard.com/support">
+                           <a className="dropdown-item d-flex justify-content-between align-items-center" target="_blank" href="https://quotehard.com/support">
                               Help & Support
                               <i className="fa fa-fw fa-hand-holding-heart text-black-50 ml-1" />
                            </a>

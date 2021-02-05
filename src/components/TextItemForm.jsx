@@ -6,6 +6,7 @@ import { updateQuoteItems, updateQuoteNotes } from '../actions/Data';
 import { initPriceItem, initTextItem } from '../constants/InitState';
 import { CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_DUPLICATE_PATH } from '../constants/PathNames';
 import axios from '../util/Api';
+import ReactTooltip from 'react-tooltip';
 
 class TextItemForm extends Component {
    fileObj = [];
@@ -248,12 +249,33 @@ class TextItemForm extends Component {
                            </button>
                         </div>
                      </div>
-                     <button className="btn btn-light mr-1" disabled={this.props.isOrderUpDisabled} onClick={() => this.orderUpItem(this.props.index)}>
-                        <i className="fa fa-long-arrow-alt-up"></i>
-                     </button>
-                     <button className="btn btn-light mr-1" disabled={this.props.isOrderDownDisabled} onClick={() => this.orderDownItem(this.props.index)}>
-                        <i className="fa fa-long-arrow-alt-down"></i>
-                     </button>
+                     <ReactTooltip
+                        id="registerTip"
+                        place="top"
+                        type="dark"
+                        effect="solid"
+                        delayShow={600}
+                     />
+                     <span
+                        onMouseEnter={() => { ReactTooltip.show() }}
+                        onMouseLeave={() => { ReactTooltip.hide() }}
+                        data-tip="Move item up"
+                        data-for="registerTip"
+                     >
+                        <button className="btn btn-light mr-1" disabled={this.props.isOrderUpDisabled} onClick={() => this.orderUpItem(this.props.index)}>
+                           <i className="fa fa-long-arrow-alt-up"></i>
+                        </button>
+                     </span>
+                     <span
+                        onMouseEnter={() => { ReactTooltip.show() }}
+                        onMouseLeave={() => { ReactTooltip.hide() }}
+                        data-tip="Move item up"
+                        data-for="registerTip"
+                     >
+                        <button className="btn btn-light mr-1" disabled={this.props.isOrderDownDisabled} onClick={() => this.orderDownItem(this.props.index)}>
+                           <i className="fa fa-long-arrow-alt-down"></i>
+                        </button>
+                     </span>
                      {
                         this.state.isConfirmingDelete ?
                            <button className="btn btn-sm btn-danger" onClick={() => this.removeItem(this.props.index)}>Remove?</button>
