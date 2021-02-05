@@ -105,7 +105,7 @@ class QuoteControlPanel extends Component {
                               onChange={ev => this.setState({ search: ev.target.value })}
                            />
                            <div className="input-group-append">
-                              <button type="button" className="btn btn-alt-dark mr-1" onClick={this.onClickSearch}>Search</button>
+                              <button type="button" className="btn btn-default mr-1" onClick={this.onClickSearch}>Search</button>
                               {
                                  isCancelButtonShow &&
                                  <button type="button" className="btn btn-light" onClick={this.onClickCancelSearch}><i className="fa fa-fw fa-times" /></button>

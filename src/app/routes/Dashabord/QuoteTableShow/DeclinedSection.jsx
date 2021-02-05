@@ -28,7 +28,7 @@ class DeclinedSection extends Component {
                                  </span>
                                  <div className="u-ellipsis">
                                     <small className="text-gray">
-                                       <span className="text-danger mr-1">Viewed {formatDate(item.viewedAt)}</span>{item.contactNameTo} by {item.userFrom}</small>
+                                       <span className="text-danger mr-1">Viewed {formatDate(item.viewedAt)}</span>{item.contactNameTo} by {item.userFrom} #{item.number}</small>
                                  </div>
                               </td>
                            </tr>

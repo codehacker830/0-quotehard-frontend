@@ -62,7 +62,7 @@ class PublicQuoteView extends Component {
          return;
       }
       if (toPeopleList.length === 0) { toast.info("You must add at least one contact."); return; }
-      this.props.markAsSentQuote(_id);
+      this.props.markAsSentQuote(_id, this.props.history);
    }
    onClickUpdateOnly = () => {
       const quoteId = this.props.quote._id;

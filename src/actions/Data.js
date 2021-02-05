@@ -206,14 +206,16 @@ export const unArchiveQuote = (quoteId) => {
       }
    }
 };
-export const markAsSentQuote = (quoteId) => {
+export const markAsSentQuote = (quoteId, history) => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
          const { data } = await axios.put(`/quotes/status/${quoteId}`, { status: "sent" });
          toast.success('Not emailed, marked as sent.');
-         dispatch({ type: GET_QUOTE, payload: data.quote });
+         const { quote, entoken } = data;
+         dispatch({ type: GET_QUOTE, payload: quote });
          dispatch({ type: FETCH_SUCCESS });
+         history.push(`/q/${entoken}`);
       } catch (err) {
          toast.error('Quote failed to mark as sent.');
          dispatch({ type: FETCH_ERROR, payload: err.message });

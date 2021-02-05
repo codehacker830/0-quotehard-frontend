@@ -22,7 +22,7 @@ class DraftSection extends Component {
                            </small>
                         </span>
                         <div className="u-ellipsis">
-                           <small className="text-gray"> {item.contactNameTo} by {item.userFrom} </small>
+                           <small className="text-gray"> {item.contactNameTo} by {item.userFrom} #{item.number}</small>
                         </div>
                      </td>
                   </tr>

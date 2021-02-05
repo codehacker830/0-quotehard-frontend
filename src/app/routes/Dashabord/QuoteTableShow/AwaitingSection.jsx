@@ -36,7 +36,7 @@ class AwaitingSection extends Component {
                                  <span className={`${item.viewedAt ? "text-danger" : "text-success"} mr-1`}>
                                     {item.viewedAt ? `Viewed ` + formatDate(item.viewedAt) : `Unopened`}
                                  </span>
-                                 {item.contactNameTo} by {item.userFrom}
+                                 {item.contactNameTo} by {item.userFrom} #{item.number}
                               </small>
                            </div>
                         </td>

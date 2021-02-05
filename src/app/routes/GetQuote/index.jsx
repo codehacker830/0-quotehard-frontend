@@ -51,7 +51,7 @@ class GetQuote extends Component {
       }
       if (toPeopleList.length === 0) { toast.info("You must add at least one contact."); return; }
       const quoteId = this.props.match.params.id;
-      this.props.markAsSentQuote(quoteId);
+      this.props.markAsSentQuote(quoteId, this.props.history);
    }
    onClickCopy = () => {
       const quoteId = this.props.match.params.id;
