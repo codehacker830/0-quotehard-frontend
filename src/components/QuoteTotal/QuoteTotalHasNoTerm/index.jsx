@@ -3,7 +3,7 @@ import Tr_OptionSelected from './Tr_OptionSelected';
 import Tr_tax from './Tr_Tax';
 import { calculateSubTotal, differentTaxIdArrGroup, filterItemArrForTaxId } from '../../../util';
 import { connect } from 'react-redux';
-import Tr_TotalUSD from './Tr_TotalUSD';
+import Tr_Total from './Tr_Total';
 
 class QuoteTotalHasNoTerm extends Component {
    render() {
@@ -40,7 +40,7 @@ class QuoteTotalHasNoTerm extends Component {
                      );
                   })
                }
-               <Tr_TotalUSD items={nonSubcriptionItems} settings={settings} />
+               <Tr_Total items={nonSubcriptionItems} />
             </tbody>
          </table>
       );

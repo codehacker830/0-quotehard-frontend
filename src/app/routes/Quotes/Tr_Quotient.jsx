@@ -20,7 +20,7 @@ class Tr_Quotient extends Component {
                <span className="float-right">
                   <small className="text-gray">
                      <span className="dt-time">{formatDate(item.createdAt)}</span>&nbsp;
-                     <span className="label label-draft">{item.status}</span>
+                     <span className="label label-success">{item.status}</span>
                   </small>
                </span>
                <div className="u-ellipsis">
@@ -72,7 +72,7 @@ class Tr_Quotient extends Component {
                <span className="float-right">
                   <small className="text-gray">
                      <span className="dt-time">{formatDate(item.createdAt)}</span>&nbsp;
-                     <span className="label label-draft">{item.status}</span>
+                     <span className="label label-success">{item.status}</span>
                   </small>
                </span>
                <div className="u-ellipsis">

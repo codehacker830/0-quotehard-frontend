@@ -9,7 +9,7 @@ export default class AddressForm extends Component {
             <div className="d-flex mb-1">
                <div className="w-50">
                   <select
-                     className="form-control"
+                     className="form-control rounded-0"
                      id="addressCategory" name="category"
                      value={item.category}
                      defaultValue={`primaryAddress`}
@@ -31,14 +31,14 @@ export default class AddressForm extends Component {
             </div>
             <input
                type="text"
-               className="form-control mb-1"
+               className="form-control rounded-0 mb-1"
                id="street" name="street"
                placeholder="Street"
                value={item.street}
                onChange={(ev) => this.props.handleAddressForm(ev, index)} />
             <input
                type="text"
-               className="form-control mb-1"
+               className="form-control rounded-0 mb-1"
                id="city" name="city"
                placeholder="City"
                value={item.city}
@@ -46,14 +46,14 @@ export default class AddressForm extends Component {
             <div className="d-flex mb-1">
                <input
                   type="text"
-                  className="form-control mr-1"
+                  className="form-control rounded-0 mr-1"
                   id="state-region" name="stateOrRegion"
                   placeholder="State / Region"
                   value={item.stateOrRegion}
                   onChange={(ev) => this.props.handleAddressForm(ev, index)} />
                <input
                   type="text"
-                  className="form-control"
+                  className="form-control rounded-0"
                   id="zip-post-code" name="postCode"
                   placeholder="Zip / Post Code"
                   value={item.postCode}
@@ -61,7 +61,7 @@ export default class AddressForm extends Component {
             </div>
             <input
                type="text"
-               className="form-control mb-1"
+               className="form-control rounded-0 mb-1"
                id="country" name="country"
                placeholder="Country"
                value={item.country}

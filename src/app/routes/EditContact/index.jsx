@@ -123,102 +123,97 @@ export default class EditContact extends Component {
                         {/* Full Name */}
                         {
                            this.state.category === "person" &&
-                           (
-                              <div>
-                                 <div className="form-group">
-                                    <div className="row">
-                                       <div className="col-md-6 col-sm-12">
-                                          <label htmlFor="firstName">First Name</label>
-                                          <input
-                                             type="text"
-                                             className="form-control"
-                                             id="firstName" name="firstName"
-                                             placeholder=""
-                                             value={this.state.firstName}
-                                             onChange={(ev) => this.setState({ firstName: ev.target.value })} />
+                           <div>
+                              <div className="form-group">
+                                 <div className="row">
+                                    <div className="col-md-6 col-sm-12">
+                                       <label htmlFor="firstName">First Name</label>
+                                       <input
+                                          type="text"
+                                          className="form-control rounded-0"
+                                          id="firstName" name="firstName"
+                                          placeholder=""
+                                          value={this.state.firstName}
+                                          onChange={(ev) => this.setState({ firstName: ev.target.value })} />
+                                    </div>
+                                    <div className="col-md-6 col-sm-12">
+                                       <div className="d-flex">
+                                          <label htmlFor="lastName">Last Name</label>
+                                          {this.state.mode === "create" && <Link className="ml-auto" to="/app/c/contacts/edit/new-company">Switch to Company</Link>}
                                        </div>
-                                       <div className="col-md-6 col-sm-12">
-                                          <div className="d-flex">
-                                             <label htmlFor="lastName">Last Name</label>
-                                             {this.state.mode === "create" && <Link className="ml-auto" to="/app/c/contacts/edit/new-company">Switch to Company</Link>}
-                                          </div>
-                                          <input
-                                             type="text"
-                                             className="form-control"
-                                             id="lastName" name="lastName"
-                                             placeholder=""
-                                             value={this.state.lastName}
-                                             onChange={(ev) => this.setState({ lastName: ev.target.value })} />
-                                       </div>
+                                       <input
+                                          type="text"
+                                          className="form-control rounded-0"
+                                          id="lastName" name="lastName"
+                                          placeholder=""
+                                          value={this.state.lastName}
+                                          onChange={(ev) => this.setState({ lastName: ev.target.value })} />
                                     </div>
                                  </div>
-                                 {/* Email Address */}
-                                 <div className="form-group">
-                                    <label htmlFor="email">Email Address<span className="text-danger fa-fx font-w600 ml-1">required</span></label>
-                                    <input
-                                       type="text"
-                                       className="form-control"
-                                       id="email" name="email"
-                                       placeholder=""
-                                       value={this.state.email}
-                                       onChange={(ev) => this.setState({ email: ev.target.value })} />
-                                 </div>
-                                 {/* Company Name */}
-                                 <div className="form-group" style={{ position: "relative" }}>
-                                    <label htmlFor="companyName">Company Name</label>
-                                    <input
-                                       type="text"
-                                       className="form-control"
-                                       id="companyName" name="companyName"
-                                       placeholder="New, or lookup existing..."
-                                       value={this.state.companyName}
-                                       onChange={(ev) => this.setState({ show: true, companyName: ev.target.value, companyId: "" })} />
-                                    <CompleterCompany
-                                       companyName={this.state.companyName}
-                                       show={this.state.show}
-                                       setCompany={(contact) => {
-                                          this.setState({
-                                             companyName: contact.companyName,
-                                             companyId: contact._id,
-                                             show: false
-                                          });
-                                       }}
-                                    />
-                                 </div>
                               </div>
-                           )
+                              {/* Email Address */}
+                              <div className="form-group">
+                                 <label htmlFor="email">Email Address<span className="text-danger fa-fx font-w600 ml-1">required</span></label>
+                                 <input
+                                    type="text"
+                                    className="form-control rounded-0"
+                                    id="email" name="email"
+                                    placeholder=""
+                                    value={this.state.email}
+                                    onChange={(ev) => this.setState({ email: ev.target.value })} />
+                              </div>
+                              {/* Company Name */}
+                              <div className="form-group" style={{ position: "relative" }}>
+                                 <label htmlFor="companyName">Company Name</label>
+                                 <input
+                                    type="text"
+                                    className="form-control rounded-0"
+                                    id="companyName" name="companyName"
+                                    placeholder="New, or lookup existing..."
+                                    value={this.state.companyName}
+                                    onChange={(ev) => this.setState({ show: true, companyName: ev.target.value, companyId: "" })} />
+                                 <CompleterCompany
+                                    companyName={this.state.companyName}
+                                    show={this.state.show}
+                                    setCompany={(contact) => {
+                                       this.setState({
+                                          companyName: contact.companyName,
+                                          companyId: contact._id,
+                                          show: false
+                                       });
+                                    }}
+                                 />
+                              </div>
+                           </div>
                         }
-
                         {
                            this.state.category === "company" &&
-                           (
-                              <div>
-                                 <div className="form-group">
-                                    <div className="d-flex">
-                                       <label htmlFor="companyName">Company</label>
-                                       {this.state.mode === "create" && <Link className="ml-auto" to="/app/c/contacts/edit/new-person">Switch to person</Link>}
-                                    </div>
-                                    <input
-                                       type="text"
-                                       className="form-control"
-                                       id="companyName" name="companyName"
-                                       placeholder=""
-                                       value={this.state.companyName}
-                                       onChange={(ev) => this.setState({ companyName: ev.target.value })} />
+                           <div>
+                              <div className="form-group">
+                                 <div className="d-flex">
+                                    <label htmlFor="companyName">Company</label>
+                                    {this.state.mode === "create" && <Link className="ml-auto" to="/app/c/contacts/edit/new-person">Switch to person</Link>}
                                  </div>
-                                 {/* Email Address */}
-                                 <div className="form-group">
-                                    <label htmlFor="email">Email Address</label>
-                                    <input
-                                       type="text"
-                                       className="form-control"
-                                       id="email" name="email"
-                                       placeholder=""
-                                       value={this.state.email}
-                                       onChange={(ev) => this.setState({ email: ev.target.value })} />
-                                 </div>
+                                 <input
+                                    type="text"
+                                    className="form-control rounded-0"
+                                    id="companyName" name="companyName"
+                                    placeholder=""
+                                    value={this.state.companyName}
+                                    onChange={(ev) => this.setState({ companyName: ev.target.value })} />
                               </div>
-                           )
+                              {/* Email Address */}
+                              <div className="form-group">
+                                 <label htmlFor="email">Email Address</label>
+                                 <input
+                                    type="text"
+                                    className="form-control rounded-0"
+                                    id="email" name="email"
+                                    placeholder=""
+                                    value={this.state.email}
+                                    onChange={(ev) => this.setState({ email: ev.target.value })} />
+                              </div>
+                           </div>
                         }
 
                         {/* Address Set FromInColumns */}
@@ -229,7 +224,7 @@ export default class EditContact extends Component {
                                     <div className="d-flex mb-1">
                                        <div className="w-50">
                                           <select
-                                             className="form-control"
+                                             className="form-control rounded-0"
                                              id="phone" name="phone"
                                              value={item.category}
                                              onChange={(ev) => {
@@ -262,7 +257,7 @@ export default class EditContact extends Component {
                                     </div>
                                     <input
                                        type="text"
-                                       className="form-control"
+                                       className="form-control rounded-0"
                                        id="phone" name="phone"
                                        placeholder=""
                                        value={item.content}
@@ -291,7 +286,7 @@ export default class EditContact extends Component {
                                     <div className="d-flex mb-1">
                                        <div className="w-50">
                                           <select
-                                             className="form-control"
+                                             className="form-control rounded-0"
                                              id="addressType" name="category"
                                              value={item.category}
                                              onChange={(ev) => this.handleAddressForm(ev, index)}
@@ -314,14 +309,14 @@ export default class EditContact extends Component {
                                     </div>
                                     <input
                                        type="text"
-                                       className="form-control mb-1"
+                                       className="form-control rounded-0 mb-1"
                                        id="street" name="street"
                                        placeholder="Street"
                                        value={item.street}
                                        onChange={(ev) => this.handleAddressForm(ev, index)} />
                                     <input
                                        type="text"
-                                       className="form-control mb-1"
+                                       className="form-control rounded-0 mb-1"
                                        id="city" name="city"
                                        placeholder="City"
                                        value={item.city}
@@ -329,14 +324,14 @@ export default class EditContact extends Component {
                                     <div className="d-flex mb-1">
                                        <input
                                           type="text"
-                                          className="form-control mr-1"
+                                          className="form-control rounded-0 mr-1"
                                           id="state-region" name="stateOrRegion"
                                           placeholder="State / Region"
                                           value={item.stateOrRegion}
                                           onChange={(ev) => this.handleAddressForm(ev, index)} />
                                        <input
                                           type="text"
-                                          className="form-control"
+                                          className="form-control rounded-0"
                                           id="zip-post-code" name="postCode"
                                           placeholder="Zip / Post Code"
                                           value={item.postCode}
@@ -344,7 +339,7 @@ export default class EditContact extends Component {
                                     </div>
                                     <input
                                        type="text"
-                                       className="form-control mb-1"
+                                       className="form-control rounded-0 mb-1"
                                        id="country" name="country"
                                        placeholder="Country"
                                        value={item.country}

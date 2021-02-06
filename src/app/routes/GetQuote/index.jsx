@@ -12,7 +12,7 @@ import {
 import AddNoteBtn from "../../../components/AddNoteBtn";
 import QuoteTotal from "../../../components/QuoteTotal";
 import { connect } from "react-redux";
-import { getDefaultSalesCategory, getDefaultSalesTax, getSalesCategories, getSalesTaxes } from "../../../actions/SalesSetting";
+import { } from "../../../actions/SalesSetting";
 import NavCrumpLeft from "../../../components/NavCrump/NavCrumpLeft";
 import {
    QUOTE_GET_FROM_TEMPLATE_PATH,
@@ -22,14 +22,26 @@ import {
    QUOTES_PATH
 } from "../../../constants/PathNames";
 import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
-import { getQuoteDataById, getContentTemplateById, updateQuote, updateQuoteToPeopleList, updateQuoteSettings, markAsSentQuote } from "../../../actions/Data";
+import {
+   getDefaultSalesCategory,
+   getDefaultSalesTax,
+   getSalesCategories,
+   getSalesTaxes,
+   getQuoteDataById,
+   getContentTemplateById,
+   updateQuote,
+   updateQuoteToPeopleList,
+   updateQuoteSettings,
+   markAsSentQuote,
+   getQuoteDefaultSetting,
+   getAppearanceSetting
+} from "../../../actions";
 import QuoteSettings from "../../../components/QuoteSettings";
 import TitleSection from "./components/TitleSection";
 import AddPriceItemBtn from "../../../components/AddPriceItemBtn";
 import QuoteToPeopleList from "./components/QuoteToPeopleList";
 import NotesSection from "./components/NotesSection";
 import ItemsSection from "./components/ItemsSection";
-import { getQuoteDefaultSetting } from "../../../actions/QuoteDefautSetting";
 import _ from 'lodash';
 import clsx from "clsx";
 
@@ -77,6 +89,7 @@ class GetQuote extends Component {
       await this.props.getSalesCategories('current');
       await this.props.getSalesTaxes('current');
       await this.props.getQuoteDefaultSetting();
+      await this.props.getAppearanceSetting();
       if (
          this.props.match.path === QUOTE_BY_ID_PATH
          || this.props.match.path === QUOTE_GET_DUPLICATE_PATH
@@ -408,6 +421,7 @@ const mapStateToProps = ({ auth, salesSetting, quoteDefaultSetting, mainData }) 
    return { authUser, quote, quoteDefaultSetting, defaultSalesTax, defaultSalesCategory }
 }
 const mapDispatchToProps = {
+   getAppearanceSetting,
    updateQuote,
    getDefaultSalesCategory,
    getDefaultSalesTax,

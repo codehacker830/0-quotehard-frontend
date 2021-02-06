@@ -1,4 +1,4 @@
-export const allCurrencyArr = [
+export const allCurrencyArrData = [
    "AFN",
    "ALL",
    "DZD",
@@ -163,19 +163,4 @@ export const allCurrencyArr = [
    "YER", //--
    "ZMW",
    "ZWD",  //-- 165
-];
-
-export const recentActivities = [
-   {
-      date: "September 21, 2020 at 11:26AM",
-      content: "Edited by A Devom"
-   },
-   {
-      date: "September 21, 2020 at 11:25AM",
-      content: "Person added: Raffale Cantatore by A Devom"
-   },
-   {
-      date: "September 2, 2020 at 1:20AM",
-      content: "Created by A Devom"
-   }
 ];

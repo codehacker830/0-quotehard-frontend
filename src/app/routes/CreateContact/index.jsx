@@ -127,7 +127,7 @@ export default class CreateContact extends Component {
                                                 <label htmlFor="firstName">First Name</label>
                                                 <input
                                                     type="text"
-                                                    className="form-control"
+                                                    className="form-control rounded-0"
                                                     id="firstName" name="firstName"
                                                     placeholder=""
                                                     value={this.state.firstName}
@@ -140,7 +140,7 @@ export default class CreateContact extends Component {
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    className="form-control"
+                                                    className="form-control rounded-0"
                                                     id="lastName" name="lastName"
                                                     placeholder=""
                                                     value={this.state.lastName}
@@ -153,7 +153,7 @@ export default class CreateContact extends Component {
                                         <label htmlFor="personEmail">Email Address<span className="text-danger fa-fx font-w600 ml-1">required</span></label>
                                         <input
                                             type="text"
-                                            className="form-control"
+                                            className="form-control rounded-0"
                                             id="personEmail" name="personEmail"
                                             placeholder=""
                                             value={this.state.email}
@@ -165,7 +165,7 @@ export default class CreateContact extends Component {
                                         <div ref={this.companyContainer}>
                                             <input
                                                 type="text"
-                                                className="form-control"
+                                                className="form-control rounded-0"
                                                 id="personOfCompany" name="personOfCompany"
                                                 placeholder="New, or lookup existing..."
                                                 autoComplete="off"
@@ -195,7 +195,7 @@ export default class CreateContact extends Component {
                                         </div>
                                         <input
                                             type="text"
-                                            className="form-control"
+                                            className="form-control rounded-0"
                                             id="companyTitle" name="companyTitle"
                                             placeholder=""
                                             value={this.state.companyTitle}
@@ -206,7 +206,7 @@ export default class CreateContact extends Component {
                                         <label htmlFor="email">Email Address</label>
                                         <input
                                             type="text"
-                                            className="form-control"
+                                            className="form-control rounded-0"
                                             id="email" name="email"
                                             placeholder=""
                                             value={this.state.email}
@@ -222,7 +222,7 @@ export default class CreateContact extends Component {
                                                 <div className="d-flex mb-1">
                                                     <div className="w-50">
                                                         <select
-                                                            className="form-control"
+                                                            className="form-control rounded-0"
                                                             id="phone" name="phone"
                                                             value={item.category}
                                                             defaultValue={`primaryPhone`}
@@ -256,7 +256,7 @@ export default class CreateContact extends Component {
                                                 </div>
                                                 <input
                                                     type="text"
-                                                    className="form-control"
+                                                    className="form-control rounded-0"
                                                     id="phone" name="phone"
                                                     placeholder=""
                                                     value={item.content}
@@ -273,9 +273,7 @@ export default class CreateContact extends Component {
 
 
                                 {/* Add Phone Button */}
-                                <AddPhoneBtn
-                                    handleClick={() => this.setState({ phones: [...this.state.phones, { category: "primaryPhone" }] })}
-                                />
+                                <AddPhoneBtn handleClick={() => this.setState({ phones: [...this.state.phones, { category: "primaryPhone" }] })} />
 
                                 {/* Address Form */}
                                 {

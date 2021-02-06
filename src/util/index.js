@@ -1,5 +1,4 @@
 import { toast } from 'react-toastify';
-import { allCurrencyArr } from '../constants/Dump';
 import parse from 'html-react-parser';
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -440,19 +439,6 @@ export const swichDescribeTaxAs = (key) => {
       default:
          return "Tax";
    }
-}
-export const switchAmountAreDes = (str) => {
-   switch (str) {
-      case "exclusive_excluding":
-         return "excluding"
-      default:
-         return "including"
-   }
-}
-
-export const showCurrencyCode = (displayCurrencyCodeInTotal, currencyInd) => {
-   if (displayCurrencyCodeInTotal) return allCurrencyArr[currencyInd - 1];
-   else return "";
 }
 
 export const parseStrIntoHtml = (str) => {

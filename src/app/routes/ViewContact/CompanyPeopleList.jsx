@@ -38,7 +38,7 @@ const CompanyPeopleList = (props) => {
                );
             })
          }
-         <Link className="btn btn-outline-dark font-size-sm mt-4"
+         <Link className="btn btn-default font-size-sm mt-4"
             to={{
                pathname: `/app/c/contacts/create/person`,
                state: {

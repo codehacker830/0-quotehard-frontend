@@ -6,7 +6,7 @@ export default class AddAddressBtn extends Component {
          <div className="form-group">
             <button
                type="button"
-               className="btn btn-outline-dark"
+               className="btn btn-light"
                onClick={this.props.handleClick}>
                <i className="fa fa-plus"></i> Add Address</button>
          </div>
