@@ -12,7 +12,7 @@ import ContactName from './ContactName';
 import EditContactBtn from './EditContactBtn';
 import PersonCompany from './PersonCompany';
 import PhonesShow from './PhonesShow';
-import { CONTACTS_PATH } from '../../../constants/PathNames';
+import { CONTACTS_PAGE_PATH } from '../../../constants/PathNames';
 import NavCrumpLeft from '../../../components/NavCrump/NavCrumpLeft';
 import NavCrumpRight from '../../../components/NavCrump/NavCrumpRight';
 import ConfirmContactMergeBanner from './ConfirmContactMergeBanner';
@@ -32,7 +32,7 @@ export default class ViewContact extends Component {
          this.setState({ contact: data.contact });
       }).catch((err) => {
          console.error("GET contact API error ==>", err)
-         this.props.history.push(CONTACTS_PATH);
+         this.props.history.push(CONTACTS_PAGE_PATH);
 
       })
    }
@@ -67,7 +67,7 @@ export default class ViewContact extends Component {
       return (
          <React.Fragment>
             <NavCrump>
-               <NavCrumpLeft linkTo={CONTACTS_PATH}>
+               <NavCrumpLeft linkTo={CONTACTS_PAGE_PATH}>
                   Contacts
                </NavCrumpLeft>
                {

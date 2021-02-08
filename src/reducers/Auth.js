@@ -1,4 +1,3 @@
-import { act } from "react-dom/test-utils";
 import {
    INIT_URL,
    SIGNOUT_USER_SUCCESS,

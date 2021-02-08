@@ -9,7 +9,7 @@ import CustomerEmailSetting from './CustomerEmailSetting';
 import Team from './Team';
 import Data from './Data';
 import AlertMessage from './AlertMessage';
-
+import Contact from './Contact';
 
 export default (history) => combineReducers({
    router: connectRouter(history),
@@ -22,4 +22,5 @@ export default (history) => combineReducers({
    teamSetting: Team,
    mainData: Data,
    alertMessage: AlertMessage,
+   contactData: Contact
 });

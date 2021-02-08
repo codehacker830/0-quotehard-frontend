@@ -14,7 +14,6 @@ export const CONTENT_TEMPLATE_DUPLICATE_PATH = '/app/content/template/get/duplic
 export const CONTENT_TEMPLATE_GET_COPYTOTEMPLATE_PATH = '/app/content/template/get/copy-to-template/:id';
 
 export const SETTINGS_PATH = "/app/settings";
-export const CONTACTS_PATH = "/app/c/contacts";
 
 export const SETTINGS_TEAM_PATH = "/app/settings/team";
 export const SETTINGS_TEAM_INVITEFORM_PATH = "/app/settings/team/invite-form";
@@ -24,4 +23,8 @@ export const SALES_TAX_CREATE_PATH = "/app/settings/sales-tax/create-new";
 export const SALES_TAX_UPDATE_PATH = "/app/settings/sales-tax/:id";
 export const SALES_CATEGORY_UPDATE_PATH = "/app/settings/sales-category/:id";
 export const SALES_CATEGORY_CREATE_PATH = "/app/settings/sales-category/create-new";
+
+export const CONTACTS_PAGE_PATH = "/app/c/contacts";
+export const CONTACT_CREATE_PATH = "/app/c/contacts/create/:category";
+export const CONTACT_EDIT_PATH = "/app/c/contacts/edit/:id";
 

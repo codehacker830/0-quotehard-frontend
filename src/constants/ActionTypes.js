@@ -63,3 +63,14 @@ export const GET_ASKFORREVIEW_CUSTOMEREMAIL_SETTING = 'get_askforreview_customer
 // AlertMessage
 export const SHOW_EXAMPLE_IGNORE_MESSAGE = "show_example_ignore_message";
 export const HIDE_EXAMPLE_IGNORE_MESSAGE = "hide_example_ignore_message";
+
+// Contact
+export const SET_CONTACT = "set_contact";
+export const UPDATE_CONTACT_CATEGORY = "update_contact_category";
+export const UPDATE_CONTACT_FIRSTNAME = "update_contact_firstName";
+export const UPDATE_CONTACT_LASTNAME = "update_contact_lastName";
+export const UPDATE_CONTACT_COMPANYNAME = "update_contact_companyname";
+export const UPDATE_CONTACT_COMPANYID = "update_contact_companyID";
+export const UPDATE_CONTACT_EMAIL = "update_contact_email";
+export const UPDATE_CONTACT_PHONES = "update_contact_phones";
+export const UPDATE_CONTACT_ADDRESSES = "update_contact_addresses";

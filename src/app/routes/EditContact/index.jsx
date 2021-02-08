@@ -85,11 +85,6 @@ export default class EditContact extends Component {
       if (location.state && location.state.from) this.goTo = location.state.from;
 
       console.error("match.params.id ==", match.params.id);
-      if (!match.params.id) {
-         this.props.push(this.goTo);
-         return;
-      }
-
       axios.get(`/contacts/id/${match.params.id}`).then(({ data }) => {
          console.log("get contact api res =>", data);
          const { contact } = data;
@@ -105,7 +100,8 @@ export default class EditContact extends Component {
          });
 
       }).catch((err) => {
-         console.error("get contact api error ==>", err)
+         console.error("get contact api error ==>", err);
+         this.props.push(this.goTo);
       })
    }
 
@@ -274,9 +270,7 @@ export default class EditContact extends Component {
 
 
                         {/* Add Phone Button */}
-                        <AddPhoneBtn
-                           handleClick={() => this.setState({ phones: [...this.state.phones, { category: "primaryPhone" }] })}
-                        />
+                        <AddPhoneBtn />
 
                         {/* Address Form */}
                         {
@@ -350,9 +344,7 @@ export default class EditContact extends Component {
                         }
 
                         {/* Add Address Button */}
-                        <AddAddressBtn
-                           handleClick={() => this.setState({ addresses: [...this.state.addresses, { category: "primaryAddress" }] })}
-                        />
+                        <AddAddressBtn />
 
                         <div className="form-group py-3">
                            <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={this.onHandleSubmit}>Update</button>
