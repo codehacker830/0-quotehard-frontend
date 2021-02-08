@@ -22,7 +22,6 @@ function ContactRoutes() {
          <Route exact path="/app/c/contacts" component={asyncComponent(() => import("./routes/Contacts"))} />
          <Route exact path="/app/c/contacts/create/:category" component={asyncComponent(() => import("./routes/ContactForm"))} />
          <Route exact path="/app/c/contacts/view/:id" component={asyncComponent(() => import("./routes/ViewContact"))} />
-         {/* <Route exact path="/app/c/contacts/edit/:id" component={asyncComponent(() => import("./routes/EditContact"))} /> */}
          <Route exact path="/app/c/contacts/edit/:id" component={asyncComponent(() => import("./routes/ContactForm"))} />
       </Switch>
    )

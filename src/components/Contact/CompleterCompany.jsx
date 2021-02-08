@@ -15,7 +15,7 @@ export const CompleterCompany = (props) => {
    useEffect(() => {
       console.log(" companyName => ", companyName);
       if (companyName !== "") {
-         axios.post("/contacts/company/name", { companyName: companyName }).then(({ data }) => {
+         axios.get(`/contacts/company/search/${companyName}`).then(({ data }) => {
             console.log("search results =>", data);
             setList(data.contacts);
          }).catch(err => {

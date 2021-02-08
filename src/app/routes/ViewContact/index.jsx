@@ -12,7 +12,7 @@ import ContactName from './ContactName';
 import EditContactBtn from './EditContactBtn';
 import PersonCompany from './PersonCompany';
 import PhonesShow from './PhonesShow';
-import { CONTACTS_PAGE_PATH } from '../../../constants/PathNames';
+import { CONTACTS_PAGE_PATH, CONTACT_VIEW_PATH } from '../../../constants/PathNames';
 import NavCrumpLeft from '../../../components/NavCrump/NavCrumpLeft';
 import NavCrumpRight from '../../../components/NavCrump/NavCrumpRight';
 import ConfirmContactMergeBanner from './ConfirmContactMergeBanner';
@@ -70,12 +70,10 @@ export default class ViewContact extends Component {
                <NavCrumpLeft linkTo={CONTACTS_PAGE_PATH}>
                   Contacts
                </NavCrumpLeft>
-               {
-                  this.props.match.path === "/app/c/contacts/view/:id" &&
-                  <NavCrumpRight>
-                     <ul className="choices" style={{ left: 50, top: 10 }}>
-                        {
-                           this.state.contact.status === "current" ?
+               <NavCrumpRight>
+                  <ul className="choices" style={{ left: 50, top: 10 }}>
+                     {
+                        this.state.contact.status === "current" ?
                            <li>
                               <button className="btn-in-action" onClick={this.onClickArchive}>
                                  <div className="icon-wrapper">
@@ -87,29 +85,28 @@ export default class ViewContact extends Component {
                               </button>
                            </li>
                            : <li>
-                           <button className="btn-in-action" onClick={this.onClickUnArchive}>
-                              <div className="icon-wrapper">
-                                 <i className="fa fa-fw fa-archive text-secondary" />
-                              </div>
-                              <div className="media-body font-size-sm pr-2">
-                                 <span>Archive</span><span className="choices-undo"> ← undo</span>
-                              </div>
-                           </button>
-                        </li>
-                        }
-                        <li>
-                           <button className="btn-in-action" onClick={this.onClickDeleteAndMerge}>
-                              <div className="icon-wrapper">
-                                 <i className="fa fa-fw fa-compress-alt text-secondary" />
-                              </div>
-                              <div className="media-body font-size-sm pr-2">
-                                 <span>Delete &amp; merge</span>
-                              </div>
-                           </button>
-                        </li>
-                     </ul>
-                  </NavCrumpRight>
-               }
+                              <button className="btn-in-action" onClick={this.onClickUnArchive}>
+                                 <div className="icon-wrapper">
+                                    <i className="fa fa-fw fa-archive text-secondary" />
+                                 </div>
+                                 <div className="media-body font-size-sm pr-2">
+                                    <span>Archive</span><span className="choices-undo"> ← undo</span>
+                                 </div>
+                              </button>
+                           </li>
+                     }
+                     <li>
+                        <button className="btn-in-action" onClick={this.onClickDeleteAndMerge}>
+                           <div className="icon-wrapper">
+                              <i className="fa fa-fw fa-compress-alt text-secondary" />
+                           </div>
+                           <div className="media-body font-size-sm pr-2">
+                              <span>Delete &amp; merge</span>
+                           </div>
+                        </button>
+                     </li>
+                  </ul>
+               </NavCrumpRight>
             </NavCrump>
 
             <ConfirmContactMergeBanner contact={this.state.contact} />

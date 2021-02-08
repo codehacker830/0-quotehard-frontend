@@ -27,4 +27,5 @@ export const SALES_CATEGORY_CREATE_PATH = "/app/settings/sales-category/create-n
 export const CONTACTS_PAGE_PATH = "/app/c/contacts";
 export const CONTACT_CREATE_PATH = "/app/c/contacts/create/:category";
 export const CONTACT_EDIT_PATH = "/app/c/contacts/edit/:id";
+export const CONTACT_VIEW_PATH = "/app/c/contacts/view/:id";
 

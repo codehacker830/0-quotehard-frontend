@@ -3,7 +3,7 @@ import { alterTypeVariableStr } from '../../../util';
 
 export const PhonesShow = (props) => {
    return (
-      <>
+      <React.Fragment>
          {
             props.phones.map((item, index) => {
                return (
@@ -14,7 +14,7 @@ export const PhonesShow = (props) => {
                );
             })
          }
-      </>
+      </React.Fragment>
    )
 }
 

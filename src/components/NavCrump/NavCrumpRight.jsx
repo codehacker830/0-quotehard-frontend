@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { QUOTE_GET_PATH, QUOTE_GET_DUPLICATE_PATH, CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_GET_COPYTOTEMPLATE_PATH } from '../../constants/PathNames';
+import { QUOTE_GET_PATH, QUOTE_GET_DUPLICATE_PATH, CONTENT_TEMPLATE_BY_ID_PATH, CONTENT_TEMPLATE_GET_COPYTOTEMPLATE_PATH, CONTACT_VIEW_PATH } from '../../constants/PathNames';
 
 class NavCrumpRight extends Component {
    constructor(props) {
@@ -28,6 +28,7 @@ class NavCrumpRight extends Component {
          || this.props.match.path === QUOTE_GET_DUPLICATE_PATH
          || this.props.match.path === CONTENT_TEMPLATE_BY_ID_PATH
          || this.props.match.path === CONTENT_TEMPLATE_GET_COPYTOTEMPLATE_PATH
+         || this.props.match.path === CONTACT_VIEW_PATH
       );
       return (
          <div className={clsx("dropdown", hideActions ? "d-none" : "")} ref={this.actionsContainer}>

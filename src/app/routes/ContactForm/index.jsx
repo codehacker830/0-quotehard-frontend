@@ -276,7 +276,11 @@ export default function ContactForm(props) {
                      <AddAddressBtn />
 
                      <div className="form-group py-3">
-                        <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={onHandleSubmit}>Create Contact</button>
+                        <button className="btn btn-lg btn-rounded btn-hero-primary mr-1" onClick={onHandleSubmit}>
+                           {
+                              isContactCreatePath ? "Create Contact" : "Update Contact"
+                           }
+                        </button>
                         <Link className="btn btn-lg btn-rounded btn-hero-secondary" to={goTo}>Cancel</Link>
                      </div>
                   </div>
