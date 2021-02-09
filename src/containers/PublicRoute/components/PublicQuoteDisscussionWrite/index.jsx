@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { Component, createRef } from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -36,12 +37,8 @@ class PublicQuoteDisscussionWrite extends Component {
                     {
                         isMember && !isPreviewMode ?
                             <React.Fragment>
-                                <div className={`discuss-button-wrap ${this.state.commentShow || this.state.privateNoteShow ? "isHidden" : ""}`}>
-                                    {
-                                        quote.status === "draft" ?
-                                            null
-                                            : <button className="btn btn-sm btn-dark font-size-sm px-2 py-1 mr-2" onClick={() => this.setState({ commentShow: true })}>Comment</button>
-                                    }
+                                <div className={clsx("discuss-button-wrap", this.state.commentShow || this.state.privateNoteShow ? "isHidden" : "")}>
+                                    <button className={clsx("btn btn-sm btn-dark font-size-sm px-2 py-1 mr-2", quote.status === "draft" && "d-none")} onClick={() => this.setState({ commentShow: true })}>Comment</button>
                                     <button className="btn btn-sm btn-success font-size-sm px-2 py-1" onClick={() => this.setState({ privateNoteShow: true })}>Private Note</button>
                                 </div>
                                 <CommentWrite commentShow={this.state.commentShow} onClickCancel={() => this.setState({ commentShow: false, privateNoteShow: false })} />

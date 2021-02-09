@@ -8,10 +8,10 @@ import Error404 from '../components/Error404';
 function QuoteRoutes() {
    return (
       <Switch>
-         <Route path="/app/quote/get" component={asyncComponent(() => import("./routes/GetQuote"))} />
-         <Route path="/app/quote/get/duplicate/:id" component={asyncComponent(() => import("./routes/GetQuote"))} />
-         <Route path="/app/quote/get/from-template/:id" component={asyncComponent(() => import("./routes/GetQuote"))} />
-         <Route path="/app/quote/:id" component={asyncComponent(() => import("./routes/GetQuote"))} />
+         <Route exact path="/app/quote/get" component={asyncComponent(() => import("./routes/GetQuote"))} />
+         <Route exact path="/app/quote/get/duplicate/:id" component={asyncComponent(() => import("./routes/GetQuote"))} />
+         <Route exact path="/app/quote/get/from-template/:id" component={asyncComponent(() => import("./routes/GetQuote"))} />
+         <Route exact path="/app/quote/:id" component={asyncComponent(() => import("./routes/GetQuote"))} />
       </Switch>
    )
 }

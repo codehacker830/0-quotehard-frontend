@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { formatDateTime } from '../../../util';
 import axios from '../../../util/Api';
 
-class RecentActivities extends Component {
+class ContactActivities extends Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -131,4 +131,4 @@ const companyActivityContent = (activity) => {
    }
 }
 
-export default withRouter(RecentActivities);
+export default withRouter(ContactActivities);

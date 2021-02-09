@@ -90,6 +90,9 @@ class GetQuote extends Component {
       await this.props.getSalesTaxes('current');
       await this.props.getQuoteDefaultSetting();
       await this.props.getAppearanceSetting();
+
+      console.log(" ddddddddddddddddddddddd ", this.props.match)
+
       if (
          this.props.match.path === QUOTE_BY_ID_PATH
          || this.props.match.path === QUOTE_GET_DUPLICATE_PATH
@@ -124,14 +127,14 @@ class GetQuote extends Component {
             pricingDisplayLevel,
             displayItemCode
          };
-         this.props.updateQuoteSettings({ ...this.props.settings, ...defaultSetting });
+         this.props.updateQuoteSettings({ ...this.props.quote.settings, ...defaultSetting });
       } else if (
          this.props.match.path === QUOTE_GET_DUPLICATE_PATH
          || this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH
       ) {
          console.log(" TTTTTTTTTTTTTTTTTTTTT 22", expirationQuoteAfter);
          this.props.updateQuoteSettings({
-            ...this.props.settings,
+            ...this.props.quote.settings,
             validUntil: new Date(Date.now() + 1000 * 3600 * 24 * parseInt(expirationQuoteAfter))
          });
       }

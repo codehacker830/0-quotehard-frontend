@@ -5,6 +5,7 @@ import { updateQuoteSettings } from '../../actions/Data';
 
 export default function PricingDisplayLevel() {
     const settings = useSelector(state => state.mainData.quote.settings);
+    console.log(" mmmmmmmmmmmm ", settings)
     const pricingDisplayLevel = settings.pricingDisplayLevel;
     const displayItemCode = settings.displayItemCode;
 

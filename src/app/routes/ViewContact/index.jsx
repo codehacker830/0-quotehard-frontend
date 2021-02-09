@@ -16,7 +16,7 @@ import { CONTACTS_PAGE_PATH, CONTACT_VIEW_PATH } from '../../../constants/PathNa
 import NavCrumpLeft from '../../../components/NavCrump/NavCrumpLeft';
 import NavCrumpRight from '../../../components/NavCrump/NavCrumpRight';
 import ConfirmContactMergeBanner from './ConfirmContactMergeBanner';
-import RecentActivities from './RecentActivities';
+import ContactActivities from './ContactActivities';
 
 export default class ViewContact extends Component {
    constructor(props) {
@@ -159,7 +159,7 @@ export default class ViewContact extends Component {
                      </div>
 
                      {/* Recent Activity */}
-                     <RecentActivities contact={contact} />
+                     <ContactActivities contact={contact} />
                   </div>
                </div>
             </div>
