@@ -63,7 +63,7 @@ class StatusShowCase extends Component {
                         <AuthorBox />
                         <div className="author-stat-spacer" />
                         <StatOpenTimes />
-                        <StatQATimes />
+                        {/* <StatQATimes /> */}
                         <StatNoteTimes />
                         <StatEditTimes />
                      </React.Fragment>
