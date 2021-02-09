@@ -9,11 +9,12 @@ import StarterTips from './StarterTips';
 class QuoteTableShow extends Component {
    render() {
       const { quotes } = this.props;
+      console.log(" ddddddddddddd ffffffff ", quotes);
+
       const draftQuotes = quotes.filter((it) => it.status === "draft");
       const awaitingQuotes = quotes.filter((it) => { return (it.status === "sent" || it.status === "editing") });
       const acceptedQuotes = quotes.filter((it) => it.status === "accepted");
       const declinedQuotes = quotes.filter((it) => it.status === "declined");
-
       if (!quotes.length) return (<div className="col-md-6"></div>);
       else return (
          <div className="col-md-6">

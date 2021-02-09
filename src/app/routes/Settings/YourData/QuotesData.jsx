@@ -45,7 +45,7 @@ export default function QuotesData() {
    const onClickDownload = () => {
       axios.get('/quotes/state/current')
          .then(({ data }) => {
-            console.log(" ++++++++++ contacts data ++++++++ ", data);
+            console.log(" ++++++++++ quote data ++++++++ ", data);
             const { quotes } = data;
             const arrData = quotes.map(quote => {
                return {

@@ -35,7 +35,6 @@ export default class QuoteActivities extends Component {
 
 
 export const quoteActivityContent = (activity) => {
-   console.log(" nnnnnnnnnnnnnnnn ", activity)
    switch (activity.category) {
       case "created":
          return <td>Created by {activity.by}</td>;

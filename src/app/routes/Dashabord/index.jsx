@@ -22,10 +22,13 @@ class Dashboard extends Component {
 
       // Get all Quotes
       this.setState({ isLoadingQuotes: true });
-      axios.get('/quotes/state/current').then(({ data }) => {
+      axios.get('/quotes').then(({ data }) => {
+         const quotes = data.quotes.filter(quote => {
+            return quote.state !== "archived";
+         });
          this.setState({
             isLoadingQuotes: false,
-            quotes: data.quotes
+            quotes: quotes
          });
       }).catch(err => {
          this.setState({ isLoadingQuotes: false });

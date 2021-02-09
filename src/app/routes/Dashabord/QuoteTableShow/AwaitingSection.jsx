@@ -1,6 +1,7 @@
+import clsx from 'clsx';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { formatDate, toFixedFloat } from '../../../../util';
+import Tr_Quotient from '../../Quotes/Tr_Quotient';
 
 class AwaitingSection extends Component {
    render() {
@@ -15,33 +16,7 @@ class AwaitingSection extends Component {
             </div>
             <table className="quotient-table mb-4">
                <tbody className="rowClick" data-tg-click="root_rowClick">
-                  {awaitingQuotes.map((item, index) => (
-                     <tr className="mod-white" key={index} onClick={() => this.props.history.push(`/q/${item.entoken}`)}>
-                        <td>
-                           <span className="float-right ml-2">{toFixedFloat(item.quoteTotal)}</span>
-                           <div className="u-ellipsis">
-                              <span>{item.title}</span>
-                           </div>
-                           <span className="float-right">
-                              <small className="text-gray">
-                                 <span className="dt-time">{formatDate(item.createdAt)}</span>
-                                 {
-                                    item.status === "editing" &&
-                                    <span className="quotes-label label-sent label-editing">Editing</span>
-                                 }
-                              </small>
-                           </span>
-                           <div className="u-ellipsis">
-                              <small className="text-gray">
-                                 <span className={`${item.viewedAt ? "text-danger" : "text-success"} mr-1`}>
-                                    {item.viewedAt ? `Viewed ` + formatDate(item.viewedAt) : `Unopened`}
-                                 </span>
-                                 {item.contactNameTo} by {item.userFrom} #{item.number}
-                              </small>
-                           </div>
-                        </td>
-                     </tr>
-                  ))}
+                  {awaitingQuotes.map((item, index) => <Tr_Quotient item={item} key={index} />)}
                </tbody>
             </table>
          </React.Fragment>
