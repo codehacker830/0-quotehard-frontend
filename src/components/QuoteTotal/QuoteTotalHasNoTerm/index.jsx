@@ -15,12 +15,12 @@ class QuoteTotalHasNoTerm extends Component {
       //    return false;
       // });
       const nonSubcriptionItems = items.filter(item => {
-         if (item.category === "priceItem") {
-            return item.priceItem.isSubscription === false;
-         }
+         if (item.category === "priceItem") return item.priceItem.isSubscription === false;
          return false;
       });
       const uniqueTaxIdArr = differentTaxIdArrGroup(nonSubcriptionItems);
+      console.log("nonSubcriptionItems =>", nonSubcriptionItems)
+      console.log("uniqueTaxIdArr =>", uniqueTaxIdArr)
       return (
          <table className="quoteTotal hasNoTerm">
             <tbody>

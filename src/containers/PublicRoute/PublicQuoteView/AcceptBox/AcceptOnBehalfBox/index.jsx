@@ -5,12 +5,14 @@ import AdditionalComments from '../AdditionalComments';
 import OrderReferenceNumber from '../OrderReferenceNumber';
 import _ from 'lodash';
 import { acceptOnBehalfQuote } from '../../../../../actions/Data';
+import { calculateQuoteTotal } from '../../../../../util';
 
 export default function AcceptOnBehalfBox() {
    const dispatch = useDispatch();
    const appearanceSetting = useSelector(state => state.appearanceSetting);
    const quote = useSelector(state => state.mainData.quote);
    const loading = useSelector(state => state.commonData.loading);
+   const salesTaxes = useSelector(state => state.salesSetting.salesTaxes);
    const { colors } = appearanceSetting;
    const { orderReferenceNumber, additionalComment } = quote;
 
@@ -36,13 +38,14 @@ export default function AcceptOnBehalfBox() {
 
    }
    console.log(" onBehalfOfPersonId ==========> ", onBehalfOfPersonId)
+   console.log(" quote 000 ==========> ", quote)
    return (
       <div className="acceptBox" style={{ backgroundColor: `${colors.highlights}` }}>
          <h3 className="quote-box-h3-accept">Accept on behalf</h3>
          <div className="acceptSummary">
             <p className=""><strong>{quote.title}</strong></p>
             <p className="summaryWrapzFixedCost">
-               Total including tax $<span className="summaryPartTotal">1,100.00</span>
+               Total including tax $<span className="summaryPartTotal">{calculateQuoteTotal(quote, salesTaxes)}</span>
             </p>
          </div>
          <div className={clsx("form-group-half", quote.toPeopleList.length > 1 ? "" : "d-none")}>
