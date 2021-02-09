@@ -5,7 +5,8 @@ import AdditionalComments from '../AdditionalComments';
 import OrderReferenceNumber from '../OrderReferenceNumber';
 import _ from 'lodash';
 import { acceptOnBehalfQuote } from '../../../../../actions/Data';
-import { calculateQuoteTotal } from '../../../../../util';
+import { checkOutQuoteTotal } from '../../../../../util';
+import { CurrencyCode, CurrencySymbol, SummaryQuoteTotal, TaxModeDes } from '../AcceptSummary';
 
 export default function AcceptOnBehalfBox() {
    const dispatch = useDispatch();
@@ -45,7 +46,7 @@ export default function AcceptOnBehalfBox() {
          <div className="acceptSummary">
             <p className=""><strong>{quote.title}</strong></p>
             <p className="summaryWrapzFixedCost">
-               Total including tax $<span className="summaryPartTotal">{calculateQuoteTotal(quote, salesTaxes)}</span>
+               Total <CurrencyCode /> <TaxModeDes /> <CurrencySymbol /> <SummaryQuoteTotal />
             </p>
          </div>
          <div className={clsx("form-group-half", quote.toPeopleList.length > 1 ? "" : "d-none")}>

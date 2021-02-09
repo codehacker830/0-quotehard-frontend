@@ -1,3 +1,11 @@
+export const allDescribeTaxAsNameArrData = [
+   "GST",
+   "HST",
+   "IVA",
+   "Tax",
+   "VAT",
+   "VAT/NHIL"
+];
 export const allLocationArrData = [
    "Afghanistan",
    "Aland Islands",

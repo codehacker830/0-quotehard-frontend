@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { swichDescribeTaxAs, calculateSubTotal, calculateQuoteTotal } from '../../../util';
+import { swichDescribeTaxAs, calculateSubTotal, checkOutQuoteTotal } from '../../../util';
 import { allCurrencyArrData } from '../../../constants/Dump';
 import getSymbolFromCurrency from 'currency-symbol-map'
 
@@ -48,7 +48,7 @@ class Tr_Total extends Component {
                 </td>
                 <td className="total-price">
                     <span className="quoteTotal-gTotal">
-                        {currencySymbol} {calculateQuoteTotal({ items, settings }, salesTaxes)}
+                        {currencySymbol} {checkOutQuoteTotal({ items, settings }, salesTaxes)}
                     </span>
                 </td>
             </tr>

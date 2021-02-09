@@ -369,14 +369,14 @@ export function getTaxRateFromId(salesTaxId, salesTaxes) {
    return taxRate;
 }
 
-export function calculateQuoteTotal(quote, salesTaxes) {
+export function checkOutQuoteTotal(quote, salesTaxes) {
    const { items, settings } = quote;
    if (!items.length) return 0;
    let total = 0;
    items.forEach(item => {
       if (item.category === "priceItem") {
          const { priceItem } = item;
-         if (priceItem.isOptional || priceItem.isOptional) {
+         if (priceItem.isOptional || priceItem.isMultipleChoice) {
             if (priceItem.isOptional && priceItem.isOptionSelected) {
                if (settings.taxMode === "exclusive_including") total += priceItem.itemTotal + priceItem.itemTotal * getTaxRateFromId(priceItem.salesTax, salesTaxes) / 100;
                else total += priceItem.itemTotal;
@@ -387,6 +387,31 @@ export function calculateQuoteTotal(quote, salesTaxes) {
             }
          } else {
             if (settings.taxMode === "exclusive_including") total += priceItem.itemTotal + priceItem.itemTotal * getTaxRateFromId(priceItem.salesTax, salesTaxes) / 100;
+            else total += priceItem.itemTotal;
+         }
+      }
+   });
+   return total;
+}
+
+export function calculateQuoteTotal(quote) {
+   const { items, settings } = quote;
+   if (!items.length) return 0;
+   let total = 0;
+   items.forEach(item => {
+      if (item.category === "priceItem") {
+         const { priceItem } = item;
+         if (priceItem.isOptional || priceItem.isMultipleChoice) {
+            if (priceItem.isOptional && priceItem.isOptionSelected) {
+               if (settings.taxMode === "exclusive_including") total += priceItem.itemTotal + priceItem.itemTotal * priceItem.salesTax.taxRate / 100;
+               else total += priceItem.itemTotal;
+            }
+            if (priceItem.isMultipleChoice && priceItem.isChoiceSelected) {
+               if (settings.taxMode === "exclusive_including") total += priceItem.itemTotal + priceItem.itemTotal * priceItem.salesTax.taxRate / 100;
+               else total += priceItem.itemTotal;
+            }
+         } else {
+            if (settings.taxMode === "exclusive_including") total += priceItem.itemTotal + priceItem.itemTotal * priceItem.salesTax.taxRate / 100;
             else total += priceItem.itemTotal;
          }
       }
@@ -438,15 +463,15 @@ export const previewMessageStr = (str) => {
    let pStr = str;
    const regex = /(?:\r\n|\r|\n)/g;
    pStr = pStr.replaceAll(regex, '<br>');
-   pStr = pStr.replaceAll('[Quote-title]', '<span class="u-highlight-tag">Quote Title</span>');
-   pStr = pStr.replaceAll('[Your-name]', '<span class="u-highlight-tag">Your Name</span>');
-   pStr = pStr.replaceAll('[Your-first-name]', '<span class="u-highlight-tag">Your First Name</span>');
-   pStr = pStr.replaceAll('[Your-company-name]', '<span class="u-highlight-tag">Your Company Name</span>');
-   pStr = pStr.replaceAll('[Customer-given-names]', '<span class="u-highlight-tag">Customer Given Name(s)</span>');
-   pStr = pStr.replaceAll('[Customer-company]', '<span class="u-highlight-tag">Customer Company</span>');
-   pStr = pStr.replaceAll('[Quote-number]', '<span class="u-highlight-tag">Quote Number</span>');
-   pStr = pStr.replaceAll('[Customer-comment]', '<span class="u-highlight-tag">Customer Comment</span>');
-   pStr = pStr.replaceAll('[Customer-order-number]', '<span class="u-highlight-tag">Customer Order Number</span>');
+   pStr = pStr.replaceAll('[Quote-title]', '<span className="u-highlight-tag">Quote Title</span>');
+   pStr = pStr.replaceAll('[Your-name]', '<span className="u-highlight-tag">Your Name</span>');
+   pStr = pStr.replaceAll('[Your-first-name]', '<span className="u-highlight-tag">Your First Name</span>');
+   pStr = pStr.replaceAll('[Your-company-name]', '<span className="u-highlight-tag">Your Company Name</span>');
+   pStr = pStr.replaceAll('[Customer-given-names]', '<span className="u-highlight-tag">Customer Given Name(s)</span>');
+   pStr = pStr.replaceAll('[Customer-company]', '<span className="u-highlight-tag">Customer Company</span>');
+   pStr = pStr.replaceAll('[Quote-number]', '<span className="u-highlight-tag">Quote Number</span>');
+   pStr = pStr.replaceAll('[Customer-comment]', '<span className="u-highlight-tag">Customer Comment</span>');
+   pStr = pStr.replaceAll('[Customer-order-number]', '<span className="u-highlight-tag">Customer Order Number</span>');
 
    console.log(" previewMessageStr ====>  ", pStr)
    return pStr;

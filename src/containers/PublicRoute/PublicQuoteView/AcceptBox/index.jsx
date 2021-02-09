@@ -28,7 +28,6 @@ class AcceptBox extends Component {
         };
 
     }
-
     render() {
         const { person, quote, teamMembers, colors } = this.props;
         const customerFullName = person ? person.firstName + " " + person.lastName : "";
