@@ -13,7 +13,6 @@ import {
 import AddNoteBtn from "../../../components/AddNoteBtn";
 import QuoteTotal from "../../../components/QuoteTotal";
 import { connect } from "react-redux";
-import { } from "../../../actions/SalesSetting";
 import NavCrumpLeft from "../../../components/NavCrump/NavCrumpLeft";
 import {
    QUOTE_GET_FROM_TEMPLATE_PATH,
@@ -435,7 +434,7 @@ class GetQuote extends Component {
                   </div>
 
                   {/* Activities */}
-                  <div className="row p-3">
+                  <div className={clsx("row p-3", this.props.match.path === QUOTE_GET_PATH && "d-none")}>
                      <div className={clsx("w-100 font-size-sm mb-1", this.state.showActivity ? "isHidden" : "")}>
                         <i className="far fa-xs fa-clock mr-1" />Recent Activity
                      </div>
