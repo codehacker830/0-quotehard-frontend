@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { updateQuoteItems } from '../actions/Data';
 import { initPriceItem } from '../constants/InitState';
-import { numberOfOption, FilterSeqItemsForPartSubTotal, calculateSubTotal } from '../util';
+import { numberOfOption, FilterSeqItemsForPartSubTotal, calculateSubTotal, toFixedFloat } from '../util';
 
 class SubTotal extends Component {
    state = {
@@ -58,7 +58,7 @@ class SubTotal extends Component {
                </div>
                <div className="border p-3 text-right my-auto" style={{ width: 240, height: "100%" }}>
                   <p className={`text-secondary mb-0 ${optionNum.total ? "" : "d-none"}`}>{optionNum.selected} of {optionNum.total}</p>
-                  <p className="text-black mb-0">{calculateSubTotal(filteredItems)}</p>
+                  <p className="text-black mb-0">{toFixedFloat(calculateSubTotal(filteredItems))}</p>
                </div>
             </div>
          </div>

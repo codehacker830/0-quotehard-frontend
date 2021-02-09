@@ -6,7 +6,10 @@ import OrderReferenceNumber from '../OrderReferenceNumber';
 import _ from 'lodash';
 import { acceptOnBehalfQuote } from '../../../../../actions/Data';
 import { checkOutQuoteTotal } from '../../../../../util';
-import { CurrencyCode, CurrencySymbol, SummaryQuoteTotal, TaxModeDes } from '../AcceptSummary';
+import CurrencyCode from '../../../../../components/shared/CurrencyCode';
+import CurrencySymbol from '../../../../../components/shared/CurrencySymbol';
+import SummaryQuoteTotal from '../../../../../components/shared/SummaryQuoteTotal';
+import TaxModeDesAs from '../../../../../components/shared/TaxModeDesAs';
 
 export default function AcceptOnBehalfBox() {
    const dispatch = useDispatch();
@@ -46,7 +49,7 @@ export default function AcceptOnBehalfBox() {
          <div className="acceptSummary">
             <p className=""><strong>{quote.title}</strong></p>
             <p className="summaryWrapzFixedCost">
-               Total <CurrencyCode /> <TaxModeDes /> <CurrencySymbol /> <SummaryQuoteTotal />
+               Total <CurrencyCode /> <TaxModeDesAs /> <CurrencySymbol /> <SummaryQuoteTotal />
             </p>
          </div>
          <div className={clsx("form-group-half", quote.toPeopleList.length > 1 ? "" : "d-none")}>

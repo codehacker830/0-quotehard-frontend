@@ -1,7 +1,8 @@
 import { set } from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { caculateTotalTax, getTaxRateFromId, swichDescribeTaxAs, toFixedFloat } from '../../../util';
+import { allDescribeTaxAsNameArrData } from '../../../constants/Dump';
+import { caculateTotalTax, getTaxRateFromId, toFixedFloat } from '../../../util';
 
 class Tr_tax extends Component {
    render() {
@@ -16,7 +17,7 @@ class Tr_tax extends Component {
       ) return null;
       return (
          <tr>
-            <td className="total-desc">{swichDescribeTaxAs(describeTaxAs)} {taxRate}%</td>
+            <td className="total-desc">{allDescribeTaxAsNameArrData[describeTaxAs - 1]} {taxRate}%</td>
             <td className="total-price">{toFixedFloat(caculateTotalTax(items, taxRate, settings))}</td>
          </tr>
       );

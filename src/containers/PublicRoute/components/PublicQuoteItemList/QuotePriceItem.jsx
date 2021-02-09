@@ -58,7 +58,7 @@ class QuotePriceItem extends Component {
                   </p>
                }
 
-               <p className="quote-text-sm">{item.priceItem.unitPrice}</p>
+               <p className="quote-text-sm">{toFixedFloat(item.priceItem.unitPrice)}</p>
                {
                   item.priceItem.isEditableQuantity ?
                      <div className="itemPartEditableWrap">
@@ -79,7 +79,7 @@ class QuotePriceItem extends Component {
                      </div>
                      : <p className="quote-text-sm">x {item.priceItem.quantity}</p>
                }
-               <p><span className="itemPartItemTotal">{item.priceItem.itemTotal}</span></p>
+               <p><span className="itemPartItemTotal">{toFixedFloat(item.priceItem.itemTotal)}</span></p>
                <p className="quote-text-sm"><span className="option-text">Not selected</span></p>
             </div>
          </div>

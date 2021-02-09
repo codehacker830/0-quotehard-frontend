@@ -435,25 +435,6 @@ export const calculateSubTotal = (items) => {
    return total;
 }
 
-/////////  For Quote total ///////
-export const swichDescribeTaxAs = (key) => {
-   switch (parseInt(key)) {
-      case 1:
-         return "GST"
-      case 2:
-         return "HST";
-      case 7:
-         return "IVA";
-      case 4:
-         return "Tax";
-      case 5:
-         return "VAT";
-      case 6:
-         return "VAT/NHIL";
-      default:
-         return "Tax";
-   }
-}
 
 export const parseBrInStr = (str) => {
    const regex = /(?:\r\n|\r|\n)/g;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Tr_OptionSelected from './Tr_OptionSelected';
 import Tr_tax from './Tr_Tax';
-import { calculateSubTotal, differentTaxIdArrGroup, filterItemArrForTaxId } from '../../../util';
+import { calculateSubTotal, differentTaxIdArrGroup, filterItemArrForTaxId, toFixedFloat } from '../../../util';
 import { connect } from 'react-redux';
 import Tr_Total from './Tr_Total';
 
@@ -29,7 +29,7 @@ class QuoteTotalHasNoTerm extends Component {
                   settings.taxMode === "exclusive_including" &&
                   <tr>
                      <td className="total-desc">Subtotal</td>
-                     <td className="total-price">{calculateSubTotal(nonSubcriptionItems)}</td>
+                     <td className="total-price">{toFixedFloat(calculateSubTotal(nonSubcriptionItems))}</td>
                   </tr>
                }
                {
