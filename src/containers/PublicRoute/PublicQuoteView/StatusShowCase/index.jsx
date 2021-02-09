@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ActivityHistoryFull from '../../components/ActivityHistoryFull';
+import QuoteActivities from '../../components/QuoteActivities';
 import AuthorBox from './AuthorBox';
 import StatEditTimes from './StatEditTimes';
 import StatOpenTimes from './StatOpenTimes';
@@ -9,26 +9,37 @@ import StatNoteTimes from './StatNoteTimes';
 import { Link, withRouter } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from '../../../../util/Api';
+import clsx from 'clsx';
 
 class StatusShowCase extends Component {
    constructor(props) {
       super(props);
       this.state = {
          loading: false,
-         show: false,
-         activityData: null
+         showActivity: false,
+         activities: []
       };
    }
    onClickEditDraft = () => {
       this.props.history.push(`/app/quote/${this.props.quote._id}`);
    }
-   onClickActivity = () => {
+   onClickShowActivity = () => {
       this.setState({ loading: true });
       // get all acitivities from backend
-      setTimeout(() => {
-         this.setState({ show: true, loading: false })
-      }, 1000);
-
+      // setTimeout(() => {
+      //    this.setState({ showActivity: true, loading: false })
+      // }, 1000);
+      axios.get(`/quotes/activities/${this.props.quote._id}`).then(({ data }) => {
+         console.log(" 000000000 ", data)
+         this.setState({
+            showActivity: true,
+            loading: false,
+            activities: data.activities
+         });
+      }).catch(err => {
+         console.error("err during get contact activities");
+         this.setState({ showActivity: false, loading: false });
+      });
    }
    render() {
       const { quote } = this.props;
@@ -60,10 +71,10 @@ class StatusShowCase extends Component {
                <div className="author-stat-link author-stat-link-preview">
                   <Link to={`/q/${entoken}/preview`}>Preview as Your Customer</Link>
                </div>
-               <div className={`author-stat-link history-snippet ${this.state.show ? "isHidden" : ""}`}>
-                  <button className={`buttonLink ${this.state.loading ? "disabled" : ""}`}
+               <div className={clsx("author-stat-link history-snippet", this.state.showActivity ? "isHidden" : "")}>
+                  <button className={clsx("buttonLink", this.state.loading ? "disabled" : "")}
                      disabled={this.state.loading}
-                     onClick={this.onClickActivity}>
+                     onClick={this.onClickShowActivity}>
                      {
                         this.state.loading ?
                            <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />
@@ -74,10 +85,8 @@ class StatusShowCase extends Component {
                </div>
                <div className="clear" />
                <div className="history-full" style={{}}>
-                  {this.state.show && <ActivityHistoryFull onHistoryClose={() => this.setState({ show: false })} data={this.data} />}
+                  {this.state.showActivity && <QuoteActivities onHistoryClose={() => this.setState({ showActivity: false })} activities={this.state.activities} />}
                </div>
-
-
             </div>
          </div>
       );

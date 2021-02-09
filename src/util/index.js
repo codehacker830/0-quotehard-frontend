@@ -430,7 +430,7 @@ export const swichDescribeTaxAs = (key) => {
    }
 }
 
-export const parseStrIntoHtml = (str) => {
+export const parseBrInStr = (str) => {
    const regex = /(?:\r\n|\r|\n)/g;
    return parse(str.replaceAll(regex, '<br>'))
 }

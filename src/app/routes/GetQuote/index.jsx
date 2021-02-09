@@ -8,6 +8,7 @@ import {
    isValidDateTimeFormat,
    convertStrIntoDateObj,
    ToastErrorNotification,
+   formatDateTime,
 } from "../../../util";
 import AddNoteBtn from "../../../components/AddNoteBtn";
 import QuoteTotal from "../../../components/QuoteTotal";
@@ -44,6 +45,7 @@ import NotesSection from "./components/NotesSection";
 import ItemsSection from "./components/ItemsSection";
 import _ from 'lodash';
 import clsx from "clsx";
+import QuoteActivities, { quoteActivityContent } from "../../../containers/PublicRoute/components/QuoteActivities";
 
 class GetQuote extends Component {
    constructor(props) {
@@ -280,10 +282,30 @@ class GetQuote extends Component {
             });
       }
    };
+
+   onClickShowActivity = () => {
+      this.setState({ loading: true });
+      // get all acitivities from backend
+      // setTimeout(() => {
+      //    this.setState({ showActivity: true, loading: false })
+      // }, 1000);
+      axios.get(`/quotes/activities/${this.props.quote._id}`).then(({ data }) => {
+         console.log(" 000000000 ", data)
+         this.setState({
+            showActivity: true,
+            loading: false,
+            activities: data.activities
+         });
+      }).catch(err => {
+         console.error("err during get contact activities");
+         this.setState({ showActivity: false, loading: false });
+      });
+   }
    render() {
       console.log(" ^^^^^^^ GET QUOTE state ^^^^^^^^^^ ", this.state);
       console.log(" ^^^^^^^ GET QUOTE props ^^^^^^^^^^ ", this.props);
       const { location, quote } = this.props;
+      const { latestActivity } = this.props.quote;
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
       if (location.state && location.state.from === QUOTES_PATH) linkName = "Quotes";
@@ -411,12 +433,36 @@ class GetQuote extends Component {
                         Cancel
                      </button>
                   </div>
+
+                  {/* Activities */}
+                  <div className="row p-3">
+                     <div className={clsx("w-100 font-size-sm mb-1", this.state.showActivity ? "isHidden" : "")}>
+                        <i className="far fa-xs fa-clock mr-1" />Recent Activity
+                     </div>
+                     <div className={clsx("w-100 mb-1", this.state.showActivity ? "isHidden" : "")}>
+                        {
+                           latestActivity &&
+                           <span className="w-100 text-gray font-size-sm mb-1">{quoteActivityContent(latestActivity)}  –  {formatDateTime(latestActivity.at)}</span>
+                        }
+                        <button className="btn btn-rounded btn-outline-info fa-xs px-2 py-0 ml-2" onClick={this.onClickShowActivity}>All Activity</button>
+                     </div>
+                     <div className={clsx("w-100 mt-2", this.state.showActivity ? "" : "isHidden")}>
+                        {
+                           this.state.loading &&
+                           <div className="spinner-border spinner-border-sm text-gray-light" role="status">
+                              <span className="sr-only">Loading...</span>
+                           </div>
+                        }
+                        {this.state.showActivity && <QuoteActivities onHistoryClose={() => this.setState({ showActivity: false })} activities={this.state.activities} />}
+                     </div>
+                  </div>
                </div>
             </div>
          </React.Fragment>
       );
    }
 }
+
 const mapStateToProps = ({ auth, salesSetting, quoteDefaultSetting, mainData }) => {
    const { authUser } = auth;
    const { quote } = mainData;

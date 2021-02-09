@@ -17,12 +17,22 @@ import NavCrumpLeft from '../../../components/NavCrump/NavCrumpLeft';
 import NavCrumpRight from '../../../components/NavCrump/NavCrumpRight';
 import ConfirmContactMergeBanner from './ConfirmContactMergeBanner';
 import ContactActivities from './ContactActivities';
+import clsx from 'clsx';
 
 export default class ViewContact extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         contact: {}
+         contact: {
+            status: "",
+            category: "",
+            firstName: "",
+            lastName: "",
+            email: "",
+            phones: [],
+            addresses: [],
+            latestActivity: "",
+         }
       };
    }
    componentDidMount() {
@@ -64,6 +74,8 @@ export default class ViewContact extends Component {
    render() {
       console.log(" view contact state =>", this.state);
       const { contact } = this.state;
+      const hideArchive = contact.status === "archived";
+      const hideUndoArchive = contact.status !== "archived";
       return (
          <React.Fragment>
             <NavCrump>
@@ -72,29 +84,26 @@ export default class ViewContact extends Component {
                </NavCrumpLeft>
                <NavCrumpRight>
                   <ul className="choices" style={{ left: 50, top: 10 }}>
-                     {
-                        this.state.contact.status === "current" ?
-                           <li>
-                              <button className="btn-in-action" onClick={this.onClickArchive}>
-                                 <div className="icon-wrapper">
-                                    <i className="fa fa-fw fa-archive text-secondary" />
-                                 </div>
-                                 <div className="media-body font-size-sm pr-2">
-                                    <span>Archive</span>
-                                 </div>
-                              </button>
-                           </li>
-                           : <li>
-                              <button className="btn-in-action" onClick={this.onClickUnArchive}>
-                                 <div className="icon-wrapper">
-                                    <i className="fa fa-fw fa-archive text-secondary" />
-                                 </div>
-                                 <div className="media-body font-size-sm pr-2">
-                                    <span>Archive</span><span className="choices-undo"> ← undo</span>
-                                 </div>
-                              </button>
-                           </li>
-                     }
+                     <li className={clsx(hideArchive && "d-none")}>
+                        <button className="btn-in-action" onClick={this.onClickArchive}>
+                           <div className="icon-wrapper">
+                              <i className="fa fa-fw fa-archive text-secondary" />
+                           </div>
+                           <div className="media-body font-size-sm pr-2">
+                              <span>Archive</span>
+                           </div>
+                        </button>
+                     </li>
+                     <li className={clsx(hideUndoArchive && "d-none")}>
+                        <button className="btn-in-action" onClick={this.onClickUnArchive}>
+                           <div className="icon-wrapper">
+                              <i className="fa fa-fw fa-archive text-secondary" />
+                           </div>
+                           <div className="media-body font-size-sm pr-2">
+                              <span>Archive</span><span className="choices-undo"> ← undo</span>
+                           </div>
+                        </button>
+                     </li>
                      <li>
                         <button className="btn-in-action" onClick={this.onClickDeleteAndMerge}>
                            <div className="icon-wrapper">
@@ -109,7 +118,7 @@ export default class ViewContact extends Component {
                </NavCrumpRight>
             </NavCrump>
 
-            <ConfirmContactMergeBanner contact={this.state.contact} />
+            <ConfirmContactMergeBanner contact={contact} />
 
             <div className="content">
                <div className="block block-rounded">
@@ -137,7 +146,7 @@ export default class ViewContact extends Component {
                                        }
                                     }}>View quotes</Link>
                                  </div>
-                                 <div className="form-group">
+                                 <div className={clsx("form-group", contact.email ? "" : "d-none")}>
                                     <span className="text-gray fa-xs text-uppercase">Email</span>
                                     <a className="d-block" href={`mailto:${contact.email}`}>{contact.email}</a>
                                  </div>

@@ -4,12 +4,11 @@ import { alterTypeVariableStr } from '../../../util';
 const deriveAddressStr = (item) => {
    let content = "";
    const { street, stateOrRegion, city, postCode, country } = item;
-   if (typeof street !== "undefined" && street !== "") content += street;
-   if (typeof stateOrRegion !== "undefined" && stateOrRegion !== "") content += content ? ", " : "" + stateOrRegion;
-   if (typeof city !== "undefined" && city !== "") content += content ? ", " : "" + city;
-   if (typeof postCode !== "undefined" && postCode !== "") content += content ? " " : "" + postCode;
-   if (typeof country !== "undefined" && country !== "") content += content ? ", " : "" + country;
-
+   if (street) content += street;
+   if (stateOrRegion) content += (content ? `, ${stateOrRegion}` : stateOrRegion);
+   if (city) content += (content ? `, ${city}` : city);
+   if (postCode) content += (content ? ` ${postCode}` : postCode);
+   if (country) content += (content ? `, ${country}` : country);
    return content;
 }
 

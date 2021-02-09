@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom';
 import { formatDateTime } from '../../../util';
@@ -43,20 +44,29 @@ class ContactActivities extends Component {
       }
    }
    render() {
+      console.log(" ddddddddddddddddddddd ", this.props.contact)
+      const { latestActivity } = this.props.contact;
       return (
          <div className="row no-gutters mb-1">
             <div className="w-100 font-size-sm mb-1">
                <i className="far fa-xs fa-clock mr-1" />Recent Activity
-               <button className={`btn btn-rounded btn-outline-info fa-xs px-2 py-0 ml-2 ${this.state.showActivity ? "" : "d-none"}`} onClick={() => this.setState({ showActivity: false })}>Hide</button>
+                        <button className={clsx("btn btn-rounded btn-outline-info fa-xs px-2 py-0 ml-2", this.state.showActivity ? "" : "isHidden")} onClick={() => this.setState({ showActivity: false })}>Hide</button>
             </div>
-            <div className={`w-100 mb-1 ${this.state.showActivity ? "d-none" : ""}`}>
-               <span className="w-100 text-gray font-size-sm mb-1">Edited by A Devom  –  September 21, 2020 at 11:26AM</span>
+            <div className={clsx("w-100 mb-1", this.state.showActivity ? "isHidden" : "")}>
+               {
+                  this.props.contact.category === "person" && latestActivity &&
+                  <span className="w-100 text-gray font-size-sm mb-1">{personActivityContent(latestActivity)}  –  {formatDateTime(latestActivity.at)}</span>
+               }
+               {
+                  this.props.contact.category === "company" && latestActivity &&
+                  <span className="w-100 text-gray font-size-sm mb-1">{companyActivityContent(latestActivity)}  –  {formatDateTime(latestActivity.at)}</span>
+               }
                <button className="btn btn-rounded btn-outline-info fa-xs px-2 py-0 ml-2" onClick={() => this.setState({ showActivity: true })}>All Activity</button>
             </div>
-            <div className={`w-100 mt-2 ${this.state.showActivity ? "" : "d-none"}`}>
+            <div className={clsx("w-100 mt-2", this.state.showActivity ? "" : "isHidden")}>
                {
                   this.state.isLoading ?
-                     <div className="spinner-border spinner-border-sm text-secondary" role="status">
+                     <div className="spinner-border spinner-border-sm text-gray-light" role="status">
                         <span className="sr-only">Loading...</span>
                      </div>
                      :
