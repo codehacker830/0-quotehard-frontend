@@ -50,19 +50,21 @@ class NewQuoteBtn extends Component {
                     <div style={{ position: "relative", width: "fit-content" }} ref={this.dropdownContainer}>
                         <button className="btn btn-success"
                             onClick={() => {
-                                if (this.state.templates.length === 0) {
-                                    this.props.history.push({
-                                        pathname: QUOTE_GET_PATH,
-                                        state: {
-                                            from: this.props.location.pathname
-                                        }
-                                    });
-                                } else this.setState({ dropdownOpen: !this.state.dropdownOpen })
+                                this.setState({ dropdownOpen: !this.state.dropdownOpen });
+                                // if (this.state.templates.length === 0) {
+                                //     this.props.history.push({
+                                //         pathname: QUOTE_GET_PATH,
+                                //         state: {
+                                //             from: this.props.location.pathname
+                                //         }
+                                //     });
+                                // } else this.setState({ dropdownOpen: !this.state.dropdownOpen });
                             }}>
                             <span>New Quote</span>
+                            <i className={`fa fa-fw fa-angle-down ml-1 `} />
                             {
-                                this.state.templates.length !== 0 &&
-                                <i className={`fa fa-fw fa-angle-down ml-1 `} />
+                                // this.state.templates.length !== 0 &&
+                                // <i className={`fa fa-fw fa-angle-down ml-1 `} />
                             }
                         </button>
                         <div className={`dropdown-menu dropdown-menu-left p-0 border ${this.state.dropdownOpen ? "show" : ""}`}>
@@ -72,10 +74,6 @@ class NewQuoteBtn extends Component {
                                         if (template._id === this.state.defaultTemplateId) return (
                                             <React.Fragment key={index}>
                                                 <li key={index}>
-                                                    {/* <Link to={`/app/quote/get/from-template/${template._id}`} className="btn-in-action">
-                                                        <span className="icon-wrapper"><i className="fa fa-fw fa-star" /></span>&nbsp;
-                                                        <span>{template.title}</span>
-                                                    </Link> */}
                                                     <button className="btn-in-action" onClick={() => this.props.history.push(`/app/quote/get/from-template/${template._id}`)}>
                                                         <div className="icon-wrapper">
                                                             <i className="fa fa-fw fa-star" />
@@ -89,18 +87,20 @@ class NewQuoteBtn extends Component {
                                             </React.Fragment>
                                         );
                                         else return (
-                                            <li key={index}>
-                                                <button className="btn-in-action" onClick={() => this.props.history.push(`/app/quote/get/from-template/${template._id}`)}>
-                                                    <div className="icon-wrapper" />
-                                                    <div className="media-body font-size-sm pr-2">
-                                                        <span>{template.title}</span>
-                                                    </div>
-                                                </button>
-                                            </li>
+                                            <React.Fragment key={index}>
+                                                <li key={index}>
+                                                    <button className="btn-in-action" onClick={() => this.props.history.push(`/app/quote/get/from-template/${template._id}`)}>
+                                                        <div className="icon-wrapper" />
+                                                        <div className="media-body font-size-sm pr-2">
+                                                            <span>{template.title}</span>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                                <li className="choices-break" />
+                                            </React.Fragment>
                                         );
                                     })
                                 }
-                                <li className="choices-break" />
                                 <li>
                                     <button className="btn-in-action" onClick={() => this.props.history.push({
                                         pathname: QUOTE_GET_PATH,
@@ -110,9 +110,18 @@ class NewQuoteBtn extends Component {
                                     })}>
                                         <div className="icon-wrapper" />
                                         <div className="media-body font-size-sm pr-2">
-                                            <span>New Quote, without Template</span>
+                                            <span>New Quote with No Template</span>
                                         </div>
                                     </button>
+                                </li>
+                                <li className="choices-break" />
+                                <li>
+                                    <a className="btn-in-action" target="_blank" href="https://quotehard.com/examples">
+                                        <div className="icon-wrapper" />
+                                        <div className="media-body font-size-sm pr-2">
+                                            <span>New Quote with Premade Template</span>
+                                        </div>
+                                    </a>
                                 </li>
                             </ul>
                         </div>

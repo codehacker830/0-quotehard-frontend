@@ -96,7 +96,7 @@ class QuoteControlPanel extends Component {
          <div className="block block-rounded">
             <div className="block-content">
                <div className="row p-3">
-                  <div className="col-md-7 col-sm-12">
+                  <div className="col-md-8 col-sm-12">
                      <div className="form-group px-1">
                         <div className="input-group">
                            <input type="text" className="form-control" placeholder="Search by Quote Title, Number or Contact..."
@@ -162,15 +162,15 @@ class QuoteControlPanel extends Component {
                         </div>
                      </div>
                   </div>
-
-                  <div className="col-md-5 col-sm-12">
+                  
+                  {/* <div className="col-md-4 col-sm-12">
                      <div className="row no-gutters mb-2 px-1">
                         <button className="btn btn-success ml-auto" onClick={() => this.props.history.push({
                            pathname: QUOTE_GET_PATH,
                            state: { from: this.props.location.pathname }
                         })}>New Quote</button>
                      </div>
-                  </div>
+                  </div> */}
                </div>
             </div>
          </div >
