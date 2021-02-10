@@ -20,9 +20,9 @@ class Comment extends Component {
                         <strong className="util-no-wrap">{authorFullName}</strong>&nbsp;
                         <span className="lighter">
                            <span className="util-no-wrap">
-                              <span className="dt-time">{formatDateTime(discussion.comment.createdAt)}</span>
-                              <span className={clsx("dt-time", discussion.comment.createdAt === discussion.comment.updatedAt ? "d-none" : "")}> – modified {formatDateTime(discussion.comment.updatedAt)}</span>
-                           </span>&nbsp;
+                              <span className="dt-time">{formatDateTime(discussion.comment.createdAt)}</span>&nbsp;
+                           </span>
+                           <span className={clsx("dt-time", discussion.comment.createdAt === discussion.comment.updatedAt ? "d-none" : "")}>– modified {formatDateTime(discussion.comment.updatedAt)}</span>&nbsp;
                            <span className="discuss-edit-a">Edit</span>&nbsp;
                         </span>
                      </div>

@@ -19,9 +19,10 @@ class PrivateNote extends Component {
                             <strong className="util-no-wrap">{discussion.privateNote.author.firstName + " " + discussion.privateNote.author.lastName}</strong>&nbsp;
                             <span className="lighter">
                                 <span className="util-no-wrap">
-                                    <span className="dt-time">{formatDateTime(discussion.privateNote.createdAt)}</span></span>&nbsp;
-                                    <span className={clsx("dt-time", discussion.privateNote.createdAt === discussion.privateNote.updatedAt ? "d-none" : "")}> – modified {formatDateTime(discussion.privateNote.updatedAt)}</span>
-                                    <span className="discuss-edit-a">Edit</span>&nbsp;
+                                    <span className="dt-time">{formatDateTime(discussion.privateNote.createdAt)}</span>&nbsp;
+                                </span>
+                                <span className={clsx("dt-time", discussion.privateNote.createdAt === discussion.privateNote.updatedAt ? "d-none" : "")}>– modified {formatDateTime(discussion.privateNote.updatedAt)}</span>
+                                <span className="discuss-edit-a">Edit</span>&nbsp;
                             </span>
                         </div>
                         <div className="clear" />

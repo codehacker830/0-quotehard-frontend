@@ -125,14 +125,14 @@ class QuestionAndAnswer extends Component {
                             </div>
                             <div className="bubble-right">
                                 <div className="discuss-title">
-                                    <strong className="util-no-wrap">{discussion.questionAndAnswer.answer.author.firstName + " " +
-                                        discussion.questionAndAnswer.answer.author.lastName}&nbsp;</strong>
+                                    <strong className="util-no-wrap">{discussion.questionAndAnswer.answer.author.firstName + " " + discussion.questionAndAnswer.answer.author.lastName}</strong>&nbsp;
                                     <span className="lighter">
                                         <span className="util-no-wrap">
-                                            <span className="dt-time">{formatDateTime(discussion.questionAndAnswer.answer.createdAt)}</span></span>&nbsp;
-                                            <span className={clsx("dt-time", discussion.questionAndAnswer.answer.createdAt === discussion.questionAndAnswer.answer.updatedAt ? "d-none" : "")}> – modified {formatDateTime(discussion.questionAndAnswer.answer.updatedAt)}</span>
-                                            <span className="discuss-edit-a">Edit</span>&nbsp;
+                                            <span className="dt-time">{formatDateTime(discussion.questionAndAnswer.answer.createdAt)}</span>&nbsp;
                                         </span>
+                                        <span className={clsx("dt-time", discussion.questionAndAnswer.answer.createdAt === discussion.questionAndAnswer.answer.updatedAt ? "d-none" : "")}>– modified {formatDateTime(discussion.questionAndAnswer.answer.updatedAt)}</span>&nbsp;
+                                        <span className="discuss-edit-a">Edit</span>&nbsp;
+                                    </span>
                                 </div>
                                 <div className="clear" />
                                 <div className="discuss-message">
