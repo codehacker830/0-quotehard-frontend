@@ -17,6 +17,7 @@ import NavCrumpLeft from '../../../components/NavCrump/NavCrumpLeft';
 import NavCrumpRight from '../../../components/NavCrump/NavCrumpRight';
 import ConfirmContactMergeBanner from './ConfirmContactMergeBanner';
 import ContactActivities from './ContactActivities';
+import qs from 'qs';
 import clsx from 'clsx';
 
 export default class ViewContact extends Component {
@@ -69,6 +70,16 @@ export default class ViewContact extends Component {
       this.props.history.push({
          pathname: '/app/c/contacts',
          search: `?category=${this.state.contact.category}&merge_loser=${contactId}`
+      });
+   }
+   onClickSearch = () => {
+      const { contact } = this.state;
+      const queryObj = { search: `${contact.category}:${contact._id}` };
+      const query = qs.stringify(queryObj);
+
+      this.props.history.push({
+         pathname: "/app/quotes",
+         search: query
       });
    }
    render() {
@@ -138,13 +149,15 @@ export default class ViewContact extends Component {
                                  <PersonCompany contact={contact} />
                                  <div className="form-group">
                                     <span className="text-gray fa-xs text-uppercase">Quotes</span>
-                                    <Link className="d-block" to={{
-                                       pathname: "/app/quotes",
-                                       state: {
-                                          category: contact.category,
-                                          id: contact._id
-                                       }
-                                    }}>View quotes</Link>
+                                    <span className="d-block" style={{
+                                       transition: "color .12s ease- out",
+                                       color: "#0665d0",
+                                       textDecoration: "none",
+                                       backgroundColor: "transparent",
+                                       cursor: "pointer",
+                                    }}
+                                       onClick={this.onClickSearch}
+                                    >View quotes</span>
                                  </div>
                                  <div className={clsx("form-group", contact.email ? "" : "d-none")}>
                                     <span className="text-gray fa-xs text-uppercase">Email</span>

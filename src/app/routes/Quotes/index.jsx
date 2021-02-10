@@ -43,6 +43,7 @@ export default class Quotes extends Component {
    }
    componentDidMount() {
       if (this.search) {
+         console.log(" this.search ====> ", this.search)
          this.setState({ isLoading: true });
          axios.get(`/quotes/search/${this.search}`).then(({ data }) => {
             console.log(" aa quotes === ", data)
