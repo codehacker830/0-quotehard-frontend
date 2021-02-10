@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { checkIfTeamMember, formatDateTime } from '../../../../util';
@@ -14,11 +15,13 @@ class PrivateNote extends Component {
                         style={{ backgroundImage: `url(${discussion.privateNote.author.image || "https://static.productionready.io/images/smiley-cyrus.jpg"})` }}> </div>
                     <div className="bubble-right">
                         <div className="discuss-title">
-                            <span className="label label-green">Private</span>&nbsp; <strong className="util-no-wrap">{discussion.privateNote.author.firstName + " " + discussion.privateNote.author.lastName}&nbsp;</strong>
+                            <span className="label label-green">Private</span>&nbsp;
+                            <strong className="util-no-wrap">{discussion.privateNote.author.firstName + " " + discussion.privateNote.author.lastName}</strong>&nbsp;
                             <span className="lighter">
                                 <span className="util-no-wrap">
-                                    <span className="dt-time">{formatDateTime(discussion.privateNote.updatedAt)}</span></span>&nbsp;
-                                {/* <a className="discuss-edit-a">Edit</a>&nbsp; */}
+                                    <span className="dt-time">{formatDateTime(discussion.privateNote.createdAt)}</span></span>&nbsp;
+                                    <span className={clsx("dt-time", discussion.privateNote.createdAt === discussion.privateNote.updatedAt ? "d-none" : "")}> – modified {formatDateTime(discussion.privateNote.updatedAt)}</span>
+                                    <span className="discuss-edit-a">Edit</span>&nbsp;
                             </span>
                         </div>
                         <div className="clear" />

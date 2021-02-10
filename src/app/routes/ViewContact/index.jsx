@@ -149,13 +149,7 @@ export default class ViewContact extends Component {
                                  <PersonCompany contact={contact} />
                                  <div className="form-group">
                                     <span className="text-gray fa-xs text-uppercase">Quotes</span>
-                                    <span className="d-block" style={{
-                                       transition: "color .12s ease- out",
-                                       color: "#0665d0",
-                                       textDecoration: "none",
-                                       backgroundColor: "transparent",
-                                       cursor: "pointer",
-                                    }}
+                                    <span className="d-block a-link"
                                        onClick={this.onClickSearch}
                                     >View quotes</span>
                                  </div>

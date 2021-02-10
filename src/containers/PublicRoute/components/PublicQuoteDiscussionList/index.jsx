@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -12,10 +13,7 @@ class PublicQuoteDiscussionList extends Component {
         const isAbleToShowHeading = discussions.find(discussion => discussion.category !== "privateNote");
         if (discussions.length) return (
             <React.Fragment>
-                {
-                    !!isAbleToShowHeading &&
-                    <h3 className="quote-discuss-h3">Questions &amp; Answers</h3>
-                }
+                <h3 className={clsx("quote-discuss-h3", isAbleToShowHeading ? "" : "d-none")}>Questions &amp; Answers</h3>
                 {
                     discussions.map((discussion, index) => {
                         if (discussion.category === "privateNote" && !isPreviewMode) return <PrivateNote key={index} discussion={discussion} />

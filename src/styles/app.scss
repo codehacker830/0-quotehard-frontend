@@ -1097,3 +1097,19 @@ p {
 label {
    font-weight: 400;
 }
+
+.a-link {
+   transition: color .12s ease-out;
+   color: #0665d0;
+   text-decoration: none;
+   background-color: transparent;
+   cursor: pointer;
+}
+
+.discuss-edit-a {
+   transition: color .12s ease-out;
+   color: #2176c7;
+   text-decoration: none;
+   background-color: transparent;
+   cursor: pointer;
+}

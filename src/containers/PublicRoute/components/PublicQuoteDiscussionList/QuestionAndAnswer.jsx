@@ -103,8 +103,7 @@ class QuestionAndAnswer extends Component {
                                 </strong>
                                 <span className="lighter">
                                     <span className="util-no-wrap">
-                                        <span
-                                            className="dt-time">{formatDateTime(discussion.questionAndAnswer.question.updatedAt)}</span></span>&nbsp;
+                                        <span className="dt-time">{formatDateTime(discussion.questionAndAnswer.question.createdAt)}</span></span>&nbsp;
                                 </span>
                             </div>
                             <div className="clear" />
@@ -115,7 +114,7 @@ class QuestionAndAnswer extends Component {
                         </div>
                     </div>
                 </div>
-
+                { discussion.questionAndAnswer.answer.status === "dismissed" && null}
                 {
                     discussion.questionAndAnswer.answer.status === "answered" &&
                     <div className="discuss-row">
@@ -129,9 +128,10 @@ class QuestionAndAnswer extends Component {
                                         discussion.questionAndAnswer.answer.author.lastName}&nbsp;</strong>
                                     <span className="lighter">
                                         <span className="util-no-wrap">
-                                            <span className="dt-time">{formatDateTime(discussion.questionAndAnswer.answer.updatedAt)}</span></span>&nbsp;
-                                    {/* <a className="discuss-edit-a">Edit</a>&nbsp; */}
-                                    </span>
+                                            <span className="dt-time">{formatDateTime(discussion.questionAndAnswer.answer.createdAt)}</span></span>&nbsp;
+                                            <span className={clsx("dt-time", discussion.questionAndAnswer.answer.createdAt === discussion.questionAndAnswer.answer.updatedAt ? "d-none" : "")}> – modified {formatDateTime(discussion.questionAndAnswer.answer.updatedAt)}</span>
+                                            <span className="discuss-edit-a">Edit</span>&nbsp;
+                                        </span>
                                 </div>
                                 <div className="clear" />
                                 <div className="discuss-message">
@@ -141,9 +141,6 @@ class QuestionAndAnswer extends Component {
                             </div>
                         </div>
                     </div>
-                }
-                {
-                    discussion.questionAndAnswer.answer.status === "dismissed" && null
                 }
                 {
                     discussion.questionAndAnswer.answer.status === "pending" && isAnswerAbleUser &&
