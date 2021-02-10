@@ -6,7 +6,7 @@ export default class QuoteOverview extends Component {
    render() {
       return (
          <div className="col-md-6">
-            <DashMessages />
+            {/* <DashMessages /> */}
             {/* <PieChartShow quotes={this.props.quotes} /> */}
          </div>
       );

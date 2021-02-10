@@ -17,7 +17,7 @@ class QuoteTableShow extends Component {
       return (
          <div className="col-md-6">
             {
-               quotes.length &&
+               quotes.length > 0 &&
                <div className="mb-5">
                   {/* Draft Section */}
                   <DraftSection draftQuotes={draftQuotes} />
