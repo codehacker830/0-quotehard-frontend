@@ -200,53 +200,79 @@ class PriceItemForm extends Component {
       const {
          showCostPriceMarginAlways
       } = this.props.quoteDefaultSetting;
+      const {
+         _id,
+         isOptional,
+         isOptionSelected,
+         isMultipleChoice,
+         isChoiceSelected,
+         isEditableQuantity,
+         isDiscount,
+         discount,
+         isSubscription,
+         per,
+         every,
+         period,
+         isCostPriceMargin,
+         costPrice,
+         margin,
+         itemCode,
+         productHeading,
+         longDescription,
+         files,
+         salesCategory,
+         salesTax,
+         unitPrice,
+         quantity,
+         itemTotal,
+      } = this.props.priceItem;
       return (
          <React.Fragment>
             {/* ToolWrapper */}
             <div className="row pb-1">
                <div className="col-sm-12">
                   {
-                     this.props.priceItem.isOptional &&
+                     isOptional &&
                      <div className="form-check form-check-inline toolWrapper">
                         <input type="checkbox"
                            className="form-check-input"
                            name="option-checkbox"
-                           checked={this.props.priceItem.isOptionSelected}
+                           checked={isOptionSelected}
                            onChange={() => {
                               const newItem = {
                                  category: "priceItem",
                                  priceItem: {
                                     ... this.props.priceItem,
-                                    isOptionSelected: !this.props.priceItem.isOptionSelected
+                                    isOptionSelected: !isOptionSelected
                                  }
                               };
                               this.updateItem(this.props.index, newItem);
                            }}
                         />
                         <label className="form-check-label">
-                           Option {this.props.priceItem.isOptionSelected ? "Selected" : ""}
+                           Option {isOptionSelected ? "Selected" : ""}
                         </label>
                      </div>
                   }
                   {
-                     this.props.priceItem.isMultipleChoice &&
+                     isMultipleChoice &&
                      <div className="form-check toolWrapper">
                         <input type="radio"
                            className="form-check-input"
-                           name={`multipleChoiceGroup-${this.props.priceItem.title}`}
-                           checked={this.props.priceItem.isChoiceSelected}
+                           name={`multipleChoiceGroup-${productHeading}`}
+                           checked={isChoiceSelected}
                            onChange={() => {
                               const newItem = {
                                  category: "priceItem",
                                  priceItem: {
                                     ... this.props.priceItem,
-                                    isChoiceSelected: !this.props.priceItem.isChoiceSelected
+                                    isChoiceSelected: !isChoiceSelected
                                  }
                               };
                               this.updateItem(this.props.index, newItem);
                            }}
                         />
-                        <label className="form-check-label">1 of 1 {this.props.priceItem.isChoiceSelected ? "Selected" : ""}</label>
+                        <label className="form-check-label">1 of 1 {isChoiceSelected ? "Selected" : ""}</label>
                      </div>
                   }
                   <div className="row no-gutters w-100 justify-content-center">
@@ -280,14 +306,14 @@ class PriceItemForm extends Component {
                               <input className="form-check-input"
                                  type="checkbox"
                                  ref={this.optionalItemRef}
-                                 checked={this.props.priceItem.isOptional}
+                                 checked={isOptional}
                                  onChange={() => {
-                                    if (this.props.priceItem.isMultipleChoice === true && this.props.priceItem.isOptional === false) this.multipleChoiceRef.current.click();
+                                    if (isMultipleChoice === true && isOptional === false) this.multipleChoiceRef.current.click();
                                     const newItem = {
                                        category: "priceItem",
                                        priceItem: {
                                           ... this.props.priceItem,
-                                          isOptional: !this.props.priceItem.isOptional,
+                                          isOptional: !isOptional,
                                           isMultipleChoice: false
                                        }
                                     };
@@ -300,14 +326,14 @@ class PriceItemForm extends Component {
                               <input className="form-check-input"
                                  type="checkbox"
                                  ref={this.multipleChoiceRef}
-                                 checked={this.props.priceItem.isMultipleChoice}
+                                 checked={isMultipleChoice}
                                  onChange={() => {
-                                    if (this.props.priceItem.isOptional === true && this.props.priceItem.isMultipleChoice === false) this.optionalItemRef.current.click();
+                                    if (isOptional === true && isMultipleChoice === false) this.optionalItemRef.current.click();
                                     const newItem = {
                                        category: "priceItem",
                                        priceItem: {
                                           ... this.props.priceItem,
-                                          isMultipleChoice: !this.props.priceItem.isMultipleChoice,
+                                          isMultipleChoice: !isMultipleChoice,
                                           isOptional: false
                                        }
                                     };
@@ -320,11 +346,11 @@ class PriceItemForm extends Component {
                            <div className="form-check pb-1">
                               <input className="form-check-input"
                                  type="checkbox"
-                                 checked={this.props.priceItem.isEditableQuantity}
+                                 checked={isEditableQuantity}
                                  onChange={() => {
                                     const newItem = {
                                        category: "priceItem",
-                                       priceItem: { ... this.props.priceItem, isEditableQuantity: !this.props.priceItem.isEditableQuantity }
+                                       priceItem: { ... this.props.priceItem, isEditableQuantity: !isEditableQuantity }
                                     };
                                     this.updateItem(this.props.index, newItem);
                                  }}
@@ -334,11 +360,11 @@ class PriceItemForm extends Component {
                            <div className="form-check pb-1">
                               <input className="form-check-input"
                                  type="checkbox"
-                                 checked={this.props.priceItem.isDiscount}
+                                 checked={isDiscount}
                                  onChange={() => {
                                     const newItem = {
                                        category: "priceItem",
-                                       priceItem: { ... this.props.priceItem, isDiscount: !this.props.priceItem.isDiscount }
+                                       priceItem: { ... this.props.priceItem, isDiscount: !isDiscount }
                                     };
                                     this.updateItem(this.props.index, newItem);
                                  }}
@@ -348,11 +374,11 @@ class PriceItemForm extends Component {
                            <div className="form-check pb-1">
                               <input className="form-check-input"
                                  type="checkbox"
-                                 checked={this.props.priceItem.isSubscription}
+                                 checked={isSubscription}
                                  onChange={() => {
                                     const newItem = {
                                        category: "priceItem",
-                                       priceItem: { ... this.props.priceItem, isSubscription: !this.props.priceItem.isSubscription }
+                                       priceItem: { ... this.props.priceItem, isSubscription: !isSubscription }
                                     };
                                     this.updateItem(this.props.index, newItem);
                                  }}
@@ -362,11 +388,11 @@ class PriceItemForm extends Component {
                            <div className={`form-check pb-1 ${showCostPriceMarginAlways ? "d-none" : ""}`}>
                               <input className="form-check-input"
                                  type="checkbox"
-                                 checked={this.props.priceItem.isCostPriceMargin}
+                                 checked={isCostPriceMargin}
                                  onChange={() => {
                                     const newItem = {
                                        category: "priceItem",
-                                       priceItem: { ... this.props.priceItem, isCostPriceMargin: !this.props.priceItem.isCostPriceMargin }
+                                       priceItem: { ... this.props.priceItem, isCostPriceMargin: !isCostPriceMargin }
                                     };
                                     this.updateItem(this.props.index, newItem);
                                  }}
@@ -443,7 +469,7 @@ class PriceItemForm extends Component {
                      {
                         isViewOnly &&
                         <button className="btn btn-light mr-1" onClick={() => this.props.history.push({
-                           pathname: `/app/content/item-price/view/${this.props.priceItem._id}`,
+                           pathname: `/app/content/item-price/view/${_id}`,
                            state: {
                               from: this.props.location.pathname
                            }
@@ -463,7 +489,7 @@ class PriceItemForm extends Component {
                      <input className="form-control border-0 rounded-0 p-2 mb-1"
                         disabled={isViewOnly}
                         placeholder="Item Code / ID (optional)"
-                        value={this.props.priceItem.itemCode}
+                        value={itemCode}
                         onChange={(ev) => {
                            const newItem = {
                               category: "priceItem",
@@ -475,7 +501,7 @@ class PriceItemForm extends Component {
                      <TextareaAutosize className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2"
                         rows={1} placeholder="Product or Service Heading"
                         disabled={isViewOnly}
-                        value={this.props.priceItem.productHeading}
+                        value={productHeading}
                         onChange={(ev) => {
                            const newItem = {
                               category: "priceItem",
@@ -487,7 +513,7 @@ class PriceItemForm extends Component {
                      </TextareaAutosize>
                      <TextareaAutosize className="form-control border-0 rounded-0 mt-1 p-2" rows={1} placeholder="Long description"
                         disabled={isViewOnly}
-                        value={this.props.priceItem.longDescription}
+                        value={longDescription}
                         onChange={(ev) => {
                            const newItem = {
                               category: "priceItem",
@@ -501,7 +527,7 @@ class PriceItemForm extends Component {
                      {/* Images preview section */}
                      <div className={`row no-gutters ${isViewOnly ? "bg-disabled" : ""}`}>
                         {this.state.uploading && <div className="p-2 text-success font-w700">Uploading...</div>}
-                        {(this.props.priceItem.files || []).map((url, index) => (
+                        {(files || []).map((url, index) => (
                            <div className="p-1" key={index}>
                               <img src={url} className="mr-2 image-preview-size" alt="..." />
                               {
@@ -521,7 +547,7 @@ class PriceItemForm extends Component {
                      <div className="col-6 pr-0">
                         <select className="custom-select rounded-0"
                            disabled={isViewOnly}
-                           value={this.props.priceItem.salesCategory}
+                           value={salesCategory}
                            onChange={(ev) => {
                               const newItem = {
                                  category: "priceItem",
@@ -538,7 +564,7 @@ class PriceItemForm extends Component {
                      <div className="col-6 pl-1">
                         <select className="custom-select rounded-0"
                            disabled={isViewOnly}
-                           value={this.props.priceItem.salesTax}
+                           value={salesTax}
                            onChange={(ev) => {
                               const newItem = {
                                  category: "priceItem",
@@ -552,7 +578,7 @@ class PriceItemForm extends Component {
                         </select>
                      </div>
                   </div>
-                  <div className={`row pb-1 ${this.props.priceItem.isDiscount ? "" : "d-none"}`}>
+                  <div className={`row pb-1 ${isDiscount ? "" : "d-none"}`}>
                      {/* <div className={`row pb-1`}> */}
                      <div className="col-12">
                         <div className="bg-light-gray border p-1">
@@ -562,7 +588,7 @@ class PriceItemForm extends Component {
                                     type="number"
                                     className="form-control rounded-0"
                                     disabled={isViewOnly}
-                                    value={this.props.priceItem.discount == 0 ? "" : this.props.priceItem.discount}
+                                    value={discount == 0 ? "" : discount}
                                     onChange={(ev) => {
                                        const discount = ev.target.value === "" ? 0 : ev.target.value;
                                        const newItem = {
@@ -570,7 +596,7 @@ class PriceItemForm extends Component {
                                           priceItem: {
                                              ... this.props.priceItem,
                                              discount: discount,
-                                             itemTotal: this.props.priceItem.itemTotal * (100 - discount) / 100
+                                             itemTotal: itemTotal * (100 - discount) / 100
                                           }
                                        };
                                        this.updateItem(this.props.index, newItem);
@@ -583,7 +609,7 @@ class PriceItemForm extends Component {
                      </div>
                   </div>
 
-                  <div className={`row pb-1 ${this.props.priceItem.isSubscription ? "" : "d-none"}`}>
+                  <div className={`row pb-1 ${isSubscription ? "" : "d-none"}`}>
                      {/* <div className={`row pb-1`}> */}
                      <div className="col-12">
                         <div className="bg-light-gray border p-1">
@@ -592,7 +618,7 @@ class PriceItemForm extends Component {
                               <input type="number"
                                  className="form-control rounded-0 mr-1"
                                  disabled={isViewOnly}
-                                 value={this.props.priceItem.per == 0 ? "" : this.props.priceItem.per}
+                                 value={per == 0 ? "" : per}
                                  onChange={(ev) => {
                                     const per = ev.target.value == 0 ? 0 : ev.target.value;
                                     const newItem = {
@@ -604,7 +630,7 @@ class PriceItemForm extends Component {
                               />
                               <select className="form-control rounded-0"
                                  disabled={isViewOnly}
-                                 value={this.props.priceItem.every}
+                                 value={every}
                                  onChange={(ev) => {
                                     const newItem = {
                                        category: "priceItem",
@@ -621,7 +647,7 @@ class PriceItemForm extends Component {
                                  className="form-control rounded-0"
                                  placeholder="Optional"
                                  disabled={isViewOnly}
-                                 value={this.props.priceItem.period == 0 ? "" : this.props.priceItem.period}
+                                 value={period == 0 ? "" : period}
                                  onChange={(ev) => {
                                     const period = ev.target.value == 0 ? 0 : ev.target.value;
                                     const newItem = {
@@ -631,13 +657,13 @@ class PriceItemForm extends Component {
                                     this.updateItem(this.props.index, newItem);
                                  }}
                               />
-                              <span className="text-secondary text-uppercase mx-2 my-auto">{this.props.priceItem.every}</span>
+                              <span className="text-secondary text-uppercase mx-2 my-auto">{every}</span>
                            </div>
                         </div>
                      </div>
                   </div>
 
-                  <div className={`row pb-1 ${this.props.priceItem.isCostPriceMargin || showCostPriceMarginAlways ? "" : "d-none"}`}>
+                  <div className={`row pb-1 ${isCostPriceMargin || showCostPriceMarginAlways ? "" : "d-none"}`}>
                      <div className="col-12">
                         <div className="bg-light-gray border p-1">
                            <div className="row">
@@ -646,7 +672,7 @@ class PriceItemForm extends Component {
                                     type="number"
                                     placeholder="-- Cost Price --"
                                     disabled={isViewOnly}
-                                    value={parseFloat(this.props.priceItem.costPrice) === 0 ? "" : this.props.priceItem.costPrice}
+                                    value={parseFloat(costPrice) === 0 ? "" : costPrice}
                                     onChange={(ev) => {
                                        const costPrice = parseFloat(ev.target.value);
                                        const newItem = {
@@ -654,17 +680,17 @@ class PriceItemForm extends Component {
                                           priceItem: {
                                              ... this.props.priceItem,
                                              costPrice: costPrice,
-                                             unitPrice: costPrice === 0 ? this.props.priceItem.unitPrice : costPrice / (100 - this.props.priceItem.margin) * 100,
+                                             unitPrice: costPrice === 0 ? unitPrice : costPrice / (100 - margin) * 100,
                                              itemTotal: costPrice === 0 ?
-                                                this.props.priceItem.unitPrice * this.props.priceItem.quantity * (100 - this.props.priceItem.discount) / 100
-                                                : costPrice / (100 - this.props.priceItem.margin) * this.props.priceItem.quantity * (100 - this.props.priceItem.discount)
+                                                unitPrice * quantity * (100 - discount) / 100
+                                                : costPrice / (100 - margin) * quantity * (100 - discount)
                                           }
                                        };
                                        this.updateItem(this.props.index, newItem);
                                     }}
                                  />
                               </div>
-                              <span className={`${this.props.priceItem.margin < 0 ? "text-danger" : "text-success"} mx-2 my-auto`}>{toFixedFloat(this.props.priceItem.margin)}% MARGIN</span>
+                              <span className={`${margin < 0 ? "text-danger" : "text-success"} mx-2 my-auto`}>{toFixedFloat(margin)}% MARGIN</span>
                            </div>
                         </div>
                      </div>
@@ -676,7 +702,7 @@ class PriceItemForm extends Component {
                            type="number"
                            id="unit" className="form-control rounded-0"
                            disabled={isViewOnly}
-                           value={this.props.priceItem.unitPrice == 0 ? "" : this.props.priceItem.unitPrice}
+                           value={unitPrice == 0 ? "" : unitPrice}
                            onChange={(ev) => {
                               const unitPrice = parseFloat(ev.target.value);
                               const newItem = {
@@ -685,9 +711,9 @@ class PriceItemForm extends Component {
                                     ... this.props.priceItem,
                                     unitPrice: unitPrice,
                                     margin: unitPrice === 0 ? 0
-                                       : parseFloat(this.props.priceItem.costPrice) === 0 ? this.props.priceItem.margin
-                                          : (unitPrice - this.props.priceItem.costPrice) / unitPrice * 100,
-                                    itemTotal: unitPrice * this.props.priceItem.quantity * (100 - this.props.priceItem.discount) / 100
+                                       : parseFloat(costPrice) === 0 ? margin
+                                          : (unitPrice - costPrice) / unitPrice * 100,
+                                    itemTotal: unitPrice * quantity * (100 - discount) / 100
                                  }
                               };
                               this.updateItem(this.props.index, newItem);
@@ -696,35 +722,35 @@ class PriceItemForm extends Component {
                         <label htmlFor="unit" className="text-gray fa-xs text-uppercase">Unit Price</label>
                      </div>
                      <div className="col-4 pl-1 pr-0">
-                        <input type="number" id="quantity" className={`form-control rounded-0 ${this.props.priceItem.isEditableQuantity ? "border-primary" : ""}`}
+                        <input type="number" id="quantity" className={`form-control rounded-0 ${isEditableQuantity ? "border-primary" : ""}`}
                            disabled={isViewOnly}
-                           value={this.props.priceItem.quantity == 0 ? "" : this.props.priceItem.quantity}
+                           value={quantity == 0 ? "" : quantity}
                            onChange={(ev) => {
                               const quantity = ev.target.value === "" ? 0 : ev.target.value;
                               console.log("quantity ", quantity)
-                              console.log("this.props.priceItem.unitPrice ", this.props.priceItem.unitPrice)
-                              console.log("this.props.priceItem.discount ", this.props.priceItem.discount)
-                              console.log("this.props.priceItem.unitPrice * quantity * (100 - this.props.priceItem.discount) / 100 ", this.props.priceItem.unitPrice * quantity * (100 - this.props.priceItem.discount) / 100)
+                              console.log("unitPrice ", unitPrice)
+                              console.log("discount ", discount)
+                              console.log("unitPrice * quantity * (100 - discount) / 100 ", unitPrice * quantity * (100 - discount) / 100)
                               const newItem = {
                                  category: "priceItem",
                                  priceItem: {
                                     ...this.props.priceItem,
                                     quantity: quantity,
-                                    itemTotal: this.props.priceItem.unitPrice * quantity * (100 - this.props.priceItem.discount) / 100
+                                    itemTotal: unitPrice * quantity * (100 - discount) / 100
                                  }
                               };
                               this.updateItem(this.props.index, newItem);
                            }}
                         />
                         <label htmlFor="quantity" className="text-gray fa-xs text-uppercase">
-                           <span className="text-primary">{this.props.priceItem.isEditableQuantity ? "Editable " : ""}</span>
+                           <span className="text-primary">{isEditableQuantity ? "Editable " : ""}</span>
                            Quantity
                         </label>
                      </div>
                      <div className="col-4 pl-1">
                         <input type="number" id="total" className="form-control rounded-0"
                            disabled={isViewOnly}
-                           value={this.props.priceItem.itemTotal == 0 ? "" : this.props.priceItem.itemTotal}
+                           value={itemTotal == 0 ? "" : itemTotal}
                            onChange={(ev) => {
                               const itemTotal = ev.target.value === "" ? 0 : ev.target.value;
                               const newItem = {
@@ -732,7 +758,7 @@ class PriceItemForm extends Component {
                                  priceItem: {
                                     ... this.props.priceItem,
                                     itemTotal: itemTotal,
-                                    unitPrice: this.props.priceItem.quantity !== "0" ? itemTotal / this.props.priceItem.quantity : this.props.priceItem.quantity
+                                    unitPrice: quantity !== "0" ? itemTotal / quantity : quantity
                                  }
                               };
                               this.updateItem(this.props.index, newItem);

@@ -194,7 +194,12 @@ class TextItemForm extends Component {
    }
    render() {
       const { isViewOnly } = this.props;
-      console.log(" Ttttttttttttttttttttt ", this.props)
+      const {
+         _id,
+         textHeading,
+         longDescription,
+         files,
+      } = this.props.textItem;
       return (
          <React.Fragment>
             {/* ToolWrapper */}
@@ -288,7 +293,7 @@ class TextItemForm extends Component {
                      {
                         isViewOnly &&
                         <button className="btn btn-light mr-1" onClick={() => this.props.history.push({
-                           pathname: `/app/content/item-text/view/${this.props.textItem._id}`,
+                           pathname: `/app/content/item-text/view/${_id}`,
                            state: {
                               from: this.props.location.pathname
                            }
@@ -308,7 +313,7 @@ class TextItemForm extends Component {
                      <TextareaAutosize className="form-control font-size-h4 font-w700 border-top-0 border-right-0 border-left-0 rounded-0 p-2"
                         rows={1} placeholder="Text Heading"
                         disabled={isViewOnly}
-                        value={this.props.textItem.textHeading}
+                        value={textHeading}
                         onChange={(ev) => {
                            const newItem = {
                               category: "textItem",
@@ -320,7 +325,7 @@ class TextItemForm extends Component {
                      </TextareaAutosize>
                      <TextareaAutosize className="form-control border-0 rounded-0 mt-1 p-2"
                         rows={1} placeholder="Long description, terms of trade or compelling sales text"
-                        value={this.props.textItem.longDescription}
+                        value={longDescription}
                         disabled={isViewOnly}
                         onChange={(ev) => {
                            const newItem = {
@@ -335,7 +340,7 @@ class TextItemForm extends Component {
                      {/* Images preview section */}
                      <div className="row m-1">
                         {this.state.uploading && <div className="p-2 text-success font-w700">Uploading...</div>}
-                        {(this.props.textItem.files || []).map((url, index) => (
+                        {(files || []).map((url, index) => (
                            <div className="p-1" key={index}>
                               <img src={url} className="mr-2 image-preview-size" alt="..." />
                               {

@@ -26,7 +26,7 @@ export default function AcceptSummary() {
             <p className="summaryWrapzFixedCost">
                 Total <CurrencyCode /> <TaxModeDesAs /> <CurrencySymbol /> <SummaryQuoteTotal />
             </p>
-            <div className="acceptBox-right no_print">
+            <div className={clsx("acceptBox-right no_print", quote.status === "accepted" ? "" : "d-none")}>
                 <a className={clsx("acceptBox-fingerLink", quote.acceptedBy ? "" : "d-none")} onClick={onClickFingerDetail}>Digital Fingerprint…</a>
                 <span className="label acceptBox-label">Accepted</span>
             </div>
