@@ -90,7 +90,6 @@ class NewQuoteBtn extends Component {
                                             <React.Fragment key={index}>
                                                 <li key={index}>
                                                     <button className="btn-in-action" onClick={() => this.props.history.push(`/app/quote/get/from-template/${template._id}`)}>
-                                                        <div className="icon-wrapper" />
                                                         <div className="media-body font-size-sm pr-2">
                                                             <span>{template.title}</span>
                                                         </div>
@@ -108,7 +107,6 @@ class NewQuoteBtn extends Component {
                                             from: this.props.location.pathname
                                         }
                                     })}>
-                                        <div className="icon-wrapper" />
                                         <div className="media-body font-size-sm pr-2">
                                             <span>New Quote with No Template</span>
                                         </div>
@@ -116,8 +114,7 @@ class NewQuoteBtn extends Component {
                                 </li>
                                 <li className="choices-break" />
                                 <li>
-                                    <a className="btn-in-action" target="_blank" href="https://quotehard.com/examples">
-                                        <div className="icon-wrapper" />
+                                    <a className="btn-in-action" style={{ padding: 7 }} target="_blank" href="https://quotehard.com/examples">
                                         <div className="media-body font-size-sm pr-2">
                                             <span>New Quote with Premade Template</span>
                                         </div>

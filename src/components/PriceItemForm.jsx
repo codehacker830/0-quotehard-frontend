@@ -701,6 +701,10 @@ class PriceItemForm extends Component {
                            value={this.props.priceItem.quantity == 0 ? "" : this.props.priceItem.quantity}
                            onChange={(ev) => {
                               const quantity = ev.target.value === "" ? 0 : ev.target.value;
+                              console.log("quantity ", quantity)
+                              console.log("this.props.priceItem.unitPrice ", this.props.priceItem.unitPrice)
+                              console.log("this.props.priceItem.discount ", this.props.priceItem.discount)
+                              console.log("this.props.priceItem.unitPrice * quantity * (100 - this.props.priceItem.discount) / 100 ", this.props.priceItem.unitPrice * quantity * (100 - this.props.priceItem.discount) / 100)
                               const newItem = {
                                  category: "priceItem",
                                  priceItem: {

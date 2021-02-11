@@ -194,6 +194,7 @@ class TextItemForm extends Component {
    }
    render() {
       const { isViewOnly } = this.props;
+      console.log(" Ttttttttttttttttttttt ", this.props)
       return (
          <React.Fragment>
             {/* ToolWrapper */}

@@ -29,3 +29,4 @@ export const CONTACT_CREATE_PATH = "/app/c/contacts/create/:category";
 export const CONTACT_EDIT_PATH = "/app/c/contacts/edit/:id";
 export const CONTACT_VIEW_PATH = "/app/c/contacts/view/:id";
 
+export const ERROR_404_PATH = "/error-404";

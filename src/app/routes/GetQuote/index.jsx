@@ -2,14 +2,7 @@ import React, { Component } from "react";
 import NavCrump from "../../../components/NavCrump";
 import { toast } from 'react-toastify';
 import axios from "../../../util/Api";
-import {
-   parseDate,
-   parseTime,
-   isValidDateTimeFormat,
-   convertStrIntoDateObj,
-   ToastErrorNotification,
-   formatDateTime,
-} from "../../../util";
+import { formatDateTime } from "../../../util";
 import AddNoteBtn from "../../../components/AddNoteBtn";
 import QuoteTotal from "../../../components/QuoteTotal";
 import { connect } from "react-redux";
@@ -19,7 +12,8 @@ import {
    QUOTE_GET_PATH,
    QUOTE_BY_ID_PATH,
    QUOTE_GET_DUPLICATE_PATH,
-   QUOTES_PATH
+   QUOTES_PATH,
+   ERROR_404_PATH
 } from "../../../constants/PathNames";
 import NavCrumpRight from "../../../components/NavCrump/NavCrumpRight";
 import {
@@ -34,7 +28,8 @@ import {
    updateQuoteSettings,
    markAsSentQuote,
    getQuoteDefaultSetting,
-   getAppearanceSetting
+   getAppearanceSetting,
+   setQuote
 } from "../../../actions";
 import QuoteSettings from "../../../components/QuoteSettings";
 import TitleSection from "./components/TitleSection";
@@ -43,6 +38,7 @@ import QuoteToPeopleList from "./components/QuoteToPeopleList";
 import NotesSection from "./components/NotesSection";
 import ItemsSection from "./components/ItemsSection";
 import _ from 'lodash';
+import qs from 'qs';
 import clsx from "clsx";
 import QuoteActivities, { quoteActivityContent } from "../../../containers/PublicRoute/components/QuoteActivities";
 
@@ -92,8 +88,8 @@ class GetQuote extends Component {
       await this.props.getQuoteDefaultSetting();
       await this.props.getAppearanceSetting();
 
-      console.log(" ddddddddddddddddddddddd ", this.props.match)
-
+      console.log(" ppppppppppppp ", this.props.match)
+      console.log(" llllllllllllll ", this.props.location)
       if (
          this.props.match.path === QUOTE_BY_ID_PATH
          || this.props.match.path === QUOTE_GET_DUPLICATE_PATH
@@ -105,6 +101,16 @@ class GetQuote extends Component {
          // Get template detials with id
          const templateId = this.props.match.params.id;
          await this.props.getContentTemplateById(templateId);
+      } else if (this.props.match.path === QUOTE_GET_PATH) {
+         const queryObj = qs.parse(this.props.location.search, { ignoreQueryPrefix: true });
+         console.log(" queryObj  ===> ", queryObj)
+         if (queryObj.example) {
+            const res = await axios.get(`/templates/example/${queryObj.example}`);
+            const { templateExample } = res.data;
+            console.log(" templateExample  == ", templateExample)
+            if (templateExample) this.props.setQuote(templateExample);
+            else this.props.history.push(ERROR_404_PATH);
+         }
       }
 
       const {
@@ -304,7 +310,6 @@ class GetQuote extends Component {
       console.log(" ^^^^^^^ GET QUOTE state ^^^^^^^^^^ ", this.state);
       console.log(" ^^^^^^^ GET QUOTE props ^^^^^^^^^^ ", this.props);
       const { location, quote } = this.props;
-      const { latestActivity } = this.props.quote;
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";
       if (location.state && location.state.from === QUOTES_PATH) linkName = "Quotes";
@@ -440,8 +445,8 @@ class GetQuote extends Component {
                      </div>
                      <div className={clsx("w-100 mb-1", this.state.showActivity ? "isHidden" : "")}>
                         {
-                           latestActivity &&
-                           <span className="w-100 text-gray font-size-sm mb-1">{quoteActivityContent(latestActivity)}  –  {formatDateTime(latestActivity.at)}</span>
+                           this.props.quote.latestActivity &&
+                           <span className="w-100 text-gray font-size-sm mb-1">{quoteActivityContent(this.props.quote.latestActivity)}  –  {formatDateTime(this.props.quote.latestActivity.at)}</span>
                         }
                         <button className="btn btn-rounded btn-outline-info fa-xs px-2 py-0 ml-2" onClick={this.onClickShowActivity}>All Activity</button>
                      </div>
@@ -476,6 +481,7 @@ const mapDispatchToProps = {
    getSalesCategories,
    getSalesTaxes,
    getQuoteDataById,
+   setQuote,
    getContentTemplateById,
    updateQuoteToPeopleList,
    getQuoteDefaultSetting,

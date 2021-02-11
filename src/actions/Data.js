@@ -21,6 +21,7 @@ import {
 } from '../constants/ActionTypes';
 import { toast } from 'react-toastify';
 import { initPriceItem, initTextItem } from '../constants/InitState';
+import { ERROR_404_PATH } from '../constants/PathNames';
 
 export const setQuote = (quote) => {
    return (dispatch) => dispatch({ type: GET_QUOTE, payload: quote });
@@ -262,7 +263,7 @@ export const getQuoteFromEntoken = (entoken, history) => {
          dispatch({ type: GET_QUOTE, payload: quote });
          dispatch({ type: FETCH_SUCCESS });
       } catch (err) {
-         history.push('/error404');
+         history.push(ERROR_404_PATH);
          dispatch({ type: FETCH_ERROR, payload: err.message });
          console.log("Error****:", err.message);
       }
