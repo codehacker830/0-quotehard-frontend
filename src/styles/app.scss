@@ -1099,17 +1099,19 @@ label {
 }
 
 .a-link {
+   margin: 0px;
+   padding: 0px;
+   border: none;
    transition: color .12s ease-out;
    color: #0665d0;
-   text-decoration: none;
+   outline: none;
    background-color: transparent;
    cursor: pointer;
 }
 
-.discuss-edit-a {
-   transition: color .12s ease-out;
-   color: #2176c7;
-   text-decoration: none;
-   background-color: transparent;
-   cursor: pointer;
+.qCustomCss .fakeBtn,
+.qCustomCss .btn-save,
+.qCustomCss .btn-new,
+.qCustomCss .btn-action {
+   color: #FFF;
 }

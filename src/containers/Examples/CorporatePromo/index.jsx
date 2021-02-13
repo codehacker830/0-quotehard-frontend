@@ -1,4 +1,5 @@
 import React from 'react'
+import './style.scoped.scss';
 
 export default function CorporatePromo() {
    return (
@@ -14,12 +15,10 @@ export default function CorporatePromo() {
                      <span className="quote-detail-block">Scarlett Richards</span>
                   </div>
                   <div>
-                     <label>Prepared&nbsp;by</label> <span className="quote-detail-block">Jamie Hemsworth,
-            Charge</span>
+                     <label>Prepared&nbsp;by</label> <span className="quote-detail-block">Jamie Hemsworth, Charge</span>
                   </div>
                   <div>
-                     <label>Address</label> <span className="quote-detail-block">2266 5th Avenue,
-            New York, NY 10037</span>
+                     <label>Address</label> <span className="quote-detail-block">2266 5th Avenue, New York, NY 10037</span>
                   </div>
                   <div><label>Phone</label>&nbsp;<span className="quote-detail-block">212.765.4321</span>
                      <label>Website</label>&nbsp;<span className="quote-detail-block"><a rel="nofollow" data-tg-click="clickExampleIgnore" href="#www.corporatepromoswag.com">www.corporatepromoswag.com</a></span> </div>
@@ -41,10 +40,10 @@ export default function CorporatePromo() {
                      <p>Charge is a one stop shop for all manner of custom promotional products and swag. Our
                      team of talented designers will work with your designs to help maximize brand
                      exposure, and our key supplier contacts ensure you’re getting the lowest prices in
-            the game. </p>
+                     the game. </p>
                      <p>We pride ourselves in providing appealing, quality merchandise at low price points,
                      delivered in swift turnaround times. We also offer international shipping at
-            competitive pricing to further your brand’s reach.</p>
+                     competitive pricing to further your brand’s reach.</p>
                   </div>
                   <div className="tItem vIsLine tItemId-2 isSelected">
                      <div className="tItem-desc">
@@ -52,15 +51,15 @@ export default function CorporatePromo() {
                            <div className="tItem-desc-cell">
                               <h3>Reusable coffee cups</h3>
                               <p><strong>Style:</strong> Durable polypropylene BPA/BPS-free cup and lid,
-                  with silicone thermal band.<br /><strong>Volume:</strong> 12oz / 350mL
-                  <br /><strong>Size:</strong> 90mm diameter x 100mm
-                  height<br /><strong>Print details:</strong> Screen-printed, single color
-                </p>
+                              with silicone thermal band.<br /><strong>Volume:</strong> 12oz / 350mL
+                              <br /><strong>Size:</strong> 90mm diameter x 100mm
+                              height<br /><strong>Print details:</strong> Screen-printed, single color
+                              </p>
                               <p>Our reusable coffee cups are high quality and long-lasting, ensuring your
                               brand is literally in the hands of customers with every cup of coffee
-                  for years to come. </p>
+                              for years to come. </p>
                               <p>Your logo will be expertly screen-printed in bold, solid color on the
-                  thermal band of each cup.</p>
+                              thermal band of each cup.</p>
                               <div className="quoteFile-wrap">
                                  <div className="quoteFile-set">
                                     <div className="quoteFile-image">
@@ -91,13 +90,13 @@ export default function CorporatePromo() {
                            <div className="tItem-desc-cell">
                               <h3>Hardcover notebooks</h3>
                               <p><strong>Size:</strong> 8.5” x 5.5”<br /><strong>Cover:</strong> Soft
-                  leather-look PU cover <br /><strong>Pages:</strong> Cream, unlined, 80
-                  leaves (160 pages)<br /><strong>Color:</strong> Black<br /><strong>Print
-                    details:</strong> Screen-printed, single color</p>
+                              leather-look PU cover <br /><strong>Pages:</strong> Cream, unlined, 80
+                              leaves (160 pages)<br /><strong>Color:</strong> Black<br /><strong>Print
+                              details:</strong> Screen-printed, single color</p>
                               <p>The perfect promotional item to pair with an active, inspired brand. Our
                               deluxe leather-look notebooks feature your logo on the cover in
                               attractive single color screen-printing. Ensure that when your customers
-                  have their best ideas, your brand is in mind too.</p>
+                              have their best ideas, your brand is in mind too.</p>
                               <div className="quoteFile-wrap">
                                  <div className="quoteFile-set">
                                     <div className="quoteFile-image">
@@ -127,19 +126,21 @@ export default function CorporatePromo() {
                         <div className="tItem-desc-table">
                            <div className="tItem-desc-cell">
                               <h3>Portable powerbank</h3>
-                              <p><strong>Size:</strong> 4.73” x 2.56” x
-                  0.47”<br /><strong>Weight:</strong> Approx. 150g<br /><strong>Input
-                    power:</strong> 5V/500mA <br /><strong>Output power:</strong>
-                  5V/1A<br /><strong>Print details:</strong> Screen-printed, single color
-                </p>
+                              <p>
+                                 <strong>Size:</strong> 4.73” x 2.56” x 0.47”<br />
+                                 <strong>Weight:</strong> Approx. 150g<br />
+                                 <strong>Input power:</strong> 5V/500mA <br />
+                                 <strong>Output power:</strong> 5V/1A<br />
+                                 <strong>Print details:</strong> Screen-printed, single color
+                              </p>
                               <p>Housed in a sleek and stylish black rectangular unit, this power bank is
                               small enough to tuck away in a pocket, glovebox, or handbag, but
                               powerful enough to keep your devices up and running for hours on end.
-                </p>
+                              </p>
                               <p>Paired with a full instruction manual, a micro-B USB cable, and fully
                               recharged in 4 hours using either mains power or USB, your brand will be
                               printed on a life-saving power source for customers any time they’re on
-                  the go.</p>
+                              the go.</p>
                               <div className="quoteFile-wrap">
                                  <div className="quoteFile-set">
                                     <div className="quoteFile-image">
@@ -182,11 +183,11 @@ export default function CorporatePromo() {
                      <h3>Process and timeframes</h3>
                      <p>On acceptance of this quote, we will require your logo in vector format. We will then
                      email you back a digital proof for you to approve, after which we go ahead and print
-            your goods!</p>
+                     your goods!</p>
                      <p>All printing setup costs involved in setting up our machines with inks and plates
-            required for each color and individual design are included in our pricing.</p>
+                     required for each color and individual design are included in our pricing.</p>
                      <p>Printing takes approximately 7 - 10 working days from design proof signoff to
-            completion.</p>
+                     completion.</p>
                   </div>
                   <div className="tItem-text tItemId-6">
                      <h3>Payment terms and conditions</h3>
@@ -194,27 +195,27 @@ export default function CorporatePromo() {
                         <li>We require payment prior to work commencing </li>
                         <li>Payment is accepted via cash, credit, check, or online funds transfer </li>
                         <li>Prices included in this quote are based on minimum order quantities of 50 units
-              per item</li>
+                        per item</li>
                      </ul>
                   </div>
                   <div className="tItem-text tItemId-7">
                      <h3>Money-back guarantee</h3>
                      <p>We are so confident that our products and service will blow you away, that if you’re
-            not happy with your purchase, we’ll make it right.</p>
+                     not happy with your purchase, we’ll make it right.</p>
                   </div>
                   <div className="tItem-text tItemId-8">
                      <h3>About Charge</h3>
                      <p>For over 30 years, Charge has been the first port of call for beautiful custom
-            promotional printing on high quality merchandise. </p>
+                     promotional printing on high quality merchandise. </p>
                      <p>Whether you need to wow new and prospective customers with branded materials and
                      innovative products, or reward loyal staff with company swag, our range of stock
-            will have just what you need. </p>
+                     will have just what you need. </p>
                      <p>We source our products internationally, and have fantastic relationships with a range
                      of diverse suppliers, so if you have a particular item that you’d like to see your
-            brand emblazoned across, get in touch to see if we can source it for you! </p>
+                     brand emblazoned across, get in touch to see if we can source it for you! </p>
                      <p>We pride ourselves in providing the best service in the business to all of our
                      customers, big or small, and making every purchase a delight from order to print to
-            delivery.</p>
+                     delivery.</p>
                   </div>
                </div>
                <div id="discussion" className="discuss-wrap">
@@ -227,9 +228,8 @@ export default function CorporatePromo() {
                            <div className="discuss-title">
                               <strong className="util-no-wrap">Scarlett Richards&nbsp;</strong>
                               <span className="lighter">
-                                 <span className="util-no-wrap"><span className="dt-time" data-time="[1608740418,1,1]">December 23, 2020 at
-                      4:20pm</span></span>&nbsp;
-                </span>
+                                 <span className="util-no-wrap"><span className="dt-time" data-time="[1608740418,1,1]">December 23, 2020 at 4:20pm</span></span>&nbsp;
+                              </span>
                            </div>
                            <div className="clear"> </div>
                            <div className="discuss-message">
@@ -246,14 +246,12 @@ export default function CorporatePromo() {
                            <div className="discuss-title">
                               <strong className="util-no-wrap">Jamie Hemsworth&nbsp;</strong>
                               <span className="lighter">
-                                 <span className="util-no-wrap"><span className="dt-time" data-time="[1608741318,1,1]">December 23, 2020 at
-                      4:35pm</span></span>&nbsp;
-                </span>
+                                 <span className="util-no-wrap"><span className="dt-time" data-time="[1608741318,1,1]">December 23, 2020 at 4:35pm</span></span>&nbsp;
+                              </span>
                            </div>
                            <div className="clear"> </div>
                            <div className="discuss-message">
-                              <p>Absolutely. We have cotton tote bags available. I’ll update your quote,
-                  and send through for your acceptance.</p>
+                              <p>Absolutely. We have cotton tote bags available. I’ll update your quote, and send through for your acceptance.</p>
                            </div>
                         </div>
                      </div>
@@ -266,7 +264,6 @@ export default function CorporatePromo() {
                      <div className="discuss-row discuss-form discussIsQuestion isHidden">
                         <input className="discuss-form-prefix" name="postDiscuss[discussIsQuestion][_prefix]" defaultValue="discussIsQuestion" type="hidden" id="postDiscuss_discussIsQuestion__prefix" />
                         <div className="discuss-bubble">
-                           {/*div class="bubble-left avatar-48" style="background-image: url('https://secure.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?r=g&amp;s=64&amp;d=https%3A%2F%2Fasset.quotientapp.com%2Fimage%2Fcontact%2Fcompany1.png');"> </div*/}
                            <div className="bubble-right">
                               <div className="bubble-margin">
                                  <textarea className="form-control" rows={3} name="postDiscuss[discussIsQuestion][discuss_body]" id="postDiscuss_discussIsQuestion_discuss_body" defaultValue={""} /> </div>
@@ -276,13 +273,11 @@ export default function CorporatePromo() {
                               <div className="u-file-drop-area">
                                  <input className="u-file-hidden" data-tg-change="changeDiscussFile" name="file_input" type="file" multiple />
                                  <div className="u-file-wrap">
-                                    <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image
-                      or File</button>
+                                    <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image or File</button>
                                  </div>
                               </div>
                               <div className="bubble-buttons">
-                                 <a href="#trigger:ask_question" className="btn btn-action btn-lg">Submit
-                    Question</a>
+                                 <a href="#trigger:ask_question" className="btn btn-action btn-lg">Submit Question</a>
                                  <a className="btn btn-default btn-lg btn-lg-skinny" data-tg-click="clickDiscussCancel" href="javascript:void(0)">Cancel</a> </div>
                            </div>
                         </div>
@@ -298,8 +293,7 @@ export default function CorporatePromo() {
                         <div className="u-file-drop-area">
                            <input className="u-file-hidden" data-tg-change="changeDiscussFile" name="file_input" type="file" multiple />
                            <div className="u-file-wrap">
-                              <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image or
-                  File</button>
+                              <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image or File</button>
                            </div>
                         </div>
                         <div className="bubble-buttons">
@@ -310,9 +304,7 @@ export default function CorporatePromo() {
                   </div>
                </div>
                <div className="quote-review-wrap">
-                  <h3 className="quote-review-h2">
-                     Reviews
-        </h3>
+                  <h3 className="quote-review-h2">Reviews</h3>
                   <div>
                      <div className="quote-review">
                         <div className="quote-review-stars">
@@ -323,14 +315,15 @@ export default function CorporatePromo() {
                               So much more than just great prices! We had our company logo printed on a
                               variety of materials for new staff, and were delighted by the end results,
                               as well as the service that we received. Would highly recommend for
-                both&nbsp;<a href="javascript:void(0);" data-tg-click="{&quot;root_reveal&quot;:[&quot;slide&quot;,&quot;.js-review-more-0&quot;,&quot;.js-review-less-0&quot;]}">…<span className="no_print"> More</span></a>
+                              both&nbsp;
+                              <button className="a-link">…<span className="no_print">More</span></button>
                            </div>
                            <div className="isHidden js-review-more-0">
                               So much more than just great prices! We had our company logo printed on a
                               variety of materials for new staff, and were delighted by the end results,
                               as well as the service that we received. Would highly recommend for both
                               friendly and professional customer service, and high quality products.
-              </div>
+                           </div>
                         </div>
                         <div className="review-by">
                            by Sophia Turner </div>
@@ -342,7 +335,7 @@ export default function CorporatePromo() {
                         <div className="quote-review-message">
                            Simply the best in the business. We needed some custom branded swag to hand out
                            at a business convention, and were really happy with the price point, turnaround
-              times, and quality of materials we were able to dish out! </div>
+                           times, and quality of materials we were able to dish out! </div>
                         <div className="review-by">
                            by Gary Hunter </div>
                      </div>
@@ -353,7 +346,7 @@ export default function CorporatePromo() {
                         <div className="quote-review-message">
                            Friendly, fast, fantastic. My work has been using this team for years now and
                            have always been amazed by the consistently high quality output they produce.
-              Thanks so much! </div>
+                           Thanks so much! </div>
                         <div className="review-by">
                            by Anna Burton </div>
                      </div>
@@ -371,7 +364,8 @@ export default function CorporatePromo() {
                      <textarea className="form-control" rows={3} placeholder="Optional" name="accept[comment]" id="accept_comment" defaultValue={""} /> </div>
                   <div className="form-group-half">
                      <label className="label-light" htmlFor="accept_reference">Your order/reference number</label>
-                     <input className="form-control" placeholder="Optional" name="accept[reference]" defaultValue type="text" id="accept_reference" /> </div>
+                     <input className="form-control" placeholder="Optional" name="accept[reference]" type="text" id="accept_reference" />
+                  </div>
                   <div className="acceptCb">
                      <div className="acceptCb-left">
                         <label className="acceptCb-label-box" htmlFor="accept__confirm">
@@ -379,18 +373,18 @@ export default function CorporatePromo() {
                      </div>
                      <div className="acceptCb-right">
                         <label className="acceptCb-label" htmlFor="accept__confirm">
-                           Yes, I Scarlett Richards agree to and accept this quote, on <span className="dt-time" data-time="[1608743118,1,0]">December 23, 2020 at
-                5:05pm</span>.
-            </label>
+                           Yes, I Scarlett Richards agree to and accept this quote, on <span className="dt-time" data-time="[1608743118,1,0]">December 23, 2020 at 5:05pm</span>.
+                        </label>
                         <div className="acceptCb-prompt isHidden">
                            <span className="glyphicon glyphicon-arrow-up" /> Check the box to accept.
-            </div>
+                        </div>
                      </div>
                   </div>
                   <div className="clear"> </div>
                   <input type="hidden" name="@checkbox[accept][_confirm]" defaultValue="no" id="@checkbox_accept__confirm" />
                   <div className="quote-box-accept">
-                     <input className="btn btn-save btnAccept btnAccept-check quote-btn-lg" name="_flash[_trigger][accept]" defaultValue="Accept Quote" type="submit" id="_flash__trigger_accept" /> <span className="quote-box-decline-wrap">
+                     <button className="btn btn-save btnAccept btnAccept-check quote-btn-lg" name="_flash[_trigger][accept]" type="submit" id="_flash__trigger_accept">Accept Quote</button>
+                     <span className="quote-box-decline-wrap">
                         <a className="btn quote-btn-lg quote-box-decline" data-tg-click="clickExampleIgnore" rel="nofollow" href="javascript:void(0)">Decline</a>
                      </span>
                   </div>
@@ -398,10 +392,9 @@ export default function CorporatePromo() {
                <div className="clear" />
             </div>
             <div className="no_print">
-               <a className="powered-by powered-by-bg" href="../index.html" data-sheet="ignore"><img className="powered-by-black" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-black-01.png" alt="Quotient. Simply Smarter Quotes." /><img className="powered-by-white" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-white-01.png" alt="Quotient. Simply Smarter Quotes." /></a>
+               <a className="powered-by powered-by-bg d-none" href="../index.html" data-sheet="ignore"><img className="powered-by-black" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-black-01.png" alt="Quotient. Simply Smarter Quotes." /><img className="powered-by-white" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-white-01.png" alt="Quotient. Simply Smarter Quotes." /></a>
             </div>
          </div>
       </div>
-
    )
 }

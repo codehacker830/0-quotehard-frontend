@@ -1,0 +1,54 @@
+body .qCustomCss,
+body .qCustomCss p,
+body .qCustomCss textarea,
+body .qCustomCss select,
+body .qCustomCss input,
+body .qCustomCss label,
+body .qCustomCss button {
+   font-family: Georgia, Serif;
+}
+
+.quoteCanvas-bg {
+   background-color: #333333;
+}
+
+.qCustomCss h1,
+.qCustomCss h2,
+.qCustomCss h3 {
+   font-family: Georgia, Serif;
+   font-weight: bold;
+}
+
+.qCustomCss .btn.btnAccept,
+.qCustomCss .btn.btnAccept.isLoading,
+.fakeBtn {
+   background: #555453;
+   border-color: #504f4e;
+   color: white;
+}
+
+.qCustomCss .btn-text,
+.qCustomCss a,
+.qCustomCss button,
+.fakeLink {
+   color: #555453;
+}
+
+.hasNoTerm .total-price {
+   background-color: #F1EEE9;
+}
+
+.acceptBox {
+   background-color: #F1EEE9;
+}
+
+.btn-outline.custom-elm {
+   border-color: #555453;
+   color: #555453;
+}
+
+@media (min-width: 768px) {
+   .tItem.isSelected:not(.hasTerm) {
+      background: #F1EEE9;
+   }
+}

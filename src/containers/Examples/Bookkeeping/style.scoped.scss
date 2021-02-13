@@ -1,0 +1,57 @@
+body .qCustomCss,
+body .qCustomCss p,
+body .qCustomCss textarea,
+body .qCustomCss select,
+body .qCustomCss input,
+body .qCustomCss label,
+body .qCustomCss button {
+   font-family: "Helvetica Neue", Helvetica, Arial;
+}
+
+.qCustomCss h1,
+.qCustomCss h2,
+.qCustomCss h3 {
+   font-family: "Helvetica Neue", Helvetica, Arial;
+   font-weight: bold;
+}
+
+.qCustomCss .fakeBtn,
+.qCustomCss .btn-save,
+.qCustomCss .btn-new,
+.qCustomCss .btn-action {
+   color: #FFF;
+}
+
+.qCustomCss .btn.btnAccept,
+.qCustomCss .btn.btnAccept.isLoading,
+.fakeBtn {
+   background: #25B3FA;
+   border-color: #1bb0fa;
+   color: white;
+}
+
+.qCustomCss .btn-text,
+.qCustomCss a,
+.qCustomCss button,
+.fakeLink {
+   color: #25B3FA;
+}
+
+.hasNoTerm .total-price {
+   background-color: #E8F6FB;
+}
+
+.acceptBox {
+   background-color: #E8F6FB;
+}
+
+.btn-outline.custom-elm {
+   border-color: #25B3FA;
+   color: #25B3FA;
+}
+
+@media (min-width: 768px) {
+   .tItem.isSelected:not(.hasTerm) {
+      background: #E8F6FB;
+   }
+}

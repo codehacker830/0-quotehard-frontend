@@ -1,5 +1,3 @@
-
-
 export const QUOTES_PATH = "/app/quotes";
 
 export const QUOTE_GET_PATH = '/app/quote/get';
@@ -30,3 +28,4 @@ export const CONTACT_EDIT_PATH = "/app/c/contacts/edit/:id";
 export const CONTACT_VIEW_PATH = "/app/c/contacts/view/:id";
 
 export const ERROR_404_PATH = "/error-404";
+export const EXAMPLES_PATH = "/examples";

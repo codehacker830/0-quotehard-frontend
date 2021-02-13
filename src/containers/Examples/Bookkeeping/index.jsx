@@ -1,5 +1,5 @@
 import React from 'react'
-import './examples.scoped.css';
+import './style.scoped.scss';
 
 export default function Bookkeeping() {
    return (
@@ -15,26 +15,25 @@ export default function Bookkeeping() {
                      <div className="quoteItems" data-tg-control="QuoteViewTotal">
                         <div className="tItem-text tItemId-1">
                            <h3>No more EOFY surprises</h3>
-                           <p>Managing your company’s books, as well as the growth and prosperity of your
-                business, can be nigh on impossible for most business owners. </p>
+                           <p>Managing your company’s books, as well as the growth and prosperity of your business, can be nigh on impossible for most business owners. </p>
                            <p>Allowing you the peace of mind to focus on the business side of what you do,
                            our bookkeepers skilfully balance your business’s financial transactions
                            with accuracy and efficiency, offering crucial experience-led insight into
-                the day-to-day health of your company. </p>
+                           the day-to-day health of your company. </p>
                            <p>Working synergistically with your accountant, you can rest assured that all
                            incoming and outgoing costs are accounted for, so your business is in prime
-                financial shape all year long.</p>
+                           financial shape all year long.</p>
                         </div>
                         <div className="tItem-text tItemId-2">
                            <h3>Choose the package that’s perfect for you</h3>
                            <p>With our selection of bookkeeping packages, you’re in control to pay for only
                            what you need, without all the unnecessary extras - saving you more money.
-              </p>
+                           </p>
                            <p>Simple monthly pricing allows you to invest in services that save you time
-                and stress at competitive rates. </p>
+                           and stress at competitive rates. </p>
                            <p><em>All packages include subscription costs associated with any required
                            cloud-based accounting software and corresponding introductory training
-                  (as required).</em></p>
+                           (as required).</em></p>
                         </div>
                         <div className="tItem vIsLine tItemId-3 isSelected">
                            <div className="tItem-desc">
@@ -50,7 +49,7 @@ export default function Bookkeeping() {
                                     package is designed to organize and maintain all financial bases
                                     throughout the year, streamlining all relevant documentation in
                                     preparation for handover to your accountant at the end of
-                      financial year for minimal work.</p>
+                                    financial year for minimal work.</p>
                                     <p>Included in this package is: </p>
                                     <ul>
                                        <li>Payments, invoicing, and receipting for clients </li>
@@ -62,8 +61,7 @@ export default function Bookkeeping() {
                                        <li>Day to day bookkeeping</li>
                                        <li>Bank reconciliation and statements</li>
                                        <li>Tax returns </li>
-                                       <li>Monthly creditor and debtor statements, adjustments,
-                        accruals, and reports</li>
+                                       <li>Monthly creditor and debtor statements, adjustments, accruals, and reports</li>
                                     </ul>
                                  </div>
                               </div>
@@ -86,16 +84,14 @@ export default function Bookkeeping() {
                                  <div className="tItem-desc-cell">
                                     <h3><a data-tg-click="clickOptionTitle" href="javascript:void(0)">Intermediate Package</a></h3>
                                     <p>A great solution for those looking for bookkeeping services that
-                                    cover all basic aspects of their business, from accounts
-                      receivable to employee payroll. </p>
+                                    cover all basic aspects of their business, from accounts receivable to employee payroll. </p>
                                     <p>Included in this package is: </p>
                                     <ul>
                                        <li>Wage payments (either weekly or fortnightly)</li>
                                        <li>Day to day bookkeeping</li>
                                        <li>Bank reconciliation and statements</li>
                                        <li>Tax returns </li>
-                                       <li>Monthly creditor and debtor statements, adjustments,
-                        accruals, and reports</li>
+                                       <li>Monthly creditor and debtor statements, adjustments, accruals, and reports</li>
                                     </ul>
                                  </div>
                               </div>
@@ -118,14 +114,12 @@ export default function Bookkeeping() {
                                  <div className="tItem-desc-cell">
                                     <h3><a data-tg-click="clickOptionTitle" href="javascript:void(0)">Light Package</a></h3>
                                     <p>Ideal for businesses with an existing accounts department,
-                                    requiring additional help with maintenance of financial
-                      accounts. </p>
+                                    requiring additional help with maintenance of financial accounts. </p>
                                     <p>Included in this package is: </p>
                                     <ul>
                                        <li>Day to day bookkeeping </li>
                                        <li>Bank reconciliation and statements</li>
-                                       <li>Monthly creditor and debtor statements, adjustments,
-                        accruals, and reports</li>
+                                       <li>Monthly creditor and debtor statements, adjustments, accruals, and reports</li>
                                     </ul>
                                  </div>
                               </div>
@@ -162,26 +156,24 @@ export default function Bookkeeping() {
                         </div>
                         <div className="tItem-text tItemId-6">
                            <h3>What’s next?</h3>
-                           <p>Once you’ve selected from the above options, and hit the ‘Accept Quote’ down
-                below, one of our staff will be in touch (within 2 business days). </p>
+                           <p>Once you’ve selected from the above options, and hit the ‘Accept Quote’ down below, one of our staff will be in touch (within 2 business days). </p>
                            <p>We will arrange a time to begin the process to set you up with one of our
                            bookkeepers, start transferral of your files to our accounting software, as
-                well as provide you with intro training to this accounting software.</p>
+                           well as provide you with intro training to this accounting software.</p>
                         </div>
                         <div className="tItem-text tItemId-7">
                            <h3>Guaranteed expert services</h3>
                            <p>All of our staff are fully accredited National Bookkeepers Association
                            members, and have many years of training and experience that ensures the
-                best possible experience for your business, be it big or small.</p>
-                           <p>We guarantee any queries you have will be answered within 1 business day,
-                keeping business running seamlessly and smoothly.</p>
+                           best possible experience for your business, be it big or small.</p>
+                           <p>We guarantee any queries you have will be answered within 1 business day, keeping business running seamlessly and smoothly.</p>
                         </div>
                         <div className="tItem-text tItemId-8">
                            <h3>Payment terms and conditions</h3>
                            <p>Pricing is based on a minimum commitment of 12 months. Acceptance of this
-                quote acts as agreement to a 12 month term. </p>
+                              quote acts as agreement to a 12 month term. </p>
                            <p>You will be invoiced for services monthly, and payment is required 5 business
-                days from invoice date. </p>
+                              days from invoice date. </p>
                            <p>Payment is accepted via credit card, bank transfer, or check.</p>
                         </div>
                         <div className="tItem-text tItemId-9">
@@ -189,15 +181,15 @@ export default function Bookkeeping() {
                            <p>Our team of bookkeepers pride themselves in adapting quickly to new
                            businesses, and providing consistently excellent financial services to
                            existing customers, earning our position as Best Local Bookkeeping Firm for
-                10 years straight. </p>
+                           10 years straight. </p>
                            <p>With staff that are passionate about maintaining healthy books, we apply a
                            laser-like focus across all incoming and outgoing charges, ensuring
                            everything is current and recorded to avoid any hurdles come end of
-                financial year.</p>
+                           financial year.</p>
                            <p>Our aim is to work invisibly to remove stress related to business compliance,
-                saving you money and allowing you more time to build your business. </p>
+                           saving you money and allowing you more time to build your business. </p>
                            <p>Whether you’re a solo entrepreneur, or a large team, our bookkeepers are the
-                best investment your business can make.</p>
+                           best investment your business can make.</p>
                         </div>
                      </div>
                      <div id="discussion" className="discuss-wrap">
@@ -210,15 +202,13 @@ export default function Bookkeeping() {
                                  <div className="discuss-title">
                                     <strong className="util-no-wrap">Scarlett Richards&nbsp;</strong>
                                     <span className="lighter">
-                                       <span className="util-no-wrap"><span className="dt-time" data-time="[1608740417,1,1]">December 23, 2020 at
-                          4:20pm</span></span>&nbsp;
-                    </span>
+                                       <span className="util-no-wrap"><span className="dt-time" data-time="[1608740417,1,1]">December 23, 2020 at 4:20pm</span></span>&nbsp;
+                                    </span>
                                  </div>
                                  <div className="clear"> </div>
                                  <div className="discuss-message">
                                     <p>We currently use online accounting software for our bookkeeping
-                                    and don’t want to change. If we go ahead with Bean Bookkeeping’s
-                      services, are you able to stick with this?</p>
+                                    and don’t want to change. If we go ahead with Bean Bookkeeping’s services, are you able to stick with this?</p>
                                  </div>
                               </div>
                            </div>
@@ -231,14 +221,12 @@ export default function Bookkeeping() {
                                  <div className="discuss-title">
                                     <strong className="util-no-wrap">Jamie Hemsworth&nbsp;</strong>
                                     <span className="lighter">
-                                       <span className="util-no-wrap"><span className="dt-time" data-time="[1608741317,1,1]">December 23, 2020 at
-                          4:35pm</span></span>&nbsp;
-                    </span>
+                                       <span className="util-no-wrap"><span className="dt-time" data-time="[1608741317,1,1]">December 23, 2020 at 4:35pm</span></span>&nbsp;
+                                    </span>
                                  </div>
                                  <div className="clear"> </div>
                                  <div className="discuss-message">
-                                    <p>Certainly! Our bookkeepers are all fully experienced with all
-                      major cloud-based accounting software.</p>
+                                    <p>Certainly! Our bookkeepers are all fully experienced with all major cloud-based accounting software.</p>
                                  </div>
                               </div>
                            </div>
@@ -261,8 +249,7 @@ export default function Bookkeeping() {
                                     <div className="u-file-drop-area">
                                        <input className="u-file-hidden" data-tg-change="changeDiscussFile" name="file_input" type="file" multiple />
                                        <div className="u-file-wrap">
-                                          <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add
-                          Image or File</button>
+                                          <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image or File</button>
                                        </div>
                                     </div>
                                     <div className="bubble-buttons">
@@ -282,8 +269,7 @@ export default function Bookkeeping() {
                               <div className="u-file-drop-area">
                                  <input className="u-file-hidden" data-tg-change="changeDiscussFile" name="file_input" type="file" multiple />
                                  <div className="u-file-wrap">
-                                    <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image
-                      or File</button>
+                                    <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image or File</button>
                                  </div>
                               </div>
                               <div className="bubble-buttons">
@@ -294,9 +280,7 @@ export default function Bookkeeping() {
                         </div>
                      </div>
                      <div className="quote-review-wrap">
-                        <h3 className="quote-review-h2">
-                           Reviews
-            </h3>
+                        <h3 className="quote-review-h2">Reviews</h3>
                         <div>
                            <div className="quote-review">
                               <div className="quote-review-stars">
@@ -306,15 +290,15 @@ export default function Bookkeeping() {
                                  <div className="js-review-less-0">
                                     I couldn’t stay in business if it weren’t for these folks! As a solo
                                     business owner, keeping on top of my books is the biggest challenge
-                                    I’ve faced. The team at Bean Bookkeeping came into the picture,
-                    ready and raring&nbsp;<a href="javascript:void(0);" data-tg-click="{&quot;root_reveal&quot;:[&quot;slide&quot;,&quot;.js-review-more-0&quot;,&quot;.js-review-less-0&quot;]}">…<span className="no_print"> More</span></a>
+                                    I’ve faced. The team at Bean Bookkeeping came into the picture, ready and raring&nbsp;
+                                    <button className="a-link">…<span className="no_print"> More</span></button>
                                  </div>
                                  <div className="isHidden js-review-more-0">
                                     I couldn’t stay in business if it weren’t for these folks! As a solo
                                     business owner, keeping on top of my books is the biggest challenge
                                     I’ve faced. The team at Bean Bookkeeping came into the picture,
                                     ready and raring to go, and had my finances in top shape in mere
-                    days. </div>
+                                    days. </div>
                               </div>
                               <div className="review-by">
                                  by Gary Hunter </div>
@@ -328,14 +312,15 @@ export default function Bookkeeping() {
                                     I didn’t know how badly I needed a bookkeeper until I hired one. As
                                     our company has grown, our accounts department has struggled to keep
                                     up. Enter these superstars - they lightened our load, organized and
-                    streamlined existing&nbsp;<a href="javascript:void(0);" data-tg-click="{&quot;root_reveal&quot;:[&quot;slide&quot;,&quot;.js-review-more-1&quot;,&quot;.js-review-less-1&quot;]}">…<span className="no_print"> More</span></a>
+                                    streamlined existing&nbsp;
+                                    <button className="a-link" data-tg-click="{&quot;root_reveal&quot;:[&quot;slide&quot;,&quot;.js-review-more-1&quot;,&quot;.js-review-less-1&quot;]}">…<span className="no_print"> More</span></button>
                                  </div>
                                  <div className="isHidden js-review-more-1">
                                     I didn’t know how badly I needed a bookkeeper until I hired one. As
                                     our company has grown, our accounts department has struggled to keep
                                     up. Enter these superstars - they lightened our load, organized and
                                     streamlined existing processes, and did it all with a friendly
-                    disposition. Highly recommend. </div>
+                                    disposition. Highly recommend. </div>
                               </div>
                               <div className="review-by">
                                  by Anna Burton </div>
@@ -347,7 +332,7 @@ export default function Bookkeeping() {
                               <div className="quote-review-message">
                                  Incredibly efficient, always accurate, experienced and passionate
                                  bookkeeping superstars! We recently switched bookkeepers and couldn’t be
-                  more certain that we’ve made the right choice. </div>
+                                 more certain that we’ve made the right choice. </div>
                               <div className="review-by">
                                  by Sophia Turner </div>
                            </div>
@@ -364,9 +349,9 @@ export default function Bookkeeping() {
                            <label className="label-light" htmlFor="accept_comment">Additional comments</label>
                            <textarea className="form-control" rows={3} placeholder="Optional" name="accept[comment]" id="accept_comment" defaultValue={""} /> </div>
                         <div className="form-group-half">
-                           <label className="label-light" htmlFor="accept_reference">Your order/reference
-                number</label>
-                           <input className="form-control" placeholder="Optional" name="accept[reference]" defaultValue type="text" id="accept_reference" /> </div>
+                           <label className="label-light" htmlFor="accept_reference">Your order/reference number</label>
+                           <input className="form-control" placeholder="Optional" name="accept[reference]" type="text" id="accept_reference" />
+                        </div>
                         <div className="acceptCb">
                            <div className="acceptCb-left">
                               <label className="acceptCb-label-box" htmlFor="accept__confirm">
@@ -374,19 +359,18 @@ export default function Bookkeeping() {
                            </div>
                            <div className="acceptCb-right">
                               <label className="acceptCb-label" htmlFor="accept__confirm">
-                                 Yes, I Scarlett Richards agree to and accept this quote, on <span className="dt-time" data-time="[1608743117,1,0]">December 23, 2020 at
-                    5:05pm</span>.
-                </label>
+                                 Yes, I Scarlett Richards agree to and accept this quote, on <span className="dt-time" data-time="[1608743117,1,0]">December 23, 2020 at 5:05pm</span>.
+                              </label>
                               <div className="acceptCb-prompt isHidden">
-                                 <span className="glyphicon glyphicon-arrow-up" /> Check the box to
-                  accept.
-                </div>
+                                 <span className="glyphicon glyphicon-arrow-up" /> Check the box to accept.
+                              </div>
                            </div>
                         </div>
                         <div className="clear"> </div>
                         <input type="hidden" name="@checkbox[accept][_confirm]" defaultValue="no" id="@checkbox_accept__confirm" />
                         <div className="quote-box-accept">
-                           <input className="btn btn-save btnAccept btnAccept-check quote-btn-lg" name="_flash[_trigger][accept]" defaultValue="Accept Quote" type="submit" id="_flash__trigger_accept" /> <span className="quote-box-decline-wrap">
+                           <button className="btn btn-save btnAccept btnAccept-check quote-btn-lg" name="_flash[_trigger][accept]" type="submit" id="_flash__trigger_accept">Accept Quote</button>&nbsp;
+                           <span className="quote-box-decline-wrap">
                               <a className="btn quote-btn-lg quote-box-decline" data-tg-click="clickExampleIgnore" rel="nofollow" href="javascript:void(0)">Decline</a>
                            </span>
                         </div>
@@ -402,9 +386,10 @@ export default function Bookkeeping() {
                            <label className="quote-detail-label">From</label>
                            <div className="quote-detail-block">
                               Jamie Hemsworth<br />
-                The Bean Bookkeeping<br />
-                2266 5th Avenue<br />
-                New York, NY 10037<br /> </div>
+                              The Bean Bookkeeping<br />
+                              2266 5th Avenue<br />
+                              New York, NY 10037<br />
+                           </div>
                            <label className="quote-detail-label">Phone</label>
                            <div className="quote-detail-block">
                               212.765.4321 </div>
@@ -416,7 +401,7 @@ export default function Bookkeeping() {
                            <div className="quote-detail-block">
                               <label className="quote-detail-label">Address</label>
                               <div className="quote-detail-val">518 W 181st Street,<br />
-                  New York, NY 10033</div>
+                              New York, NY 10033</div>
                            </div>
                            <div className="quote-detail-block">
                               <label className="quote-detail-label">Phone</label>
@@ -428,14 +413,13 @@ export default function Bookkeeping() {
                            <div className="quote-detail-block">16180</div>
                            <label className="quote-detail-label">
                               Date
-              </label>
+                           </label>
                            <div className="quote-detail-block">
                               <span className="dt-time" data-time="[1608743117,0,0]">December 23, 2020</span>
                            </div>
                            <label className="quote-detail-label">Valid until</label>
                            <div className="quote-detail-block">
-                              <span className="dt-time" data-time="[1611767100,1,0]">January 27, 2021 at
-                  5:05pm</span></div>
+                              <span className="dt-time" data-time="[1611767100,1,0]">January 27, 2021 at 5:05pm</span></div>
                         </div>
                      </div>
                   </div>

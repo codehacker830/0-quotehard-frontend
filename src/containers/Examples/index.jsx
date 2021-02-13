@@ -9,6 +9,7 @@ import Florist from './Florist'
 import Photography from './Photography'
 import Error404 from '../../components/Error404'
 import ExampleNavbar from './ExamplesDashboard/components/ExampleNavbar'
+import './style.scss';
 
 export default function Examples() {
    return (

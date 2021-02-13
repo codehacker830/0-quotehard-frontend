@@ -149,9 +149,9 @@ export default class ViewContact extends Component {
                                  <PersonCompany contact={contact} />
                                  <div className="form-group">
                                     <span className="text-gray fa-xs text-uppercase">Quotes</span>
-                                    <span className="d-block a-link"
+                                    <button className="d-block a-link"
                                        onClick={this.onClickSearch}
-                                    >View quotes</span>
+                                    >View quotes</button>
                                  </div>
                                  <div className={clsx("form-group", contact.email ? "" : "d-none")}>
                                     <span className="text-gray fa-xs text-uppercase">Email</span>

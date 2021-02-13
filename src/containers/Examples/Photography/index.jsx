@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import './style.scoped.scss';
 
 export default function Photography() {
    return (
@@ -14,8 +15,7 @@ export default function Photography() {
                      <span className="quote-detail-block">Scarlett Richards</span>
                   </div>
                   <div>
-                     <label>Prepared&nbsp;by</label> <span className="quote-detail-block">Jamie Hemsworth,
-            Timeless Photography</span>
+                     <label>Prepared&nbsp;by</label> <span className="quote-detail-block">Jamie Hemsworth, Timeless Photography</span>
                   </div>
                   <div>
                      <label>Quote&nbsp;number</label> <span className="quote-detail-block">16180</span>
@@ -33,11 +33,9 @@ export default function Photography() {
                   <div className="tItem-text tItemId-1">
                      <h3>Events are what we do</h3>
                      <p>We appreciate even the most well scripted event doesn’t always go exactly to plan.
-                     We’re cool with that, in fact, we thrive on it. Our most creative and natural shots
-            come from being able to adapt and stay focused on the day. </p>
+                     We’re cool with that, in fact, we thrive on it. Our most creative and natural shots come from being able to adapt and stay focused on the day. </p>
                      <p>That doesn’t mean we don’t plan beforehand, we’ll scout out the venue for lighting
-                     and inner-location timing well beforehand so we don’t lose sight of capturing the
-            big picture.</p>
+                     and inner-location timing well beforehand so we don’t lose sight of capturing the big picture.</p>
                   </div>
                   <div className="tItem-text tItemId-2">
                      <h3>Examples of our work</h3>
@@ -63,8 +61,7 @@ export default function Photography() {
                   <div className="tItem-text tItemId-3">
                      <h3>Gritty details:</h3>
                      <p>Location: Woodstock, New York<br />Date: August 15, 1969</p>
-                     <p><strong>Location scout, 1 week prior</strong><br />Create lighting and approximate
-            timing plan. Identify multiple venue locations.</p>
+                     <p><strong>Location scout, 1 week prior</strong><br />Create lighting and approximate timing plan. Identify multiple venue locations.</p>
                   </div>
                   <div className="tItem vIsLine tItemId-4 isSelected">
                      <div className="tItem-desc">
@@ -87,8 +84,7 @@ export default function Photography() {
                         <div className="tItem-desc-table">
                            <div className="tItem-desc-cell">
                               <h3>Production</h3>
-                              <p>Retouching of 500-700 images.<br />All images will be available for
-                  electronic download.</p>
+                              <p>Retouching of 500-700 images.<br />All images will be available for electronic download.</p>
                            </div>
                         </div>
                      </div>
@@ -116,10 +112,8 @@ export default function Photography() {
                   <div className="tItem-text tItemId-6">
                      <h3>Bring your memories to life</h3>
                      <p>In addition to our still shots, we also capture the magic of your event in dynamic,
-                     high-def video. Perfect for weddings, birthday parties, and corporate or personal
-            functions.</p>
-                     <p>We have packages that suit all requirements and budgets. If you’d like more
-            information, please feel free to ask a question below.</p>
+                     high-def video. Perfect for weddings, birthday parties, and corporate or personal functions.</p>
+                     <p>We have packages that suit all requirements and budgets. If you’d like more information, please feel free to ask a question below.</p>
                      <p><span style={{ display: 'block', marginTop: 15, marginBottom: 15 }}>
                         <span style={{ display: 'block', position: 'relative', paddingBottom: '56.25%' }}>
                            <iframe allow="encrypted-media" allowFullScreen frameBorder={0} src="https://player.vimeo.com/video/288074477" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
@@ -128,8 +122,7 @@ export default function Photography() {
                   </div>
                   <div className="tItem-text tItemId-7">
                      <h3>Payment &amp; Licensing</h3>
-                     <p>Payment is due 7 days following invoice date.<br />Full image rights will be granted
-            once the job has been paid for in full.</p>
+                     <p>Payment is due 7 days following invoice date.<br />Full image rights will be granted once the job has been paid for in full.</p>
                   </div>
                </div>
                <div id="discussion" className="discuss-wrap">
@@ -142,15 +135,13 @@ export default function Photography() {
                            <div className="discuss-title">
                               <strong className="util-no-wrap">Scarlett Richards&nbsp;</strong>
                               <span className="lighter">
-                                 <span className="util-no-wrap"><span className="dt-time" data-time="[1608740421,1,1]">December 23, 2020 at
-                      4:20pm</span></span>&nbsp;
-                </span>
+                                 <span className="util-no-wrap"><span className="dt-time" data-time="[1608740421,1,1]">December 23, 2020 at 4:20pm</span></span>&nbsp;
+                              </span>
                            </div>
                            <div className="clear"> </div>
                            <div className="discuss-message">
                               <p>Wow Jamie, this is rocking! Love the idea of the timing plan. I’m just
-                              waiting on a final confirmation of our lead act this week before
-                  accepting.</p>
+                              waiting on a final confirmation of our lead act this week before accepting.</p>
                            </div>
                         </div>
                      </div>
@@ -163,14 +154,12 @@ export default function Photography() {
                            <div className="discuss-title">
                               <strong className="util-no-wrap">Jamie Hemsworth&nbsp;</strong>
                               <span className="lighter">
-                                 <span className="util-no-wrap"><span className="dt-time" data-time="[1608741321,1,1]">December 23, 2020 at
-                      4:35pm</span></span>&nbsp;
-                </span>
+                                 <span className="util-no-wrap"><span className="dt-time" data-time="[1608741321,1,1]">December 23, 2020 at 4:35pm</span></span>&nbsp;
+                              </span>
                            </div>
                            <div className="clear"> </div>
                            <div className="discuss-message">
-                              <p>Nice one, Scarlett! Next week will give us plenty of time. Just hit
-                  accept when you’re ready and we’ll get started on that plan.</p>
+                              <p>Nice one, Scarlett! Next week will give us plenty of time. Just hit accept when you’re ready and we’ll get started on that plan.</p>
                            </div>
                         </div>
                      </div>
@@ -193,13 +182,11 @@ export default function Photography() {
                               <div className="u-file-drop-area">
                                  <input className="u-file-hidden" data-tg-change="changeDiscussFile" name="file_input" type="file" multiple />
                                  <div className="u-file-wrap">
-                                    <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image
-                      or File</button>
+                                    <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image or File</button>
                                  </div>
                               </div>
                               <div className="bubble-buttons">
-                                 <a href="#trigger:ask_question" className="btn btn-action btn-lg">Submit
-                    Question</a>
+                                 <a href="#trigger:ask_question" className="btn btn-action btn-lg">Submit Question</a>
                                  <a className="btn btn-default btn-lg btn-lg-skinny" data-tg-click="clickDiscussCancel" href="javascript:void(0)">Cancel</a> </div>
                            </div>
                         </div>
@@ -215,8 +202,7 @@ export default function Photography() {
                         <div className="u-file-drop-area">
                            <input className="u-file-hidden" data-tg-change="changeDiscussFile" name="file_input" type="file" multiple />
                            <div className="u-file-wrap">
-                              <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image or
-                  File</button>
+                              <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image or File</button>
                            </div>
                         </div>
                         <div className="bubble-buttons">
@@ -227,9 +213,7 @@ export default function Photography() {
                   </div>
                </div>
                <div className="quote-review-wrap">
-                  <h3 className="quote-review-h2">
-                     Reviews
-        </h3>
+                  <h3 className="quote-review-h2">Reviews</h3>
                   <div>
                      <div className="quote-review">
                         <div className="quote-review-stars">
@@ -238,8 +222,7 @@ export default function Photography() {
                         <div className="quote-review-message">
                            Their work has an authentic feel, and their photographers are totally
                            unobtrusive! The team captured the magic of a small local music festival I put
-                           on recently - the snaps they took will be featured in all our future PR
-              releases! Thanks folks :) </div>
+                           on recently - the snaps they took will be featured in all our future PR releases! Thanks folks :) </div>
                         <div className="review-by">
                            by Anna Burton </div>
                      </div>
@@ -250,9 +233,8 @@ export default function Photography() {
                         <div className="quote-review-message">
                            Pricing is fair and they’re a really efficient team - candidly captured all the
                            characters with ease for ‘around the office’ shots taken for our new website.
-              Recommend to all! </div>
-                        <div className="review-by">
-                           by Sophia Turner </div>
+                           Recommend to all! </div>
+                        <div className="review-by"> by Sophia Turner </div>
                      </div>
                      <div className="quote-review">
                         <div className="quote-review-stars">
@@ -261,7 +243,7 @@ export default function Photography() {
                         <div className="quote-review-message">
                            Compelling, modern imagery - we recently completely revamped our company social
                            media, featuring photos taken by this rockstar team of photographers. We’ve
-              since boosted our online presence exponentially! </div>
+                           since boosted our online presence exponentially! </div>
                         <div className="review-by">
                            by Gary Hunter </div>
                      </div>
@@ -279,7 +261,8 @@ export default function Photography() {
                      <textarea className="form-control" rows={3} placeholder="Optional" name="accept[comment]" id="accept_comment" defaultValue={""} /> </div>
                   <div className="form-group-half">
                      <label className="label-light" htmlFor="accept_reference">Your order/reference number</label>
-                     <input className="form-control" placeholder="Optional" name="accept[reference]" defaultValue type="text" id="accept_reference" /> </div>
+                     <input className="form-control" placeholder="Optional" name="accept[reference]" type="text" id="accept_reference" />
+                  </div>
                   <div className="acceptCb">
                      <div className="acceptCb-left">
                         <label className="acceptCb-label-box" htmlFor="accept__confirm">
@@ -287,18 +270,18 @@ export default function Photography() {
                      </div>
                      <div className="acceptCb-right">
                         <label className="acceptCb-label" htmlFor="accept__confirm">
-                           Yes, I Scarlett Richards agree to and accept this quote, on <span className="dt-time" data-time="[1608743121,1,0]">December 23, 2020 at
-                5:05pm</span>.
-            </label>
+                           Yes, I Scarlett Richards agree to and accept this quote, on <span className="dt-time" data-time="[1608743121,1,0]">December 23, 2020 at 5:05pm</span>.
+                        </label>
                         <div className="acceptCb-prompt isHidden">
                            <span className="glyphicon glyphicon-arrow-up" /> Check the box to accept.
-            </div>
+                        </div>
                      </div>
                   </div>
                   <div className="clear"> </div>
                   <input type="hidden" name="@checkbox[accept][_confirm]" defaultValue="no" id="@checkbox_accept__confirm" />
                   <div className="quote-box-accept">
-                     <input className="btn btn-save btnAccept btnAccept-check quote-btn-lg" name="_flash[_trigger][accept]" defaultValue="Accept Quote" type="submit" id="_flash__trigger_accept" /> <span className="quote-box-decline-wrap">
+                     <button className="btn btn-save btnAccept btnAccept-check quote-btn-lg" name="_flash[_trigger][accept]" type="submit" id="_flash__trigger_accept">Accept Quote</button>&nbsp;
+                     <span className="quote-box-decline-wrap">
                         <a className="btn quote-btn-lg quote-box-decline" data-tg-click="clickExampleIgnore" rel="nofollow" href="javascript:void(0)">Decline</a>
                      </span>
                   </div>
@@ -306,7 +289,7 @@ export default function Photography() {
                <div className="clear" />
             </div>
             <div className="no_print">
-               <a className="powered-by powered-by-bg" href="../index.html" data-sheet="ignore"><img className="powered-by-black" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-black-01.png" alt="Quotient. Simply Smarter Quotes." /><img className="powered-by-white" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-white-01.png" alt="Quotient. Simply Smarter Quotes." /></a>
+               <a className="powered-by powered-by-bg d-none" href="../index.html" data-sheet="ignore"><img className="powered-by-black" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-black-01.png" alt="Quotient. Simply Smarter Quotes." /><img className="powered-by-white" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-white-01.png" alt="Quotient. Simply Smarter Quotes." /></a>
             </div>
          </div>
       </div>

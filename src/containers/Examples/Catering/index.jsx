@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import './style.scoped.scss';
 
 export default function Catering() {
    return (
@@ -14,9 +15,10 @@ export default function Catering() {
                         <label className="quote-detail-label">From</label>
                         <div className="quote-detail-block">
                            Jamie Hemsworth<br />
-              The River Kitchen<br />
-              2266 5th Avenue<br />
-              New York, NY 10037<br /><a rel="nofollow" data-tg-click="clickExampleIgnore" href="#www.theriverkitchen.com">www.theriverkitchen.com</a> </div>
+                           The River Kitchen<br />
+                           2266 5th Avenue<br />
+                           New York, NY 10037<br />
+                           <a rel="nofollow" data-tg-click="clickExampleIgnore" href="#www.theriverkitchen.com">www.theriverkitchen.com</a> </div>
                         <label className="quote-detail-label">Phone</label>
                         <div className="quote-detail-block">
                            212.765.4321 </div>
@@ -30,7 +32,7 @@ export default function Catering() {
                         <div className="quote-detail-block">
                            <label className="quote-detail-label">Address</label>
                            <div className="quote-detail-val">518 W 181st Street,<br />
-                New York, NY 10033</div>
+                           New York, NY 10033</div>
                         </div>
                         <div className="quote-detail-block">
                            <label className="quote-detail-label">Phone</label>
@@ -380,7 +382,8 @@ export default function Catering() {
                      <textarea className="form-control" rows={3} placeholder="Optional" name="accept[comment]" id="accept_comment" defaultValue={""} /> </div>
                   <div className="form-group-half">
                      <label className="label-light" htmlFor="accept_reference">Your order/reference number</label>
-                     <input className="form-control" placeholder="Optional" name="accept[reference]" defaultValue type="text" id="accept_reference" /> </div>
+                     <input className="form-control" placeholder="Optional" name="accept[reference]" type="text" id="accept_reference" />
+                  </div>
                   <div className="acceptCb">
                      <div className="acceptCb-left">
                         <label className="acceptCb-label-box" htmlFor="accept__confirm">
@@ -399,7 +402,8 @@ export default function Catering() {
                   <div className="clear"> </div>
                   <input type="hidden" name="@checkbox[accept][_confirm]" defaultValue="no" id="@checkbox_accept__confirm" />
                   <div className="quote-box-accept">
-                     <input className="btn btn-save btnAccept btnAccept-check quote-btn-lg" name="_flash[_trigger][accept]" defaultValue="Accept Quote" type="submit" id="_flash__trigger_accept" /> <span className="quote-box-decline-wrap">
+                     <button className="btn btn-save btnAccept btnAccept-check quote-btn-lg" name="_flash[_trigger][accept]" type="submit" id="_flash__trigger_accept">Accept Quote</button>&nbsp; 
+                     <span className="quote-box-decline-wrap">
                         <a className="btn quote-btn-lg quote-box-decline" data-tg-click="clickExampleIgnore" rel="nofollow" href="javascript:void(0)">Decline</a>
                      </span>
                   </div>
@@ -407,7 +411,7 @@ export default function Catering() {
                <div className="clear" />
             </div>
             <div className="no_print">
-               <a className="powered-by powered-by-bg" href="../index.html" data-sheet="ignore"><img className="powered-by-black" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-black-01.png" alt="Quotient. Simply Smarter Quotes." /><img className="powered-by-white" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-white-01.png" alt="Quotient. Simply Smarter Quotes." /></a>
+               <a className="powered-by powered-by-bg d-none" href="../index.html" data-sheet="ignore"><img className="powered-by-black" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-black-01.png" alt="Quotient. Simply Smarter Quotes." /><img className="powered-by-white" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-white-01.png" alt="Quotient. Simply Smarter Quotes." /></a>
             </div>
          </div>
       </div>

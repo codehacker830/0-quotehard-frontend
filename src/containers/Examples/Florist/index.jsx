@@ -1,4 +1,5 @@
 import React from 'react'
+import './style.scoped.scss';
 
 export default function Florist() {
    return (
@@ -13,8 +14,7 @@ export default function Florist() {
                      <span className="quote-detail-block">Scarlett Richards</span>
                   </div>
                   <div>
-                     <label>Prepared&nbsp;by</label> <span className="quote-detail-block">Jamie Hemsworth,
-            Blossom Floral Design</span>
+                     <label>Prepared&nbsp;by</label> <span className="quote-detail-block">Jamie Hemsworth, Blossom Floral Design</span>
                   </div>
                   <div><label>Website</label>&nbsp;<span className="quote-detail-block"><a rel="nofollow" data-tg-click="clickExampleIgnore" href="#www.blossom.com">www.blossom.com</a></span> </div>
                   <div>
@@ -35,10 +35,10 @@ export default function Florist() {
                      <p>We will create breathtaking floral arrangements that your guests will talk about for
                      years to come. Our designs will reflect your vision for romantic floral arrangements
                      featuring pink and white roses complimented with seasonal blooms for your wedding
-            day. </p>
+                     day. </p>
                      <p>We will take care of the delivery, set-up, pack-up and removal of your floral
                      arrangements so you don’t have to worry about any extra work or the stress of a
-            misplaced stem or wilted flower.</p>
+                     misplaced stem or wilted flower.</p>
                   </div>
                   <div className="tItem-text tItemId-2">
                      <h3>Examples of the floral designs we will be delivering on your special day</h3>
@@ -63,13 +63,10 @@ export default function Florist() {
                            <div className="tItem-desc-cell">
                               <h3>Bouquets</h3>
                               <ul>
-                                 <li>Bridal bouquet featuring white and pink roses and finished with a
-                    white satin ribbon.</li>
-                                 <li>Bridesmaid Bouquets featuring white roses finished with a light pink
-                    satin ribbon.</li>
+                                 <li>Bridal bouquet featuring white and pink roses and finished with a white satin ribbon.</li>
+                                 <li>Bridesmaid Bouquets featuring white roses finished with a light pink satin ribbon.</li>
                                  <li>Flower Girl basket filled with white rose petals.</li>
-                                 <li>Toss Bouquet featuring white roses finished with a hot pink satin
-                    ribbon.</li>
+                                 <li>Toss Bouquet featuring white roses finished with a hot pink satin ribbon.</li>
                               </ul>
                            </div>
                         </div>
@@ -109,10 +106,8 @@ export default function Florist() {
                               <ul>
                                  <li>Cones filled with white rose petals for tossing.</li>
                                  <li>Hire of single arch draped in fabric.</li>
-                                 <li>Floral arrangements for wedding arch featuring white and pink
-                    seasonal blooms.</li>
-                                 <li>Altar floral display featuring white and pink seasonal blooms,
-                    including hirage of a large vase.</li>
+                                 <li>Floral arrangements for wedding arch featuring white and pink seasonal blooms.</li>
+                                 <li>Altar floral display featuring white and pink seasonal blooms, including hirage of a large vase.</li>
                                  <li>Elegant scattering of white rose petals along the aisle.</li>
                               </ul>
                            </div>
@@ -131,8 +126,7 @@ export default function Florist() {
                            <div className="tItem-desc-cell">
                               <h3>Reception</h3>
                               <ul>
-                                 <li>High glass vase featuring white and pink roses with seasonal blooms
-                    with vase hire included.</li>
+                                 <li>High glass vase featuring white and pink roses with seasonal blooms with vase hire included.</li>
                                  <li>Large floral arrangement for the head table.</li>
                                  <li>Floral arrangment for cake top featuring white roses.</li>
                               </ul>
@@ -180,9 +174,9 @@ export default function Florist() {
                      <h3>Next steps</h3>
                      <p>Feel free to ask any questions below on this quote. We are more than happy to
                      accommodate your requests. All hired items will be delivered and picked up after the
-            wedding by our staff so you have nothing to worry about on your special day.</p>
+                     wedding by our staff so you have nothing to worry about on your special day.</p>
                      <p>To secure your wedding date and time simply ‘accept’ within 7 days of receiving this
-            quote and pay the $500 deposit to secure your booking.</p>
+                     quote and pay the $500 deposit to secure your booking.</p>
                   </div>
                   <div className="tItem-text tItemId-9">
                      <h3>Deposit and payment</h3>
@@ -247,15 +241,13 @@ export default function Florist() {
                            <div className="discuss-title">
                               <strong className="util-no-wrap">Scarlett Richards&nbsp;</strong>
                               <span className="lighter">
-                                 <span className="util-no-wrap"><span className="dt-time" data-time="[1608740415,1,1]">December 23, 2020 at
-                      4:20pm</span></span>&nbsp;
-                </span>
+                                 <span className="util-no-wrap"><span className="dt-time" data-time="[1608740415,1,1]">December 23, 2020 at 4:20pm</span></span>&nbsp;
+                              </span>
                            </div>
                            <div className="clear"> </div>
                            <div className="discuss-message">
                               <p>The quote looks perfect! I’m wanting to invite a few more guests so I
-                              will need another table arrangement for the reception, can you do this
-                  for me?</p>
+                              will need another table arrangement for the reception, can you do this for me?</p>
                            </div>
                         </div>
                      </div>
@@ -268,15 +260,16 @@ export default function Florist() {
                            <div className="discuss-title">
                               <strong className="util-no-wrap">Jamie Hemsworth&nbsp;</strong>
                               <span className="lighter">
-                                 <span className="util-no-wrap"><span className="dt-time" data-time="[1608741315,1,1]">December 23, 2020 at
-                      4:35pm</span></span>&nbsp;
-                </span>
+                                 <span className="util-no-wrap"><span className="dt-time" data-time="[1608741315,1,1]">December 23, 2020 at 4:35pm</span></span>&nbsp;
+                              </span>
                            </div>
                            <div className="clear"> </div>
                            <div className="discuss-message">
                               <p>Fantastic, I will update the quote for you now. BTW, here are those
-                  recommended partners we were talking about: <a data-sheet="ignore" href="cake-decorating-quote-template.html">Cake Decorating,</a> <a data-sheet="ignore" href="catering-quote-template.html">Catering,</a> <a data-sheet="ignore" href="dj-quote-template.html">DJ,</a> <a data-sheet="ignore" href="event-management-quote-template.html">Event Management,</a> <a data-sheet="ignore" href="film-production-quote-template.html">Film
-                    &amp; Video,</a> <a data-sheet="ignore" href="photography-quote-template.html">Photography.</a></p>
+                              recommended partners we were talking about: <a data-sheet="ignore" href="cake-decorating-quote-template.html">Cake Decorating,</a> <a data-sheet="ignore" href="catering-quote-template.html">Catering,</a> <a data-sheet="ignore" href="dj-quote-template.html">DJ,</a> <a data-sheet="ignore" href="event-management-quote-template.html">Event Management,</a> <a data-sheet="ignore" href="film-production-quote-template.html">Film
+                              &amp; Video,</a>
+                                 <a data-sheet="ignore" href="photography-quote-template.html">Photography.</a>
+                              </p>
                            </div>
                         </div>
                      </div>
@@ -289,7 +282,6 @@ export default function Florist() {
                      <div className="discuss-row discuss-form discussIsQuestion isHidden">
                         <input className="discuss-form-prefix" name="postDiscuss[discussIsQuestion][_prefix]" defaultValue="discussIsQuestion" type="hidden" id="postDiscuss_discussIsQuestion__prefix" />
                         <div className="discuss-bubble">
-                           {/*div class="bubble-left avatar-48" style="background-image: url('https://secure.gravatar.com/avatar/03aa3c82df6258a21ac4a05431dfe216?r=g&amp;s=64&amp;d=https%3A%2F%2Fasset.quotientapp.com%2Fimage%2Fcontact%2Fcompany1.png');"> </div*/}
                            <div className="bubble-right">
                               <div className="bubble-margin">
                                  <textarea className="form-control" rows={3} name="postDiscuss[discussIsQuestion][discuss_body]" id="postDiscuss_discussIsQuestion_discuss_body" defaultValue={""} /> </div>
@@ -299,14 +291,13 @@ export default function Florist() {
                               <div className="u-file-drop-area">
                                  <input className="u-file-hidden" data-tg-change="changeDiscussFile" name="file_input" type="file" multiple />
                                  <div className="u-file-wrap">
-                                    <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image
-                      or File</button>
+                                    <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image or File</button>
                                  </div>
                               </div>
                               <div className="bubble-buttons">
-                                 <a href="#trigger:ask_question" className="btn btn-action btn-lg">Submit
-                    Question</a>
-                                 <a className="btn btn-default btn-lg btn-lg-skinny" data-tg-click="clickDiscussCancel" href="javascript:void(0)">Cancel</a> </div>
+                                 <a href="#trigger:ask_question" className="btn btn-action btn-lg">Submit Question</a>
+                                 <a className="btn btn-default btn-lg btn-lg-skinny" data-tg-click="clickDiscussCancel" href="javascript:void(0)">Cancel</a>
+                              </div>
                            </div>
                         </div>
                         <div className="clear"> </div>
@@ -321,8 +312,7 @@ export default function Florist() {
                         <div className="u-file-drop-area">
                            <input className="u-file-hidden" data-tg-change="changeDiscussFile" name="file_input" type="file" multiple />
                            <div className="u-file-wrap">
-                              <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image or
-                  File</button>
+                              <button type="button" data-tg-click="clickDiscussFile" className="btn btn-text"><span className="glyphicon glyphicon-paperclip" />&nbsp;Add Image or File</button>
                            </div>
                         </div>
                         <div className="bubble-buttons">
@@ -333,9 +323,7 @@ export default function Florist() {
                   </div>
                </div>
                <div className="quote-review-wrap">
-                  <h3 className="quote-review-h2">
-                     Reviews
-        </h3>
+                  <h3 className="quote-review-h2">Reviews</h3>
                   <div>
                      <div className="quote-review">
                         <div className="quote-review-stars">
@@ -343,8 +331,7 @@ export default function Florist() {
                         </div>
                         <div className="quote-review-message">
                            Amazing table settings and bouquets that matched the colour scheme and style
-                           notes of our wedding day! We love this place and can’t wait to hire them again
-              in future :) </div>
+                           notes of our wedding day! We love this place and can’t wait to hire them again in future :) </div>
                         <div className="review-by">
                            by Anna Burton </div>
                      </div>
@@ -357,14 +344,15 @@ export default function Florist() {
                               Arrangements are classy and timeless, their service reliable and prompt. The
                               team at Blossom were able to put together a beautiful bereavement bouquet
                               for a colleague at only half a days notice. During a difficult time
-                like&nbsp;<a href="javascript:void(0);" data-tg-click="{&quot;root_reveal&quot;:[&quot;slide&quot;,&quot;.js-review-more-1&quot;,&quot;.js-review-less-1&quot;]}">…<span className="no_print"> More</span></a>
+                              like&nbsp;
+                              <button className="a-link">…<span className="no_print"> More</span></button>
                            </div>
                            <div className="isHidden js-review-more-1">
                               Arrangements are classy and timeless, their service reliable and prompt. The
                               team at Blossom were able to put together a beautiful bereavement bouquet
                               for a colleague at only half a days notice. During a difficult time like
                               this, it was a huge relief to deal with such a sensitive, thoughtful team.
-                Thank you again </div>
+                              Thank you again </div>
                         </div>
                         <div className="review-by">
                            by Sophia Turner </div>
@@ -376,7 +364,7 @@ export default function Florist() {
                         <div className="quote-review-message">
                            My best friend was blown away by the fabulous bouquet I presented to her on her
                            birthday! The creativity and technical know-how that the team here possess is
-              simply second to none. Great work folks! </div>
+                           simply second to none. Great work folks! </div>
                         <div className="review-by">
                            by Gary Hunter </div>
                      </div>
@@ -387,33 +375,34 @@ export default function Florist() {
                   <h3 className="quote-box-h3-accept">Celebrating the Kennedy’s wedding</h3>
                   <div className="acceptSummary">
                      <p className="summaryWrapzFixedCost">
-                        Total $<span className="summaryPartTotal">2,110.00</span> </p>
-                  </div>
+                        Total  $<span className="summaryPartTotal">2,110.00</span>          </p>  </div>
                   <div className="form-group-half">
                      <label className="label-light" htmlFor="accept_comment">Additional comments</label>
-                     <textarea className="form-control" rows={3} placeholder="Optional" name="accept[comment]" id="accept_comment" defaultValue={""} /> </div>
+                     <textarea className="form-control" rows={3} placeholder="Optional" name="accept[comment]" id="accept_comment" style={{ height: 77 }} defaultValue={""} />  </div>
                   <div className="form-group-half">
                      <label className="label-light" htmlFor="accept_reference">Your order/reference number</label>
-                     <input className="form-control" placeholder="Optional" name="accept[reference]" defaultValue type="text" id="accept_reference" /> </div>
+                     <input className="form-control" placeholder="Optional" name="accept[reference]" type="text" id="accept_reference" />
+                  </div>
                   <div className="acceptCb">
                      <div className="acceptCb-left">
                         <label className="acceptCb-label-box" htmlFor="accept__confirm">
-                           <input className="quote-accept-checkbox" name="accept[_confirm]" defaultValue="yes" type="checkbox" id="accept__confirm" /> </label>
+                           <input className="quote-accept-checkbox" name="accept[_confirm]" defaultValue="yes" type="checkbox" id="accept__confirm" />
+                        </label>
                      </div>
                      <div className="acceptCb-right">
                         <label className="acceptCb-label" htmlFor="accept__confirm">
-                           Yes, I Scarlett Richards agree to and accept this quote, on <span className="dt-time" data-time="[1608743115,1,0]">December 23, 2020 at
-                5:05pm</span>.
-            </label>
+                           Yes, I Scarlett Richards agree to and accept this quote, on <span className="dt-time" data-time="[1612933922,1,0]">February 10, 2021 at 7:12AM</span>.
+                        </label>
                         <div className="acceptCb-prompt isHidden">
                            <span className="glyphicon glyphicon-arrow-up" /> Check the box to accept.
-            </div>
+                        </div>
                      </div>
                   </div>
                   <div className="clear"> </div>
                   <input type="hidden" name="@checkbox[accept][_confirm]" defaultValue="no" id="@checkbox_accept__confirm" />
                   <div className="quote-box-accept">
-                     <input className="btn btn-save btnAccept btnAccept-check quote-btn-lg" name="_flash[_trigger][accept]" defaultValue="Accept Quote" type="submit" id="_flash__trigger_accept" /> <span className="quote-box-decline-wrap">
+                     <button className="btn btn-save btnAccept btnAccept-check quote-btn-lg" name="_flash[_trigger][accept]" type="button" id="_flash__trigger_accept">Accept Quote</button>&nbsp;
+                     <span className="quote-box-decline-wrap">
                         <a className="btn quote-btn-lg quote-box-decline" data-tg-click="clickExampleIgnore" rel="nofollow" href="javascript:void(0)">Decline</a>
                      </span>
                   </div>
@@ -421,7 +410,7 @@ export default function Florist() {
                <div className="clear" />
             </div>
             <div className="no_print">
-               <a className="powered-by powered-by-bg" href="../index.html" data-sheet="ignore"><img className="powered-by-black" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-black-01.png" alt="Quotient. Simply Smarter Quotes." /><img className="powered-by-white" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-white-01.png" alt="Quotient. Simply Smarter Quotes." /></a>
+               <a className="powered-by powered-by-bg d-none" href="../index.html" data-sheet="ignore"><img className="powered-by-black" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-black-01.png" alt="Quotient. Simply Smarter Quotes." /><img className="powered-by-white" width={102} src="https://asset.quotientapp.com/image/quote/powered-by-quotient-white-01.png" alt="Quotient. Simply Smarter Quotes." /></a>
             </div>
          </div>
       </div>

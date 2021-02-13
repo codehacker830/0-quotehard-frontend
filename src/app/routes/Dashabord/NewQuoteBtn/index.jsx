@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom';
-import { QUOTE_GET_PATH } from '../../../../constants/PathNames';
+import { QUOTE_GET_PATH, EXAMPLES_PATH } from '../../../../constants/PathNames';
 import axios from '../../../../util/Api';
 
 class NewQuoteBtn extends Component {
@@ -114,11 +114,16 @@ class NewQuoteBtn extends Component {
                                 </li>
                                 <li className="choices-break" />
                                 <li>
-                                    <a className="btn-in-action" style={{ padding: 7 }} target="_blank" href="https://quotehard.com/examples">
+                                    <button className="btn-in-action" onClick={() => this.props.history.push({
+                                        pathname: EXAMPLES_PATH,
+                                        state: {
+                                            from: this.props.location.pathname
+                                        }
+                                    })}>
                                         <div className="media-body font-size-sm pr-2">
                                             <span>New Quote with Premade Template</span>
                                         </div>
-                                    </a>
+                                    </button>
                                 </li>
                             </ul>
                         </div>
