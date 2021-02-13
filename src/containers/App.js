@@ -17,6 +17,7 @@ import InviteCreate from './InviteCreate';
 import InviteExisting from './InviteExisting';
 import VerificationEmailSent from './VerificationEmailSent';
 import ReactivateNotify from './ReactivateNotify';
+import Examples from './Examples';
 
 const RestrictedRoute = ({ component: Component, token, ...rest }) => {
    return (
@@ -77,6 +78,7 @@ class App extends Component {
                   <Route exact path='/request-password/new/expired' component={RequestPasswordExpired} />
                   <Route exact path='/request-password/change/:entoken' component={ChangePassword} />
 
+                  <Route path='/examples' component={Examples} />
                   <Route component={Error404} />
                </Switch>
             </div>
