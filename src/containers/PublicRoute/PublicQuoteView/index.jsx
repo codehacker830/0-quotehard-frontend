@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import NavCrump from '../../../components/NavCrump';
-import { checkIfTeamMember, formatDate, formatDateTime, parseBrInStr, toFixedFloat } from '../../../util';
+import { checkIfTeamMember, parseBrInStr } from '../../../util';
 import { connect } from 'react-redux';
-import { getUser, setInitUrl, setPersonData, userSignOut } from '../../../actions/Auth';
-import { getTeamMembers, setTeamMembers } from '../../../actions/Team';
+import { setInitUrl, setPersonData, userSignOut } from '../../../actions/Auth';
+import { setTeamMembers } from '../../../actions/Team';
 import QuoteLogo from '../components/QuoteLogo';
 import QuoteDetail from './QuoteDetail';
 import StatusShowCase from './StatusShowCase';
@@ -181,6 +181,13 @@ class PublicQuoteView extends Component {
          });
       }
       else this.getInitializingQuoteData();
+   }
+   componentDidUpdate(prevProps, prevState) {
+      const prevStatus = prevProps.quote.status;
+      const nextStatus = this.props.quote.status;
+      if (prevStatus !== nextStatus) {
+         this.setState({ isAcceptOnBehalfBoxShow: false });
+      }
    }
    getInitializingQuoteData = () => {
       const { entoken } = this.props.match.params;
@@ -514,7 +521,7 @@ class PublicQuoteView extends Component {
                                  <PublicQuoteDiscussionList />
                                  <PublicQuoteDisscussionWrite />
                               </div>
-                              <AcceptBox isAcceptOnBehalfBoxShow={this.state.isAcceptOnBehalfBoxShow} hideManualAcceptBox={() => this.setState({ isAcceptOnBehalfBoxShow: false })} />
+                              <AcceptBox isAcceptOnBehalfBoxShow={this.state.isAcceptOnBehalfBoxShow} />
                               <div style={{ float: "left", clear: "both" }} ref={this.screenEnd} />
                               <DeclineCommentShow />
 
@@ -540,9 +547,6 @@ const mapStateToProps = ({ auth, appearanceSetting, teamSetting, mainData }) => 
 }
 const mapDispatchToProps = {
    setInitUrl, userSignOut,
-   // getUser, 
-   // getQuoteFromEntoken,
-   // getTeamMembers,
    markAsSentQuote, archiveQuote, unArchiveQuote,
    setQuote,
    setPersonData,

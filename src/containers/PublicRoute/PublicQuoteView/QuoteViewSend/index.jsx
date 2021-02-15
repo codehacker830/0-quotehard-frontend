@@ -78,7 +78,7 @@ export default function QuoteViewSend(props) {
       pStr = pStr.replaceAll('[Your-email]', userFrom.email);
       pStr = pStr.replaceAll('[Your-company-name]', accountCompany.companyDisplayName);
       pStr = pStr.replaceAll('[Customer-given-names]', customerGivenNames);
-      pStr = pStr.replaceAll('[Customer-company]', firstCustomer.company ? firstCustomer.company.companyName : "");
+      pStr = pStr.replaceAll('[Customer-company]', firstCustomer && firstCustomer.company ? firstCustomer.company.companyName : "");
       pStr = pStr.replaceAll('[Quote-number]', quote.number);
 
       return pStr;

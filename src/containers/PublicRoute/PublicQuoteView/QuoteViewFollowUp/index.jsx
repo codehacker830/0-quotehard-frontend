@@ -83,7 +83,7 @@ export default function QuoteViewFollowUp(props) {
       pStr = pStr.replaceAll('[Your-email]', userFrom.email);
       pStr = pStr.replaceAll('[Your-company-name]', accountCompany.companyDisplayName);
       pStr = pStr.replaceAll('[Customer-given-names]', customerGivenNames);
-      pStr = pStr.replaceAll('[Customer-company]', firstCustomer ? firstCustomer.company.companyName : "");
+      pStr = pStr.replaceAll('[Customer-company]', firstCustomer && firstCustomer.company ? firstCustomer.company.companyName : "");
       pStr = pStr.replaceAll('[Quote-number]', quote.number);
 
       return pStr;
@@ -137,8 +137,8 @@ export default function QuoteViewFollowUp(props) {
                         <button className="btn btn-primary">View Quote</button>
                         <br />
                         <br />
-                              Captivating Title of Quote
-                              <span className="emailWording-small">CompanyName #12345678</span>
+                        Captivating Title of Quote
+                        <span className="emailWording-small">CompanyName #12345678</span>
                      </div>
                      <TextareaAutosize className="form-control sendEmail-part2"
                         rows={3}

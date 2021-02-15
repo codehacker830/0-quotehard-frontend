@@ -36,7 +36,6 @@ export default function AcceptOnBehalfBox() {
          onBehalfOfPersonId,
          isAcceptanceEmailNotification
       }));
-      // this.props.hideManualAcceptBox();
    }
    const onClickDecline = () => {
 
@@ -89,7 +88,7 @@ export default function AcceptOnBehalfBox() {
 
          {/* accept button box */}
          <div className="quote-box-accept">
-            <button className="btn btn-save btnAccept btn-lg" disabled={loading} onClick={onClickAcceptOnBehalf}>
+            <button className="btn btn-save btnAccept quote-btn-lg" disabled={loading} onClick={onClickAcceptOnBehalf}>
                {loading && <i className="fa fa-fw fa-circle-notch fa-spin mr-1" />}
                         Accept on behalf
                     </button>

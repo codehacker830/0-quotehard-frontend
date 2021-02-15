@@ -4,32 +4,32 @@ import ExampleTourSection from './components/ExampleTourSection';
 
 const examplesArr = [
    {
-      imgSrc: "https://asset.quotientapp.com/image/quote-example/feature-cake-decorating.jpg",
+      imgSrc: "assets/media/images/quote-example/feature-cake-decorating.jpg",
       text: "Cake Decorating",
       pathTo: "/examples/cake-decorating-quote-template"
    },
    {
-      imgSrc: "https://asset.quotientapp.com/image-c/quote-example/feature-florist.jpg",
+      imgSrc: "assets/media/images/quote-example/feature-florist.jpg",
       text: "Florist",
       pathTo: "/examples/florist-quote-template"
    },
    {
-      imgSrc: "https://via.placeholder.com/800x525.png",
+      imgSrc: "assets/media/images/quote-example/feature-bookkeeping.jpg",
       text: "Bookkeeping",
       pathTo: "/examples/bookkeeping-quote-template"
    },
    {
-      imgSrc: "https://via.placeholder.com/800x525.png",
+      imgSrc: "assets/media/images/quote-example/feature-corporate.jpg",
       text: "Corporate Promo",
       pathTo: "/examples/corporate-promo-quote-template"
    },
    {
-      imgSrc: "https://via.placeholder.com/800x525.png",
+      imgSrc: "assets/media/images/quote-example/feature-photography.jpg",
       text: "Photography",
       pathTo: "/examples/photography-quote-template"
    },
    {
-      imgSrc: "https://via.placeholder.com/800x525.png",
+      imgSrc: "assets/media/images/quote-example/feature-catering.jpg",
       text: "Catering",
       pathTo: "/examples/catering-quote-template"
    },

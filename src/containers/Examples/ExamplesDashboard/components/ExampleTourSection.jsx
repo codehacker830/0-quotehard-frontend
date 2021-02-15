@@ -6,7 +6,7 @@ export default function ExampleTourSection(props) {
    return (
       <section className="tourF-section">
          <Link data-sheet="ignore" to={pathTo}>
-            <img className="examples-image" src={imgSrc} alt="/feature-florist.jpg preview" />
+            <img className="examples-image" src={imgSrc} alt="Template example preview" />
          </Link>
          <div className="examples-text">
             <h3>{text}</h3>

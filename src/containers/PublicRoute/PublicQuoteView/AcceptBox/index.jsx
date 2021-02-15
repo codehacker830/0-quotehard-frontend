@@ -1,17 +1,8 @@
 import React, { Component } from 'react'
-import TextareaAutosize from 'react-autosize-textarea/lib';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { acceptOnBehalfQuote } from '../../../../actions/Data';
 import { checkIfTeamMember, formatDateTime } from '../../../../util';
-import axios from '../../../../util/Api';
-import AcceptSummary from './AcceptSummary';
-import AdditionalComments from './AdditionalComments';
-import OrderReferenceNumber from './OrderReferenceNumber';
-import AcceptedOrderReferenceNumber from './AcceptedOrderReferenceNumber';
-import AcceptedAdditionalComments from './AcceptedAdditionalComments';
-import clsx from 'clsx';
 import _ from 'lodash';
 import AcceptOnBehalfBox from './AcceptOnBehalfBox';
 import AcceptanceBox from './AcceptanceBox';
