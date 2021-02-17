@@ -8,6 +8,7 @@ import { formatDateTime } from '../../../../util';
 import axios from '../../../../util/Api';
 import { toastSuccessConfig, toastWarningConfig } from '../../../../util/toastrConfig';
 import AttachedFilesShowCase from '../AttachedFilesShowCase';
+import QuestionAnswerEdit from './QuestionAnswerEdit';
 
 class QuestionAndAnswer extends Component {
     fileObj = [];
@@ -15,6 +16,7 @@ class QuestionAndAnswer extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isEditMode: false,
             fileArray: [],
         };
         this.hiddenFileInput = React.createRef();
@@ -90,6 +92,7 @@ class QuestionAndAnswer extends Component {
         const { discussion } = this.props;
         const { authUser, quote } = this.props;
         const isAnswerAbleUser = authUser && quote && (authUser._id === quote.author._id);
+        console.log(" discussion.questionAndAnswer.answer --------------> ", discussion.questionAndAnswer.answer)
         return (
             <React.Fragment>
                 <div className="discuss-row">
@@ -104,7 +107,8 @@ class QuestionAndAnswer extends Component {
                                 </strong>
                                 <span className="lighter">
                                     <span className="util-no-wrap">
-                                        <span className="dt-time">{formatDateTime(discussion.questionAndAnswer.question.createdAt)}</span></span>&nbsp;
+                                        <span className="dt-time">{formatDateTime(discussion.questionAndAnswer.question.createdAt)}</span>
+                                    </span>&nbsp;
                                 </span>
                             </div>
                             <div className="clear" />
@@ -121,7 +125,10 @@ class QuestionAndAnswer extends Component {
                     <div className="discuss-row">
                         <div className="discuss-bubble">
                             <div className="bubble-left avatar-48"
-                                style={{ backgroundImage: `url(${discussion.questionAndAnswer.answer.author.image || "https://secure.gravatar.com/avatar/5b790291599408b1b231ae1cf4c7a07a?r=g&s=64&d=https%3A%2F%2Fasset.quotientapp.com%2Fimage%2Fcontact%2Fperson1.png"})` }}>
+                                style={{
+                                    backgroundImage: `url(${discussion.questionAndAnswer.answer.author.image || "https://secure.gravatar.com/avatar/5b790291599408b1b231ae1cf4c7a07a?r=g&s=64&d=https%3A%2F%2Fasset.quotientapp.com%2Fimage%2Fcontact%2Fperson1.png"})`,
+                                    display: this.state.isEditMode ? "none" : "block"
+                                }}>
                             </div>
                             <div className="bubble-right">
                                 <div className="discuss-title">
@@ -131,14 +138,15 @@ class QuestionAndAnswer extends Component {
                                             <span className="dt-time">{formatDateTime(discussion.questionAndAnswer.answer.createdAt)}</span>&nbsp;
                                         </span>
                                         <span className={clsx("dt-time", discussion.questionAndAnswer.answer.createdAt === discussion.questionAndAnswer.answer.updatedAt ? "d-none" : "")}>– modified {formatDateTime(discussion.questionAndAnswer.answer.updatedAt)}</span>&nbsp;
-                                        <span className="discuss-edit-a">Edit</span>&nbsp;
+                                        <span className={clsx("discuss-edit-a", this.state.isEditMode && "isHidden", this.props.authUser ? "" : "d-none")} onClick={() => this.setState({ isEditMode: true })}>Edit</span>&nbsp;
                                     </span>
                                 </div>
                                 <div className="clear" />
-                                <div className="discuss-message">
+                                <div className={clsx("discuss-message", this.state.isEditMode && "isHidden")}>
                                     <p>{discussion.questionAndAnswer.answer.content}</p>
                                     <AttachedFilesShowCase files={discussion.questionAndAnswer.answer.files} />
                                 </div>
+                                <QuestionAnswerEdit answer={discussion.questionAndAnswer.answer} isEditMode={this.state.isEditMode} onCancelEdit={() => this.setState({ isEditMode: false })} />
                             </div>
                         </div>
                     </div>
