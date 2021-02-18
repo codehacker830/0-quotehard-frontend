@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 import './style.scoped.scss';
 
@@ -320,10 +321,10 @@ export default function Catering() {
                      </div>
                   </div>
                </div>
-               <div className="quote-review-wrap">
+               <div className={clsx("quote-review-wrap", "d-none")}>
                   <h3 className="quote-review-h2">
                      Reviews
-        </h3>
+                  </h3>
                   <div>
                      <div className="quote-review">
                         <div className="quote-review-stars">
@@ -332,7 +333,7 @@ export default function Catering() {
                         <div className="quote-review-message">
                            The team helped ensure my mother’s 60th was a total success! Even with some
                            dietary requirements thrown in, they sent me a custom cake quote the same day.
-              An absolute treat… and the cake was good too :) </div>
+                           An absolute treat… and the cake was good too :) </div>
                         <div className="review-by">
                            by Sophia Turner </div>
                      </div>
@@ -343,7 +344,7 @@ export default function Catering() {
                         <div className="quote-review-message">
                            These folks are our corporate dinner go-to - always prompt, clear, and
                            efficient. Just had our third function in a row catered by them, and they even
-              remembered that some staff are vegan! </div>
+                           remembered that some staff are vegan! </div>
                         <div className="review-by">
                            by Gary Hunter </div>
                      </div>
@@ -402,7 +403,7 @@ export default function Catering() {
                   <div className="clear"> </div>
                   <input type="hidden" name="@checkbox[accept][_confirm]" defaultValue="no" id="@checkbox_accept__confirm" />
                   <div className="quote-box-accept">
-                     <button className="btn btn-save btnAccept btnAccept-check quote-btn-lg" name="_flash[_trigger][accept]" type="submit" id="_flash__trigger_accept">Accept Quote</button>&nbsp; 
+                     <button className="btn btn-save btnAccept btnAccept-check quote-btn-lg" name="_flash[_trigger][accept]" type="submit" id="_flash__trigger_accept">Accept Quote</button>&nbsp;
                      <span className="quote-box-decline-wrap">
                         <a className="btn quote-btn-lg quote-box-decline" data-tg-click="clickExampleIgnore" rel="nofollow" href="javascript:void(0)">Decline</a>
                      </span>

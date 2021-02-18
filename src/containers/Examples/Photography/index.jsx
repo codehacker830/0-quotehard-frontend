@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 import './style.scoped.scss';
 
@@ -213,7 +214,7 @@ export default function Photography() {
                      </div>
                   </div>
                </div>
-               <div className="quote-review-wrap">
+               <div className={clsx("quote-review-wrap", "d-none")}>
                   <h3 className="quote-review-h2">Reviews</h3>
                   <div>
                      <div className="quote-review">

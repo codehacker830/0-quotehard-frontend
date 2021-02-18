@@ -30,7 +30,7 @@ class PrivateNote extends Component {
                                 <span className="util-no-wrap">
                                     <span className="dt-time">{formatDateTime(discussion.privateNote.createdAt)}</span>&nbsp;
                                 </span>
-                                <span className={clsx("dt-time", discussion.privateNote.createdAt === discussion.privateNote.updatedAt ? "d-none" : "")}>– modified {formatDateTime(discussion.privateNote.updatedAt)}</span>
+                                <span className={clsx("dt-time", discussion.privateNote.createdAt === discussion.privateNote.updatedAt ? "d-none" : "")}>– modified {formatDateTime(discussion.privateNote.updatedAt)}</span>&nbsp;
                                 <span className={clsx("discuss-edit-a", this.state.isEditMode && "isHidden", this.props.authUser ? "" : "d-none")} onClick={() => this.setState({ isEditMode: true })}>Edit</span>&nbsp;
                             </span>
                         </div>
