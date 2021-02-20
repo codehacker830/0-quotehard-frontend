@@ -23,6 +23,9 @@ class ChangePassword extends Component {
       }
       this.props.userResetPassword({ entoken, password });
 
+      // toast.success("Password changed.");
+      // this.props.history.push('/sign-in');
+      
       // axios.post("/reset-password", { password: this.state.password }).then((data) => {
       //    this.setState({ loading: false });
       //    if (!data.isValid) {

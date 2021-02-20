@@ -178,6 +178,7 @@ export const userResetPassword = ({ entoken, password }, ownProps) => {
       // dispatch({ type: AUTH_USER_DATA, payload: null });
       axios.post('/reset-password', { entoken, password }
       ).then(({ data }) => {
+         console.log(" USER RESET PASSWORD RES ===> ", data);
          if (data.isValid) {
             localStorage.setItem("token", JSON.stringify(data.access_token));
             if (data.access_token) axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
