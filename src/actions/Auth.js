@@ -183,9 +183,13 @@ export const userResetPassword = ({ entoken, password }, ownProps) => {
             localStorage.setItem("token", JSON.stringify(data.access_token));
             if (data.access_token) axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
             dispatch({ type: FETCH_SUCCESS });
-            dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
-            dispatch({ type: AUTH_USER_DATA, payload: data.account });
-            ownProps.history.push('/app');
+            // dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
+            // dispatch({ type: AUTH_USER_DATA, payload: data.account });
+            dispatch({ type: USER_TOKEN_SET, payload: null });
+            dispatch({ type: AUTH_USER_DATA, payload: null });
+            dispatch({ type: INIT_URL, payload: '/app' });
+            toast.success("Password changed");
+            ownProps.history.push('/sign-in');
          } else {
             console.log(" User Reset password error ========> ", data);
             dispatch({ type: FETCH_ERROR, payload: data.message });
