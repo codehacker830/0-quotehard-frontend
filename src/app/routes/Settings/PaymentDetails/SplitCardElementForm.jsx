@@ -62,7 +62,14 @@ const SplitCardElementForm = () => {
          });
          console.log("[PaymentMethod] ------->", payload);
          if (payload.paymentMethod) {
-            let subscription = await axios.post('/settings/payment/subscribe', { paymentMethodId: payload.paymentMethod.id, name });
+            let subscription;
+            try {
+               subscription = await axios.post('/settings/payment/subscribe', { paymentMethodId: payload.paymentMethod.id, name });
+            } catch (err) {
+               let Errors = err.response.data.errors;
+               console.error(" CREATE SUBSCRIPTION API ERROR RESPONSE !!! ", err.response.data)
+               if (Errors) toast.success(Errors.message);
+            }
             console.log("subscription _________", subscription);
             toast.success("Payment details saved - thank you for your continued support.");
             history.push('/app/settings/billing-overview');
@@ -71,6 +78,8 @@ const SplitCardElementForm = () => {
          }
          setLoading(false);
       } catch (err) {
+         console.error("createPaymentMethod failed !! =>", err)
+         // toast.success(err.message);
          setLoading(false);
       }
 
