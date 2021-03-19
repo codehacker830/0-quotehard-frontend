@@ -10,7 +10,7 @@ let axios = Axios.create({
    }
 });
 
-const token = JSON.parse(localStorage.getItem('token'));
+const token = localStorage.getItem('token');
 console.error("__ token __", token);
 
 if (token) axios.defaults.headers.common['Authorization'] = "Bearer " + token;

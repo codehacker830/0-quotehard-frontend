@@ -58,7 +58,7 @@ class Dashboard extends Component {
                }
             </div>
             <div className="row py-5 justify-content-center">
-               <p className="text-center">
+               <p className="text-center d-none">
                   <strong>Your trial ends in <span className="badge badge-primary">11</span>
                   </strong>
                   <br />

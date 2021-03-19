@@ -11,7 +11,7 @@ import {
 } from "../constants/ActionTypes";
 
 const INIT_STATE = {
-   token: JSON.parse(localStorage.getItem('token')),
+   token: localStorage.getItem('token'),
    initURL: "",
    authUser: null,
    accountCompany: null,

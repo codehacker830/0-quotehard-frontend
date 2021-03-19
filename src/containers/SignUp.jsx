@@ -44,10 +44,9 @@ const SignUp = (props) => {
                      </Link>
                      <div className="text-dark font-w700 font-size-h2 mb-2">Great decision, let’s get you started!</div>
                      <div className="d-flex justify-content-center m-auto" style={{ maxWidth: 650 }}>
-                        <span className="font-size-h5">
-                           Your free trial starts today and expires {dateFormat(expireAt, "mmmm dS, yyyy")}.
-                        Already have an account?
-                     <Link to="/sign-in" className="px-2">Sign in here.</Link>
+                        <span className="font-size-h5 d-none">Your free trial starts today and expires {dateFormat(expireAt, "mmmm dS, yyyy")}.</span>
+                        <span className="font-size-h5">Already have an account?
+                        <Link to="/sign-in" className="px-2">Sign in here.</Link>
                         </span>
                      </div>
                   </div>

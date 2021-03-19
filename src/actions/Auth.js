@@ -25,7 +25,7 @@ export const getUser = () => {
    return async (dispatch) => {
       dispatch({ type: FETCH_START });
       try {
-         const token = JSON.parse(localStorage.getItem('token'));
+         const token = localStorage.getItem('token');
          if (token) axios.defaults.headers.common['Authorization'] = "Bearer " + token;
          const { data } = await axios.get('/account');
          console.log("get User res => : ", data);
