@@ -46,7 +46,7 @@ export const userSignIn = ({ email, password, isRemember }) => {
       dispatch({ type: FETCH_START });
       axios.post('/account/login', { email, password, isRemember }
       ).then(({ data }) => {
-         localStorage.setItem("token", JSON.stringify(data.access_token));
+         localStorage.setItem("token", data.access_token);
          if (data.access_token) axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
          dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
          dispatch({ type: ACCOUNT_COMPANY_DATA, payload: data.accountCompany });
@@ -76,7 +76,7 @@ export const userSignUp = (payload) => {
          companyName,
          location
       }).then(({ data }) => {
-         localStorage.setItem("token", JSON.stringify(data.access_token));
+         localStorage.setItem("token", data.access_token);
          if (data.access_token) axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
          console.error(" axios.defaults.headers.common  === ", axios.defaults.headers.common)
          dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
@@ -104,7 +104,7 @@ export const userSignUpByInvitation = ({ _id, accountCompany, firstName, lastNam
       axios.post('/account/invited', { _id, accountCompany, firstName, lastName, email, password }
       ).then(({ data }) => {
          if (data.account) {
-            localStorage.setItem("token", JSON.stringify(data.access_token));
+            localStorage.setItem("token", data.access_token);
             if (data.access_token) axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
             dispatch({ type: FETCH_SUCCESS });
             dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
@@ -180,7 +180,7 @@ export const userResetPassword = ({ entoken, password }, ownProps) => {
       ).then(({ data }) => {
          console.log(" USER RESET PASSWORD RES ===> ", data);
          if (data.isValid) {
-            localStorage.setItem("token", JSON.stringify(data.access_token));
+            localStorage.setItem("token", data.access_token);
             if (data.access_token) axios.defaults.headers.common['Authorization'] = "Bearer " + data.access_token;
             dispatch({ type: FETCH_SUCCESS });
             // dispatch({ type: USER_TOKEN_SET, payload: data.access_token });
