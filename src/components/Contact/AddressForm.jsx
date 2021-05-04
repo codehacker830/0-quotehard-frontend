@@ -7,7 +7,6 @@ export default function AddressForm(props) {
    const dispatch = useDispatch();
    const addresses = useSelector(state => state.contactData.addresses)
    const handleAddressForm = (ev, index) => {
-      console.log(" handleAddressForm index ===>", index);
       let newAddresses = [...addresses];
       if (ev.target.name === "category") newAddresses[index].category = ev.target.value;
       else if (ev.target.name === "street") newAddresses[index].street = ev.target.value;

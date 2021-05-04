@@ -88,8 +88,6 @@ class GetQuote extends Component {
       await this.props.getQuoteDefaultSetting();
       await this.props.getAppearanceSetting();
 
-      console.log(" ppppppppppppp ", this.props.match)
-      console.log(" llllllllllllll ", this.props.location)
       if (
          this.props.match.path === QUOTE_BY_ID_PATH
          || this.props.match.path === QUOTE_GET_DUPLICATE_PATH
@@ -126,7 +124,6 @@ class GetQuote extends Component {
 
       // update quoteSetting with defaultSetting
       if (this.props.match.path === QUOTE_GET_PATH) {
-         console.log(" TTTTTTTTTTTTTTTTTTTTT 11 ", expirationQuoteAfter)
          const defaultSetting = {
             validUntil: new Date(Date.now() + 1000 * 3600 * 24 * parseInt(expirationQuoteAfter)),
             currency,
@@ -139,7 +136,6 @@ class GetQuote extends Component {
          this.props.match.path === QUOTE_GET_DUPLICATE_PATH
          || this.props.match.path === QUOTE_GET_FROM_TEMPLATE_PATH
       ) {
-         console.log(" TTTTTTTTTTTTTTTTTTTTT 22", expirationQuoteAfter);
          this.props.updateQuoteSettings({
             ...this.props.quote.settings,
             validUntil: new Date(Date.now() + 1000 * 3600 * 24 * parseInt(expirationQuoteAfter))
@@ -290,12 +286,8 @@ class GetQuote extends Component {
 
    onClickShowActivity = () => {
       this.setState({ loading: true });
-      // get all acitivities from backend
-      // setTimeout(() => {
-      //    this.setState({ showActivity: true, loading: false })
-      // }, 1000);
+      // get all acitivities from Rest API
       axios.get(`/quotes/activities/${this.props.quote._id}`).then(({ data }) => {
-         console.log(" 000000000 ", data)
          this.setState({
             showActivity: true,
             loading: false,
@@ -307,8 +299,6 @@ class GetQuote extends Component {
       });
    }
    render() {
-      console.log(" ^^^^^^^ GET QUOTE state ^^^^^^^^^^ ", this.state);
-      console.log(" ^^^^^^^ GET QUOTE props ^^^^^^^^^^ ", this.props);
       const { location, quote } = this.props;
       const linkTo = location.state && location.state.from ? location.state.from : "/app";
       let linkName = "Dashboard";

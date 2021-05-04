@@ -69,8 +69,6 @@ export default class Quotes extends Component {
       }
    }
    render() {
-      console.log("Quotes state --", this.state);
-      console.log("Quotes prpos --", this.props);
       return (
          <div className="content">
             <QuoteControlPanel />
