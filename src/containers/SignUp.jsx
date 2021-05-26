@@ -39,9 +39,6 @@ const SignUp = (props) => {
                <div className="container p-3 w-100">
                   {/* Header */}
                   <div className="mb-3 text-center">
-                     <Link to="/" className="d-flex justify-content-center mb-2">
-                        <img src="/logo-180.png" className="logo" alt="logo" />
-                     </Link>
                      <div className="text-dark font-w700 font-size-h2 mb-2">Great decision, let’s get you started!</div>
                      <div className="d-flex justify-content-center m-auto" style={{ maxWidth: 650 }}>
                         <span className="font-size-h5 d-none">Your free trial starts today and expires {dateFormat(expireAt, "mmmm dS, yyyy")}.</span>
